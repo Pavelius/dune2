@@ -1,5 +1,7 @@
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
+#include "shape.h"
 #include "slice.h"
 #include "rand.h"
 
@@ -9,7 +11,7 @@ pointc area_origin, area_spot;
 static terrainn map_terrain[area_frame_maximum];
 static featuren map_features[area_frame_maximum];
 static unsigned char map_count[area_frame_maximum];
-static unsigned short map_alternate[area_frame_maximum];
+unsigned short map_alternate[area_frame_maximum];
 
 static pointc stack[256 * 16];
 static size_t push_stack, pop_stack;
@@ -70,10 +72,30 @@ static short unsigned get_alternate_frame(int frame) {
 	}
 }
 
+static int find_frame(const unsigned short* source, size_t count, unsigned short value) {
+	for(size_t i = 0; i < count; i++) {
+		if(source[i] == value)
+			return i;
+	}
+	return -1;
+}
+
 static featuren find_feature_by_frame(int frame) {
 	for(auto& e : bsdata<featurei>()) {
 		if(frame >= e.frame && frame < e.frame + e.count)
 			return (featuren)(&e - bsdata<featurei>::elements);
+	}
+	for(auto& e : bsdata<buildingi>()) {
+		auto& s = bsdata<shapei>::elements[e.shape];
+		auto i = find_frame(e.frames, s.count, frame);
+		if(i != -1) {
+			if(i == 0)
+				return BuildingHead;
+			else if(i < s.size.x)
+				return BuildingLeft;
+			else
+				return BuildingUp;
+		}
 	}
 	switch(frame) {
 	case 213: case 214: case 215:
@@ -135,15 +157,6 @@ bool areai::is(pointc v, terrainn t) const {
 	if(!isvalid(v))
 		return false;
 	return map_terrain[frames[v.y][v.x]] == t;
-}
-
-int	areai::surround(pointc v, terrainn t) const {
-	auto r = 0;
-	for(auto d : all_strait_directions) {
-		if(isn(to(v, d), t))
-			r++;
-	}
-	return r;
 }
 
 bool areai::isn(pointc v, terrainn t) const {
@@ -336,16 +349,22 @@ terrainn areai::get(pointc v) const {
 	return map_terrain[frames[v.y][v.x]];
 }
 
+void areai::update(pointc v) {
+	for(auto d : all_strait_directions) {
+		auto n = to(v, d);
+		if(isbuilding(n))
+			continue; // Building not change frames
+		setnu(n, get(n));
+	}
+}
+
 void areai::set(pointc v, terrainn t) {
 	if(!isvalid(v))
 		return;
 	// First we set default frame (neigtboard tiles will be see this terrain)
 	frames[v.y][v.x] = bsdata<terraini>::elements[t].frame;
 	// Second we change frame around
-	for(auto d : all_strait_directions) {
-		auto n = to(v, d);
-		setnu(n, get(n));
-	}
+	update(v);
 	// Third update original frame (neightboard already updated)
 	setnu(v, t);
 }
@@ -367,5 +386,25 @@ void areai::setnu(pointc v, terrainn t) {
 bool areai::isbuilding(pointc v) const {
 	if(!isvalid(v))
 		return false;
-	return false;
+	return frames[v.y][v.x] >= 210;
+}
+
+void areai::set(pointc v, shapen t, short unsigned* frame_list) {
+	if(!frame_list)
+		return;
+	auto& e = bsdata<shapei>::elements[t];
+	if(!e.count)
+		return;
+	for(auto i = 0; i < e.count; i++) {
+		auto n = v + e.points[i];
+		if(!isvalid(n))
+			continue;
+		frames[n.y][n.x] = frame_list[i];
+	}
+	for(auto i = 0; i < e.count; i++) {
+		auto n = v + e.points[i];
+		if(!isvalid(n))
+			continue;
+		update(n);
+	}
 }

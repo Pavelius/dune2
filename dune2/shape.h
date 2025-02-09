@@ -8,5 +8,6 @@ enum shapen : unsigned char {
 };
 struct shapei : nameable {
 	int			count;
+	pointc		size;
 	pointc		points[16];
 };

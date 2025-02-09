@@ -58,6 +58,10 @@ void draw_glyph_zoomed(int sym, int zoom) {
 }
 
 static void paint_glyph_shadowed(int x, int y, int y2, int width, unsigned char* line) {
+	// FONT3 - Monochrome.
+	// FONT6, FONT8  - Three colors: 1 - main, 2 - right shadow, 3 - left shadow
+	// FONT10 - Capital in other color. 15 - shadow, (12, 10, 8) Capital marked
+	// FONT16 - Two colors: 1 - main, 5 - second main, 6 - part shadow
 	auto scan_line = (width * 4 + 7) / 8;
 	auto main_fore = fore;
 	auto half_fore = fore_stroke.mix(fore, 128 + 64 + 32);

@@ -256,6 +256,7 @@ void				textf(const char* string, int& cashe_origin, int& cashe_string);
 void				textfs(const char* string);
 int					texth();
 int					texth(const char* string, int width);
+void				textnc(const char* string, int count, unsigned flags);
 int					textw(int sym);
 int					textw(const char* string, int count = -1);
 int					textw(rect& rc, const char* string);

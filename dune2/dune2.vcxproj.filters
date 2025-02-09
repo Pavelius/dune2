@@ -248,5 +248,8 @@
     <ClInclude Include="sprite_util.h">
       <Filter>utils</Filter>
     </ClInclude>
+    <ClInclude Include="typeable.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

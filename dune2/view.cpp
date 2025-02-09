@@ -20,18 +20,18 @@ static unsigned long eye_clapping, eye_show_cursor;
 unsigned long current_tick;
 resid mentat_subject;
 
-#ifdef _DEBUG
-
 static bool debug_toggle;
 
 static void debug_map_message() {
 	rectpush push;
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
 	auto t = area.get(area_spot);
-	text(str("area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname()));
+	textnc(str("area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname()), -1, 0);
+	if(area.isbuilding(area_spot)) {
+		caret.x += 6;
+		textnc("Building", -1, 0);
+	}
 }
-
-#endif _DEBUG
 
 const unsigned time_step = 100;
 
@@ -184,7 +184,6 @@ static void common_input() {
 	update_tick();
 	switch(hot.key) {
 	case Ctrl + F5: make_screenshoot(); break;
-#ifdef _DEBUG
 	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}, color(64, 0, 128)); break;
 	case Ctrl + 'I': show_sprites(ICONS, {0, 0}, {16, 16}, color(24, 0, 64)); break;
 	case Ctrl + 'A': show_sprites(ARROWS, {0, 0}, {16, 16}, color(24, 0, 64)); break;
@@ -193,7 +192,6 @@ static void common_input() {
 	case 'D': debug_toggle = !debug_toggle; break;
 	case 'E': area.set(area_spot, Explosion); break;
 	case 'F': area.set(area_spot, d100() < 60 ? Body : Bodies); break;
-#endif
 	}
 }
 
@@ -355,12 +353,10 @@ static void handle_main_map_mouse_input() {
 }
 
 static void paint_main_map_debug() {
-#ifdef _DEBUG
 	if(!debug_toggle)
 		return;
 	paint_area_box();
 	debug_map_message();
-#endif // _DEBUG
 }
 
 static void paint_map_tiles() {
@@ -368,7 +364,12 @@ static void paint_map_tiles() {
 	for(auto y = 0; y < area_screen_height; y++) {
 		for(auto x = 0; x < area_screen_width; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
-			image(x * area_tile_width + area_screen_x1, y * area_tile_height + area_screen_y1, ps, area.getframe(v), 0);
+			auto i = area.getframe(v);
+			if((current_tick / 300) % 2) {
+				if(map_alternate[i])
+					i = map_alternate[i];
+			}
+			image(x * area_tile_width + area_screen_x1, y * area_tile_height + area_screen_y1, ps, i, 0);
 		}
 	}
 }

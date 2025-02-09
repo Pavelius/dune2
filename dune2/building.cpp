@@ -1,12 +1,6 @@
 #include "bsdata.h"
 #include "building.h"
 
-enum buildingn : unsigned char {
-	ConstructionYard, SpiceSilo, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
-	Barracks, WOR, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
-	Turret, RocketTurret,
-};
-
 BSDATA(buildingi) = {
 	{"ConstructionYard"},
 	{"SpiceSilo"},

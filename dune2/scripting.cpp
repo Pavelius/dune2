@@ -1,4 +1,5 @@
 #include "area.h"
+#include "building.h"
 #include "bsdata.h"
 #include "fraction.h"
 #include "pushvalue.h"
@@ -54,24 +55,21 @@ static void set_terrain_big_circle(pointc v, int value) {
 	set_terrain_circle(v, value, xrand(0, 8) - 2);
 }
 
-void update_decoy() {
+static void build_structure(pointc v, buildingn type) {
+	auto& e = bsdata<buildingi>::elements[type];
+	area.set(v, e.shape, e.frames);
 }
 
 void main_menu() {
 	last_fraction = NoFraction;
 	mentat_subject = CONSTRUC;
 	area.clear();
-//	area.set({2, 4}, Rock);
-//	area.set({3, 4}, Rock);
-//	area.set({3, 4, 5, 6}, set_terrain, Rock);
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
 	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
-	// FONT3 - Monochrome.
-	// FONT6, FONT8  - Three colors: 1 - main, 2 - right shadow, 3 - left shadow
-	// FONT10 - Capital in other color. 15 - shadow, (12, 10, 8) Capital marked
-	// FONT16 - Two colors: 1 - main, 5 - second main, 6 - part shadow
+	build_structure({5, 5}, Windtrap);
+	build_structure({7, 5}, Refinery);
 	show_scene(paint_main_map, 0, 0);
 }
 

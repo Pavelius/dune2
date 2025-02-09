@@ -1600,7 +1600,7 @@ int draw::textw(const char* string, int count) {
 	return x1;
 }
 
-void draw::text(const char* string, int count, unsigned flags) {
+void draw::textnc(const char* string, int count, unsigned flags) {
 	if(!font)
 		return;
 	auto dy = texth();
@@ -1610,7 +1610,6 @@ void draw::text(const char* string, int count, unsigned flags) {
 		count = zlen(string);
 	const char *s1 = string;
 	const char *s2 = string + count;
-	auto push_caret = caret;
 	// unsigned char s0 = 0x0;
 	while(s1 < s2) {
 		int sm = *s1++;
@@ -1618,6 +1617,11 @@ void draw::text(const char* string, int count, unsigned flags) {
 			glyph(sm, flags);
 		caret.x += textw(sm);
 	}
+}
+
+void draw::text(const char* string, int count, unsigned flags) {
+	auto push_caret = caret;
+	textnc(string, count, flags);
 	caret = push_caret;
 }
 
