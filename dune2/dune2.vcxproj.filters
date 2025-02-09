@@ -78,9 +78,6 @@
     <ClCompile Include="main_util.cpp">
       <Filter>utils</Filter>
     </ClCompile>
-    <ClCompile Include="sprite_util.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="nameable.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -131,6 +128,9 @@
     </ClCompile>
     <ClCompile Include="building.cpp">
       <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="sprite_util.cpp">
+      <Filter>utils</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -194,9 +194,6 @@
     <ClInclude Include="pushvalue.h">
       <Filter>support</Filter>
     </ClInclude>
-    <ClInclude Include="sprite_util.h">
-      <Filter>support</Filter>
-    </ClInclude>
     <ClInclude Include="fraction.h">
       <Filter>logic</Filter>
     </ClInclude>
@@ -247,6 +244,9 @@
     </ClInclude>
     <ClInclude Include="shape.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="sprite_util.h">
+      <Filter>utils</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
