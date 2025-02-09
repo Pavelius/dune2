@@ -1,0 +1,5 @@
+﻿FORM:ICON
+  SINF size 4
+  SSET size 49800
+  RPAL size 2656
+  RTBL size 389

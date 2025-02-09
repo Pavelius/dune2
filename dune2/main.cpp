@@ -1,0 +1,30 @@
+#include "area.h"
+#include "music.h"
+#include "rand.h"
+#include "timer.h"
+#include "view.h"
+
+#ifdef _DEBUG
+void util_main();
+#endif // _DEBUG
+
+void main_menu();
+
+int main() {
+	start_random_seed = getcputime();
+	// start_random_seed = 1423089921;
+	srand(start_random_seed);
+	area_initialization();
+	music_initialize();
+	// song_play("introduction");
+#ifdef _DEBUG
+	util_main();
+#endif // _DEBUG
+	initialize_view("Dune 2 (Remake)", main_menu);
+}
+
+#ifdef _MSC_VER
+int _stdcall WinMain(void* ci, void* pi, char* cmd, int sw) {
+	return main();
+}
+#endif
