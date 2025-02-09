@@ -324,7 +324,7 @@ static void check_mouse_corner_slice() {
 		auto rc = get_corner_area(d);
 		if(hot.mouse.in(rc)) {
 			show_mouse_camera_slider(rc.centerx(), rc.centery(), get_arrows_frame(d));
-			if(mouse_hower(200, false))
+			if(mouse_hower(100, false))
 				execute(set_area_view, area_origin + getpoint(d));
 		}
 	}

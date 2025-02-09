@@ -37,7 +37,9 @@ static void clear_stack() {
 
 static terrainn find_terrain_by_frame(int frame) {
 	if(frame >= 210)
-		return Rock; // All buildings builded on rock only
+		return Rock; // All buildings (and their remains) builded on rock only
+	if(frame >= 34 && frame <= 126)
+		return Rock; // All walls, slabs (and their remains) builded on rock. Fog of war don't count - is newer be terrain frame.
 	for(auto& e : bsdata<terraini>()) {
 		if(frame >= e.frame && frame < e.frame + e.count)
 			return (terrainn)(&e - bsdata<terraini>::elements);
@@ -107,12 +109,6 @@ void areai::clear() {
 	}
 }
 
-unsigned short areai::getframe(pointc v) const {
-	if(!isvalid(v))
-		return 0;
-	return frames[v.y][v.x];
-}
-
 static unsigned short get_decoy_frame(terrainn t, int b, int i, int s) {
 	if(t == Rock)
 		return b;
@@ -174,84 +170,96 @@ pointc areai::correct(pointc v) const {
 	return v;
 }
 
+featuren areai::getfeature(pointc v) const {
+	if(!isvalid(v))
+		return NoFeature;
+	auto n = map_features[frames_overlay[v.y][v.x]];
+	if(n)
+		return n;
+	return map_features[frames[v.y][v.x]];
+}
+
+static int get_feature_count(int frame) {
+	switch(frame) {
+	case 1: case 2: case 7: case 8:
+		return 1;
+	case 3: case 4: case 9: case 10:
+		return 2;
+	case 5: case 6: case 11: case 12:
+		return 3;
+	default: return 0;
+	}
+}
+
 void areai::set(pointc v, featuren f, int ft) {
 	if(!isvalid(v))
 		return;
-	auto i = variable[v.y][v.x];
-	auto t = get(v);
-	if(t == Mountain)
+	if(f == NoFeature) { // This variant just clear existing feature
+		frames_overlay[v.y][v.x] = NoFeature;
 		return;
-	switch(f) {
-	case Explosion:
-		if(features[v.y][v.x] != f) {
-			features[v.y][v.x] = f;
-			variable[v.y][v.x] = rand() % 2;
-		} else if(i < 4)
-			variable[v.y][v.x] += 2;
+	}
+	auto ct = get(v);
+	if(ct == Mountain)
+		return; // Frames overlay newer be on mountains
+	else if(ct >= Rock && f == Trail)
+		return; // Trails can be leaved only on sand (and like sand)
+	auto& e = bsdata<featurei>::elements[f];
+	auto cf = getfeature(v);
+	if(cf != f) {
+		if(e.random)
+			frames_overlay[v.y][v.x] = e.frame + rand() % e.random;
 		else
-			variable[v.y][v.x] = 4 + rand() % 2;
-		break;
-	case Blood:
-		if(features[v.y][v.x] != f) {
-			features[v.y][v.x] = f;
-			variable[v.y][v.x] = rand() % 2;
-		}
-		break;
-	case Trail:
-		if(t >= Rock)
-			return;
-		if(features[v.y][v.x] != f) {
-			features[v.y][v.x] = f;
-			variable[v.y][v.x] = ft;
-		}
-		break;
-	default:
-		if(features[v.y][v.x] != f) {
-			features[v.y][v.x] = f;
-			variable[v.y][v.x] = ft;
-		}
-		break;
+			frames_overlay[v.y][v.x] = e.frame;
+		if(f == Explosion && ct < Rock)
+			frames_overlay[v.y][v.x] += 6;
+	} else {
+		// If another explosion in same point, increase effect
+		auto count = get_feature_count(frames_overlay[v.y][v.x]);
+		if(count && count < 3)
+			frames_overlay[v.y][v.x] += 2;
 	}
 }
 
-unsigned short areai::getframefeature(pointc v) const {
-	if(!isvalid(v))
-		return 0;
-	auto t = get(v);
-	auto f = features[v.y][v.x];
-	auto i = variable[v.y][v.x];
-	switch(f) {
-	case Explosion:
-		switch(t) {
-		case Rock: return 1 + (i % 6);
-		case Sand: case Dune: case Spice: case SpiceRich: case SpiceBlow: return 7 + (i % 6);
-		default: return 0;
-		}
-	case AircraftRemains: return get_decoy_frame(t, 13, i, 10);
-	case CarRemains: return get_decoy_frame(t, 16, i, 10);
-	case Body: return get_decoy_frame(t, 19, i, 15);
-	case Bodies: return get_decoy_frame(t, 21, i, 15);
-	case Blood: return 23 + i % 2;
-	case Slab: return 126;
+static int get_next_decoy(terrainn t, int frame) {
+	switch(frame) {
+	case 13:
+		if(t >= Rock)
+			return -1;
+		return 14;
+	case 14: return 15;
+	case 15: return -1;
+	case 16:
+		if(t >= Rock)
+			return -1;
+		return 17;
+	case 17: return 18;
+	case 18: return -1;
+	case 19:
+		if(t >= Rock)
+			return -1;
+		return 20;
+	case 20: return -1;
+	case 21:
+		if(t >= Rock)
+			return -1;
+		return 22;
+	case 22: return -1;
+	case 23: case 24: return -1;
+	default: return 0;
 	}
-	return 0;
 }
 
 void areai::decoy(pointc v) {
-	auto f = features[v.y][v.x];
-	auto& e = bsdata<featurei>::elements[f];
-	if(e.decoy) {
-		if(variable[v.y][v.x] < 30) {
-			if(d100() < e.decoy) {
-				if(e.count)
-					variable[v.y][v.x] += e.count;
-				else
-					variable[v.y][v.x]++;
-			}
-		}
-		// Finally decoying
-		if(variable[v.y][v.x] >= 30)
-			set(v, NoFeature);
+	auto cf = getfeature(v);
+	if(!cf)
+		return;
+	auto& e = bsdata<featurei>::elements[cf];
+	if(e.decoy && d100() < e.decoy) {
+		auto n = get_next_decoy(get(v), frames_overlay[v.y][v.x]);
+		if(n == -1)
+			frames_overlay[v.y][v.x] = NoFeature;
+		else if(n > 0)
+			frames_overlay[v.y][v.x] = n;
 	}
 }
 
@@ -331,14 +339,14 @@ terrainn areai::get(pointc v) const {
 void areai::set(pointc v, terrainn t) {
 	if(!isvalid(v))
 		return;
-	// First we set default frame
+	// First we set default frame (neigtboard tiles will be see this terrain)
 	frames[v.y][v.x] = bsdata<terraini>::elements[t].frame;
 	// Second we change frame around
 	for(auto d : all_strait_directions) {
 		auto n = to(v, d);
 		setnu(n, get(n));
 	}
-	// Third update original frame
+	// Third update original frame (neightboard already updated)
 	setnu(v, t);
 }
 
@@ -354,4 +362,10 @@ void areai::setnu(pointc v, terrainn t) {
 			frames[v.y][v.x] = e.frame + rand() % e.count;
 	} else
 		frames[v.y][v.x] = e.frame;
+}
+
+bool areai::isbuilding(pointc v) const {
+	if(!isvalid(v))
+		return false;
+	return false;
 }

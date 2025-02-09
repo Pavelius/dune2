@@ -11,6 +11,6 @@ enum featuren : unsigned char {
 	FogOfWar
 };
 struct featurei : nameable {
-	unsigned short	frame, count;
+	unsigned short	frame, count, random;
 	unsigned char	decoy;
 };
