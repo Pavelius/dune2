@@ -137,6 +137,7 @@
     <ClCompile Include="building.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="draw.cpp" />
+    <ClCompile Include="drawable.cpp" />
     <ClCompile Include="draw_text.cpp" />
     <ClCompile Include="feature.cpp" />
     <ClCompile Include="fraction.cpp" />
@@ -153,6 +154,7 @@
     <ClCompile Include="midi.cpp" />
     <ClCompile Include="music.cpp" />
     <ClCompile Include="nameable.cpp" />
+    <ClCompile Include="player.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="print.cpp" />
     <ClCompile Include="resid.cpp" />
@@ -165,6 +167,7 @@
     <ClCompile Include="szdup.cpp" />
     <ClCompile Include="terrain.cpp" />
     <ClCompile Include="thread.cpp" />
+    <ClCompile Include="unit.cpp" />
     <ClCompile Include="view.cpp" />
     <ClCompile Include="view_focus.cpp" />
     <ClCompile Include="win_draw.cpp" />
@@ -172,6 +175,7 @@
     <ClCompile Include="win_time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="adat.h" />
     <ClInclude Include="area.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="bsdata.h" />
@@ -184,6 +188,7 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="player.h" />
     <ClInclude Include="iff.h" />
     <ClInclude Include="io_stream.h" />
     <ClInclude Include="log.h" />
@@ -208,6 +213,7 @@
     <ClInclude Include="thread.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="typeable.h" />
+    <ClInclude Include="unit.h" />
     <ClInclude Include="view.h" />
     <ClInclude Include="view_focus.h" />
     <ClInclude Include="win.h" />

@@ -7,6 +7,7 @@
 #include "rand.h"
 #include "slice.h"
 #include "timer.h"
+#include "unit.h"
 #include "view.h"
 
 static void check_surrounded(point v, terrainn t, terrainn t1) {
@@ -61,6 +62,7 @@ static void build_structure(point v, buildingn type) {
 }
 
 void main_menu() {
+	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	mentat_subject = CONSTRUC;
 	area.clear();

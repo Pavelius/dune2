@@ -3,6 +3,9 @@
 typedef void(*fnevent)();
 
 enum resid : short unsigned;
+enum drawtypen : unsigned char {
+	DrawUnit, DrawEffect
+};
 
 extern unsigned long current_tick;
 extern resid mentat_subject; // Picture on back back of mentat

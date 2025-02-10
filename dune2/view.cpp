@@ -2,6 +2,7 @@
 #include "bsdata.h"
 #include "direction.h"
 #include "draw.h"
+#include "drawable.h"
 #include "fraction.h"
 #include "game.h"
 #include "io_stream.h"
@@ -9,6 +10,7 @@
 #include "rand.h"
 #include "resid.h"
 #include "timer.h"
+#include "unit.h"
 #include "view.h"
 #include "view_focus.h"
 
@@ -387,6 +389,12 @@ static void paint_map_features() {
 	}
 }
 
+static void paint_unit() {
+}
+
+static void paint_effect() {
+}
+
 void paint_main_map() {
 	image(0, 0, gres(SCREEN), 0, 0);
 	auto push_clip = clipping; setclip(screen_map_area);
@@ -429,3 +437,9 @@ void initialize_view(const char* title, fnevent main_scene) {
 	set_next_scene(main_scene);
 	run_next_scene();
 }
+
+BSDATA(drawtypei) = {
+	{"DrawUnit", paint_unit, 0, &bsdata<unit>::source, bsdata<unit>::elements},
+	{"DrawEffect", paint_effect},
+};
+BSDATAF(drawtypei)

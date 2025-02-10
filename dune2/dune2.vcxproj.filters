@@ -129,6 +129,15 @@
     <ClCompile Include="sprite_util.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="player.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="unit.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="drawable.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -247,6 +256,15 @@
     </ClInclude>
     <ClInclude Include="drawable.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="player.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="unit.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="adat.h">
+      <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>
