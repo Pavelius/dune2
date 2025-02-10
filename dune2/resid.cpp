@@ -26,8 +26,10 @@ BSDATA(residi) = {
 	{"carryall", mentat},
 	{"construc", mentat},
 	{"units", root},
+	{"units1", root},
+	{"units2", root},
 };
-assert_enum(residi, UNITS)
+assert_enum(residi, UNITS2)
 
 sprite* residi::get() {
 	if(data)

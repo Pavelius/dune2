@@ -2,5 +2,5 @@
 
 enum direction : unsigned char {
 	Center,
-	Left, LeftUp, Up, RightUp, Right, RightDowm, Down, LeftDown,
+	Up, RightUp, Right, RightDowm, Down, LeftDown, Left, LeftUp,
 };

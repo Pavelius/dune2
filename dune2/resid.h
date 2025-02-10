@@ -8,7 +8,7 @@ enum resid : unsigned short {
 	MENTATS, MENSHPA, MENSHPH, MENSHPO, MENSHPM,
 	SHAPES, ICONS, ARROWS, SCREEN,
 	SLAB4, BARRAC, CARRYALL, CONSTRUC,
-	UNITS,
+	UNITS, UNITS1, UNITS2,
 };
 struct residi {
 	const char*	id;

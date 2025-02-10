@@ -10,6 +10,3 @@ struct abilityi : nameable {
 struct playeri {
 	unsigned	abilities[Rounds + 1];
 };
-struct playerable {
-	short unsigned	player;
-};

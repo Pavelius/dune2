@@ -72,6 +72,10 @@ void main_menu() {
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
 	build_structure({5, 5}, Windtrap);
 	build_structure({7, 5}, Refinery);
+	add_unit({5, 7}, Down, Trike, 0);
+	add_unit({6, 7}, Down, Trike, 0);
+	add_unit({7, 7}, Down, Trike, 0);
+	add_unit({8, 7}, Down, Trike, 0);
 	show_scene(paint_main_map, 0, 0);
 }
 

@@ -188,7 +188,7 @@ static void common_input() {
 	case Ctrl + F5: make_screenshoot(); break;
 	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}, color(64, 0, 128)); break;
 	case Ctrl + 'I': show_sprites(ICONS, {0, 0}, {16, 16}, color(24, 0, 64)); break;
-	case Ctrl + 'A': show_sprites(ARROWS, {0, 0}, {16, 16}, color(24, 0, 64)); break;
+	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}, color(24, 0, 64)); break;
 	case 'A': area.set(area_spot, d100() < 60 ? CarRemains : AircraftRemains); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
@@ -389,13 +389,34 @@ static void paint_map_features() {
 	}
 }
 
+static void paint_platform(const sprite* ps, int frame, unsigned char direction) {
+	switch(direction) {
+	case Up: image(ps, frame + 0, 0); break;
+	case RightUp: image(ps, frame + 1, 0); break;
+	case Right: image(ps, frame + 2, 0); break;
+	case RightDowm: image(ps, frame + 3, 0); break;
+	case Down: image(ps, frame + 4, 0); break;
+	case LeftDown: image(caret.x + 16, caret.y, ps, frame + 3, ImageMirrorH); break;
+	case Left: image(caret.x + 16, caret.y, ps, frame + 2, ImageMirrorH); break;
+	default: break;
+	}
+}
+
 static void paint_unit() {
+	auto p = static_cast<unit*>(last_object);
+	auto& e = p->geti();
+	paint_platform(gres(e.res), e.frame, p->param);
 }
 
 static void paint_effect() {
 }
 
+static void paint_radar_screen() {
+
+}
+
 void paint_main_map() {
+	rectpush push;
 	image(0, 0, gres(SCREEN), 0, 0);
 	auto push_clip = clipping; setclip(screen_map_area);
 	auto need_check_corner_slice = false;
@@ -408,6 +429,11 @@ void paint_main_map() {
 		area_spot = 0xFFFF;
 	paint_map_tiles();
 	paint_map_features();
+	caret.x = area_screen_x1;
+	caret.y = area_screen_y1;
+	width = area_screen_width * area_tile_width;
+	height = area_screen_height * area_tile_height;
+	paint_objects(m2s(area_origin));
 	if(need_check_corner_slice)
 		check_mouse_corner_slice();
 	paint_main_map_debug();

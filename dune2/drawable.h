@@ -9,9 +9,9 @@ enum drawtypen : unsigned char;
 struct draworder;
 struct drawable {
 	point			position; // Drawing position
-	drawtypen		type; // Drawing type
+	drawtypen		kind; // Drawing kind
 	unsigned char	param; // Painting frame and other parameters
-	draworder*		addanimate(point finish);
+	// draworder*	addanimate(point finish);
 };
 struct draworder {
 	unsigned short	index; // Source object index
@@ -27,5 +27,6 @@ struct drawtypei {
 	array*			source; // Point to source array
 	drawable*		element; // First element offset. Delta between address of source.data and element is overhead in bytes.
 };
+extern drawable* last_object;
 
-void draw_objects();
+void paint_objects(point camera);
