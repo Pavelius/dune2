@@ -6,24 +6,24 @@
 #include "rand.h"
 
 areai area;
-pointc area_origin, area_spot;
+point area_origin, area_spot;
 
 static terrainn map_terrain[area_frame_maximum];
 static featuren map_features[area_frame_maximum];
 static unsigned char map_count[area_frame_maximum];
 unsigned short map_alternate[area_frame_maximum];
 
-static pointc stack[256 * 16];
+static point stack[256 * 16];
 static size_t push_stack, pop_stack;
 direction all_strait_directions[4] = {Up, Right, Down, Left};
 
-static pointc pop_value() {
+static point pop_value() {
 	if(pop_stack >= sizeof(stack) / sizeof(stack[0]))
 		pop_stack = 0;
 	return stack[pop_stack++];
 }
 
-static void push_value(pointc v) {
+static void push_value(point v) {
 	if(push_stack >= sizeof(stack) / sizeof(stack[0]))
 		push_stack = 0;
 	stack[push_stack++] = v;
@@ -137,7 +137,7 @@ static unsigned short get_decoy_frame(terrainn t, int b, int i, int s) {
 	return b + i / s;
 }
 
-unsigned areai::getframeside(pointc v, terrainn t) const {
+unsigned areai::getframeside(point v, terrainn t) const {
 	unsigned r = 0;
 	if(isn(v + getpoint(Left), t))
 		r |= 1;
@@ -153,13 +153,13 @@ unsigned areai::getframeside(pointc v, terrainn t) const {
 	return r;
 }
 
-bool areai::is(pointc v, terrainn t) const {
+bool areai::is(point v, terrainn t) const {
 	if(!isvalid(v))
 		return false;
 	return map_terrain[frames[v.y][v.x]] == t;
 }
 
-bool areai::isn(pointc v, terrainn t) const {
+bool areai::isn(point v, terrainn t) const {
 	if(!isvalid(v))
 		return true;
 	auto n = map_terrain[frames[v.y][v.x]];
@@ -171,7 +171,7 @@ bool areai::isn(pointc v, terrainn t) const {
 	return false;
 }
 
-pointc areai::correct(pointc v) const {
+point areai::correct(point v) const {
 	if(v.x < 0)
 		v.x = 0;
 	else if(v.y < 0)
@@ -183,7 +183,7 @@ pointc areai::correct(pointc v) const {
 	return v;
 }
 
-featuren areai::getfeature(pointc v) const {
+featuren areai::getfeature(point v) const {
 	if(!isvalid(v))
 		return NoFeature;
 	auto n = map_features[frames_overlay[v.y][v.x]];
@@ -204,7 +204,7 @@ static int get_feature_count(int frame) {
 	}
 }
 
-void areai::set(pointc v, featuren f, int ft) {
+void areai::set(point v, featuren f, int ft) {
 	if(!isvalid(v))
 		return;
 	if(f == NoFeature) { // This variant just clear existing feature
@@ -262,7 +262,7 @@ static int get_next_decoy(terrainn t, int frame) {
 	}
 }
 
-void areai::decoy(pointc v) {
+void areai::decoy(point v) {
 	auto cf = getfeature(v);
 	if(!cf)
 		return;
@@ -279,10 +279,10 @@ void areai::decoy(pointc v) {
 void areai::decoy() {
 	for(auto y = 0; y < maximum.y; y++)
 		for(auto x = 0; x < maximum.x; x++)
-			decoy(pointc(x, y));
+			decoy(point(x, y));
 }
 
-void areai::setcamera(pointc v, bool center_view) {
+void areai::setcamera(point v, bool center_view) {
 	int x = v.x;
 	int y = v.y;
 	if(center_view) {
@@ -301,7 +301,7 @@ void areai::setcamera(pointc v, bool center_view) {
 	area_origin.y = (char)y;
 }
 
-pointc getpoint(direction d) {
+point getpoint(direction d) {
 	switch(d) {
 	case Left: return {-1, 0};
 	case LeftUp: return {-1, -1};
@@ -319,7 +319,7 @@ void areai::set(rect r, fnsetarea proc, int value) {
 	for(auto y = r.y1; y <= r.y2; y++) {
 		for(auto x = r.x1; x <= r.x2; x++) {
 			if(isvalid(x, y))
-				proc(pointc(x, y), value);
+				proc(point(x, y), value);
 		}
 	}
 }
@@ -328,7 +328,7 @@ void areai::random(rect r, fnsetarea proc, int value) {
 	auto x = xrand(r.x1, r.x2);
 	auto y = xrand(r.y1, r.y2);
 	if(isvalid(x, y))
-		proc(pointc(x, y), value);
+		proc(point(x, y), value);
 }
 
 void areai::random(rect r, fnsetarea proc, int value, int count) {
@@ -343,13 +343,13 @@ void areai::random(rect r, fnsetarea proc, int value, int count) {
 		random(r, proc, value);
 }
 
-terrainn areai::get(pointc v) const {
+terrainn areai::get(point v) const {
 	if(!isvalid(v))
 		return Sand;
 	return map_terrain[frames[v.y][v.x]];
 }
 
-void areai::update(pointc v) {
+void areai::update(point v) {
 	for(auto d : all_strait_directions) {
 		auto n = to(v, d);
 		if(isbuilding(n))
@@ -358,7 +358,7 @@ void areai::update(pointc v) {
 	}
 }
 
-void areai::set(pointc v, terrainn t) {
+void areai::set(point v, terrainn t) {
 	if(!isvalid(v))
 		return;
 	// First we set default frame (neigtboard tiles will be see this terrain)
@@ -369,7 +369,7 @@ void areai::set(pointc v, terrainn t) {
 	setnu(v, t);
 }
 
-void areai::setnu(pointc v, terrainn t) {
+void areai::setnu(point v, terrainn t) {
 	if(!isvalid(v))
 		return;
 	auto& e = bsdata<terraini>::elements[t];
@@ -383,13 +383,13 @@ void areai::setnu(pointc v, terrainn t) {
 		frames[v.y][v.x] = e.frame;
 }
 
-bool areai::isbuilding(pointc v) const {
+bool areai::isbuilding(point v) const {
 	if(!isvalid(v))
 		return false;
 	return frames[v.y][v.x] >= 210;
 }
 
-void areai::set(pointc v, shapen t, short unsigned* frame_list) {
+void areai::set(point v, shapen t, short unsigned* frame_list) {
 	if(!frame_list)
 		return;
 	auto& e = bsdata<shapei>::elements[t];

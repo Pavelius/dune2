@@ -154,7 +154,6 @@
     <ClCompile Include="music.cpp" />
     <ClCompile Include="nameable.cpp" />
     <ClCompile Include="point.cpp" />
-    <ClCompile Include="pointc.cpp" />
     <ClCompile Include="print.cpp" />
     <ClCompile Include="resid.cpp" />
     <ClCompile Include="scale.cpp" />
@@ -195,7 +194,6 @@
     <ClInclude Include="music.h" />
     <ClInclude Include="nameable.h" />
     <ClInclude Include="point.h" />
-    <ClInclude Include="pointc.h" />
     <ClInclude Include="print.h" />
     <ClInclude Include="pushvalue.h" />
     <ClInclude Include="rand.h" />

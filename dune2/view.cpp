@@ -259,7 +259,7 @@ void paint_mentat_silent() {
 }
 
 static void set_area_view() {
-	auto v = (short unsigned)hot.param;
+	auto v = (unsigned)hot.param;
 	area.setcamera(v, hot.param2 > 0);
 }
 
@@ -323,12 +323,12 @@ static void check_mouse_corner_slice() {
 		if(hot.mouse.in(rc)) {
 			show_mouse_camera_slider(rc.centerx(), rc.centery(), get_arrows_frame(d));
 			if(mouse_hower(100, false))
-				execute(set_area_view, area_origin + getpoint(d));
+				execute(set_area_view, (long)(area_origin + getpoint(d)));
 		}
 	}
 }
 
-static point map_to_screen(pointc v) {
+static point map_to_screen(point v) {
 	if(!area.isvalid(v))
 		return {-1, -1};
 	return {(short)(v.x * area_tile_width + area_screen_x1), (short)(v.y * area_tile_height + area_screen_y1)};
@@ -347,7 +347,7 @@ static void paint_area_box() {
 static void handle_main_map_mouse_input() {
 	switch(hot.key) {
 	case 'C':
-		execute(set_area_view, area_spot, 1);
+		execute(set_area_view, (long)area_spot, 1);
 		break;
 	}
 }

@@ -14,5 +14,5 @@ struct buildingi : nameable {
 	short unsigned	frames[16], ruined[16];
 };
 struct building : typeable<building> {
-	pointc			position;
+	point			position;
 };

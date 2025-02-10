@@ -9,7 +9,7 @@
 #include "timer.h"
 #include "view.h"
 
-static void check_surrounded(pointc v, terrainn t, terrainn t1) {
+static void check_surrounded(point v, terrainn t, terrainn t1) {
 	for(auto d : all_strait_directions) {
 		auto n = v + getpoint(d);
 		if(area.isn(n, t))
@@ -18,7 +18,7 @@ static void check_surrounded(pointc v, terrainn t, terrainn t1) {
 	}
 }
 
-static void set_terrain(pointc v, int value) {
+static void set_terrain(point v, int value) {
 	auto t = area.get(v);
 	auto& e = bsdata<terraini>::elements[value];
 	if(e.terrain && !e.terrain.is(t))
@@ -30,7 +30,7 @@ static void set_terrain(pointc v, int value) {
 	}
 }
 
-static void set_terrain_circle(pointc v, int value, int d) {
+static void set_terrain_circle(point v, int value, int d) {
 	if(d <= 1)
 		set_terrain(v, value);
 	else {
@@ -43,19 +43,19 @@ static void set_terrain_circle(pointc v, int value, int d) {
 	}
 }
 
-static void set_terrain_small_circle(pointc v, int value) {
+static void set_terrain_small_circle(point v, int value) {
 	set_terrain_circle(v, value, xrand(0, 3) - 1);
 }
 
-static void set_terrain_circle(pointc v, int value) {
+static void set_terrain_circle(point v, int value) {
 	set_terrain_circle(v, value, xrand(0, 5) - 2);
 }
 
-static void set_terrain_big_circle(pointc v, int value) {
+static void set_terrain_big_circle(point v, int value) {
 	set_terrain_circle(v, value, xrand(0, 8) - 2);
 }
 
-static void build_structure(pointc v, buildingn type) {
+static void build_structure(point v, buildingn type) {
 	auto& e = bsdata<buildingi>::elements[type];
 	area.set(v, e.shape, e.frames);
 }
