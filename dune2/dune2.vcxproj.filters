@@ -251,5 +251,8 @@
     <ClInclude Include="typeable.h">
       <Filter>logic</Filter>
     </ClInclude>
+    <ClInclude Include="drawable.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

@@ -16,9 +16,9 @@
 
 #pragma once
 
-template<class T> inline T iabs(T a) { return a > 0 ? a : -a; }
-template<class T> inline T imax(T a, T b) { return a > b ? a : b; }
-template<class T> inline T imin(T a, T b) { return a < b ? a : b; }
+inline int iabs(int a) { return a > 0 ? a : -a; }
+inline int imax(int a, int b) { return a > b ? a : b; }
+inline int imin(int a, int b) { return a < b ? a : b; }
 template<class T> inline void iswap(T& a, T& b) { T i = a; a = b; b = i; }
 
 int isqrt(int num);

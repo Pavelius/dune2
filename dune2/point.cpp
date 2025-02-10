@@ -9,6 +9,10 @@ bool point::in(const point p1, const point p2, const point p3) const {
 		|| (a < 0 && b < 0 && c < 0);
 }
 
+int point::range(point v) const {
+	return imax(iabs(v.x - x), iabs(v.y - y));
+}
+
 long distance(point p1, point p2) {
 	auto dx = p1.x - p2.x;
 	auto dy = p1.y - p2.y;
