@@ -20,6 +20,7 @@ struct uniti : nameable {
 };
 struct unit : drawable {
 	explicit operator bool() const { return hits > 0; }
+	point			position, order;
 	unitn			type;
 	direction		move_direction, shoot_direction;
 	unsigned char	player;
@@ -28,7 +29,7 @@ struct unit : drawable {
 	playeri*		getplayer() const;
 	int				get(statn v) const { return geti().stats[v]; }
 	int				getmaximum(statn v) const;
-	void			set(direction v) { move_direction = shoot_direction = v; }
+	bool			ismoving() const { return position != order; }
 	void			setplayer(const playeri* v);
 };
 unit* add_unit(point pt, direction d, unitn id, const playeri* player);

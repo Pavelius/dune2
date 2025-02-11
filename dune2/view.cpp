@@ -115,14 +115,14 @@ static void make_screenshoot() {
 		draw::canvas->ptr(0, 0), canvas->width, canvas->height, canvas->bpp, canvas->scanline, 0);
 }
 
-static void paint_sprites(resid id, point offset, int index, int& focus, int per_line) {
+static void paint_sprites(resid id, point offset, int index, int& focus, int per_line, int image_flags) {
 	auto p = gres(id);
 	if(!p)
 		return;
 	auto push_line = caret;
 	auto count = per_line;
 	while(index < p->count) {
-		image(p, index, 0);
+		image(p, index, image_flags);
 		if(focus == index) {
 			auto push_caret = caret;
 			caret = caret - offset;
@@ -151,6 +151,7 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 	auto per_line = 320 / size.x;
 	auto maximum_height = (getheight() / size.y);
 	auto origin = 0;
+	auto image_flags = 0;
 	while(ismodal()) {
 		if(focus < 0)
 			focus = 0;
@@ -166,9 +167,11 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 		height = size.y;
 		caret = start;
 		fore = colors::white;
-		paint_sprites(id, start, origin, focus, per_line);
+		paint_sprites(id, start, origin, focus, per_line, image_flags);
 		caret = {1, 193};
-		text(str("index %1i", focus), -1, TextBold);
+		auto& f = gres(id)->get(focus);
+		auto pf = const_cast<sprite::frame*>(&f);
+		text(str("index %1i (size %2i %3i center %4i %5i)", focus, f.sx, f.sy, f.ox, f.oy), -1, TextBold);
 		domodal();
 		switch(hot.key) {
 		case KeyRight: focus++; break;
@@ -176,6 +179,12 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 		case KeyDown: focus += per_line; break;
 		case KeyUp: focus -= per_line; break;
 		case KeyEscape: breakmodal(0); break;
+		case 'A': pf->ox--; break;
+		case 'S': pf->ox++; break;
+		case 'W': pf->oy--; break;
+		case 'Z': pf->oy++; break;
+		case 'H': image_flags ^= ImageMirrorH; break;
+		case 'V': image_flags ^= ImageMirrorV; break;
 		}
 		focus_input();
 	}
@@ -288,7 +297,7 @@ static rect get_corner_area(direction d) {
 	case Up: return {x1 + ex, y1, x2 - ex - 1, y1 + ey - 1};
 	case RightUp: return {x2 - ex, y1, x2, y1 + ey - 1};
 	case Right: return {x2 - ex, y1 + ey, x2, y2 - ey - 1};
-	case RightDowm: return {x2 - ex, y2 - ey, x2, y2};
+	case RightDown: return {x2 - ex, y2 - ey, x2, y2};
 	case Down: return {x1 + ex, y2 - ey - 1, x2 - ex - 1, y2};
 	case Center: return {x1 + ex, y1 + ey, x2 - ex - 1, y2 - ey - 1};
 	default: return {};
@@ -301,7 +310,7 @@ static int get_arrows_frame(direction d) {
 	case Up: return 1;
 	case RightUp: return 2;
 	case Right: return 3;
-	case RightDowm: return 4;
+	case RightDown: return 4;
 	case Down: return 5;
 	case LeftDown: return 6;
 	case Left: return 7;
@@ -326,7 +335,7 @@ static void show_mouse_camera_slider(int x, int y, int frame) {
 }
 
 static void check_mouse_corner_slice() {
-	static direction all[] = {LeftUp, Up, RightUp, Right, RightDowm, Down, LeftDown, Left};
+	static direction all[] = {LeftUp, Up, RightUp, Right, RightDown, Down, LeftDown, Left};
 	if(hot.mouse.in(get_corner_area(Center)))
 		return;
 	for(auto d : all) {
@@ -403,10 +412,11 @@ static void paint_platform(const sprite* ps, int frame, direction d) {
 	case Up: image(ps, frame + 0, 0); break;
 	case RightUp: image(ps, frame + 1, 0); break;
 	case Right: image(ps, frame + 2, 0); break;
-	case RightDowm: image(ps, frame + 3, 0); break;
+	case RightDown: image(ps, frame + 3, 0); break;
 	case Down: image(ps, frame + 4, 0); break;
-	case LeftDown: image(caret.x + 16, caret.y, ps, frame + 3, ImageMirrorH); break;
-	case Left: image(caret.x + 16, caret.y, ps, frame + 2, ImageMirrorH); break;
+	case LeftDown: image(caret.x, caret.y, ps, frame + 3, ImageMirrorH); break;
+	case Left: image(caret.x, caret.y, ps, frame + 2, ImageMirrorH); break;
+	case LeftUp: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH); break;
 	default: break;
 	}
 }

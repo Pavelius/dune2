@@ -41,8 +41,11 @@ unit* add_unit(point pt, direction d, unitn id, const playeri* player) {
 	auto p = bsdata<unit>::addz();
 	p->render = p->renderindex();
 	p->screen = m2sc(pt);
+	p->position = pt;
+	p->order = pt;
 	p->type = id;
-	p->set(d);
+	p->move_direction = d;
+	p->shoot_direction = d;
 	p->hits = p->getmaximum(Hits);
 	p->supply = p->getmaximum(Supply);
 	p->setplayer(player);

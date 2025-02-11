@@ -23,7 +23,6 @@ struct areai {
 	void			clear();
 	point			correct(point v) const;
 	void			decoy(point v);
-	void			decoy();
 	terrainn		get(point v) const;
 	featuren		getfeature(point v) const;
 	unsigned short	getframe(point v) const { return frames[v.y][v.x]; }
@@ -60,3 +59,4 @@ inline point m2s(point v) { return point(v.x * area_tile_width, v.y * area_tile_
 inline point m2sc(point v) { return point(v.x * area_tile_width + area_tile_width / 2, v.y * area_tile_height + area_tile_height / 2); }
 inline point s2m(point v) { return point(v.x / area_tile_width, v.y / area_tile_height); }
 inline point to(point v, direction d) { return v + getpoint(d); }
+direction to(direction d, direction s);
