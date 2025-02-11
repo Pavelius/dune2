@@ -43,7 +43,7 @@ static void update_tick() {
 }
 
 static void update_next_turn() {
-	if(!next_turn_tick || (next_turn_tick < animate_time && (animate_time - next_turn_tick)>=3000))
+	if(!next_turn_tick || (next_turn_tick < animate_time && (animate_time - next_turn_tick) >= 3000))
 		next_turn_tick = animate_time;
 	while(next_turn_tick < animate_time) {
 		next_turn_tick += 1000;
@@ -197,6 +197,7 @@ static void common_input() {
 	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}, color(64, 0, 128)); break;
 	case Ctrl + 'I': show_sprites(ICONS, {0, 0}, {16, 16}, color(24, 0, 64)); break;
 	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}, color(24, 0, 64)); break;
+	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}, color(24, 0, 64)); break;
 	case 'A': area.set(area_spot, d100() < 60 ? CarRemains : AircraftRemains); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
@@ -397,8 +398,8 @@ static void paint_map_features() {
 	}
 }
 
-static void paint_platform(const sprite* ps, int frame, unsigned short direction) {
-	switch(direction) {
+static void paint_platform(const sprite* ps, int frame, direction d) {
+	switch(d) {
 	case Up: image(ps, frame + 0, 0); break;
 	case RightUp: image(ps, frame + 1, 0); break;
 	case Right: image(ps, frame + 2, 0); break;
@@ -413,7 +414,9 @@ static void paint_platform(const sprite* ps, int frame, unsigned short direction
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	auto& e = p->geti();
-	paint_platform(gres(e.res), e.frame, p->param);
+	paint_platform(gres(e.res), e.frame, p->move_direction);
+	if(e.frame_shoot)
+		paint_platform(gres(e.res), e.frame_shoot, p->shoot_direction);
 }
 
 static void paint_effect_fix() {

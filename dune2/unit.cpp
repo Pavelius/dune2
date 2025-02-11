@@ -7,8 +7,11 @@ BSDATAC(unit, 2048)
 BSDATA(uniti) = {
 	{"LightInfantry", UNITS},
 	{"HeavyInfantry", UNITS},
-	{"Trike", UNITS, 5, {6}},
+	{"Trike", UNITS, 5, 0, {6}},
+	{"Tank", UNITS2, 0, 5, {8}},
+	{"AssaultTank", UNITS2, 10, 15, {12}},
 };
+assert_enum(uniti, AssaultTank)
 
 const uniti& unit::geti() const {
 	return bsdata<uniti>::elements[type];

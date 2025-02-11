@@ -74,8 +74,8 @@ void main_menu() {
 	build_structure({7, 5}, Refinery);
 	add_unit({5, 7}, Down, Trike, 0);
 	add_unit({6, 7}, Down, Trike, 0);
-	add_unit({7, 7}, Down, Trike, 0);
-	add_unit({8, 7}, Down, Trike, 0);
+	add_unit({7, 7}, Down, Tank, 0);
+	add_unit({8, 7}, Down, AssaultTank, 0);
 	show_scene(paint_main_map, 0, 0);
 }
 
