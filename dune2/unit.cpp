@@ -5,11 +5,11 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"LightInfantry", UNITS},
-	{"HeavyInfantry", UNITS},
-	{"Trike", UNITS, 5, 0, {6}},
-	{"Tank", UNITS2, 0, 5, {8}},
-	{"AssaultTank", UNITS2, 10, 15, {12}},
+	{"LightInfantry", UNITS, 0, 0, 90},
+	{"HeavyInfantry", UNITS, 0, 0, 76},
+	{"Trike", UNITS, 5, 0, 80, {6}},
+	{"Tank", UNITS2, 0, 5, 78, {8}},
+	{"AssaultTank", UNITS2, 10, 15, 72, {12}},
 };
 assert_enum(uniti, AssaultTank)
 

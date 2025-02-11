@@ -1,0 +1,6 @@
+Attack: Attack
+Move: Move
+Retreat: Reatreat
+Stop: Stop
+
+Cancel: Cancel

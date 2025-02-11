@@ -15,7 +15,7 @@ struct stati : nameable {
 };
 struct uniti : nameable {
 	resid			res;
-	unsigned char	frame, frame_shoot;
+	unsigned char	frame, frame_shoot, frame_avatar;
 	unsigned char	stats[Armor + 1];
 };
 struct unit : drawable {

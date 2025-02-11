@@ -286,5 +286,17 @@
     <Text Include="..\locale\en\units.txt">
       <Filter>locale</Filter>
     </Text>
+    <Text Include="..\errors.txt">
+      <Filter>locale</Filter>
+    </Text>
+    <Text Include="..\locale\en\UnknownNames.txt">
+      <Filter>locale</Filter>
+    </Text>
+    <Text Include="..\locale\en\actions.txt">
+      <Filter>locale</Filter>
+    </Text>
+    <Text Include="..\locale\en\terrains.txt">
+      <Filter>locale</Filter>
+    </Text>
   </ItemGroup>
 </Project>

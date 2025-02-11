@@ -10,6 +10,7 @@ struct pushfocus {
 };
 
 void apply_focus(int key);
+bool button_input(const void* button_data, unsigned key, bool allow_set_focus);
 void clear_focus_data();
 void focusing(const void* focus_data);
 bool focus_input();

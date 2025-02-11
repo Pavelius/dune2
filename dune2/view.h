@@ -12,7 +12,8 @@ int get_frame(unsigned long resolution = 0); // Get animation frame
 
 void initialize_view(const char* title, fnevent main_scene);
 void paint_main_map();
+void paint_main_map_choose_terrain();
 void paint_mentat();
 void paint_mentat_silent();
-void show_scene(fnevent before_paint, fnevent input, void* focus);
+long show_scene(fnevent before_paint, fnevent input, void* focus);
 void set_font(resid v);

@@ -36,10 +36,10 @@ static void debug_map_message() {
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
 	auto t = area.get(area_spot);
 	string sb;
-	sb.add("area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
+	sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
 	if(area.isbuilding(area_spot))
 		sb.adds("Building");
-	text(sb.text);
+	text(sb.text, -1, TextStroke);
 }
 
 static void update_tick() {
@@ -107,14 +107,67 @@ static void form_frame() {
 	fore = push_fore;
 }
 
+static void form_frame_rect() {
+	form_frame(color_form_light, color_form_shadow);
+	setoffset(1, 1);
+}
+
 static void form_frame(int thickness) {
 	rectpush push;
 	while(thickness > 0) {
-		form_frame(color_form_light, color_form_shadow);
-		setoffset(1, 1);
+		form_frame_rect();
 		thickness--;
 	}
 	form_frame();
+}
+
+static void button_press_effect() {
+	auto size = sizeof(color) * (width - 1);
+	for(auto y = caret.y + height - 2; y >= caret.y; y--) {
+		memmove(canvas->ptr(caret.x + 1, y + 1), canvas->ptr(caret.x, y), size);
+		*((color*)canvas->ptr(caret.x, y)) = color();
+		*((color*)canvas->ptr(caret.x, y + 1)) = color();
+	}
+	memset(canvas->ptr(caret.x, caret.y), 0, width * sizeof(color));
+}
+
+static void rectb_black() {
+	auto push_fore = fore;
+	fore = colors::black;
+	rectb();
+	fore = push_fore;
+}
+
+static bool button(const char* title, const void* button_data, unsigned key, unsigned flags = TextBold | TextSingleLine, bool allow_set_focus = false) {
+	rectpush push;
+	draw::height = texth() + 5;
+	rectb_black();
+	setoffset(1, 1);
+	auto push_fore = fore;
+	if(!button_data)
+		button_data = (void*)title;
+	auto run = button_input(button_data, key, allow_set_focus);
+	auto pressed = (pressed_focus == button_data);
+	if(pressed) {
+		rectb_black();
+		caret.x++;
+		caret.y++;
+		width--; height--;
+	}
+	form_frame(1);
+	if(current_focus == button_data)
+		fore = colors::active;
+	setoffset(1, 1);
+	caret.y += 1; height -= 1;
+	texta(title, flags);
+	fore = push_fore;
+	return run;
+}
+
+static void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param) {
+	if(button(title, button_data, key, flags, allow_set_focus))
+		execute(proc, param, 0, button_data);
+	caret.y += texth() + 4;
 }
 
 struct pushscene : pushfocus {
@@ -190,7 +243,7 @@ static void make_screenshoot() {
 		draw::canvas->ptr(0, 0), canvas->width, canvas->height, canvas->bpp, canvas->scanline, 0);
 }
 
-static void paint_sprites(resid id, point offset, int index, int& focus, int per_line, int image_flags) {
+static void paint_sprites(resid id, color border, point offset, int index, int& focus, int per_line, int image_flags) {
 	auto p = gres(id);
 	if(!p)
 		return;
@@ -199,10 +252,13 @@ static void paint_sprites(resid id, point offset, int index, int& focus, int per
 	while(index < p->count) {
 		image(p, index, image_flags);
 		if(focus == index) {
+			auto push_fore = fore;
 			auto push_caret = caret;
 			caret = caret - offset;
+			fore = border;
 			rectb();
 			caret = push_caret;
+			fore = push_fore;
 		}
 		index++;
 		caret.x += width;
@@ -216,7 +272,7 @@ static void paint_sprites(resid id, point offset, int index, int& focus, int per
 	}
 }
 
-static void show_sprites(resid id, point start, point size, color backgc) {
+static void show_sprites(resid id, point start, point size, color backgc, color border) {
 	rectpush push;
 	auto push_fore = fore;
 	auto push_font = font;
@@ -241,7 +297,7 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 		height = size.y;
 		caret = caret + start;
 		fore = colors::white;
-		paint_sprites(id, start, origin, focus, per_line, image_flags);
+		paint_sprites(id, border, start, origin, focus, per_line, image_flags);
 		caret = {1, getheight() - 8};
 		auto& f = gres(id)->get(focus);
 		auto pf = const_cast<sprite::frame*>(&f);
@@ -277,10 +333,12 @@ static void common_input() {
 	update_tick();
 	switch(hot.key) {
 	case Ctrl + F5: make_screenshoot(); break;
-	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}, color(64, 0, 128)); break;
-	case Ctrl + 'I': show_sprites(ICONS, {0, 0}, {16, 16}, color(24, 0, 64)); break;
-	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}, color(24, 0, 64)); break;
-	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}, color(24, 0, 64)); break;
+	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}, color(64, 0, 128), colors::blue); break;
+	case Ctrl + 'I': show_sprites(ICONS, {0, 0}, {16, 16}, color(24, 0, 64), colors::white); break;
+	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
+	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
+	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
+	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case 'A': area.set(area_spot, d100() < 60 ? CarRemains : AircraftRemains); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
@@ -676,37 +734,139 @@ static void paint_map_info_background() {
 	caret.y = 42;
 	height = getheight() - caret.y - 75;
 	form_frame(1);
-	setoffset(1, 1);
+	setoffset(2, 1);
+	font = gres(FONT6);
+	fore = color(69, 69, 52);
 }
 
-static void paint_unit_info() {
-	rectpush push;
+static void paint_bar(int value, int value_maximum) {
+	form_frame_rect();
+	if(!value_maximum)
+		return;
 	auto push_fore = fore;
-	auto push_font = font;
-	font = gres(FONT8);
-	fore = color(69, 69, 52);
-	texta(last_unit->getname(), AlignCenter|TextMoveCaret);
-	font = push_font;
+	width = width * value / value_maximum;
+	if(value <= value_maximum / 2)
+		fore = colors::yellow;
+	else if(value <= value_maximum / 5)
+		fore = colors::red;
+	else
+		fore = colors::green;
+	rectf();
 	fore = push_fore;
 }
 
-static void paint_map_info() {
+static void paint_health_bar(int value, int value_maximum) {
 	rectpush push;
+	height = 8; width = 27;
+	paint_bar(value, value_maximum);
+	image(caret.x, caret.y + height + 1, gres(SHAPES), 15, 0);
+}
+
+static void paint_shoots(int frame, int value) {
+	auto push_caret = caret;
+	while(value-- > 0) {
+		image(gres(UNITS1), frame, ImageNoOffset);
+		caret.x += 3;
+	}
+	caret = push_caret;
+	caret.y += 6;
+}
+
+static void paint_unit_panel() {
+	auto push_caret = caret;
+	auto push_width = width;
+	image(gres(SHAPES), last_unit->geti().frame_avatar, 0);
+	caret.x += 32 + 1; width -= 32 + 1;
+	paint_health_bar(last_unit->hits, last_unit->getmaximum(Hits));
+	caret.y += 12;
+	// paint_shoots(25, 8); // 8 maximum. Can track
+	texta("Dmg", AlignCenter | TextMoveCaret | TextSingleLine);
+	caret = push_caret;
+	width = push_width;
+	caret.y += 24;
+}
+
+static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
+	auto y2 = caret.y + height;
+	texta(getnm(id), AlignCenter | TextSingleLine | TextMoveCaret);
+	image(gres(SHAPES), avatar, 0);
+	caret.y += 32; height = y2 - caret.y - texth() - 4 - 2;
+	// rectb_black();
+	texta(getnm(ids(id, "Info")), AlignCenterCenter);
+	caret.y += height;
+	button(getnm("Cancel"), 0, KeyEscape, AlignCenterCenter, false, buttonparam, cancel_result);
+}
+
+static void paint_cursor(int avatar) {
+	if(!area.isvalid(area_spot))
+		return;
+	auto pt = map_to_screen(area_spot - area_origin) + point(8, 8);
+	image(pt.x, pt.y, gres(MOUSE), avatar, 0);
+}
+
+static void paint_choose_terrain() {
+	paint_choose_panel("ChooseTarget", 17, (long)point(-1000, -1000));
+	paint_cursor(5);
+}
+
+static void paint_unit_orders() {
+	rectpush push;
+	setoffset(-1, 0);
+	height = 12;
+	button("Attack", 0, '1', AlignCenter, false, buttonok, 0);
+	button("Move", 0, 'M', AlignCenter, false, buttonok, 0);
+	button("Harvest", 0, 0, AlignCenter, false, buttonok, 0);
+	button("Guard", 0, 'G', AlignCenter, false, buttonok, 0);
+}
+
+static void paint_unit_info() {
+	if(!last_unit)
+		return;
+	rectpush push;
+	texta(last_unit->getname(), AlignCenter | TextMoveCaret | TextSingleLine);
+	paint_unit_panel();
+	caret.y += 1;
+	paint_unit_orders();
+	caret.y += 1;
+}
+
+static void paint_map_info(fnevent proc) {
+	rectpush push;
+	auto push_font = font;
+	auto push_fore = fore;
 	paint_map_info_background();
-	if(last_unit)
-		paint_unit_info();
+	proc();
+	fore = push_fore;
+	font = push_font;
 }
 
 void paint_main_map() {
 	paint_background(SCREEN);
 	paint_game_map();
-	paint_map_info();
+	paint_map_info(paint_unit_info);
 	paint_radar_screen();
 	paint_radar_rect();
 	update_next_turn();
 }
 
-void show_scene(fnevent before_paint, fnevent input, void* focus) {
+static void mouse_cancel(rect rc) {
+	if(hot.mouse.in(rc)) {
+		if(hot.key == MouseLeft || hot.key == MouseRight || hot.key == MouseLeftDBL)
+			execute(buttoncancel);
+	}
+}
+
+void paint_main_map_choose_terrain() {
+	paint_background(SCREEN);
+	paint_game_map();
+	paint_map_info(paint_choose_terrain);
+	paint_radar_screen();
+	paint_radar_rect();
+	mouse_cancel({0, 0, getwidth(), area_screen.y1});
+	update_next_turn();
+}
+
+long show_scene(fnevent before_paint, fnevent input, void* focus) {
 	rectpush push;
 	pushscene push_scene;
 	current_focus = focus;
@@ -717,12 +877,18 @@ void show_scene(fnevent before_paint, fnevent input, void* focus) {
 			input();
 		common_input();
 	}
+	return getresult();
+}
+
+static void main_beforemodal() {
+	clear_focus_data();
 }
 
 void initialize_view(const char* title, fnevent main_scene) {
 	draw::create(-1, -1, 320, 200, 0, 32);
 	draw::setcaption(title);
 	draw::settimer(40);
+	draw::pbeforemodal = main_beforemodal;
 	set_font(FONT8);
 	fore = colors::white;
 	set_next_scene(main_scene);

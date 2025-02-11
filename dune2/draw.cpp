@@ -1671,6 +1671,7 @@ void draw::texta(const char* string, unsigned state) {
 		auto push_clip = clipping; setclip(getrect());
 		caret.x = aligned(caret.x, width, state, draw::textw(string));
 		text(string, -1, state);
+		caret.y += texth();
 		clipping = push_clip;
 	} else {
 		auto dy = texth();
@@ -1685,8 +1686,9 @@ void draw::texta(const char* string, unsigned state) {
 			string = skiptr(string + c);
 		}
 	}
+	caret.x = push_caret.x;
 	if((state & TextMoveCaret)==0)
-		caret = push_caret;
+		caret.y = push_caret.y;
 }
 
 int draw::hittest(int x, int hit_x, const char* p, int lenght) {
@@ -2441,25 +2443,6 @@ void* draw::scene(fnevent proc) {
 
 void draw::scene() {
 	scene(0);
-}
-
-bool draw::button(const char* title, unsigned key, fnbutton proc, bool vertical) {
-	auto push_width = width;
-	auto push_height = height;
-	control_hilited = proc(title);
-	if(vertical) {
-		width = push_width;
-		if(!height)
-			return false;
-		caret.y += height + metrics::padding;
-	} else {
-		height = push_height;
-		if(!width)
-			return false;
-		caret.x += width + metrics::padding;
-	}
-	return (key && hot.key == key)
-		|| (hot.key == MouseLeft && control_hilited && !hot.pressed);
 }
 
 void draw::fire(bool run, fnevent proc, long value, long value2, const void* object) {

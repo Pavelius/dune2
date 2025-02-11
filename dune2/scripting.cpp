@@ -61,6 +61,10 @@ static void build_structure(point v, buildingn type) {
 	area.set(v, e.shape, e.frames);
 }
 
+static point choose_terrain() {
+	return show_scene(paint_main_map_choose_terrain, 0, 0);
+}
+
 void main_menu() {
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;

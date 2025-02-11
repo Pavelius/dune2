@@ -1,1 +1,4 @@
+ChooseTarget: Target
+ChooseTargetInfo: Choose move target
+
 AssaultTank: Assault Tank
