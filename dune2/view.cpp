@@ -16,7 +16,6 @@
 #include "view_focus.h"
 
 using namespace draw;
-static rect screen_map_area = {area_screen_x1, area_screen_y1, area_screen_x1 + area_screen_width * area_tile_width, area_screen_y1 + area_screen_height * area_tile_height};
 static unsigned long form_opening_tick;
 static unsigned long next_turn_tick;
 static unsigned long eye_clapping, eye_show_cursor;
@@ -29,11 +28,11 @@ static void debug_map_message() {
 	rectpush push;
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
 	auto t = area.get(area_spot);
-	textnc(str("area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname()), -1, 0);
-	if(area.isbuilding(area_spot)) {
-		caret.x += 6;
-		textnc("Building", -1, 0);
-	}
+	string sb;
+	sb.add("area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
+	if(area.isbuilding(area_spot))
+		sb.adds("Building");
+	text(sb.text);
 }
 
 const unsigned time_step = 100;
@@ -51,10 +50,32 @@ static void update_next_turn() {
 	}
 }
 
-int get_frame(unsigned long resolution) {
+static int get_frame(unsigned long resolution) {
 	if(!resolution)
 		resolution = 200;
 	return (animate_time - form_opening_tick) / resolution;
+}
+
+static point s2i(point v) {
+	v = v - camera;
+	v.x += area_screen.x1;
+	v.y += area_screen.y1;
+	return v;
+}
+
+static point i2s(point v) {
+	v.x -= area_screen.x1;
+	v.y -= area_screen.y1;
+	v = v + camera;
+	return v;
+}
+
+static void paint_background(color v) {
+	auto push_fore = fore;
+	fore = v; rectf();
+	caret.x = (getwidth() - 320) / 2;
+	caret.y = (getheight() - 200) / 2;
+	fore = push_fore;
 }
 
 struct pushscene : pushfocus {
@@ -78,7 +99,21 @@ bool time_animate(unsigned long& value, unsigned long duration, unsigned long pa
 	return false;
 }
 
-bool mouse_hower(unsigned long duration = 1000, bool single_time = true) {
+static point dpoint(point v) {
+	return {v.x / 4, v.y / 4};
+}
+
+static bool mouse_dragged(point& start, point mouse) {
+	if(!hot.pressed)
+		start = point(-10000, -10000);
+	else if(start == point(-10000, -10000))
+		start = mouse;
+	else
+		return dpoint(start) != dpoint(mouse);
+	return false;
+}
+
+static bool mouse_hower(unsigned long duration = 1000, bool single_time = true) {
 	static point pos;
 	static unsigned long pos_time;
 	point v;
@@ -161,14 +196,13 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 			origin = (focus / per_line) * per_line;
 		else if(focus > origin + (maximum_height)*per_line)
 			origin = ((focus - ((maximum_height - 1) * per_line)) / per_line) * per_line;
-		fore = backgc;
-		rectf();
+		paint_background(backgc);
 		width = size.x;
 		height = size.y;
-		caret = start;
+		caret = caret + start;
 		fore = colors::white;
 		paint_sprites(id, start, origin, focus, per_line, image_flags);
-		caret = {1, 193};
+		caret = {1, getheight() - 8};
 		auto& f = gres(id)->get(focus);
 		auto pf = const_cast<sprite::frame*>(&f);
 		text(str("index %1i (size %2i %3i center %4i %5i)", focus, f.sx, f.sy, f.ox, f.oy), -1, TextBold);
@@ -193,9 +227,9 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 }
 
 static void random_explosion() {
-	static fixn source[] = {FixBikeExplosion, FixExplosion, FixBigExplosion, FixHitSand};
-	//auto n = source[rand() % sizeof(source) / sizeof(source[0])];
-	auto n = FixHitSand;
+	static fixn source[] = {FixBikeExplosion, FixExplosion, FixBigExplosion};
+	auto n = source[rand() % sizeof(source) / sizeof(source[0])];
+	// auto n = FixHitSand;
 	add_area_effect(area_spot, n);
 }
 
@@ -286,10 +320,10 @@ static void set_area_view() {
 static rect get_corner_area(direction d) {
 	const int ex = area_tile_width / 2;
 	const int ey = area_tile_height / 2;
-	const int x1 = area_screen_x1;
-	const int y1 = area_screen_y1;
-	const int x2 = area_screen_x1 + area_screen_width * area_tile_width;
-	const int y2 = area_screen_y1 + area_screen_height * area_tile_height;
+	const int x1 = area_screen.x1;
+	const int y1 = area_screen.y1;
+	const int x2 = area_screen.x2;
+	const int y2 = area_screen.y2;
 	switch(d) {
 	case LeftUp: return {x1, y1, x1 + ex, y1 + ey - 1};
 	case Left: return {x1, y1 + ey, x1 + ex, y2 - ey - 1};
@@ -351,7 +385,7 @@ static void check_mouse_corner_slice() {
 static point map_to_screen(point v) {
 	if(!area.isvalid(v))
 		return {-1, -1};
-	return {(short)(v.x * area_tile_width + area_screen_x1), (short)(v.y * area_tile_height + area_screen_y1)};
+	return {(short)(v.x * area_tile_width + area_screen.x1), (short)(v.y * area_tile_height + area_screen.y1)};
 }
 
 static void paint_area_box() {
@@ -381,28 +415,32 @@ static void paint_main_map_debug() {
 
 static void paint_map_tiles() {
 	auto ps = gres(ICONS);
-	for(auto y = 0; y < area_screen_height; y++) {
-		for(auto x = 0; x < area_screen_width; x++) {
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
 			auto i = area.getframe(v);
 			if((animate_time / 300) % 2) {
 				if(map_alternate[i])
 					i = map_alternate[i];
 			}
-			image(x * area_tile_width + area_screen_x1, y * area_tile_height + area_screen_y1, ps, i, 0);
+			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, 0);
 		}
 	}
 }
 
 static void paint_map_features() {
 	auto ps = gres(ICONS);
-	for(auto y = 0; y < area_screen_height; y++) {
-		for(auto x = 0; x < area_screen_width; x++) {
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
 			auto i = area.getframefeature(v);
 			if(!i)
 				continue;
-			image(x * area_tile_width + area_screen_x1, y * area_tile_height + area_screen_y1, ps, i, 0);
+			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, 0);
 		}
 	}
 }
@@ -459,29 +497,114 @@ static void paint_effect_fix() {
 static void paint_radar_screen() {
 }
 
-void paint_main_map() {
-	rectpush push;
-	image(0, 0, gres(SCREEN), 0, 0);
-	auto push_clip = clipping; setclip(screen_map_area);
+static void copybits(int x, int y, int width, int height, int x1, int y1) {
+	auto ps = canvas->ptr(x, y);
+	auto pd = canvas->ptr(x1, y1);
+	auto sn = canvas->scanline;
+	auto sz = width * sizeof(color);
+	if(y < y1) {
+		ps = canvas->ptr(x, y + height - 1);
+		pd = canvas->ptr(x1, y1 + height - 1);
+		sn = -sn;
+	}
+	for(auto i = 0; i < height; i++) {
+		memmove(pd, ps, sz);
+		ps += sn;
+		pd += sn;
+	}
+}
+
+static void fillbitsh(int x, int y, int width, int height, int total_width) {
+	total_width -= width;
+	if(total_width <= 0 || width <= 0)
+		return;
+	auto x1 = x + width;
+	for(auto n = total_width / width; n > 0; n--) {
+		copybits(x, y, width, height, x1, y);
+		x1 += width;
+		total_width -= width;
+	}
+	if(total_width)
+		copybits(x, y, total_width, height, x1, y);
+}
+
+static void fillbitsv(int x, int y, int width, int height, int total_height) {
+	total_height -= height;
+	if(total_height <= 0 || height <= 0)
+		return;
+	auto y1 = y + height;
+	for(auto n = total_height / height; n > 0; n--) {
+		copybits(x, y, width, height, x, y1);
+		y1 += height;
+		total_height -= height;
+	}
+	if(total_height)
+		copybits(x, y, width, total_height, x, y1);
+}
+
+static void paint_background(resid rid) {
+	caret.x = 0; caret.y = 0;
+	if(rid == SCREEN) {
+		const int right_panel = 120;
+		image(0, 0, gres(rid), 0, 0);
+		caret.x = 0; caret.y = 40;
+		if(width > 320) {
+			copybits(320 - right_panel, 0, right_panel, 200, width - right_panel, 0);
+			fillbitsh(184, 0, 16, 16, width - right_panel - 184);
+			fillbitsh(184, 16, 115, 24, width - right_panel - 184);
+		}
+		if(height > 200) {
+			copybits(width - 80, 118, 80, 82, width - 80, height - 82);
+			fillbitsv(width - 80, 92, 16, 25, height - 200 + 25);
+		}
+		width = width - 80;
+		height = height - caret.y;
+		area_screen.set(caret.x, caret.y, caret.x + width, caret.y + height);
+	} else {
+		if(width > 320 || height > 200)
+			paint_background(colors::black);
+		image(caret.x, caret.y, gres(rid), 0, 0);
+	}
+}
+
+static void handle_mouse_select() {
+	static point area_start;
+	auto area_spot = i2s(hot.mouse);
+	if(mouse_dragged(area_start, area_spot)) {
+		rectpush push;
+		auto start = s2i(area_start);
+		caret = hot.mouse;
+		width = start.x - caret.x;
+		height = start.y - caret.y;
+		rectb();
+	}
+}
+
+static void paint_game_map() {
+	auto push_clip = clipping; setclip(area_screen);
 	auto need_check_corner_slice = false;
-	if(hot.mouse.in(screen_map_area)) {
-		area_spot.x = (hot.mouse.x - area_screen_x1) / area_tile_width + area_origin.x;
-		area_spot.y = (hot.mouse.y - area_screen_y1) / area_tile_height + area_origin.y;
+	camera = m2s(area_origin);
+	if(hot.mouse.in(area_screen)) {
+		area_spot.x = (hot.mouse.x - area_screen.x1) / area_tile_width + area_origin.x;
+		area_spot.y = (hot.mouse.y - area_screen.y1) / area_tile_height + area_origin.y;
 		need_check_corner_slice = true;
 		handle_main_map_mouse_input();
 	} else
 		area_spot = 0xFFFF;
 	paint_map_tiles();
 	paint_map_features();
-	caret.x = area_screen_x1;
-	caret.y = area_screen_y1;
-	width = area_screen_width * area_tile_width;
-	height = area_screen_height * area_tile_height;
-	paint_objects(m2s(area_origin));
-	if(need_check_corner_slice)
+	paint_objects();
+	if(need_check_corner_slice) {
 		check_mouse_corner_slice();
+		handle_mouse_select();
+	}
 	paint_main_map_debug();
 	clipping = push_clip;
+}
+
+void paint_main_map() {
+	paint_background(SCREEN);
+	paint_game_map();
 	update_next_turn();
 }
 

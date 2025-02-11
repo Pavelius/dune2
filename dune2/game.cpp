@@ -13,9 +13,8 @@ static void update_standing_units() {
 			continue;
 		auto& ei = e.geti();
 		if(ei.frame_shoot) {
-			// if(d100() < 10)
-			//	e.shoot_direction = to(e.shoot_direction, (rand() % 2) ? Left : Right);
-			e.shoot_direction = to(e.shoot_direction, Left);
+			if(d100() < 30)
+				e.shoot_direction = to(e.shoot_direction, (rand() % 2) ? Left : Right);
 		}
 	}
 }
@@ -28,9 +27,9 @@ static void update_area_decoy() {
 
 void update_game_turn() {
 	game.turn++;
-	update_standing_units();
+	// Some visual effect
 	switch(game.turn % 5) {
-	// case 0: update_standing_units(); break;
+	case 0: update_standing_units(); break;
 	case 1: update_area_decoy(); break;
 	}
 }

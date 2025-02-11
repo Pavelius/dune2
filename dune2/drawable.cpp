@@ -39,7 +39,7 @@ static int compare_unit(const void* v1, const void* v2) {
 	return (char)p1->render - (char)p2->render;
 }
 
-void paint_objects(point camera) {
+void paint_objects() {
 	auto origin = caret;
 	rect rc = {camera.x, camera.y, camera.x + width, camera.y + height};
 	adat<drawable*, 256> objects;

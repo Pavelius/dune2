@@ -91,6 +91,10 @@ public:
 	void			trimr();
 	void			upper();
 };
+struct string : stringbuilder {
+	char			text[260];
+	string() : stringbuilder(text) {}
+};
 typedef const char* (*fntext)(const void* object, stringbuilder& sb);
 typedef void (*fnstatus)(const void* object, stringbuilder& sb);
 typedef void (*fnprint)(stringbuilder& sb);

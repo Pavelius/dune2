@@ -294,7 +294,6 @@ typedef void(CALLBACK *PIMAGE_TLS_CALLBACK)(void* DllHandle, unsigned long Reaso
 #define WM_QUIT 18
 #define WM_SYSCOMMAND 0x0112
 #define WM_USER 1024
-#define WM_MY_SIZE WM_USER+1
 #define BFFM_SETSTATUSTEXTA (WM_USER + 100)
 #define BFFM_SETSTATUSTEXTW (WM_USER + 104)
 #define BFFM_ENABLEOK (WM_USER + 101)

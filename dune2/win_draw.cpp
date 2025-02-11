@@ -18,7 +18,8 @@ static struct video_8t {
 
 static HWND		hwnd;
 static point	minimum;
-static surface	window_surface(320 * 3, 200 * 3, 32);
+static surface	window_surface;
+static point	window_size_real;
 
 static struct sys_key_mapping {
 	unsigned key;
@@ -120,9 +121,6 @@ static int handle(MSG& msg) {
 	case WM_CHAR:
 		hot.param = msg.wParam;
 		return InputSymbol;
-	case WM_MY_SIZE:
-	case WM_SIZE:
-		return InputUpdate;
 	}
 	return 0;
 }
@@ -137,10 +135,12 @@ static LRESULT CALLBACK WndProc(HWND hwnd, unsigned uMsg, WPARAM wParam, LPARAM 
 		video_descriptor.bmp.bmiHeader.biHeight = -window_surface.height;
 		video_descriptor.bmp.bmiHeader.biBitCount = window_surface.bpp;
 		video_descriptor.bmp.bmiHeader.biPlanes = 1;
-		SetDIBitsToDevice((void*)wParam,
-			0, 0, rc.right, rc.bottom,
-			0, 0, 0, window_surface.height,
-			window_surface.bits, &video_descriptor.bmp, DIB_RGB_COLORS);
+		if(window_surface.bits) {
+			SetDIBitsToDevice((void*)wParam,
+				0, 0, rc.right, rc.bottom,
+				0, 0, 0, window_surface.height,
+				window_surface.bits, &video_descriptor.bmp, DIB_RGB_COLORS);
+		}
 		return 1;
 	case WM_CLOSE:
 		PostQuitMessage(-1);
@@ -149,6 +149,10 @@ static LRESULT CALLBACK WndProc(HWND hwnd, unsigned uMsg, WPARAM wParam, LPARAM 
 		((MINMAXINFO*)lParam)->ptMinTrackSize.x = minimum.x;
 		((MINMAXINFO*)lParam)->ptMinTrackSize.y = minimum.y;
 		return 0;
+	case WM_SIZE:
+		window_size_real.x = LOWORD(lParam);
+		window_size_real.y = HIWORD(lParam);
+		return DefWindowProcA(hwnd, uMsg, wParam, lParam);
 	}
 	return DefWindowProcA(hwnd, uMsg, wParam, lParam);
 }
@@ -168,22 +172,45 @@ static const char* register_class(const char* class_name) {
 	return class_name;
 }
 
+static void fill_last_pixels() {
+	auto width_ns = window_surface.width;
+	if(canvas->width * scale_mult < window_surface.width) {
+		auto i = window_surface.width - canvas->width * scale_mult;
+		for(auto y = 0; y < window_surface.height; y++) {
+			auto p = (color*)window_surface.ptr(canvas->width * scale_mult - 1, y);
+			auto v = *p;
+			for(auto j = 1; j <= i; j++)
+				p[j] = v;
+		}
+	}
+}
+
 void draw::updatewindow() {
 	if(!hwnd)
 		return;
 	if(!IsWindowVisible(hwnd))
 		ShowWindow(hwnd, SW_SHOW);
+	if(window_surface.width != window_size_real.x || window_surface.height != window_size_real.y)
+		window_surface.resize(window_size_real.x, window_size_real.y, draw::canvas->bpp, true);
 	scale3x(
 		window_surface.bits, window_surface.scanline,
 		draw::canvas->bits, draw::canvas->scanline,
 		draw::canvas->bpp / 8,
 		draw::canvas->width, draw::canvas->height);
+	fill_last_pixels();
 	InvalidateRect(hwnd, 0, 1);
 	UpdateWindow(hwnd);
 }
 
 void draw::syscursor(bool enable) {
 	ShowCursor(enable ? 1 : 0);
+}
+
+static void update_scaled_window() {
+	window_size.x = window_size_real.x / scale_mult;
+	window_size.y = window_size_real.y / scale_mult;
+	if(canvas->width != window_size.x || canvas->height != window_size.y)
+		canvas->resize(window_size.x, window_size.y, draw::canvas->bpp, true);
 }
 
 void draw::create(int x, int y, int width, int height, unsigned flags, int bpp) {
@@ -194,13 +221,15 @@ void draw::create(int x, int y, int width, int height, unsigned flags, int bpp) 
 	minimum.x = width * scale_mult;
 	minimum.y = height * scale_mult;
 	// custom
-	unsigned dwStyle = WS_CAPTION | WS_SYSMENU; // Windows Style;
+	unsigned dwStyle = WS_CAPTION | WS_SYSMENU | WS_BORDER | WS_SIZEBOX | WS_MINIMIZEBOX | WS_MAXIMIZEBOX | WS_SYSMENU; // Windows Style;
 	RECT MinimumRect = {0, 0, minimum.x, minimum.y};
 	AdjustWindowRectEx(&MinimumRect, dwStyle, 0, 0);
 	if(x == -1)
 		x = (screen_w - minimum.x) / 2;
 	if(y == -1)
 		y = (screen_h - minimum.y) / 2;
+	minimum.x = (short)(MinimumRect.right - MinimumRect.left);
+	minimum.y = (short)(MinimumRect.bottom - MinimumRect.top);
 	// Update current surface
 	if(draw::canvas)
 		draw::canvas->resize(width, height, bpp, true);
@@ -213,7 +242,8 @@ void draw::create(int x, int y, int width, int height, unsigned flags, int bpp) 
 		0, 0, GetModuleHandleA(0), 0);
 	if(!hwnd)
 		return;
-	ShowWindow(hwnd, SW_SHOWNORMAL);
+	ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+	update_scaled_window();
 	// Update mouse coordinates
 	POINT pt; GetCursorPos(&pt);
 	ScreenToClient(hwnd, &pt);
@@ -264,9 +294,11 @@ int draw::rawinput() {
 			continue;
 		if(m) {
 			m = handle_event(m);
+			update_scaled_window();
 			return m;
 		}
 	}
+	update_scaled_window();
 	return 0;
 }
 

@@ -3,14 +3,9 @@
 #include "direction.h"
 #include "feature.h"
 #include "point.h"
-#include "rect.h"
 #include "shape.h"
 #include "terrain.h"
 
-const int area_screen_x1 = 0;
-const int area_screen_y1 = 40;
-const int area_screen_width = 15;
-const int area_screen_height = 10;
 const int area_tile_width = 16;
 const int area_tile_height = 16;
 const int area_frame_maximum = 389;
@@ -49,6 +44,7 @@ private:
 extern areai area;
 extern point area_origin;
 extern point area_spot;
+extern rect area_screen;
 extern direction all_strait_directions[4];
 extern unsigned short map_alternate[area_frame_maximum];
 

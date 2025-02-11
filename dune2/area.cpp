@@ -7,6 +7,7 @@
 
 areai area;
 point area_origin, area_spot;
+rect area_screen;
 
 static terrainn map_terrain[area_frame_maximum];
 static featuren map_features[area_frame_maximum];
@@ -281,14 +282,16 @@ void areai::decoy(point v) {
 void areai::setcamera(point v, bool center_view) {
 	int x = v.x;
 	int y = v.y;
+	auto mx = area_screen.width() / area_tile_width;
+	auto my = area_screen.height() / area_tile_height;
 	if(center_view) {
-		x -= area_screen_width / 2;
-		y -= area_screen_height / 2;
+		x -= mx / 2;
+		y -= my / 2;
 	}
-	if(x > maximum.x - area_screen_width)
-		x = maximum.x - area_screen_width;
-	if(y > maximum.y - area_screen_height)
-		y = maximum.y - area_screen_height;
+	if(x > maximum.x - mx)
+		x = maximum.x - mx;
+	if(y > maximum.y - my)
+		y = maximum.y - my;
 	if(x < 0)
 		x = 0;
 	if(y < 0)

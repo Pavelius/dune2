@@ -37,4 +37,4 @@ struct drawrenderi {
 extern drawable* last_object;
 
 void add_effect(point screen, short unsigned param, unsigned long time);
-void paint_objects(point camera);
+void paint_objects();

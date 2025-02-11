@@ -60,16 +60,15 @@ rect			draw::clipping;
 hoti			draw::hot;
 const void*		draw::hilite_object;
 point			draw::hilite_position;
+point			draw::window_size;
 int				draw::hilite_size;
 // Hot keys and menus
 rect				sys_static_area;
 // Locale draw variables
 static draw::surface default_surface;
 draw::surface*	draw::canvas = &default_surface;
-point				draw::caret, draw::camera, draw::tips_caret, draw::tips_size;
-bool			   line_antialiasing = true;
-// Drag
-point				draw::dragmouse;
+point			draw::caret, draw::camera, draw::tips_caret, draw::tips_size;
+bool			line_antialiasing = true;
 // Metrics
 sprite*			metrics::font;
 sprite*			metrics::h1;
@@ -1600,12 +1599,13 @@ int draw::textw(const char* string, int count) {
 	return x1;
 }
 
-void draw::textnc(const char* string, int count, unsigned flags) {
+void draw::text(const char* string, int count, unsigned flags) {
 	if(!font)
 		return;
 	auto dy = texth();
 	if(caret.y >= clipping.y2 || caret.y + dy < clipping.y1)
 		return;
+	auto push_caret = caret;
 	if(count == -1)
 		count = zlen(string);
 	const char *s1 = string;
@@ -1617,11 +1617,6 @@ void draw::textnc(const char* string, int count, unsigned flags) {
 			glyph(sm, flags);
 		caret.x += textw(sm);
 	}
-}
-
-void draw::text(const char* string, int count, unsigned flags) {
-	auto push_caret = caret;
-	textnc(string, count, flags);
 	caret = push_caret;
 }
 
@@ -2299,6 +2294,7 @@ static void beforemodal() {
 	caret = {0, 0};
 	width = getwidth();
 	height = getheight();
+	clipping.set(0, 0, width, height);
 	hilite_object = 0;
 	hilite_position.clear();
 	hilite_size = 0;
