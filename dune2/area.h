@@ -12,8 +12,8 @@ const int area_frame_maximum = 389;
 
 struct areai {
 	typedef void(*fnsetarea)(point v, int value);
-	static constexpr int mx = 128;
-	static constexpr int my = 128;
+	static constexpr int mx = 64;
+	static constexpr int my = 64;
 	point			maximum;
 	void			clear();
 	point			correct(point v) const;

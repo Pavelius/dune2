@@ -5,7 +5,7 @@ typedef void(*fnevent)();
 enum resid : short unsigned;
 
 extern unsigned long animate_time;
-extern resid mentat_subject; // Picture on back back of mentat
+extern resid mentat_subject;
 extern int glyph_offset_width;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame

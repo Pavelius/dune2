@@ -1,5 +1,6 @@
 #pragma once
 
+#include "color.h"
 #include "flagable.h"
 #include "nameable.h"
 
@@ -11,6 +12,7 @@ enum terrainf : unsigned char {
 };
 struct terraini : nameable {
 	unsigned short	frame, count;
+	color			minimap;
 	flag8			flags;
 	flag16			terrain; // Appear on this terrain only if filled
 	flag16			same; // Same terrain when draw

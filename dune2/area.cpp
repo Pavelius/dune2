@@ -123,8 +123,8 @@ void area_initialization() {
 
 void areai::clear() {
 	memset(this, 0, sizeof(*this));
-	maximum.x = 120;
-	maximum.y = 120;
+	maximum.x = mx;
+	maximum.y = my;
 	// Fill all field by sand
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++)

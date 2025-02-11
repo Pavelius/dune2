@@ -16,6 +16,8 @@
 #include "view_focus.h"
 
 using namespace draw;
+
+static point drag_mouse_start;
 static unsigned long form_opening_tick;
 static unsigned long next_turn_tick;
 static unsigned long eye_clapping, eye_show_cursor;
@@ -34,8 +36,6 @@ static void debug_map_message() {
 		sb.adds("Building");
 	text(sb.text);
 }
-
-const unsigned time_step = 100;
 
 static void update_tick() {
 	animate_time = getcputime();
@@ -88,6 +88,7 @@ struct pushscene : pushfocus {
 };
 
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20) {
+	const unsigned time_step = 100;
 	if(value <= form_opening_tick)
 		value = form_opening_tick + xrand(pause * time_step, pause * 2 * time_step);
 	if(value > animate_time)
@@ -99,17 +100,17 @@ bool time_animate(unsigned long& value, unsigned long duration, unsigned long pa
 	return false;
 }
 
-static point dpoint(point v) {
+static point same_point(point v) {
 	return {v.x / 4, v.y / 4};
 }
 
-static bool mouse_dragged(point& start, point mouse) {
+static bool mouse_dragged(point mouse) {
 	if(!hot.pressed)
-		start = point(-10000, -10000);
-	else if(start == point(-10000, -10000))
-		start = mouse;
+		drag_mouse_start = point(-10000, -10000);
+	else if(drag_mouse_start == point(-10000, -10000))
+		drag_mouse_start = mouse;
 	else
-		return dpoint(start) != dpoint(mouse);
+		return same_point(drag_mouse_start) != same_point(mouse);
 	return false;
 }
 
@@ -494,7 +495,36 @@ static void paint_effect_fix() {
 	image(gres(pf->rid), frame, 0);
 }
 
+static void paint_radar_rect() {
+	rectpush push;
+	caret.x = getwidth() - 64 + area_origin.x;
+	caret.y = getheight() - 64 + area_origin.y;
+	width = area_screen.width() / area_tile_width;
+	height = area_screen.height() / area_tile_height;
+	rectb();
+}
+
 static void paint_radar_screen() {
+	auto push_fore = fore;
+	auto x1 = getwidth() - 64;
+	auto y1 = getheight() - 64;
+	for(auto y = 0; y < area.maximum.y; y++) {
+		for(auto x = 0; x < area.maximum.x; x++) {
+			auto t = area.get(point(x, y));
+			if(t > Mountain)
+				continue;
+			fore = bsdata<terraini>::elements[t].minimap;
+			pixel(x1 + x, y1 + y);
+		}
+	}
+	point hot_mouse = hot.mouse;
+	hot_mouse.x -= x1;
+	hot_mouse.y -= y1;
+	if((hot_mouse.x < 64 && hot_mouse.x > 0) && (hot_mouse.y < 64 && hot_mouse.y > 0)) {
+		if(hot.key==MouseLeft && hot.pressed)
+			execute(set_area_view, (long)(hot_mouse), 1);
+	}
+	fore = push_fore;
 }
 
 static void copybits(int x, int y, int width, int height, int x1, int y1) {
@@ -568,11 +598,10 @@ static void paint_background(resid rid) {
 }
 
 static void handle_mouse_select() {
-	static point area_start;
 	auto area_spot = i2s(hot.mouse);
-	if(mouse_dragged(area_start, area_spot)) {
+	if(mouse_dragged(area_spot)) {
 		rectpush push;
-		auto start = s2i(area_start);
+		auto start = s2i(drag_mouse_start);
 		caret = hot.mouse;
 		width = start.x - caret.x;
 		height = start.y - caret.y;
@@ -605,6 +634,8 @@ static void paint_game_map() {
 void paint_main_map() {
 	paint_background(SCREEN);
 	paint_game_map();
+	paint_radar_screen();
+	paint_radar_rect();
 	update_next_turn();
 }
 
