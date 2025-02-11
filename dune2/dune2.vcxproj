@@ -140,6 +140,7 @@
     <ClCompile Include="drawable.cpp" />
     <ClCompile Include="draw_text.cpp" />
     <ClCompile Include="feature.cpp" />
+    <ClCompile Include="fix.cpp" />
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
@@ -185,6 +186,7 @@
     <ClInclude Include="draw.h" />
     <ClInclude Include="drawable.h" />
     <ClInclude Include="feature.h" />
+    <ClInclude Include="fix.h" />
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
@@ -217,6 +219,9 @@
     <ClInclude Include="view.h" />
     <ClInclude Include="view_focus.h" />
     <ClInclude Include="win.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\doc\music_dump.txt" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

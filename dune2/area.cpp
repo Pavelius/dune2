@@ -212,6 +212,8 @@ void areai::set(point v, featuren f, int ft) {
 		return;
 	}
 	auto ct = get(v);
+	if(isbuilding(v))
+		return; // Features do not appear on building tile.
 	if(ct == Mountain)
 		return; // Frames overlay newer be on mountains
 	else if(ct >= Rock && f == Trail)
@@ -387,6 +389,8 @@ bool areai::isbuilding(point v) const {
 	if(!isvalid(v))
 		return false;
 	return frames[v.y][v.x] >= 210;
+	//auto t = get(v);
+	//return t == BuildingHead || t == BuildingLeft || t == BuildingUp;
 }
 
 void areai::set(point v, shapen t, short unsigned* frame_list) {

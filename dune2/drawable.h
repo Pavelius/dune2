@@ -5,28 +5,36 @@
 
 typedef void(*fnevent)();
 
-enum drawtypen : unsigned char;
 struct draworder;
 struct drawable {
-	point			position; // Drawing position
-	drawtypen		kind; // Drawing kind
-	unsigned char	param; // Painting frame and other parameters
-	// draworder*	addanimate(point finish);
+	point			screen; // Drawing screen position
+	unsigned char	render; // Drawing render index
+	unsigned short	param; // Painting frame and other parameters (2 byte)
+	draworder*		animate(point finish, unsigned long start_time); // Move to position
+	void			clearobject(); // Unsafe, but work on non-virtual classes if you define `clear` proc.
+	unsigned char	renderindex() const; // Calculate render index
+	unsigned short	objectindex() const;
+};
+struct draweffect : drawable {
+	unsigned long	start_time;
+	explicit operator bool() const { return start_time != 0; }
 };
 struct draworder {
 	unsigned short	index; // Source object index
-	drawtypen		type; // Original type where source object found
-	drawtypen		apply;
+	unsigned char	render; // Render index assigner
 	point			start, finish;
-	unsigned long	stamp;
+	unsigned long	start_time;
+	explicit operator bool() const { return start_time != 0; }
+	drawable*		get() const;
 };
-struct drawtypei {
+struct drawrenderi {
 	const char*		id; // Object name
-	fnevent			paint; // Paint procedure
-	fnevent			move; // Move to procedure
-	array*			source; // Point to source array
-	drawable*		element; // First element offset. Delta between address of source.data and element is overhead in bytes.
+	array&			source; // Reference to source objects source array
+	drawable*		element; // First element offset.
+	fnevent			paint; // Paint procedure for drawable object. Can use caret and last_object.
+	fnevent			clear; // After clearobject() called this. Can use last_object.
 };
 extern drawable* last_object;
 
+void add_effect(point screen, short unsigned param, unsigned long time);
 void paint_objects(point camera);

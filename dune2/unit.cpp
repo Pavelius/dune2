@@ -36,8 +36,8 @@ int	unit::getmaximum(statn v) const {
 
 unit* add_unit(point pt, direction d, unitn id, const playeri* player) {
 	auto p = bsdata<unit>::addz();
-	p->position = m2sc(pt);
-	p->kind = DrawUnit;
+	p->render = p->renderindex();
+	p->screen = m2sc(pt);
 	p->type = id;
 	p->set(d);
 	p->hits = p->getmaximum(Hits);

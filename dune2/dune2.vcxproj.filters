@@ -13,6 +13,9 @@
     <Filter Include="utils">
       <UniqueIdentifier>{bf177795-c600-4931-a308-d31809e5d46a}</UniqueIdentifier>
     </Filter>
+    <Filter Include="doc">
+      <UniqueIdentifier>{5cd25357-f75d-4f05-9ef0-4ee41b8f789b}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="draw.cpp">
@@ -136,6 +139,9 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="drawable.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="fix.cpp">
       <Filter>logic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -266,5 +272,13 @@
     <ClInclude Include="adat.h">
       <Filter>support</Filter>
     </ClInclude>
+    <ClInclude Include="fix.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="..\doc\music_dump.txt">
+      <Filter>doc</Filter>
+    </Text>
   </ItemGroup>
 </Project>

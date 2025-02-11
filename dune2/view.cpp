@@ -3,6 +3,7 @@
 #include "direction.h"
 #include "draw.h"
 #include "drawable.h"
+#include "fix.h"
 #include "fraction.h"
 #include "game.h"
 #include "io_stream.h"
@@ -19,7 +20,7 @@ static rect screen_map_area = {area_screen_x1, area_screen_y1, area_screen_x1 + 
 static unsigned long form_opening_tick;
 static unsigned long next_turn_tick;
 static unsigned long eye_clapping, eye_show_cursor;
-unsigned long current_tick;
+unsigned long animate_time;
 resid mentat_subject;
 
 static bool debug_toggle;
@@ -38,13 +39,13 @@ static void debug_map_message() {
 const unsigned time_step = 100;
 
 static void update_tick() {
-	current_tick = getcputime();
+	animate_time = getcputime();
 }
 
 static void update_next_turn() {
-	if(!next_turn_tick || (next_turn_tick < current_tick && (current_tick - next_turn_tick)>=10000))
-		next_turn_tick = current_tick;
-	while(next_turn_tick < current_tick) {
+	if(!next_turn_tick || (next_turn_tick < animate_time && (animate_time - next_turn_tick)>=3000))
+		next_turn_tick = animate_time;
+	while(next_turn_tick < animate_time) {
 		next_turn_tick += 1000;
 		update_game_turn();
 	}
@@ -53,14 +54,14 @@ static void update_next_turn() {
 int get_frame(unsigned long resolution) {
 	if(!resolution)
 		resolution = 200;
-	return (current_tick - form_opening_tick) / resolution;
+	return (animate_time - form_opening_tick) / resolution;
 }
 
 struct pushscene : pushfocus {
 	const sprite* font;
 	pushscene() : pushfocus(), font(draw::font) {
 		form_opening_tick = getcputime();
-		current_tick = form_opening_tick;
+		animate_time = form_opening_tick;
 	}
 	~pushscene() { draw::font = font; }
 };
@@ -68,12 +69,12 @@ struct pushscene : pushfocus {
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20) {
 	if(value <= form_opening_tick)
 		value = form_opening_tick + xrand(pause * time_step, pause * 2 * time_step);
-	if(value > current_tick)
+	if(value > animate_time)
 		return false;
-	else if((current_tick - value) < duration * time_step)
+	else if((animate_time - value) < duration * time_step)
 		return true;
 	else
-		value = current_tick + xrand(pause * time_step, pause * 2 * time_step);
+		value = animate_time + xrand(pause * time_step, pause * 2 * time_step);
 	return false;
 }
 
@@ -89,15 +90,15 @@ bool mouse_hower(unsigned long duration = 1000, bool single_time = true) {
 	}
 	if(pos != v) {
 		pos = v;
-		pos_time = current_tick;
+		pos_time = animate_time;
 		return false;
-	} else if(pos_time + duration > current_tick)
+	} else if(pos_time + duration > animate_time)
 		return false;
 	else {
 		if(single_time)
 			pos_time = 0xFFFFFFFF - duration * 2;
 		else
-			pos_time = current_tick;
+			pos_time = animate_time;
 		return true;
 	}
 }
@@ -182,6 +183,13 @@ static void show_sprites(resid id, point start, point size, color backgc) {
 	fore = push_fore;
 }
 
+static void random_explosion() {
+	static fixn source[] = {FixBikeExplosion, FixExplosion, FixBigExplosion, FixHitSand};
+	//auto n = source[rand() % sizeof(source) / sizeof(source[0])];
+	auto n = FixHitSand;
+	add_area_effect(area_spot, n);
+}
+
 static void common_input() {
 	update_tick();
 	switch(hot.key) {
@@ -192,7 +200,7 @@ static void common_input() {
 	case 'A': area.set(area_spot, d100() < 60 ? CarRemains : AircraftRemains); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
-	case 'E': area.set(area_spot, Explosion); break;
+	case 'E': random_explosion(); break;
 	case 'F': area.set(area_spot, d100() < 60 ? Body : Bodies); break;
 	}
 }
@@ -367,7 +375,7 @@ static void paint_map_tiles() {
 		for(auto x = 0; x < area_screen_width; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
 			auto i = area.getframe(v);
-			if((current_tick / 300) % 2) {
+			if((animate_time / 300) % 2) {
 				if(map_alternate[i])
 					i = map_alternate[i];
 			}
@@ -389,7 +397,7 @@ static void paint_map_features() {
 	}
 }
 
-static void paint_platform(const sprite* ps, int frame, unsigned char direction) {
+static void paint_platform(const sprite* ps, int frame, unsigned short direction) {
 	switch(direction) {
 	case Up: image(ps, frame + 0, 0); break;
 	case RightUp: image(ps, frame + 1, 0); break;
@@ -408,11 +416,34 @@ static void paint_unit() {
 	paint_platform(gres(e.res), e.frame, p->param);
 }
 
-static void paint_effect() {
+static void paint_effect_fix() {
+	auto p = (draweffect*)last_object;
+	if(!p->param || p->start_time > animate_time)
+		return;
+	auto pf = bsdata<fixeffecti>::elements + p->param;
+	auto delay = pf->milliseconds;
+	if(!delay)
+		delay = 60;
+	auto frame = pf->frame;
+	auto frame_offset = (short unsigned)((animate_time - p->start_time) / delay);
+	if(frame_offset >= pf->count) {
+		if(pf->apply)
+			pf->apply();
+		if(pf->next) {
+			p->param = pf->next;
+			p->start_time = animate_time;
+			pf = bsdata<fixeffecti>::elements + pf->next;
+			frame = pf->frame;
+		} else {
+			p->clearobject();
+			return; // No render image
+		}
+	} else
+		frame += frame_offset;
+	image(gres(pf->rid), frame, 0);
 }
 
 static void paint_radar_screen() {
-
 }
 
 void paint_main_map() {
@@ -457,15 +488,15 @@ void show_scene(fnevent before_paint, fnevent input, void* focus) {
 void initialize_view(const char* title, fnevent main_scene) {
 	draw::create(-1, -1, 320, 200, 0, 32);
 	draw::setcaption(title);
-	draw::settimer(100);
+	draw::settimer(40);
 	set_font(FONT8);
 	fore = colors::white;
 	set_next_scene(main_scene);
 	run_next_scene();
 }
 
-BSDATA(drawtypei) = {
-	{"DrawUnit", paint_unit, 0, &bsdata<unit>::source, bsdata<unit>::elements},
-	{"DrawEffect", paint_effect},
+BSDATA(drawrenderi) = {
+	{"PaintUnit", bsdata<unit>::source, bsdata<unit>::elements, paint_unit},
+	{"PaintEffectFix", bsdata<draweffect>::source, bsdata<draweffect>::elements, paint_effect_fix},
 };
-BSDATAF(drawtypei)
+BSDATAF(drawrenderi)

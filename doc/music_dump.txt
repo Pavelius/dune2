@@ -1,0 +1,151 @@
+[None (0)]
+Filename string ref.    = <no reference>
+Track in this file      = 0
+
+[Bonus]
+Filename string ref.    = dune1
+Track in this file      = 2
+
+[Lose Ordos]
+Filename string ref.    = dune1
+Track in this file      = 3
+
+[Lose Harkonnen]
+Filename string ref.    = dune1
+Track in this file      = 4
+
+[Lose Atreides]
+Filename string ref.    = dune1
+Track in this file      = 5
+
+[Win Ordos]
+Filename string ref.    = dune17
+Track in this file      = 4
+
+[Win Harkonnen]
+Filename string ref.    = dune8
+Track in this file      = 3
+
+[Win Atreides]
+Filename string ref.    = dune8
+Track in this file      = 2
+
+[Idle 1]
+Filename string ref.    = dune1
+Track in this file      = 6
+
+[Idle 2]
+Filename string ref.    = dune2
+Track in this file      = 6
+
+[Idle 3]
+Filename string ref.    = dune3
+Track in this file      = 6
+
+[Idle 4]
+Filename string ref.    = dune4
+Track in this file      = 6
+
+[Idle 5]
+Filename string ref.    = dune5
+Track in this file      = 6
+
+[Idle 6]
+Filename string ref.    = dune6
+Track in this file      = 6
+
+[Idle 7]
+Filename string ref.    = dune9
+Track in this file      = 4
+
+[Idle 8]
+Filename string ref.    = dune9
+Track in this file      = 5
+
+[Idle 9]
+Filename string ref.    = dune18
+Track in this file      = 6
+
+[Attack 1]
+Filename string ref.    = dune10
+Track in this file      = 7
+
+[Attack 2]
+Filename string ref.    = dune11
+Track in this file      = 7
+
+[Attack 3]
+Filename string ref.    = dune12
+Track in this file      = 7
+
+[Attack 4]
+Filename string ref.    = dune13
+Track in this file      = 7
+
+[Attack 5]
+Filename string ref.    = dune14
+Track in this file      = 7
+
+[Attack 6]
+Filename string ref.    = dune15
+Track in this file      = 7
+
+[23]
+Filename string ref.    = dune1
+Track in this file      = 8
+
+[Brief Harkonnen]
+Filename string ref.    = dune7
+Track in this file      = 2
+
+[Brief Atreides]
+Filename string ref.    = dune7
+Track in this file      = 3
+
+[Brief Ordos]
+Filename string ref.    = dune7
+Track in this file      = 4
+
+[Intro]
+Filename string ref.    = dune0
+Track in this file      = 2
+
+[Menu]
+Filename string ref.    = dune7
+Track in this file      = 6
+
+[Conquest]
+Filename string ref.    = dune16
+Track in this file      = 7
+
+[Finale Harkonnen]
+Filename string ref.    = dune19
+Track in this file      = 4
+
+[Finale Atreides]
+Filename string ref.    = dune19
+Track in this file      = 2
+
+[Finale Ordos]
+Filename string ref.    = dune19
+Track in this file      = 3
+
+[Credits]
+Filename string ref.    = dune20
+Track in this file      = 2
+
+[Cutscene]
+Filename string ref.    = dune16
+Track in this file      = 8
+
+[35]
+Filename string ref.    = dune0
+Track in this file      = 3
+
+[Logos]
+Filename string ref.    = dune0
+Track in this file      = 4
+
+[37]
+Filename string ref.    = dune0
+Track in this file      = 5

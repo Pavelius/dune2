@@ -16,7 +16,7 @@ int main() {
 	srand(start_random_seed);
 	area_initialization();
 	music_initialize();
-	// song_play("introduction");
+	// song_play("ambient06");
 #ifdef _DEBUG
 	util_main();
 #endif // _DEBUG
