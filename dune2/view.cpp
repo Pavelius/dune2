@@ -18,6 +18,11 @@
 using namespace draw;
 
 static point drag_mouse_start;
+
+static color color_form = color(186, 190, 150);
+static color color_form_light = color(251, 255, 203);
+static color color_form_shadow = color(101, 101, 77);
+
 static unsigned long form_opening_tick;
 static unsigned long next_turn_tick;
 static unsigned long eye_clapping, eye_show_cursor;
@@ -76,6 +81,40 @@ static void paint_background(color v) {
 	caret.x = (getwidth() - 320) / 2;
 	caret.y = (getheight() - 200) / 2;
 	fore = push_fore;
+}
+
+static void form_frame(color light_left_up, color shadow_right_down) {
+	auto push_fore = fore;
+	auto push_caret = caret;
+	fore = light_left_up;
+	line(caret.x + width - 1, caret.y);
+	fore = shadow_right_down;
+	line(caret.x, caret.y + height - 1);
+	line(caret.x - (width - 1), caret.y);
+	fore = light_left_up;
+	line(caret.x, caret.y - (height - 2));
+	fore = light_left_up.mix(shadow_right_down, 128);
+	pixel(push_caret.x + width - 1, push_caret.y);
+	pixel(push_caret.x, push_caret.y + height - 1);
+	caret = push_caret;
+	fore = push_fore;
+}
+
+static void form_frame() {
+	auto push_fore = fore;
+	fore = color_form;
+	rectf();
+	fore = push_fore;
+}
+
+static void form_frame(int thickness) {
+	rectpush push;
+	while(thickness > 0) {
+		form_frame(color_form_light, color_form_shadow);
+		setoffset(1, 1);
+		thickness--;
+	}
+	form_frame();
 }
 
 struct pushscene : pushfocus {
@@ -521,7 +560,7 @@ static void paint_radar_screen() {
 	hot_mouse.x -= x1;
 	hot_mouse.y -= y1;
 	if((hot_mouse.x < 64 && hot_mouse.x > 0) && (hot_mouse.y < 64 && hot_mouse.y > 0)) {
-		if(hot.key==MouseLeft && hot.pressed)
+		if(hot.key == MouseLeft && hot.pressed)
 			execute(set_area_view, (long)(hot_mouse), 1);
 	}
 	fore = push_fore;
@@ -631,9 +670,37 @@ static void paint_game_map() {
 	clipping = push_clip;
 }
 
+static void paint_map_info_background() {
+	width = 64;
+	caret.x = getwidth() - width;
+	caret.y = 42;
+	height = getheight() - caret.y - 75;
+	form_frame(1);
+	setoffset(1, 1);
+}
+
+static void paint_unit_info() {
+	rectpush push;
+	auto push_fore = fore;
+	auto push_font = font;
+	font = gres(FONT8);
+	fore = color(69, 69, 52);
+	texta(last_unit->getname(), AlignCenter|TextMoveCaret);
+	font = push_font;
+	fore = push_fore;
+}
+
+static void paint_map_info() {
+	rectpush push;
+	paint_map_info_background();
+	if(last_unit)
+		paint_unit_info();
+}
+
 void paint_main_map() {
 	paint_background(SCREEN);
 	paint_game_map();
+	paint_map_info();
 	paint_radar_screen();
 	paint_radar_rect();
 	update_next_turn();

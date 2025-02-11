@@ -54,18 +54,14 @@ int draw::textw(int sym) {
 	return glyph_offset_width + glyph_width[(unsigned char)sym];
 }
 
-void draw_glyph_zoomed(int sym, int zoom) {
-}
-
-static void paint_glyph_shadowed(int x, int y, int y2, int width, unsigned char* line) {
+static void paint_glyph_shadow(unsigned char* line, int width, int height) {
 	// FONT3 - Monochrome.
 	// FONT6, FONT8  - Three colors: 1 - main, 2 - right shadow, 3 - left shadow
 	// FONT10 - Capital in other color. 15 - shadow, (12, 10, 8) Capital marked
 	// FONT16 - Two colors: 1 - main, 5 - second main, 6 - part shadow
 	auto scan_line = (width * 4 + 7) / 8;
 	auto main_fore = fore;
-	auto half_fore = fore_stroke.mix(fore, 128 + 64 + 32);
-	for(; y < y2; y++) {
+	for(auto y = 0; y < height; y++) {
 		for(int w = 0; w < width; w++) {
 			auto index = line[w / 2];
 			if(w & 1)
@@ -74,17 +70,30 @@ static void paint_glyph_shadowed(int x, int y, int y2, int width, unsigned char*
 				index &= 0x0F;
 			switch(index) {
 			case 1: fore = main_fore; break;
-			case 2: fore = fore_stroke; break;
-			case 3: fore = half_fore; break;
-			case 5: fore = color(200, 200, 50); break;
-			case 8: fore = colors::yellow; break;
-			case 9: fore = colors::green; break;
-			case 10: fore = colors::blue; break;
-			case 12: fore = colors::red; break;
-			case 14: fore = colors::gray; break;
+			case 2: case 3: fore = fore_stroke; break;
 			default: continue;
 			}
-			pixel(caret.x + w, y);
+			pixel(caret.x + w, caret.y + y);
+		}
+		line += scan_line;
+	}
+}
+
+static void paint_glyph_simple(unsigned char* line, int width, int height) {
+	auto scan_line = (width * 4 + 7) / 8;
+	auto main_fore = fore;
+	for(auto y = 0; y < height; y++) {
+		for(int w = 0; w < width; w++) {
+			auto index = line[w / 2];
+			if(w & 1)
+				index >>= 4;
+			else
+				index &= 0x0F;
+			switch(index) {
+			case 1: fore = main_fore; break;
+			default: continue;
+			}
+			pixel(caret.x + w, caret.y + y);
 		}
 		line += scan_line;
 	}
@@ -96,7 +105,12 @@ void draw::glyph(int sym, unsigned flags) {
 	auto glyph_data = (unsigned short*)f->ptr(f->OffsetsListOffset);
 	auto glyph_width = (unsigned char*)f->ptr(f->WidthsListOffset);
 	auto glyph_height = (unsigned char*)f->ptr(f->HeightsListOffset);
-	auto y1 = caret.y + glyph_height[sym * 2 + 0];
-	paint_glyph_shadowed(caret.y, y1, y1 + glyph_height[sym * 2 + 1], glyph_width[sym], f->ptr(glyph_data[sym]));
+	auto push_caret = caret;
+	caret.y += glyph_height[sym * 2 + 0];
+	if(flags & TextStroke)
+		paint_glyph_shadow(f->ptr(glyph_data[sym]), glyph_width[sym], glyph_height[sym * 2 + 1]);
+	else
+		paint_glyph_simple(f->ptr(glyph_data[sym]), glyph_width[sym], glyph_height[sym * 2 + 1]);
+	caret = push_caret;
 	fore = push_fore;
 }

@@ -16,6 +16,9 @@
     <Filter Include="doc">
       <UniqueIdentifier>{5cd25357-f75d-4f05-9ef0-4ee41b8f789b}</UniqueIdentifier>
     </Filter>
+    <Filter Include="locale">
+      <UniqueIdentifier>{38766d70-5434-4b29-ada1-8c316fe7f192}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="draw.cpp">
@@ -279,6 +282,9 @@
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">
       <Filter>doc</Filter>
+    </Text>
+    <Text Include="..\locale\en\units.txt">
+      <Filter>locale</Filter>
     </Text>
   </ItemGroup>
 </Project>

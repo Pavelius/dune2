@@ -1667,7 +1667,6 @@ void draw::texta(const char* string, unsigned state) {
 	auto push_caret = caret;
 	auto y2 = caret.y + height;
 	caret.y += alignedh1(string, state);
-	// auto y1 = caret.y;
 	if(state & TextSingleLine) {
 		auto push_clip = clipping; setclip(getrect());
 		caret.x = aligned(caret.x, width, state, draw::textw(string));
@@ -1686,7 +1685,8 @@ void draw::texta(const char* string, unsigned state) {
 			string = skiptr(string + c);
 		}
 	}
-	caret = push_caret;
+	if((state & TextMoveCaret)==0)
+		caret = push_caret;
 }
 
 int draw::hittest(int x, int hit_x, const char* p, int lenght) {

@@ -13,6 +13,8 @@ BSDATA(uniti) = {
 };
 assert_enum(uniti, AssaultTank)
 
+unit* last_unit;
+
 const uniti& unit::geti() const {
 	return bsdata<uniti>::elements[type];
 }
@@ -37,17 +39,16 @@ int	unit::getmaximum(statn v) const {
 	}
 }
 
-unit* add_unit(point pt, direction d, unitn id, const playeri* player) {
-	auto p = bsdata<unit>::addz();
-	p->render = p->renderindex();
-	p->screen = m2sc(pt);
-	p->position = pt;
-	p->order = pt;
-	p->type = id;
-	p->move_direction = d;
-	p->shoot_direction = d;
-	p->hits = p->getmaximum(Hits);
-	p->supply = p->getmaximum(Supply);
-	p->setplayer(player);
-	return p;
+void add_unit(point pt, direction d, unitn id, const playeri* player) {
+	last_unit = bsdata<unit>::addz();
+	last_unit->render = last_unit->renderindex();
+	last_unit->screen = m2sc(pt);
+	last_unit->position = pt;
+	last_unit->order = pt;
+	last_unit->type = id;
+	last_unit->move_direction = d;
+	last_unit->shoot_direction = d;
+	last_unit->hits = last_unit->getmaximum(Hits);
+	last_unit->supply = last_unit->getmaximum(Supply);
+	last_unit->setplayer(player);
 }

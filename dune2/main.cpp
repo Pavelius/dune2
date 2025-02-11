@@ -1,6 +1,8 @@
 #include "area.h"
 #include "music.h"
+#include "log.h"
 #include "rand.h"
+#include "stringbuilder.h"
 #include "timer.h"
 #include "view.h"
 
@@ -14,6 +16,9 @@ int main() {
 	start_random_seed = getcputime();
 	// start_random_seed = 1423089921;
 	srand(start_random_seed);
+	initialize_translation();
+	if(log::errors)
+		return -1;
 	area_initialization();
 	music_initialize();
 	// song_play("ambient06");

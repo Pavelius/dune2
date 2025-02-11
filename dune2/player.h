@@ -8,5 +8,6 @@ enum abilityn : unsigned char {
 struct abilityi : nameable {
 };
 struct playeri {
-	unsigned	abilities[Rounds + 1];
+	unsigned		abilities[Rounds + 1];
+	unsigned short	active_unit, active_platoon;
 };

@@ -49,7 +49,7 @@ enum image_flag_s {
 	TextStroke = 0x0080,
 	TextItalic = 0x0100,
 	TextBold = 0x0200,
-	TextUscope = 0x0400,
+	TextMoveCaret = 0x0400,
 	TextSingleLine = 0x0800,
 	AlignLeft = 0x0000,
 	AlignCenter = 0x1000,

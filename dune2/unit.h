@@ -29,7 +29,9 @@ struct unit : drawable {
 	playeri*		getplayer() const;
 	int				get(statn v) const { return geti().stats[v]; }
 	int				getmaximum(statn v) const;
+	const char*		getname() const { return geti().getname(); }
 	bool			ismoving() const { return position != order; }
 	void			setplayer(const playeri* v);
 };
-unit* add_unit(point pt, direction d, unitn id, const playeri* player);
+extern unit* last_unit;
+void add_unit(point pt, direction d, unitn id, const playeri* player);

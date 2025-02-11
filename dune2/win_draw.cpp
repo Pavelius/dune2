@@ -173,7 +173,7 @@ static const char* register_class(const char* class_name) {
 }
 
 static void fill_last_pixels() {
-	auto width_ns = window_surface.width;
+	// auto width_ns = window_surface.width;
 	if(canvas->width * scale_mult < window_surface.width) {
 		auto i = window_surface.width - canvas->width * scale_mult;
 		for(auto y = 0; y < window_surface.height; y++) {
@@ -181,6 +181,16 @@ static void fill_last_pixels() {
 			auto v = *p;
 			for(auto j = 1; j <= i; j++)
 				p[j] = v;
+		}
+	}
+	if(canvas->height * scale_mult < window_surface.height) {
+		auto i = window_surface.height - canvas->height * scale_mult;
+		auto s = window_surface.width * (window_surface.bpp / 8);
+		auto p = window_surface.ptr(0, canvas->height * scale_mult - 1);
+		auto pv = p;
+		for(auto j = 0; j < i; j++) {
+			p += window_surface.scanline;
+			memcpy(p, pv, s);
 		}
 	}
 }
