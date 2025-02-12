@@ -19,4 +19,3 @@ void paint_main_map_choose_terrain();
 void paint_mentat();
 void paint_mentat_silent();
 long show_scene(fnevent before_paint, fnevent input, void* focus);
-void set_font(resid v);

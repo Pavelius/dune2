@@ -200,6 +200,60 @@ static void raw832(unsigned char* d, int d_scan, unsigned char* s, int s_scan, i
 	}
 }
 
+static void raa432(int x1, int y1, unsigned char* s, int width, int height, unsigned flags) {
+	auto s_scan = (width * 4 + 7) / 8;
+	auto push_fore = fore;
+	auto fore_shadow = fore.mix(fore_stroke, 128);
+	auto fore_alternate = fore.mix(fore_stroke, 192);
+	for(auto y = 0; y < height; y++) {
+		for(int w = 0; w < width; w++) {
+			auto index = s[w / 2];
+			if(w & 1)
+				index >>= 4;
+			else
+				index &= 0x0F;
+			switch(index) {
+			default:
+				continue;
+			case 1:
+				fore = push_fore;
+				break;
+			case 2:
+				if((flags & (TextStroke | TextBold)) == 0)
+					continue;
+				fore = fore_stroke;
+				break;
+			case 3:
+				if((flags & (TextStroke | TextItalic)) == 0)
+					continue;
+				fore = fore_stroke;
+				break;
+			case 4: case 5: case 6: case 7:
+				fore = colors::blue;
+				break;
+			case 8: case 10: case 12:
+				fore = fore_alternate;
+				break;
+			//case 9: case 11: case 13:
+			//	fore = colors::green;
+			//	break;
+			case 14:
+				//if((flags & (TextStroke | TextBold)) == 0)
+				//	continue;
+				// fore = fore_shadow;
+				fore = colors::red;
+				break;
+			case 15:
+				fore = fore_shadow;
+				break;
+			}
+			pixel(x1 + w, y1 + y);
+		}
+		s += s_scan;
+	}
+	fore = push_fore;
+}
+
 static void raw832m(unsigned char* d, int d_scan, unsigned char* s, int s_scan, int width, int height, const color* pallette) {
 	const int cbd = 4;
 	while(height-- > 0) {
@@ -1601,9 +1655,7 @@ void draw::texta(const char* string, unsigned state) {
 			string = skiptr(string + c);
 		}
 	}
-	caret.x = push_caret.x;
-	if((state & TextMoveCaret)==0)
-		caret.y = push_caret.y;
+	caret = push_caret;
 }
 
 int draw::hittest(int x, int hit_x, const char* p, int lenght) {
@@ -1811,7 +1863,8 @@ void draw::image(int x, int y, const sprite* e, int id, int flags) {
 			ptr(clipping.x1, sy), ptr(clipping.x2, sy),
 			fore, (flags & TextItalic) != 0);
 		break;
-	case sprite::ALC4:
+	case sprite::RAA4:
+		raa432(x, y, s, f.sx, f.sy, flags);
 		break;
 	default:
 		break;

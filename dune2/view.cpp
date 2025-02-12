@@ -231,10 +231,6 @@ static bool mouse_hower(unsigned long duration = 1000, bool single_time = true) 
 	}
 }
 
-void set_font(resid v) {
-	font = gres(v);
-}
-
 static void make_screenshoot() {
 	auto index = get_file_number("screenshoots", "scr*.bmp");
 	char temp[260]; stringbuilder sb(temp);
@@ -243,23 +239,31 @@ static void make_screenshoot() {
 		draw::canvas->ptr(0, 0), canvas->width, canvas->height, canvas->bpp, canvas->scanline, 0);
 }
 
-static void paint_sprites(resid id, color border, point offset, int index, int& focus, int per_line, int image_flags) {
+static void paint_focus_rect(point size, color border, int focus, int origin, int per_line) {
+	focus -= origin;
+	if(focus < 0)
+		return;
+	rectpush push;
+	auto x = caret.x + (focus % per_line) * size.x - 1;
+	auto y = caret.y + (focus / per_line) * size.y - 1;
+	caret.x = x;
+	caret.y = y;
+	width = size.x + 2;
+	height = size.y + 2;
+	fore = border;
+	rectb();
+}
+
+static void paint_sprites(resid id, color border, point offset, int index, int per_line, int image_flags) {
 	auto p = gres(id);
 	if(!p)
 		return;
 	auto push_line = caret;
+	auto push_fore = fore;
 	auto count = per_line;
 	while(index < p->count) {
+		fore = colors::white;
 		image(p, index, image_flags);
-		if(focus == index) {
-			auto push_fore = fore;
-			auto push_caret = caret;
-			caret = caret - offset;
-			fore = border;
-			rectb();
-			caret = push_caret;
-			fore = push_fore;
-		}
 		index++;
 		caret.x += width;
 		if((--count) == 0) {
@@ -270,13 +274,88 @@ static void paint_sprites(resid id, color border, point offset, int index, int& 
 		if((caret.y + height) > getheight())
 			break;
 	}
+	fore = push_fore;
+	caret = push_line;
+}
+
+static void paint_zoomed(int x0, int y0, int width, int height, int x1, int y1, int zoom) {
+	rectpush push;
+	auto push_fore = fore;
+	auto x2 = x0 + width;
+	auto y2 = y0 + height;
+	draw::width = zoom - 1;
+	draw::height = zoom - 1;
+	for(auto y = y0; y < y2; y++) {
+		for(auto x = x0; x < x2; x++) {
+			fore = *((color*)canvas->ptr(x, y));
+			caret.x = x1 + (x - x0) * zoom;
+			caret.y = y1 + (y - y0) * zoom;
+			rectf();
+		}
+	}
+	fore = push_fore;
+}
+
+static void show_font(resid id, point start, point size, color backgc, color border) {
+	rectpush push;
+	auto push_fore = fore;
+	auto push_font = font; font = gres(FONT6);
+	int focus = 0;
+	auto maximum = gres(id)->count;
+	auto per_line = 10;
+	auto maximum_height = (getheight() / size.y);
+	auto origin = 0;
+	auto image_flags = 0;
+	while(ismodal()) {
+		if(focus < 0)
+			focus = 0;
+		else if(focus > maximum - 1)
+			focus = maximum - 1;
+		if(focus < origin)
+			origin = (focus / per_line) * per_line;
+		else if(focus > origin + (maximum_height)*per_line)
+			origin = ((focus - ((maximum_height - 1) * per_line)) / per_line) * per_line;
+		paint_background(backgc);
+		caret.y = 4;
+		width = size.x;
+		height = size.y;
+		caret = caret + start;
+		fore = colors::white;
+		paint_sprites(id, border, start, origin, per_line, image_flags);
+		paint_zoomed(
+			caret.x + ((focus - origin) % per_line) * size.x,
+			caret.y + ((focus - origin) / per_line) * size.y,
+			size.x, size.y,
+			caret.x + size.x * per_line + 2, caret.y, 4);
+		paint_focus_rect(size, border, focus, origin, per_line);
+		caret = {1, getheight() - 8};
+		auto& f = gres(id)->get(focus);
+		auto pf = const_cast<sprite::frame*>(&f);
+		text(str("index %1i (size %2i %3i center %4i %5i)", focus, f.sx, f.sy, f.ox, f.oy), -1, TextBold);
+		domodal();
+		switch(hot.key) {
+		case KeyRight: focus++; break;
+		case KeyLeft: focus--; break;
+		case KeyDown: focus += per_line; break;
+		case KeyUp: focus -= per_line; break;
+		case KeyEscape: breakmodal(0); break;
+		case 'A': pf->ox--; break;
+		case 'S': pf->ox++; break;
+		case 'W': pf->oy--; break;
+		case 'Z': pf->oy++; break;
+		case 'H': image_flags ^= ImageMirrorH; break;
+		case 'V': image_flags ^= ImageMirrorV; break;
+		}
+		focus_input();
+	}
+	font = push_font;
+	fore = push_fore;
 }
 
 static void show_sprites(resid id, point start, point size, color backgc, color border) {
 	rectpush push;
 	auto push_fore = fore;
-	auto push_font = font;
-	set_font(FONT6);
+	auto push_font = font; font = gres(FONT6);
 	int focus = 0;
 	auto maximum = gres(id)->count;
 	auto per_line = 320 / size.x;
@@ -297,7 +376,8 @@ static void show_sprites(resid id, point start, point size, color backgc, color 
 		height = size.y;
 		caret = caret + start;
 		fore = colors::white;
-		paint_sprites(id, border, start, origin, focus, per_line, image_flags);
+		paint_sprites(id, border, start, origin, per_line, image_flags);
+		paint_focus_rect(size, border, focus, origin, per_line);
 		caret = {1, getheight() - 8};
 		auto& f = gres(id)->get(focus);
 		auto pf = const_cast<sprite::frame*>(&f);
@@ -338,6 +418,7 @@ static void common_input() {
 	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
+	case Ctrl + 'F': show_font(FONT10, {4, 4}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
@@ -785,7 +866,7 @@ static void paint_unit_panel() {
 	paint_health_bar(last_unit->hits, last_unit->getmaximum(Hits));
 	caret.y += 12;
 	// paint_shoots(25, 8); // 8 maximum. Can track
-	texta("Dmg", AlignCenter | TextMoveCaret | TextSingleLine);
+	texta("Dmg", AlignCenter | TextSingleLine);
 	caret = push_caret;
 	width = push_width;
 	caret.y += 24;
@@ -793,7 +874,7 @@ static void paint_unit_panel() {
 
 static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
 	auto y2 = caret.y + height;
-	texta(getnm(id), AlignCenter | TextSingleLine | TextMoveCaret);
+	texta(getnm(id), AlignCenter | TextSingleLine); caret.y += texth();
 	image(gres(SHAPES), avatar, 0);
 	caret.y += 32; height = y2 - caret.y - texth() - 3;
 	// rectb_black();
@@ -831,7 +912,7 @@ static void paint_unit_info() {
 	if(!last_unit)
 		return;
 	rectpush push;
-	texta(last_unit->getname(), AlignCenter | TextMoveCaret | TextSingleLine);
+	texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth();
 	paint_unit_panel();
 	caret.y += 1;
 	paint_unit_orders();
@@ -898,7 +979,7 @@ void initialize_view(const char* title, fnevent main_scene) {
 	draw::setcaption(title);
 	draw::settimer(40);
 	draw::pbeforemodal = main_beforemodal;
-	set_font(FONT8);
+	font = gres(FONT6);
 	fore = colors::white;
 	set_next_scene(main_scene);
 	run_next_scene();

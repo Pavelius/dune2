@@ -49,7 +49,6 @@ enum image_flag_s {
 	TextStroke = 0x0080,
 	TextItalic = 0x0100,
 	TextBold = 0x0200,
-	TextMoveCaret = 0x0400,
 	TextSingleLine = 0x0800,
 	AlignLeft = 0x0000,
 	AlignCenter = 0x1000,
@@ -78,7 +77,7 @@ struct pma {
 	const char*			getstring(int id) const;
 };
 struct sprite : pma {
-	enum encodes { Auto, RAW, RLE, ALC, RAW8, RLE8, ALC4, RAW1 };
+	enum encodes { Auto, RAW, RLE, ALC, RAW8, RLE8, RAA4, RAW1 };
 	struct frame {
 		short 			sx, sy;
 		short			ox, oy;
@@ -268,7 +267,6 @@ void cbsetptr();
 void doredraw();
 void fire(bool run, fnevent proc, long value = 0, long value2 = 0, const void* object = 0);
 long getresult();
-void initialize(const char* title);
 bool isclipped(int size);
 bool ismodal();
 void* scene(fnevent proc);
