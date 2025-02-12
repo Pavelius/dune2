@@ -2,3 +2,5 @@ ChooseTarget: Target
 ChooseTargetInfo: Choose move target
 
 AssaultTank: Assault Tank
+Tank: Tank
+Trike: Trike

@@ -10,14 +10,17 @@
 #include "pushvalue.h"
 #include "rand.h"
 #include "resid.h"
+#include "squad.h"
 #include "timer.h"
 #include "unit.h"
+#include "unita.h"
 #include "view.h"
 #include "view_focus.h"
 
 using namespace draw;
 
-static point drag_mouse_start;
+static point drag_mouse_start, drag_mouse_finish;
+static bool drag_begin;
 
 static color color_form = color(186, 190, 150);
 static color color_form_light = color(251, 255, 203);
@@ -196,12 +199,25 @@ static point same_point(point v) {
 	return {v.x / 4, v.y / 4};
 }
 
-static bool mouse_dragged(point mouse) {
-	if(!hot.pressed)
-		drag_mouse_start = point(-10000, -10000);
-	else if(drag_mouse_start == point(-10000, -10000))
-		drag_mouse_start = mouse;
-	else
+static bool mouse_dragged(point mouse, fnevent dropped) {
+	switch(hot.key) {
+	case MouseLeft:
+		if(hot.pressed) {
+			if(!drag_begin) {
+				drag_begin = true;
+				drag_mouse_start = mouse;
+			}
+		} else {
+			if(drag_begin) {
+				drag_begin = false;
+				drag_mouse_finish = mouse;
+				execute(dropped);
+			} else
+				drag_mouse_start = point(-10000, -10000);
+		}
+		break;
+	}
+	if(drag_begin)
 		return same_point(drag_mouse_start) != same_point(mouse);
 	return false;
 }
@@ -576,14 +592,6 @@ static void paint_area_box() {
 	rectb();
 }
 
-static void handle_main_map_mouse_input() {
-	switch(hot.key) {
-	case 'C':
-		execute(set_area_view, (long)area_spot, 1);
-		break;
-	}
-}
-
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
@@ -780,35 +788,67 @@ static void rectb_alpha() {
 	alpha = push_alpha;
 }
 
-static void handle_mouse_select() {
-	auto area_spot = i2s(hot.mouse);
-	if(mouse_dragged(area_spot)) {
-		rectpush push;
-		auto start = s2i(drag_mouse_start);
-		caret = hot.mouse;
-		width = start.x - caret.x;
-		height = start.y - caret.y;
-		rectb_alpha();
+static void selection_rect_dropped(const rect& rc) {
+	human_selected.clear();
+	human_selected.select(player, rc);
+}
+
+static void selection_by_mouse() {
+	human_selected.clear();
+	human_selected.add((uniti*)hot.object);
+}
+
+static void selection_rect_dropped() {
+	rect rc;
+	rc.x1 = drag_mouse_start.x;
+	rc.y1 = drag_mouse_start.y;
+	rc.x2 = drag_mouse_finish.x;
+	rc.y2 = drag_mouse_finish.y;
+	rc.normalize();
+	selection_rect_dropped(rc);
+}
+
+static void rectb_alpha_drag() {
+	rectpush push;
+	auto start = s2i(drag_mouse_start);
+	caret = hot.mouse;
+	width = start.x - caret.x;
+	height = start.y - caret.y;
+	rectb_alpha();
+}
+
+static void input_game_map() {
+	if(!hot.mouse.in(area_screen))
+		return;
+	switch(hot.key) {
+	case MouseLeft:
+		if(hot.pressed) {
+			auto p = find_unit(area_spot);
+			if(p)
+				execute(selection_by_mouse, 0, 0, p);
+		}
+		break;
+	case 'C':
+		execute(set_area_view, (long)area_spot, 1);
+		break;
 	}
+	if(mouse_dragged(i2s(hot.mouse), selection_rect_dropped))
+		rectb_alpha_drag();
 }
 
 static void paint_game_map() {
 	auto push_clip = clipping; setclip(area_screen);
-	auto need_check_corner_slice = false;
 	camera = m2s(area_origin);
 	if(hot.mouse.in(area_screen)) {
 		area_spot.x = (hot.mouse.x - area_screen.x1) / area_tile_width + area_origin.x;
 		area_spot.y = (hot.mouse.y - area_screen.y1) / area_tile_height + area_origin.y;
-		need_check_corner_slice = true;
-		handle_main_map_mouse_input();
 	} else
 		area_spot = 0xFFFF;
 	paint_map_tiles();
 	paint_map_features();
 	paint_objects();
-	if(need_check_corner_slice) {
+	if(area.isvalid(area_spot)) {
 		check_mouse_corner_slice();
-		handle_mouse_select();
 	}
 	paint_main_map_debug();
 	clipping = push_clip;
@@ -909,14 +949,17 @@ static void paint_unit_orders() {
 }
 
 static void paint_unit_info() {
-	if(!last_unit)
-		return;
-	rectpush push;
-	texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth();
-	paint_unit_panel();
-	caret.y += 1;
-	paint_unit_orders();
-	caret.y += 1;
+	if(human_selected.count == 1) {
+		auto push_unit = last_unit;
+		last_unit = human_selected[0];
+		rectpush push;
+		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth();
+		paint_unit_panel();
+		caret.y += 1;
+		paint_unit_orders();
+	} else {
+
+	}
 }
 
 static void paint_map_info(fnevent proc) {
@@ -933,6 +976,7 @@ void paint_main_map() {
 	paint_background(SCREEN);
 	paint_game_map();
 	paint_map_info(paint_unit_info);
+	input_game_map();
 	paint_radar_screen();
 	paint_radar_rect();
 	update_next_turn();

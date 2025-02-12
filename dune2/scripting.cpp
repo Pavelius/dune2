@@ -73,7 +73,7 @@ void human_unit_move() {
 	auto target = choose_terrain();
 	if(!area.isvalid(target))
 		return;
-	last_unit->set(target);
+	last_unit->order = target;
 }
 
 void human_unit_stop() {

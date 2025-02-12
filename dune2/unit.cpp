@@ -1,5 +1,6 @@
 #include "area.h"
 #include "bsdata.h"
+#include "squad.h"
 #include "unit.h"
 #include "view.h"
 
@@ -51,9 +52,37 @@ void add_unit(point pt, direction d, unitn id, const playeri* player) {
 	last_unit->position = pt;
 	last_unit->order = pt;
 	last_unit->type = id;
+	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;
 	last_unit->shoot_direction = d;
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->supply = last_unit->getmaximum(Supply);
 	last_unit->setplayer(player);
+}
+
+unit* find_unit(point v) {
+	for(auto& e : bsdata<unit>()) {
+		if(e && e.position == v)
+			return &e;
+	}
+	return 0;
+}
+
+void blockunits(const unit* exclude) {
+	for(auto& e : bsdata<unit>()) {
+		if(e && &e != exclude)
+			path_map[e.position.y][e.position.x] = BlockArea;
+	}
+}
+
+direction unit::needmove() const {
+	if(!ismoving())
+		return Center;
+	clearpath();
+	flag32 flags;
+	flags.set(Mountain);
+	area.blockland(flags);
+	blockunits(this);
+	area.makewave(order);
+	return area.moveto(position, move_direction);
 }

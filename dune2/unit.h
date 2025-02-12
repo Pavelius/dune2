@@ -11,6 +11,7 @@ enum unitn : unsigned char {
 enum statn : unsigned char {
 	Hits, Damage, Attacks, Speed, Supply, Armor,
 };
+enum squadn : unsigned char;
 struct stati : nameable {
 };
 struct uniti : nameable {
@@ -22,6 +23,7 @@ struct unit : drawable {
 	explicit operator bool() const { return hits > 0; }
 	point			position, order;
 	unitn			type;
+	squadn			squad;
 	direction		move_direction, shoot_direction;
 	unsigned char	player;
 	short			hits, supply;
@@ -31,8 +33,12 @@ struct unit : drawable {
 	int				getmaximum(statn v) const;
 	const char*		getname() const { return geti().getname(); }
 	bool			ismoving() const { return position != order; }
+	direction		needmove() const;
 	void			set(point v);
 	void			setplayer(const playeri* v);
 };
 extern unit *last_unit, *spot_unit;
+
 void add_unit(point pt, direction d, unitn id, const playeri* player);
+void blockunits();
+unit* find_unit(point s);

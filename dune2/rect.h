@@ -19,6 +19,7 @@ struct rect {
 	bool				intersect(const rect& rc) const { return x1<rc.x2 && x2>rc.x1 && y1<rc.y2 && y2>rc.y1; }
 	int					left() const { return x1 < x2 ? x1 : x2; }
 	void				move(int x, int y) { x1 += x; x2 += x; y1 += y; y2 += y; }
+	void				normalize();
 	void				offset(int x, int y) { x1 += x; x2 -= x; y1 += y; y2 -= y; }
 	void				offset(int n) { offset(n, n); }
 	int					right() const { return x1 > x2 ? x1 : x2; }

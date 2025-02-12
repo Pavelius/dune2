@@ -13,10 +13,13 @@ static terrainn map_terrain[area_frame_maximum];
 static featuren map_features[area_frame_maximum];
 static unsigned char map_count[area_frame_maximum];
 unsigned short map_alternate[area_frame_maximum];
+unsigned short path_map[areai::my][areai::mx];
 
 static point stack[256 * 16];
 static size_t push_stack, pop_stack;
 direction all_strait_directions[4] = {Up, Right, Down, Left};
+direction all_diagonal_directions[4] = {RightUp, RightDown, LeftDown, LeftUp};
+direction all_directions[] = {Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp};
 
 static point pop_value() {
 	if(pop_stack >= sizeof(stack) / sizeof(stack[0]))
@@ -438,4 +441,73 @@ direction to(direction d, direction s) {
 		}
 	default: return Center;
 	}
+}
+
+void clearpath() {
+	memset(path_map, 0, sizeof(path_map));
+}
+
+void areai::blockland(flag32 terrain) const {
+	for(auto y = 0; y < maximum.y; y++) {
+		for(auto x = 0; x < maximum.x; x++) {
+			auto t = get(point(x, y));
+			if(terrain.is(t) || isbuilding(point(x, y)))
+				path_map[y][x] = BlockArea;
+		}
+	}
+}
+
+void areai::makewave(point start) const {
+	if(!isvalid(start))
+		return;
+	clear_stack();
+	push_value(start);
+	path_map[start.y][start.x] = 1;
+	while(stack_valid()) {
+		auto vc = pop_value();
+		auto cost = path_map[vc.y][vc.x] + 4;
+		if(cost >= 0xFF00)
+			break;
+		for(auto d : all_strait_directions) {
+			auto v = to(vc, d);
+			if(!isvalid(v))
+				continue;
+			auto a = path_map[v.y][v.x];
+			if(a != BlockArea && (!a || cost < a)) {
+				push_value(v);
+				path_map[v.y][v.x] = cost;
+			}
+		}
+		cost += 1;
+		for(auto d : all_diagonal_directions) {
+			auto v = to(vc, d);
+			if(!isvalid(v))
+				continue;
+			auto a = path_map[v.y][v.x];
+			if(a != BlockArea && (!a || cost < a)) {
+				push_value(v);
+				path_map[v.y][v.x] = cost;
+			}
+		}
+	}
+}
+
+direction areai::moveto(point start, direction wanted_direction) const {
+	short unsigned current_cost = 0xFFFF;
+	direction current_direction = Center;
+	for(auto d : all_directions) {
+		auto v = to(start, d);
+		if(!isvalid(start))
+			continue;
+		auto cost = path_map[v.y][v.x];
+		if(cost == BlockArea)
+			continue;
+		if(current_cost == BlockArea
+			|| current_cost > cost
+			|| (current_cost == cost && current_direction == wanted_direction)) {
+			current_cost = cost;
+			current_direction = d;
+		}
+	}
+	return current_direction;
 }

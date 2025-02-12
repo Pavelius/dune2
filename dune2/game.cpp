@@ -25,9 +25,22 @@ static void update_area_decoy() {
 			area.decoy(point(x, y));
 }
 
+static void update_all_units() {
+	for(auto& e : bsdata<unit>()) {
+		auto d = e.needmove();
+		if(d != Center) {
+			auto v = to(e.position, d);
+			e.move_direction = d;
+			e.position = v;
+			e.screen = m2sc(v);
+		}
+	}
+}
+
 void update_game_turn() {
 	game.turn++;
 	// Some visual effect
+	update_all_units();
 	switch(game.turn % 5) {
 	case 0: update_standing_units(); break;
 	case 1: update_area_decoy(); break;

@@ -9,6 +9,7 @@
 const int area_tile_width = 16;
 const int area_tile_height = 16;
 const int area_frame_maximum = 389;
+const unsigned short BlockArea = 0xFFFF;
 
 struct areai {
 	typedef void(*fnsetarea)(point v, int value);
@@ -17,6 +18,7 @@ struct areai {
 	point			maximum;
 	void			clear();
 	point			correct(point v) const;
+	void			blockland(flag32 terrain) const;
 	void			decoy(point v);
 	terrainn		get(point v) const;
 	featuren		getfeature(point v) const;
@@ -28,6 +30,8 @@ struct areai {
 	bool			is(point v, terrainn t) const;
 	bool			isbuilding(point v) const;
 	bool			isn(point v, terrainn t) const;
+	void			makewave(point v) const;
+	direction		moveto(point start, direction wanted_direction = Center) const;
 	void			set(point v, terrainn t);
 	void			set(point v, featuren t, int ft = 0);
 	void			set(point v, shapen t, short unsigned* frame_list);
@@ -47,12 +51,15 @@ extern point area_spot;
 extern rect area_screen;
 extern direction all_strait_directions[4];
 extern unsigned short map_alternate[area_frame_maximum];
+extern unsigned short path_map[areai::my][areai::mx];
 
 void area_initialization();
+void clearpath();
 
 point getpoint(direction d);
 inline point m2s(point v) { return point(v.x * area_tile_width, v.y * area_tile_height); }
 inline point m2sc(point v) { return point(v.x * area_tile_width + area_tile_width / 2, v.y * area_tile_height + area_tile_height / 2); }
 inline point s2m(point v) { return point(v.x / area_tile_width, v.y / area_tile_height); }
 inline point to(point v, direction d) { return v + getpoint(d); }
+inline rect s2r(point s) { return {s.x, s.y, s.x + area_tile_width, s.y + area_tile_height}; }
 direction to(direction d, direction s);

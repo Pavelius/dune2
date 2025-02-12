@@ -147,6 +147,18 @@
     <ClCompile Include="fix.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="collection.cpp">
+      <Filter>support</Filter>
+    </ClCompile>
+    <ClCompile Include="squad.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="rect.cpp">
+      <Filter>support</Filter>
+    </ClCompile>
+    <ClCompile Include="unita.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -276,6 +288,15 @@
       <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="fix.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="collection.h">
+      <Filter>support</Filter>
+    </ClInclude>
+    <ClInclude Include="unita.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="squad.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>
