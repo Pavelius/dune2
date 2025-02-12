@@ -137,6 +137,7 @@
     <ClCompile Include="building.cpp" />
     <ClCompile Include="collection.cpp" />
     <ClCompile Include="color.cpp" />
+    <ClCompile Include="direction.cpp" />
     <ClCompile Include="draw.cpp" />
     <ClCompile Include="drawable.cpp" />
     <ClCompile Include="draw_text.cpp" />

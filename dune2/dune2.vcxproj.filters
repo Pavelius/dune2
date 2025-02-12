@@ -162,6 +162,9 @@
     <ClCompile Include="movement.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="direction.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

@@ -14,6 +14,7 @@ void human_unit_attack();
 void human_unit_move();
 void human_unit_stop();
 void initialize_view(const char* title, fnevent main_scene);
+void mouse_unit_move();
 void paint_main_map();
 void paint_main_map_choose_terrain();
 void paint_mentat();

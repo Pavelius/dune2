@@ -304,20 +304,6 @@ void areai::setcamera(point v, bool center_view) {
 	area_origin.y = (char)y;
 }
 
-point getpoint(direction d) {
-	switch(d) {
-	case Left: return {-1, 0};
-	case LeftUp: return {-1, -1};
-	case LeftDown: return {-1, 1};
-	case Right: return {1, 0};
-	case RightUp: return {1, -1};
-	case RightDown: return {1, 1};
-	case Up: return {0, -1};
-	case Down: return {0, 1};
-	default: return {0, 0};
-	}
-}
-
 void areai::set(rect r, fnsetarea proc, int value) {
 	for(auto y = r.y1; y <= r.y2; y++) {
 		for(auto x = r.x1; x <= r.x2; x++) {
@@ -411,36 +397,6 @@ void areai::set(point v, shapen t, short unsigned* frame_list) {
 		if(!isvalid(n))
 			continue;
 		update(n);
-	}
-}
-
-direction to(direction d, direction s) {
-	switch(s) {
-	case Left:
-		switch(d) {
-		case Left: return LeftDown;
-		case LeftUp: return Left;
-		case Up: return LeftUp;
-		case RightUp: return Up;
-		case Right: return RightUp;
-		case RightDown: return Right;
-		case Down: return RightDown;
-		case LeftDown: return Down;
-		default: return Center;
-		}
-	case Right:
-		switch(d) {
-		case Left: return LeftUp;
-		case LeftUp: return Up;
-		case Up: return RightUp;
-		case RightUp: return Right;
-		case Right: return RightDown;
-		case RightDown: return Down;
-		case Down: return LeftDown;
-		case LeftDown: return Left;
-		default: return Center;
-		}
-	default: return Center;
 	}
 }
 

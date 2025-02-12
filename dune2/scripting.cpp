@@ -1,6 +1,7 @@
 #include "area.h"
 #include "building.h"
 #include "bsdata.h"
+#include "draw.h"
 #include "fraction.h"
 #include "pushvalue.h"
 #include "resid.h"
@@ -8,6 +9,7 @@
 #include "slice.h"
 #include "timer.h"
 #include "unit.h"
+#include "unita.h"
 #include "view.h"
 
 static void check_surrounded(point v, terrainn t, terrainn t1) {
@@ -73,7 +75,18 @@ void human_unit_move() {
 	auto target = choose_terrain();
 	if(!area.isvalid(target))
 		return;
-	last_unit->order = target;
+	last_unit->move(target);
+}
+
+void mouse_unit_move() {
+	auto v = (point)draw::hot.param;
+	auto p = find_unit(v);
+	if(p) {
+		// Enemy unit spotted?
+	} else {
+		for(auto p : human_selected)
+			p->move(v);
+	}
 }
 
 void human_unit_stop() {

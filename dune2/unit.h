@@ -26,9 +26,10 @@ struct unit : drawable {
 	point			position, order;
 	unitn			type;
 	squadn			squad;
-	direction		move_direction, shoot_direction;
+	direction		move_direction, shoot_direction, path_direction;
 	unsigned char	player;
 	short			hits, supply;
+	unsigned long	action_time; // Start animation
 	//void			attack();
 	void			blockunits() const;
 	const uniti&	geti() const;
@@ -36,13 +37,15 @@ struct unit : drawable {
 	int				get(statn v) const { return geti().stats[v]; }
 	int				getmaximum(statn v) const;
 	const char*		getname() const { return geti().getname(); }
-	bool			ismoving() const { return position != order; }
-	//void			move();
-	direction		needmove() const;
+	int				getspeed() const;
+	bool			ismoveorder() const { return position != order; }
+	bool			isturret() const { return geti().frame_shoot != 0; }
+	void			move(point v);
 	//void			reatreat();
 	void			set(point v);
 	void			setplayer(const playeri* v);
 	void			stop();
+	void			update();
 };
 extern unit *last_unit, *spot_unit;
 

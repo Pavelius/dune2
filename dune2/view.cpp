@@ -27,7 +27,7 @@ static color color_form_light = color(251, 255, 203);
 static color color_form_shadow = color(101, 101, 77);
 
 static unsigned long form_opening_tick;
-static unsigned long next_turn_tick;
+static unsigned long next_time_tick;
 static unsigned long eye_clapping, eye_show_cursor;
 unsigned long animate_time;
 resid mentat_subject;
@@ -50,11 +50,15 @@ static void update_tick() {
 }
 
 static void update_next_turn() {
-	if(!next_turn_tick || (next_turn_tick < animate_time && (animate_time - next_turn_tick) >= 3000))
-		next_turn_tick = animate_time;
-	while(next_turn_tick < animate_time) {
-		next_turn_tick += 1000;
-		update_game_turn();
+	if(!next_time_tick)
+		next_time_tick = animate_time;
+	if(next_time_tick >= animate_time)
+		return;
+	auto delta = animate_time - next_time_tick;
+	next_time_tick = animate_time;
+	if(delta < 1000) { // Check if pause will be pressed
+		game.time += delta;
+		update_game_time();
 	}
 }
 
@@ -645,6 +649,12 @@ static void paint_platform(const sprite* ps, int frame, direction d) {
 	}
 }
 
+static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction) {
+	paint_platform(gres(e.res), e.frame, move_direction);
+	if(e.frame_shoot)
+		paint_platform(gres(e.res), e.frame_shoot, shoot_direction);
+}
+
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	auto& e = p->geti();
@@ -793,9 +803,7 @@ static void selection_rect_dropped(const rect& rc) {
 	human_selected.select(player, rc);
 }
 
-static void selection_by_mouse() {
-	human_selected.clear();
-	human_selected.add((uniti*)hot.object);
+static void attack_by_mouse() {
 }
 
 static void selection_rect_dropped() {
@@ -825,13 +833,10 @@ static void input_game_map() {
 	if(!hot.mouse.in(area_screen))
 		return;
 	switch(hot.key) {
-	//case MouseLeft:
-	//	if(hot.pressed) {
-	//		auto p = find_unit(area_spot);
-	//		if(p)
-	//			execute(selection_by_mouse, 0, 0, p);
-	//	}
-	//	break;
+	case MouseRight:
+		if(hot.pressed)
+			execute(mouse_unit_move, (long)area_spot);
+		break;
 	case 'C':
 		execute(set_area_view, (long)area_spot, 1);
 		break;
@@ -962,7 +967,17 @@ static void paint_unit_info() {
 		caret.y += 1;
 		paint_unit_orders();
 	} else {
-
+		auto push_caret = caret;
+		caret = caret + point(6, 8);
+		for(auto p : human_selected) {
+			paint_unit(p->geti(), Up, Up);
+			caret.x += 16;
+			if(caret.x >= clipping.x2) {
+				caret.x = push_caret.x;
+				caret.y += 16;
+			}
+		}
+		caret = push_caret;
 	}
 }
 
