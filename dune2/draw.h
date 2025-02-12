@@ -78,7 +78,7 @@ struct pma {
 	const char*			getstring(int id) const;
 };
 struct sprite : pma {
-	enum encodes { Auto, RAW, RLE, ALC, RAW8, RLE8, ALC8, RAW1 };
+	enum encodes { Auto, RAW, RLE, ALC, RAW8, RLE8, ALC4, RAW1 };
 	struct frame {
 		short 			sx, sy;
 		short			ox, oy;
@@ -241,10 +241,6 @@ void				setpos(int x, int y);
 void				setpos(int x, int y, int width, int height);
 void				settimer(unsigned milleseconds);
 const char*			skiptr(const char* string);
-void				stroke(int x, int y, const sprite* e, int id, int flags);
-void				strokeactive();
-void				strokeborder();
-void				strokeline();
 void				strokeout(fnevent proc, int dx = 0);
 void				syscursor(bool enable);
 void				text(const char* string, int count = -1, unsigned flags = 0);
@@ -252,9 +248,6 @@ void				texta(const char* string, unsigned state = 0);
 void				textas(const char* string);
 void				textc(const char* string, int count = -1, unsigned flags = 0);
 int					textbc(const char* string, int width, bool* line_feed = 0);
-void				textf(const char* string);
-void				textf(const char* string, int& cashe_origin, int& cashe_string);
-void				textfs(const char* string);
 int					texth();
 int					texth(const char* string, int width);
 int					textw(int sym);
@@ -263,14 +256,6 @@ int					textw(rect& rc, const char* string);
 void				updatewindow();
 void				write(const char* url, unsigned char* bits, int width, int height, int bpp, int scanline, color* pallette);
 void				vertical(fnevent proc);
-}
-namespace draw {
-struct awindowi {
-	int			x, y, width, height;
-	int			header_width;
-	unsigned	flags;
-};
-extern awindowi awindow;
 }
 namespace draw {
 void breakmodal(long result);
