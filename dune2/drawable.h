@@ -6,12 +6,14 @@
 typedef void(*fnevent)();
 
 struct draworder;
+struct drawrenderi;
 struct drawable {
 	point			screen; // Drawing screen position
 	unsigned char	render; // Drawing render index
 	unsigned short	param; // Painting frame and other parameters (2 byte)
 	draworder*		animate(point finish, unsigned long start_time); // Move to position
 	void			clearobject(); // Unsafe, but work on non-virtual classes if you define `clear` proc.
+	const drawrenderi& getrender() const;
 	unsigned char	renderindex() const; // Calculate render index
 	unsigned short	objectindex() const;
 };
@@ -26,6 +28,7 @@ struct draworder {
 	unsigned long	start_time;
 	explicit operator bool() const { return start_time != 0; }
 	drawable*		get() const;
+	const drawrenderi& getrender() const;
 };
 struct drawrenderi {
 	const char*		id; // Object name

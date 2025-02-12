@@ -13,7 +13,7 @@ BSDATA(uniti) = {
 };
 assert_enum(uniti, AssaultTank)
 
-unit* last_unit;
+unit *last_unit, *spot_unit;
 
 const uniti& unit::geti() const {
 	return bsdata<uniti>::elements[type];
@@ -37,6 +37,11 @@ int	unit::getmaximum(statn v) const {
 	case Hits: case Supply: return get(v) * 10;
 	default: return 0;
 	}
+}
+
+void unit::set(point v) {
+	position = v;
+	screen = m2sc(v);
 }
 
 void add_unit(point pt, direction d, unitn id, const playeri* player) {

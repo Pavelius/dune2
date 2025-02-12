@@ -9,7 +9,7 @@ BSDATAC(draweffect, 1024)
 using namespace draw;
 
 typedef adat<drawable*, 256> drawablea;
-drawable* last_object;
+drawable *last_object;
 
 void add_effect(point screen, short unsigned param, unsigned long start_time) {
 	auto p = bsdata<draweffect>::addz();
@@ -89,7 +89,7 @@ void drawable::clearobject() {
 	if(render == 0xFF)
 		return; // Not drawable object;
 	auto push = last_object; last_object = this;
-	auto& e = bsdata<drawrenderi>::elements[render];
+	auto& e = getrender();
 	auto object_index = e.source.indexof(this);
 	auto object_ptr = e.source.ptr(object_index); // To remove overhead fo like this
 	memset(object_ptr, 0, e.source.element_size);
@@ -99,6 +99,14 @@ void drawable::clearobject() {
 }
 
 drawable* draworder::get() const {
-	auto& e = bsdata<drawrenderi>::elements[render];
+	auto& e = getrender();
 	return (drawable*)((char*)e.element + e.source.element_size * index); // Drawable can be overheaded, so not use source.ptr()
+}
+
+const drawrenderi& drawable::getrender() const {
+	return bsdata<drawrenderi>::elements[render];
+}
+
+const drawrenderi& draworder::getrender() const {
+	return bsdata<drawrenderi>::elements[render];
 }

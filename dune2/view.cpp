@@ -339,7 +339,6 @@ static void common_input() {
 	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}, color(24, 0, 64), colors::white); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}, color(24, 0, 64), colors::white); break;
-	case 'A': area.set(area_spot, d100() < 60 ? CarRemains : AircraftRemains); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
 	case 'E': random_explosion(); break;
@@ -694,6 +693,12 @@ static void paint_background(resid rid) {
 	}
 }
 
+static void rectb_alpha() {
+	auto push_alpha = alpha; alpha = 64;
+	rectb();
+	alpha = push_alpha;
+}
+
 static void handle_mouse_select() {
 	auto area_spot = i2s(hot.mouse);
 	if(mouse_dragged(area_spot)) {
@@ -702,7 +707,7 @@ static void handle_mouse_select() {
 		caret = hot.mouse;
 		width = start.x - caret.x;
 		height = start.y - caret.y;
-		rectb();
+		rectb_alpha();
 	}
 }
 
@@ -790,10 +795,11 @@ static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
 	auto y2 = caret.y + height;
 	texta(getnm(id), AlignCenter | TextSingleLine | TextMoveCaret);
 	image(gres(SHAPES), avatar, 0);
-	caret.y += 32; height = y2 - caret.y - texth() - 4 - 2;
+	caret.y += 32; height = y2 - caret.y - texth() - 3;
 	// rectb_black();
 	texta(getnm(ids(id, "Info")), AlignCenterCenter);
 	caret.y += height;
+	setoffset(-1, -1);
 	button(getnm("Cancel"), 0, KeyEscape, AlignCenterCenter, false, buttonparam, cancel_result);
 }
 
@@ -802,6 +808,8 @@ static void paint_cursor(int avatar) {
 		return;
 	auto pt = map_to_screen(area_spot - area_origin) + point(8, 8);
 	image(pt.x, pt.y, gres(MOUSE), avatar, 0);
+	if(hot.key == MouseLeft && hot.pressed)
+		execute(buttonparam, (long)area_spot);
 }
 
 static void paint_choose_terrain() {
@@ -813,10 +821,10 @@ static void paint_unit_orders() {
 	rectpush push;
 	setoffset(-1, 0);
 	height = 12;
-	button("Attack", 0, '1', AlignCenter, false, buttonok, 0);
-	button("Move", 0, 'M', AlignCenter, false, buttonok, 0);
+	button("Attack", 0, 'A', AlignCenter, false, human_unit_attack, 0);
+	button("Move", 0, 'M', AlignCenter, false, human_unit_move, 0);
 	button("Harvest", 0, 0, AlignCenter, false, buttonok, 0);
-	button("Guard", 0, 'G', AlignCenter, false, buttonok, 0);
+	button("Stop", 0, 'G', AlignCenter, false, human_unit_stop, 0);
 }
 
 static void paint_unit_info() {
@@ -881,6 +889,7 @@ long show_scene(fnevent before_paint, fnevent input, void* focus) {
 }
 
 static void main_beforemodal() {
+	spot_unit = 0;
 	clear_focus_data();
 }
 

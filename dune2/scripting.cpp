@@ -65,6 +65,20 @@ static point choose_terrain() {
 	return show_scene(paint_main_map_choose_terrain, 0, 0);
 }
 
+void human_unit_attack() {
+	auto result = choose_terrain();
+}
+
+void human_unit_move() {
+	auto target = choose_terrain();
+	if(!area.isvalid(target))
+		return;
+	last_unit->set(target);
+}
+
+void human_unit_stop() {
+}
+
 void main_menu() {
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;

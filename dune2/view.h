@@ -10,6 +10,9 @@ extern int glyph_offset_width;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
+void human_unit_attack();
+void human_unit_move();
+void human_unit_stop();
 void initialize_view(const char* title, fnevent main_scene);
 void paint_main_map();
 void paint_main_map_choose_terrain();

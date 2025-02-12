@@ -31,7 +31,8 @@ struct unit : drawable {
 	int				getmaximum(statn v) const;
 	const char*		getname() const { return geti().getname(); }
 	bool			ismoving() const { return position != order; }
+	void			set(point v);
 	void			setplayer(const playeri* v);
 };
-extern unit* last_unit;
+extern unit *last_unit, *spot_unit;
 void add_unit(point pt, direction d, unitn id, const playeri* player);
