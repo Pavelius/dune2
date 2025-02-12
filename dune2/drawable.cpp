@@ -3,7 +3,6 @@
 #include "draw.h"
 #include "drawable.h"
 
-BSDATAC(draworder, 256)
 BSDATAC(draweffect, 1024)
 
 using namespace draw;
@@ -71,19 +70,6 @@ unsigned short drawable::objectindex() const {
 	return 0xFFFF;
 }
 
-draworder* drawable::animate(point finish, unsigned long start_time) {
-	auto render = renderindex();
-	if(render == 0xFF)
-		return 0; // Not drawable object;
-	auto p = bsdata<draworder>::addz();
-	p->index = bsdata<drawrenderi>::elements[render].source.indexof(this);
-	p->render = render;
-	p->start = screen;
-	p->finish = finish;
-	p->start_time = start_time;
-	return p;
-}
-
 void drawable::clearobject() {
 	auto render = renderindex();
 	if(render == 0xFF)
@@ -98,15 +84,6 @@ void drawable::clearobject() {
 	last_object = this;
 }
 
-drawable* draworder::get() const {
-	auto& e = getrender();
-	return (drawable*)((char*)e.element + e.source.element_size * index); // Drawable can be overheaded, so not use source.ptr()
-}
-
 const drawrenderi& drawable::getrender() const {
-	return bsdata<drawrenderi>::elements[render];
-}
-
-const drawrenderi& draworder::getrender() const {
 	return bsdata<drawrenderi>::elements[render];
 }

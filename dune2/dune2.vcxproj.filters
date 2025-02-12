@@ -159,6 +159,9 @@
     <ClCompile Include="unita.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="movement.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -297,6 +300,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="squad.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="movement.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

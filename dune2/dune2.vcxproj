@@ -154,6 +154,7 @@
     <ClCompile Include="manager.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="midi.cpp" />
+    <ClCompile Include="movement.cpp" />
     <ClCompile Include="music.cpp" />
     <ClCompile Include="nameable.cpp" />
     <ClCompile Include="player.cpp" />
@@ -195,6 +196,7 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="movement.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="iff.h" />
     <ClInclude Include="io_stream.h" />

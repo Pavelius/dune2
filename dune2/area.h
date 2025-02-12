@@ -2,6 +2,7 @@
 
 #include "direction.h"
 #include "feature.h"
+#include "movement.h"
 #include "point.h"
 #include "shape.h"
 #include "terrain.h"
@@ -30,7 +31,7 @@ struct areai {
 	bool			is(point v, terrainn t) const;
 	bool			isbuilding(point v) const;
 	bool			isn(point v, terrainn t) const;
-	void			makewave(point v) const;
+	void			makewave(point v, movementn mv) const;
 	direction		moveto(point start, direction wanted_direction = Center) const;
 	void			set(point v, terrainn t);
 	void			set(point v, featuren t, int ft = 0);

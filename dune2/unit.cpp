@@ -1,16 +1,17 @@
 #include "area.h"
 #include "bsdata.h"
+#include "movement.h"
 #include "squad.h"
 #include "unit.h"
 #include "view.h"
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"LightInfantry", UNITS, 0, 0, 90},
-	{"HeavyInfantry", UNITS, 0, 0, 76},
-	{"Trike", UNITS, 5, 0, 80, {6}},
-	{"Tank", UNITS2, 0, 5, 78, {8}},
-	{"AssaultTank", UNITS2, 10, 15, 72, {12}},
+	{"LightInfantry", Footed, UNITS, 0, 0, 90},
+	{"HeavyInfantry", Footed,  UNITS, 0, 0, 76},
+	{"Trike", Wheeled, UNITS, 5, 0, 80, {6}},
+	{"Tank", Tracked, UNITS2, 0, 5, 78, {8}},
+	{"AssaultTank", Tracked, UNITS2, 10, 15, 72, {12}},
 };
 assert_enum(uniti, AssaultTank)
 
@@ -83,6 +84,6 @@ direction unit::needmove() const {
 	flags.set(Mountain);
 	area.blockland(flags);
 	blockunits(this);
-	area.makewave(order);
+	area.makewave(order, geti().move);
 	return area.moveto(position, move_direction);
 }

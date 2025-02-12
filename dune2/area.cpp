@@ -1,6 +1,7 @@
 #include "area.h"
 #include "bsdata.h"
 #include "building.h"
+#include "movement.h"
 #include "shape.h"
 #include "slice.h"
 #include "rand.h"
@@ -457,25 +458,64 @@ void areai::blockland(flag32 terrain) const {
 	}
 }
 
-void areai::makewave(point start) const {
+//void areai::makewave(point start, movementn mv) const {
+//	if(!isvalid(start))
+//		return;
+//	clear_stack();
+//	push_value(start);
+//	path_map[start.y][start.x] = 1;
+//	auto cost_map = bsdata<movementi>::elements[mv].cost;
+//	while(stack_valid()) {
+//		auto vc = pop_value();
+//		auto t = get(vc);
+//		auto cost = path_map[vc.y][vc.x] + cost_map[t];
+//		if(cost >= 0xFF00)
+//			break;
+//		for(auto d : all_strait_directions) {
+//			auto v = to(vc, d);
+//			if(!isvalid(v))
+//				continue;
+//			auto a = path_map[v.y][v.x];
+//			if(a != BlockArea && (!a || cost < a)) {
+//				push_value(v);
+//				path_map[v.y][v.x] = cost;
+//			}
+//		}
+//		cost += 1;
+//		for(auto d : all_diagonal_directions) {
+//			auto v = to(vc, d);
+//			if(!isvalid(v))
+//				continue;
+//			auto a = path_map[v.y][v.x];
+//			if(a != BlockArea && (!a || cost < a)) {
+//				push_value(v);
+//				path_map[v.y][v.x] = cost;
+//			}
+//		}
+//	}
+//}
+
+void areai::makewave(point start, movementn mv) const {
 	if(!isvalid(start))
 		return;
 	clear_stack();
 	push_value(start);
 	path_map[start.y][start.x] = 1;
+	auto cost_map = bsdata<movementi>::elements[mv].cost;
 	while(stack_valid()) {
 		auto vc = pop_value();
-		auto cost = path_map[vc.y][vc.x] + 4;
+		auto cost = path_map[vc.y][vc.x];
 		if(cost >= 0xFF00)
 			break;
 		for(auto d : all_strait_directions) {
 			auto v = to(vc, d);
 			if(!isvalid(v))
 				continue;
+			auto m = cost_map[get(v)];
 			auto a = path_map[v.y][v.x];
-			if(a != BlockArea && (!a || cost < a)) {
+			if(a != BlockArea && (!a || (cost + m) < a)) {
 				push_value(v);
-				path_map[v.y][v.x] = cost;
+				path_map[v.y][v.x] = cost + m;
 			}
 		}
 		cost += 1;
@@ -483,10 +523,11 @@ void areai::makewave(point start) const {
 			auto v = to(vc, d);
 			if(!isvalid(v))
 				continue;
+			auto m = cost_map[get(v)];
 			auto a = path_map[v.y][v.x];
-			if(a != BlockArea && (!a || cost < a)) {
+			if(a != BlockArea && (!a || (cost + m) < a)) {
 				push_value(v);
-				path_map[v.y][v.x] = cost;
+				path_map[v.y][v.x] = cost + m;
 			}
 		}
 	}
