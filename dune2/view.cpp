@@ -196,7 +196,7 @@ bool time_animate(unsigned long& value, unsigned long duration, unsigned long pa
 }
 
 static point same_point(point v) {
-	return {v.x / 4, v.y / 4};
+	return {v.x / 2, v.y / 2};
 }
 
 static bool mouse_dragged(point mouse, fnevent dropped) {
@@ -805,6 +805,10 @@ static void selection_rect_dropped() {
 	rc.x2 = drag_mouse_finish.x;
 	rc.y2 = drag_mouse_finish.y;
 	rc.normalize();
+	if(rc.width() < 8 && rc.height() < 8) {
+		rc.x1 = rc.centerx(); rc.x2 = rc.x1 + 8;
+		rc.y1 = rc.centery(); rc.y2 = rc.y1 + 8;
+	}
 	selection_rect_dropped(rc);
 }
 
@@ -821,13 +825,13 @@ static void input_game_map() {
 	if(!hot.mouse.in(area_screen))
 		return;
 	switch(hot.key) {
-	case MouseLeft:
-		if(hot.pressed) {
-			auto p = find_unit(area_spot);
-			if(p)
-				execute(selection_by_mouse, 0, 0, p);
-		}
-		break;
+	//case MouseLeft:
+	//	if(hot.pressed) {
+	//		auto p = find_unit(area_spot);
+	//		if(p)
+	//			execute(selection_by_mouse, 0, 0, p);
+	//	}
+	//	break;
 	case 'C':
 		execute(set_area_view, (long)area_spot, 1);
 		break;

@@ -19,7 +19,7 @@ struct areai {
 	point			maximum;
 	void			clear();
 	point			correct(point v) const;
-	void			blockland(flag32 terrain) const;
+	void			blockland(movementn mv) const;
 	void			decoy(point v);
 	terrainn		get(point v) const;
 	featuren		getfeature(point v) const;
@@ -55,7 +55,6 @@ extern unsigned short map_alternate[area_frame_maximum];
 extern unsigned short path_map[areai::my][areai::mx];
 
 void area_initialization();
-void clearpath();
 
 point getpoint(direction d);
 inline point m2s(point v) { return point(v.x * area_tile_width, v.y * area_tile_height); }

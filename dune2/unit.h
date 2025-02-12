@@ -30,6 +30,7 @@ struct unit : drawable {
 	unsigned char	player;
 	short			hits, supply;
 	//void			attack();
+	void			blockunits() const;
 	const uniti&	geti() const;
 	playeri*		getplayer() const;
 	int				get(statn v) const { return geti().stats[v]; }
@@ -41,10 +42,9 @@ struct unit : drawable {
 	//void			reatreat();
 	void			set(point v);
 	void			setplayer(const playeri* v);
-	//void			stop();
+	void			stop();
 };
 extern unit *last_unit, *spot_unit;
 
 void add_unit(point pt, direction d, unitn id, const playeri* player);
-void blockunits();
 unit* find_unit(point s);

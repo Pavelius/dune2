@@ -444,61 +444,29 @@ direction to(direction d, direction s) {
 	}
 }
 
-void clearpath() {
-	memset(path_map, 0, sizeof(path_map));
-}
-
-void areai::blockland(flag32 terrain) const {
+void areai::blockland(movementn mv) const {
+	auto md = bsdata<movementi>::elements[mv].cost;
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++) {
 			auto t = get(point(x, y));
-			if(terrain.is(t) || isbuilding(point(x, y)))
+			auto f = map_features[frames[y][x]];
+			if(f == BuildingHead || f == BuildingLeft || f == BuildingUp) {
 				path_map[y][x] = BlockArea;
+				continue;
+			} else if(md[t]==0xFF)
+				path_map[y][x] = BlockArea;
+			else
+				path_map[y][x] = 0;
 		}
 	}
 }
-
-//void areai::makewave(point start, movementn mv) const {
-//	if(!isvalid(start))
-//		return;
-//	clear_stack();
-//	push_value(start);
-//	path_map[start.y][start.x] = 1;
-//	auto cost_map = bsdata<movementi>::elements[mv].cost;
-//	while(stack_valid()) {
-//		auto vc = pop_value();
-//		auto t = get(vc);
-//		auto cost = path_map[vc.y][vc.x] + cost_map[t];
-//		if(cost >= 0xFF00)
-//			break;
-//		for(auto d : all_strait_directions) {
-//			auto v = to(vc, d);
-//			if(!isvalid(v))
-//				continue;
-//			auto a = path_map[v.y][v.x];
-//			if(a != BlockArea && (!a || cost < a)) {
-//				push_value(v);
-//				path_map[v.y][v.x] = cost;
-//			}
-//		}
-//		cost += 1;
-//		for(auto d : all_diagonal_directions) {
-//			auto v = to(vc, d);
-//			if(!isvalid(v))
-//				continue;
-//			auto a = path_map[v.y][v.x];
-//			if(a != BlockArea && (!a || cost < a)) {
-//				push_value(v);
-//				path_map[v.y][v.x] = cost;
-//			}
-//		}
-//	}
-//}
 
 void areai::makewave(point start, movementn mv) const {
 	if(!isvalid(start))
 		return;
 	clear_stack();
+	if(path_map[start.y][start.x] == BlockArea)
+		return;
 	push_value(start);
 	path_map[start.y][start.x] = 1;
 	auto cost_map = bsdata<movementi>::elements[mv].cost;

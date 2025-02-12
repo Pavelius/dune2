@@ -33,7 +33,8 @@ static void update_all_units() {
 			e.move_direction = d;
 			e.position = v;
 			e.screen = m2sc(v);
-		}
+		} else
+			e.stop();
 	}
 }
 

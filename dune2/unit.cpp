@@ -69,9 +69,9 @@ unit* find_unit(point v) {
 	return 0;
 }
 
-void blockunits(const unit* exclude) {
+void unit::blockunits() const {
 	for(auto& e : bsdata<unit>()) {
-		if(e && &e != exclude)
+		if(e && &e != this)
 			path_map[e.position.y][e.position.x] = BlockArea;
 	}
 }
@@ -79,11 +79,14 @@ void blockunits(const unit* exclude) {
 direction unit::needmove() const {
 	if(!ismoving())
 		return Center;
-	clearpath();
-	flag32 flags;
-	flags.set(Mountain);
-	area.blockland(flags);
-	blockunits(this);
+	area.blockland(geti().move);
+	blockunits();
+	if(path_map[order.y][order.x] == BlockArea)
+		return Center;
 	area.makewave(order, geti().move);
 	return area.moveto(position, move_direction);
+}
+
+void unit::stop() {
+	order = position;
 }
