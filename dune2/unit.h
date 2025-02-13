@@ -37,6 +37,7 @@ struct unit : drawable {
 	int				getmaximum(statn v) const;
 	const char*		getname() const { return geti().getname(); }
 	int				getspeed() const;
+	bool			isbusy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }
@@ -47,8 +48,10 @@ struct unit : drawable {
 	void			setplayer(const playeri* v);
 	void			stop();
 	void			update();
+	void			wait(unsigned long n);
 private:
 	void			blockland() const;
+	void			leavetrail();
 	void			movescreen();
 	direction		nextpath(point v);
 };

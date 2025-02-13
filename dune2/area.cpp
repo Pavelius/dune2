@@ -209,7 +209,7 @@ static int get_feature_count(int frame) {
 	}
 }
 
-void areai::set(point v, featuren f, int ft) {
+void areai::set(point v, featuren f, int param) {
 	if(!isvalid(v))
 		return;
 	if(f == NoFeature) { // This variant just clear existing feature
@@ -232,6 +232,7 @@ void areai::set(point v, featuren f, int ft) {
 			frames_overlay[v.y][v.x] = e.frame;
 		if(f == Explosion && ct < Rock)
 			frames_overlay[v.y][v.x] += 6;
+		frames_overlay[v.y][v.x] += param;
 	} else {
 		// If another explosion in same point, increase effect
 		auto count = get_feature_count(frames_overlay[v.y][v.x]);

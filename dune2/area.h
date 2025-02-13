@@ -38,7 +38,7 @@ struct areai {
 	direction		moveto(point start, direction wanted_direction = Center) const;
 	point			nearest(point v, fntest proc, int radius) const;
 	void			set(point v, terrainn t);
-	void			set(point v, featuren t, int ft = 0);
+	void			set(point v, featuren t, int param = 0);
 	void			set(point v, shapen t, short unsigned* frame_list);
 	void			set(rect v, fnset proc, int value);
 	void			setcamera(point v, bool center_view);

@@ -28,6 +28,14 @@ point getformation(point dst, int index) {
 	return dst + formations[index];
 }
 
+bool unit::isbusy() const {
+	return action_time > game.time;
+}
+
+bool unit::ismoving() const {
+	return screen != m2sc(position);
+}
+
 const uniti& unit::geti() const {
 	return bsdata<uniti>::elements[type];
 }
@@ -57,29 +65,6 @@ void unit::set(point v) {
 	screen = m2sc(v);
 }
 
-void add_unit(point pt, direction d, unitn id, const playeri* player) {
-	last_unit = bsdata<unit>::addz();
-	last_unit->render = last_unit->renderindex();
-	last_unit->screen = m2sc(pt);
-	last_unit->position = pt;
-	last_unit->order = pt;
-	last_unit->type = id;
-	last_unit->squad = NoSquad;
-	last_unit->move_direction = d;
-	last_unit->shoot_direction = d;
-	last_unit->hits = last_unit->getmaximum(Hits);
-	last_unit->supply = last_unit->getmaximum(Supply);
-	last_unit->setplayer(player);
-}
-
-unit* find_unit(point v) {
-	for(auto& e : bsdata<unit>()) {
-		if(e && e.position == v)
-			return &e;
-	}
-	return 0;
-}
-
 void unit::blockland() const {
 	// 1) Prepare path map and block impassable landscape
 	area.blockland(geti().move);
@@ -107,10 +92,6 @@ direction unit::nextpath(point v) {
 	}
 }
 
-bool unit::ismoving() const {
-	return screen != m2sc(position);
-}
-
 static point next_screen(point v, direction d) {
 	// Center, Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp,
 	static point movesteps[LeftUp + 1] = {
@@ -127,14 +108,43 @@ void unit::movescreen() {
 		start_time += move_speed / 3;
 }
 
+static int get_trail_param(direction d) {
+	switch(d) {
+	case RightUp: case LeftDown: return 1;
+	case Left: case Right: return 2;
+	case LeftUp: case RightDown: return 3;
+	default: return 0;
+	}
+}
+
+void unit::leavetrail() {
+	auto previous_position = s2m(screen);
+	if(previous_position != position) {
+		previous_position = to(position, to(move_direction, Down));
+		if(area.issand(previous_position)) {
+			if(isturret())
+				area.set(previous_position, Trail, get_trail_param(move_direction));
+			else
+				area.set(previous_position, Trail, 4 + get_trail_param(move_direction));
+		}
+	}
+}
+
 void unit::update() {
 	if(ismoving()) {// Unit just moving to neightboar tile. Must finish.
 		movescreen();
+		leavetrail();
+		if(!isbusy()) { // If not busy we can make some actions when moving
+			if(isturret() && shoot_direction != move_direction) {
+				shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
+				wait(1000);
+			}
+		}
 		if(!ismoving())
 			path_direction = Center; // Arrive to next tile, we need new path direction.
 	} else if(ismoveorder()) {
 		// We ready to start movement to next tile.
-		if(path_direction==Center)
+		if(path_direction == Center)
 			path_direction = nextpath(order);
 		if(path_direction == Center) {
 			if(game_chance(30))
@@ -179,6 +189,12 @@ void unit::stop() {
 	start_time += game_rand(500, 1000); // Need smoke and relax.
 }
 
+void unit::wait(unsigned long n) {
+	if(action_time < game.time)
+		action_time = game.time;
+	action_time += n;
+}
+
 bool isnonblocked(point v) {
 	return path_map[v.y][v.x] != BlockArea;
 }
@@ -191,4 +207,27 @@ bool isfreetrack(point v) {
 
 bool isfreefoot(point v) {
 	return isnonblocked(v);
+}
+
+unit* find_unit(point v) {
+	for(auto& e : bsdata<unit>()) {
+		if(e && e.position == v)
+			return &e;
+	}
+	return 0;
+}
+
+void add_unit(point pt, direction d, unitn id, const playeri* player) {
+	last_unit = bsdata<unit>::addz();
+	last_unit->render = last_unit->renderindex();
+	last_unit->screen = m2sc(pt);
+	last_unit->position = pt;
+	last_unit->order = pt;
+	last_unit->type = id;
+	last_unit->squad = NoSquad;
+	last_unit->move_direction = d;
+	last_unit->shoot_direction = d;
+	last_unit->hits = last_unit->getmaximum(Hits);
+	last_unit->supply = last_unit->getmaximum(Supply);
+	last_unit->setplayer(player);
 }
