@@ -3,13 +3,15 @@
 #include "bsdata.h"
 #include "draw.h"
 #include "fraction.h"
-#include "pushvalue.h"
+#include "math.h"
 #include "resid.h"
 #include "rand.h"
+#include "pushvalue.h"
 #include "slice.h"
 #include "timer.h"
 #include "unit.h"
 #include "unita.h"
+#include "video.h"
 #include "view.h"
 
 static void check_surrounded(point v, terrainn t, terrainn t1) {
@@ -107,26 +109,27 @@ static void play_video(resid id, unsigned long delay = 0, bool once = false) {
 }
 
 static void show_introdution() {
-	play_video(INTRO1, 0, true);
-	play_video(INTRO2, 0, true);
-	play_video(INTRO3, 0, true);
-	play_video(INTRO4, 0, true);
-	play_video(INTRO5, 0, true);
-	play_video(INTRO6, 0, true);
-	play_video(INTRO7A, 0, true);
-	play_video(INTRO7B, 0, true);
-	play_video(INTRO8A, 0, true);
-	play_video(INTRO8B, 0, true);
-	play_video(INTRO8C, 0, true);
-	play_video(INTRO9, 0, true);
-	play_video(INTRO10, 0, true);
-	play_video(INTRO11, 0, true);
+	static videoi source[] = {
+		{INTRO1, 0, 100, FG(Disappearing), "intro"},
+		{INTRO2, 0, 100, FG(Appearing) | FG(Disappearing)},
+		{INTRO3, 0, 0, FG(Appearing) | FG(Disappearing)},
+		{INTRO4, 0, 0, FG(Appearing) | FG(Disappearing)},
+		{INTRO6, 0},
+		{INTRO7A, 0},
+		{INTRO7B, 0},
+		{INTRO8A, 0},
+		{INTRO8B, 10000},
+		{INTRO8C, 0},
+		{INTRO5, 4000},
+		{INTRO9, 0},
+		{INTRO10, 4000},
+		{INTRO11, 0, 0, FG(Disappearing)},
+	};
+	play_video(source);
 }
 
 void main_menu() {
-	// show_introdution();
-	play_video(INTRO2, 0, true);
-	disappear_scene();
+	show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	animate_id = CONSTRUC;
@@ -141,6 +144,5 @@ void main_menu() {
 	addobj({6, 7}, Tank, Down);
 	addobj({7, 7}, AssaultTank, Down);
 	addobj({8, 7}, Trike, Down);
-	appear_scene(paint_main_map);
 	show_scene(paint_main_map, 0, 0);
 }

@@ -31,9 +31,9 @@ static color color_form_shadow = color(101, 101, 77);
 static unsigned long form_opening_tick;
 static unsigned long next_game_time;
 static unsigned long eye_clapping, eye_show_cursor;
-unsigned long animate_time, animate_delay = 200;
+unsigned long animate_time, animate_delay = 200, animate_stop;
 resid animate_id;
-bool animate_once, animate_continue;
+bool animate_once;
 
 static bool debug_toggle;
 
@@ -1030,6 +1030,11 @@ void paint_main_map_choose_terrain() {
 	update_next_turn();
 }
 
+void check_animation_time() {
+	if(animate_stop && animate_time >= animate_stop)
+		execute(buttonok);
+}
+
 void paint_video() {
 	paint_background(colors::black);
 	auto ps = gres(animate_id);
@@ -1040,8 +1045,8 @@ void paint_video() {
 	auto frame = get_frame(animate_delay);
 	if(animate_once) {
 		if(frame >= ps->count) {
-			frame = 0;
-			execute(buttoncancel);
+			frame = ps->count - 1;
+			execute(buttonok);
 		}
 	} else
 		frame = frame % ps->count;
@@ -1049,14 +1054,15 @@ void paint_video() {
 	mouse_cancel({0, 0, getwidth(), getheight()});
 	if(hot.key==KeySpace || hot.key==KeyEscape || hot.key==KeyEnter)
 		execute(buttoncancel);
+	check_animation_time();
 }
 
 long show_scene_raw(fnevent before_paint, fnevent input, void* focus) {
 	while(ismodal()) {
 		before_paint();
-		domodal();
 		if(input)
 			input();
+		domodal();
 		common_input();
 	}
 	return getresult();
@@ -1071,7 +1077,7 @@ long show_scene(fnevent before_paint, fnevent input, void* focus) {
 
 static void default_time(unsigned long& milliseconds) {
 	if(!milliseconds)
-		milliseconds = 3 * 1000;
+		milliseconds = 1 * 1000;
 }
 
 void appear_scene(fnevent before_paint, unsigned long milliseconds) {
@@ -1092,6 +1098,11 @@ void disappear_scene(unsigned long milliseconds) {
 	fore = push_fore;
 	screenshoot after;
 	before.blend(after, milliseconds);
+}
+
+void reset_form_animation() {
+	update_tick();
+	form_opening_tick = animate_time;
 }
 
 static void main_beforemodal() {

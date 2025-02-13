@@ -4,9 +4,9 @@ typedef void(*fnevent)();
 
 enum resid : short unsigned;
 
-extern unsigned long animate_time, animate_delay;
+extern unsigned long animate_time, animate_delay, animate_stop;
 extern resid animate_id;
-extern bool animate_once, animate_continue;
+extern bool animate_once;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
@@ -22,5 +22,6 @@ void paint_main_map_choose_terrain();
 void paint_mentat();
 void paint_mentat_silent();
 void paint_video();
+void reset_form_animation();
 long show_scene(fnevent before_paint, fnevent input, void* focus);
 long show_scene_raw(fnevent before_paint, fnevent input, void* focus);
