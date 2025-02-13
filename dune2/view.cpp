@@ -32,7 +32,7 @@ static unsigned long next_game_time;
 static unsigned long eye_clapping, eye_show_cursor;
 unsigned long animate_time, animate_delay = 200;
 resid animate_id;
-bool animate_once;
+bool animate_once, animate_continue;
 
 static bool debug_toggle;
 

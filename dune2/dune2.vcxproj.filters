@@ -165,6 +165,9 @@
     <ClCompile Include="direction.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="video.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -306,6 +309,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="movement.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="video.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

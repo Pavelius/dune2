@@ -6,7 +6,7 @@ enum resid : short unsigned;
 
 extern unsigned long animate_time, animate_delay;
 extern resid animate_id;
-extern bool animate_once;
+extern bool animate_once, animate_continue;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame
 

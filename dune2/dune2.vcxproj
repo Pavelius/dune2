@@ -175,6 +175,7 @@
     <ClCompile Include="thread.cpp" />
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="unita.cpp" />
+    <ClCompile Include="video.cpp" />
     <ClCompile Include="view.cpp" />
     <ClCompile Include="view_focus.cpp" />
     <ClCompile Include="win_draw.cpp" />
@@ -226,6 +227,7 @@
     <ClInclude Include="typeable.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="unita.h" />
+    <ClInclude Include="video.h" />
     <ClInclude Include="view.h" />
     <ClInclude Include="view_focus.h" />
     <ClInclude Include="win.h" />
