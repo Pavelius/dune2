@@ -238,6 +238,7 @@
     <Text Include="..\doc\music_dump.txt" />
     <Text Include="..\errors.txt" />
     <Text Include="..\locale\en\actions.txt" />
+    <Text Include="..\locale\en\intro.txt" />
     <Text Include="..\locale\en\terrains.txt" />
     <Text Include="..\locale\en\units.txt" />
     <Text Include="..\locale\en\UnknownNames.txt" />

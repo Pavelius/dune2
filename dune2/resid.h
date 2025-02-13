@@ -19,5 +19,5 @@ struct residi {
 	sprite*		get();
 };
 void clear_sprites();
-sprite* gres(resid i);
-sprite* gres(const char* id);
+const sprite* gres(resid i);
+// const sprite* gres(const char* id);

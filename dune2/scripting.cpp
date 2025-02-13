@@ -96,40 +96,41 @@ void mouse_unit_move() {
 void human_unit_stop() {
 }
 
-static void play_video(resid id, unsigned long delay = 0, bool once = false) {
-	if(!delay)
-		delay = 96;
-	auto push_id = animate_id; animate_id = id;
-	auto push_delay = animate_delay; animate_delay = delay;
-	auto push_once = animate_once; animate_once = once;
-	show_scene(paint_video, 0, 0);
-	animate_once = push_once;
-	animate_delay = push_delay;
-	animate_id = push_id;
-}
-
 static void show_introdution() {
 	static videoi source[] = {
-		{INTRO1, 0, 100, FG(Disappearing), "intro"},
-		{INTRO2, 0, 100, FG(Appearing) | FG(Disappearing)},
-		{INTRO3, 0, 0, FG(Appearing) | FG(Disappearing)},
-		{INTRO4, 0, 0, FG(Appearing) | FG(Disappearing)},
-		{INTRO6, 0},
-		{INTRO7A, 0},
-		{INTRO7B, 0},
-		{INTRO8A, 0},
-		{INTRO8B, 10000},
-		{INTRO8C, 0},
-		{INTRO5, 4000},
-		{INTRO9, 0},
-		{INTRO10, 4000},
-		{INTRO11, 0, 0, FG(Disappearing)},
+		{INTRO1, 10 * 1000, 110, FG(Disappearing), "intro"},
+		{INTRO2, 8 * 1000, 170, FG(Appearing) | FG(Disappearing), 0, "Intro1"},
+		{INTRO3, 0, 0, FG(Appearing), 0, "Intro2"},
+		{INTRO3, 0, 0, 0, 0, "Intro3"},
+		{INTRO9, 6 * 1000, 220, FG(Appearing), 0, "Intro4"},
+		{INTRO9, 6 * 1000, 220, FG(ContinueToNext), 0, "Intro5"},
+		{INTRO9, 6 * 1000, 220, FG(ContinueToNext) | FG(Disappearing), 0, "Intro6"},
+		{INTRO10, 4 * 1000, 0, FG(Appearing), 0, "Intro7"},
+		{INTRO10, 4 * 1000, 0, FG(Appearing)| FG(ContinueToNext), 0, "Intro8"},
+		{INTRO11, 6 * 1000, 0, 0, 0, "Intro9"},
+		{INTRO11, 6 * 1000, 0, FG(ContinueToNext), 0, "Intro10"},
+		{INTRO11, 6 * 1000, 0, FG(ContinueToNext), 0, "Intro11"},
+		{INTRO11, 6 * 1000, 0, FG(ContinueToNext), 0, "Intro12"},
+		//{INTRO4, 0, 0, FG(Appearing) | FG(Disappearing)},
+		//{INTRO6, 0},
+		//{INTRO7A, 0},
+		//{INTRO7B, 0},
+		//{INTRO8A, 0},
+		//{INTRO8B, 10000},
+		//{INTRO8C, 0},
+		//{INTRO5, 4000},
+		//{INTRO9, 0},
+		//{INTRO10, 4000},
+		//{INTRO11, 0, 0, FG(Disappearing)},
 	};
+	reset_form_animation();
+	reset_video_time();
+	start_video -= 18 * 1000;
 	play_video(source);
 }
 
 void main_menu() {
-	show_introdution();
+	// show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	animate_id = CONSTRUC;

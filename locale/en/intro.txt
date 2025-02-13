@@ -1,0 +1,13 @@
+Intro1: A planet Arakis, known as Dune
+Intro2: Land of sands
+Intro3: Home of the Spice Melange
+Intro4: The spice control The Empire
+Intro5: Who ever control planet Dune
+Intro6: Control the Spice
+
+Intro7: The Emperor has propose a challenge
+Intro8: to each of the Houses
+Intro9: The House that produce most spice
+Intro10: will control Dune
+Intro11: Ther are not set territories
+Intro12: and no rules of engagements

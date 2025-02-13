@@ -57,13 +57,13 @@ sprite* residi::get() {
 	return data;
 }
 
-sprite* gres(resid i) {
+const sprite* gres(resid i) {
 	if(i == NONE)
 		return 0;
 	return bsdata<residi>::elements[i].get();
 }
 
-sprite* gres(const char* id) {
+const sprite* gres(const char* id) {
 	auto p = bsdata<residi>::find(id);
 	if(!p)
 		return 0;

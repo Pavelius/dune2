@@ -28,6 +28,8 @@ int draw::textw(int sym) {
 	if(!font || sym >= font->count)
 		return 0;
 	auto& f = font->get(sym);
+	if(font->width >= 16)
+		return f.sx - f.ox;
 	return f.sx - f.ox - 2;
 }
 

@@ -224,29 +224,31 @@ static void raa432(int x1, int y1, unsigned char* s, int width, int height, unsi
 				fore = fore_stroke;
 				break;
 			case 3:
-				if((flags & (TextStroke | TextItalic)) == 0)
+				if((flags & TextStroke) == 0)
 					continue;
 				fore = fore_stroke;
 				break;
-			case 4: case 5: case 6: case 7:
-				fore = colors::blue;
-				break;
-			case 8: case 10: case 12:
-				fore = fore_alternate;
-				break;
-			//case 9: case 11: case 13:
-			//	fore = colors::green;
-			//	break;
-			case 14:
-				//if((flags & (TextStroke | TextBold)) == 0)
-				//	continue;
-				// fore = fore_shadow;
-				fore = colors::red;
-				break;
-			case 15:
-				fore = fore_shadow;
-				break;
 			}
+			pixel(x1 + w, y1 + y);
+		}
+		s += s_scan;
+	}
+	fore = push_fore;
+}
+
+static void raa432p(int x1, int y1, unsigned char* s, int width, int height) {
+	auto s_scan = (width * 4 + 7) / 8;
+	auto push_fore = fore;
+	for(auto y = 0; y < height; y++) {
+		for(int w = 0; w < width; w++) {
+			auto index = s[w / 2];
+			if(w & 1)
+				index >>= 4;
+			else
+				index &= 0x0F;
+			if(!index)
+				continue;
+			fore = draw::palt[index];
 			pixel(x1 + w, y1 + y);
 		}
 		s += s_scan;
@@ -1864,7 +1866,10 @@ void draw::image(int x, int y, const sprite* e, int id, int flags) {
 			fore, (flags & TextItalic) != 0);
 		break;
 	case sprite::RAA4:
-		raa432(x, y, s, f.sx, f.sy, flags);
+		if(flags & ImagePallette)
+			raa432p(x, y, s, f.sx, f.sy);
+		else
+			raa432(x, y, s, f.sx, f.sy, flags);
 		break;
 	default:
 		break;

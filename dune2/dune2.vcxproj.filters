@@ -340,6 +340,9 @@
     <Text Include="..\locale\en\terrains.txt">
       <Filter>locale</Filter>
     </Text>
+    <Text Include="..\locale\en\intro.txt">
+      <Filter>locale</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

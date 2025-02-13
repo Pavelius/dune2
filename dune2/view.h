@@ -7,6 +7,7 @@ enum resid : short unsigned;
 extern unsigned long animate_time, animate_delay, animate_stop;
 extern resid animate_id;
 extern bool animate_once;
+extern const char* form_header;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
