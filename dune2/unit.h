@@ -57,9 +57,10 @@ private:
 };
 extern unit *last_unit, *spot_unit;
 
-void add_unit(point pt, direction d, unitn id, const playeri* player);
-point getformation(point dst, int index);
+void addobj(point pt, unitn id, direction d);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);
+
 unit* find_unit(point s);
+point getformation(point dst, int index);

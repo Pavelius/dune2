@@ -200,13 +200,11 @@ bool isnonblocked(point v) {
 }
 
 bool isfreetrack(point v) {
-	if(!isnonblocked(v))
-		return false;
 	return !area.is(v, Mountain);
 }
 
 bool isfreefoot(point v) {
-	return isnonblocked(v);
+	return true;
 }
 
 unit* find_unit(point v) {
@@ -217,7 +215,8 @@ unit* find_unit(point v) {
 	return 0;
 }
 
-void add_unit(point pt, direction d, unitn id, const playeri* player) {
+void addobj(point pt, unitn id, direction d) {
+	pt = area.nearest(pt, isfreetrack, 4);
 	last_unit = bsdata<unit>::addz();
 	last_unit->render = last_unit->renderindex();
 	last_unit->screen = m2sc(pt);
@@ -227,6 +226,7 @@ void add_unit(point pt, direction d, unitn id, const playeri* player) {
 	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;
 	last_unit->shoot_direction = d;
+	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->supply = last_unit->getmaximum(Supply);
 	last_unit->setplayer(player);

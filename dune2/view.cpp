@@ -7,6 +7,7 @@
 #include "fraction.h"
 #include "game.h"
 #include "io_stream.h"
+#include "math.h"
 #include "pushvalue.h"
 #include "rand.h"
 #include "resid.h"
@@ -27,10 +28,11 @@ static color color_form_light = color(251, 255, 203);
 static color color_form_shadow = color(101, 101, 77);
 
 static unsigned long form_opening_tick;
-static unsigned long next_time_tick;
+static unsigned long next_game_time;
 static unsigned long eye_clapping, eye_show_cursor;
-unsigned long animate_time;
-resid mentat_subject;
+unsigned long animate_time, animate_delay = 200;
+resid animate_id;
+bool animate_once;
 
 static bool debug_toggle;
 
@@ -50,12 +52,12 @@ static void update_tick() {
 }
 
 static void update_next_turn() {
-	if(!next_time_tick)
-		next_time_tick = animate_time;
-	if(next_time_tick >= animate_time)
+	if(!next_game_time)
+		next_game_time = animate_time;
+	if(next_game_time >= animate_time)
 		return;
-	auto delta = animate_time - next_time_tick;
-	next_time_tick = animate_time;
+	auto delta = animate_time - next_game_time;
+	next_game_time = animate_time;
 	if(delta < 1000) { // Check if pause will be pressed
 		game.time += delta;
 		update_game_time();
@@ -66,6 +68,13 @@ static int get_frame(unsigned long resolution) {
 	if(!resolution)
 		resolution = 200;
 	return (animate_time - form_opening_tick) / resolution;
+}
+
+static int get_frame(sprite* ps, unsigned long resolution) {
+	auto n = get_frame(resolution);
+	if(!ps->count)
+		return 0;
+	return n % ps->count;
 }
 
 static point s2i(point v) {
@@ -481,7 +490,7 @@ static void paint_mentat_speaking_mouth() {
 }
 
 static void paint_mentat_back() {
-	auto ps = gres(mentat_subject);
+	auto ps = gres(animate_id);
 	if(!ps || !ps->count)
 		return;
 	image(128, 48, ps, get_frame(400) % ps->count, 0);
@@ -1007,7 +1016,7 @@ void paint_main_map() {
 
 static void mouse_cancel(rect rc) {
 	if(hot.mouse.in(rc)) {
-		if(hot.key == MouseLeft || hot.key == MouseRight || hot.key == MouseLeftDBL)
+		if((hot.key == MouseLeft || hot.key == MouseRight || hot.key == MouseLeftDBL) && hot.pressed)
 			execute(buttoncancel);
 	}
 }
@@ -1020,6 +1029,27 @@ void paint_main_map_choose_terrain() {
 	paint_radar_rect();
 	mouse_cancel({0, 0, getwidth(), area_screen.y1});
 	update_next_turn();
+}
+
+void paint_video() {
+	paint_background(colors::black);
+	auto ps = gres(animate_id);
+	if(!ps || !ps->count)
+		return;
+	caret.x += (320 - ps->width) / 2;
+	caret.y += imax((140 - ps->height) / 2, 32);
+	auto frame = get_frame(animate_delay);
+	if(animate_once) {
+		if(frame >= ps->count) {
+			frame = 0;
+			execute(buttoncancel);
+		}
+	} else
+		frame = frame % ps->count;
+	image(ps, frame, 0);
+	mouse_cancel({0, 0, getwidth(), getheight()});
+	if(hot.key==KeySpace || hot.key==KeyEscape || hot.key==KeyEnter)
+		execute(buttoncancel);
 }
 
 long show_scene(fnevent before_paint, fnevent input, void* focus) {

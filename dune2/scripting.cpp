@@ -94,10 +94,40 @@ void mouse_unit_move() {
 void human_unit_stop() {
 }
 
+static void play_video(resid id, unsigned long delay = 0, bool once = false) {
+	if(!delay)
+		delay = 96;
+	auto push_id = animate_id; animate_id = id;
+	auto push_delay = animate_delay; animate_delay = delay;
+	auto push_once = animate_once; animate_once = once;
+	show_scene(paint_video, 0, 0);
+	animate_once = push_once;
+	animate_delay = push_delay;
+	animate_id = push_id;
+}
+
+static void show_introdution() {
+	play_video(INTRO1, 0, true);
+	play_video(INTRO2, 0, true);
+	play_video(INTRO3, 0, true);
+	play_video(INTRO4, 0, true);
+	play_video(INTRO5, 0, true);
+	play_video(INTRO6, 0, true);
+	play_video(INTRO7A, 0, true);
+	play_video(INTRO7B, 0, true);
+	play_video(INTRO8A, 0, true);
+	play_video(INTRO8B, 0, true);
+	play_video(INTRO8C, 0, true);
+	play_video(INTRO9, 0, true);
+	play_video(INTRO10, 0, true);
+	play_video(INTRO11, 0, true);
+}
+
 void main_menu() {
+	show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
-	mentat_subject = CONSTRUC;
+	animate_id = CONSTRUC;
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
@@ -105,9 +135,9 @@ void main_menu() {
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
 	build_structure({5, 5}, Windtrap);
 	build_structure({7, 5}, Refinery);
-	add_unit({5, 7}, Down, Trike, 0);
-	add_unit({6, 7}, Down, Trike, 0);
-	add_unit({7, 7}, Down, Tank, 0);
-	add_unit({8, 7}, Down, AssaultTank, 0);
+	addobj({5, 7}, Trike, Down);
+	addobj({6, 7}, Tank, Down);
+	addobj({7, 7}, AssaultTank, Down);
+	addobj({8, 7}, Trike, Down);
 	show_scene(paint_main_map, 0, 0);
 }
