@@ -1,4 +1,5 @@
 #include "direction.h"
+#include "math.h"
 
 direction turnto(direction d, direction t) {
 	if(d == Center || t == Center)
@@ -79,4 +80,43 @@ direction to(direction d, direction s) {
 	default:
 		return d;
 	}
+}
+
+static const direction orientations_7b7_stright[49] = {
+	Left, Up, Up, Up, Up, Up, Right,
+	Left, Left, Up, Up, Up, Right, Right,
+	Left, Left, Left, Up, Right, Right, Right,
+	Left, Left, Left, Center, Right, Right, Right,
+	Left, Left, Left, Down, Right, Right, Right,
+	Left, Left, Down, Down, Down, Right, Right,
+	Left, Down, Down, Down, Down, Down, Right,
+};
+static const direction orientations_7b7[49] = {
+	LeftUp, LeftUp, Up, Up, Up, RightUp, RightUp,
+	LeftUp, LeftUp, Up, Up, Up, RightUp, RightUp,
+	Left, Left, LeftUp, Up, RightUp, Right, Right,
+	Left, Left, Left, Center, Right, Right, Right,
+	Left, Left, LeftDown, Down, RightDown, Right, Right,
+	LeftDown, LeftDown, Down, Down, Down, RightDown, RightDown,
+	LeftDown, LeftDown, Down, Down, Down, RightDown, RightDown,
+};
+
+static direction getdirection(point s, point d, const direction* po) {
+	const int osize = 7;
+	int dx = d.x - s.x;
+	int dy = d.y - s.y;
+	int st = (2 * imax(iabs(dx), iabs(dy)) + osize - 1) / osize;
+	if(!st)
+		return Center;
+	int ax = dx / st;
+	int ay = dy / st;
+	return po[(ay + (osize / 2)) * osize + ax + (osize / 2)];
+}
+
+direction to(point s, point d) {
+	return getdirection(s, d, orientations_7b7);
+}
+
+direction tos(point s, point d) {
+	return getdirection(s, d, orientations_7b7);
 }

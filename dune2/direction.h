@@ -10,4 +10,6 @@ enum direction : unsigned char {
 point getpoint(direction d);
 direction to(direction d, direction s);
 direction turnto(direction d, direction t);
+direction to(point s, point d);
+direction to(point s, point d);
 bool isdiagonal(direction d);
