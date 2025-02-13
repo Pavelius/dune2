@@ -164,6 +164,7 @@
     <ClCompile Include="rect.cpp" />
     <ClCompile Include="resid.cpp" />
     <ClCompile Include="scale.cpp" />
+    <ClCompile Include="screenshoot.cpp" />
     <ClCompile Include="scripting.cpp" />
     <ClCompile Include="shape.cpp" />
     <ClCompile Include="sprite_util.cpp" />
@@ -215,6 +216,7 @@
     <ClInclude Include="rand.h" />
     <ClInclude Include="rect.h" />
     <ClInclude Include="resid.h" />
+    <ClInclude Include="screenshoot.h" />
     <ClInclude Include="seqlink.h" />
     <ClInclude Include="shape.h" />
     <ClInclude Include="slice.h" />

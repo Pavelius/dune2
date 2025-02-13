@@ -124,7 +124,9 @@ static void show_introdution() {
 }
 
 void main_menu() {
-	show_introdution();
+	// show_introdution();
+	play_video(INTRO2, 0, true);
+	disappear_scene();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	animate_id = CONSTRUC;
@@ -139,5 +141,6 @@ void main_menu() {
 	addobj({6, 7}, Tank, Down);
 	addobj({7, 7}, AssaultTank, Down);
 	addobj({8, 7}, Trike, Down);
+	appear_scene(paint_main_map);
 	show_scene(paint_main_map, 0, 0);
 }

@@ -10,6 +10,8 @@ extern bool animate_once, animate_continue;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
+void appear_scene(fnevent paint, unsigned long milliseconds = 0);
+void disappear_scene(unsigned long milliseconds = 0);
 void human_unit_attack();
 void human_unit_move();
 void human_unit_stop();
@@ -21,3 +23,4 @@ void paint_mentat();
 void paint_mentat_silent();
 void paint_video();
 long show_scene(fnevent before_paint, fnevent input, void* focus);
+long show_scene_raw(fnevent before_paint, fnevent input, void* focus);

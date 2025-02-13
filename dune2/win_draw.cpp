@@ -223,7 +223,7 @@ static void update_scaled_window() {
 		canvas->resize(window_size.x, window_size.y, draw::canvas->bpp, true);
 }
 
-void draw::create(int x, int y, int width, int height, unsigned flags, int bpp) {
+void draw::create(int x, int y, int width, int height, unsigned flags, int bpp, bool show_maximized) {
 	if(!bpp)
 		bpp = window_surface.bpp;
 	auto screen_w = GetSystemMetrics(SM_CXFULLSCREEN);
@@ -252,7 +252,7 @@ void draw::create(int x, int y, int width, int height, unsigned flags, int bpp) 
 		0, 0, GetModuleHandleA(0), 0);
 	if(!hwnd)
 		return;
-	ShowWindow(hwnd, SW_SHOWMAXIMIZED);
+	ShowWindow(hwnd, show_maximized ? SW_SHOWMAXIMIZED : SW_SHOWNORMAL);
 	update_scaled_window();
 	// Update mouse coordinates
 	POINT pt; GetCursorPos(&pt);

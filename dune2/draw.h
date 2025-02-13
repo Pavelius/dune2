@@ -190,12 +190,11 @@ struct rectpush {
 };
 int					aligned(int x, int width, unsigned state, int string_width);
 int					alignedh(const rect& rc, const char* string, unsigned state);
-void				blend(const surface& destination, unsigned milliseconds);
 void				blit(surface& dest, int x, int y, int width, int height, unsigned flags, const surface& source, int x_source, int y_source);
 void				blit(surface& dest, int x, int y, int width, int height, unsigned flags, const surface& source, int x_source, int y_source, int width_source, int height_source);
 void				circle(int size);
 void				circlef(int size);
-void				create(int x, int y, int width, int height, unsigned flags, int bpp);
+void				create(int x, int y, int width, int height, unsigned flags, int bpp, bool show_maximized);
 void				execute(fnevent proc, long value = 0, long value2 = 0, const void* object = 0);
 void				fhexagon();
 int					getbpp();

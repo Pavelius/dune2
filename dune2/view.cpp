@@ -11,6 +11,7 @@
 #include "pushvalue.h"
 #include "rand.h"
 #include "resid.h"
+#include "screenshoot.h"
 #include "squad.h"
 #include "timer.h"
 #include "unit.h"
@@ -187,12 +188,10 @@ static void button(const char* title, const void* button_data, unsigned key, uns
 }
 
 struct pushscene : pushfocus {
-	const sprite* font;
-	pushscene() : pushfocus(), font(draw::font) {
+	pushscene() : pushfocus() {
 		form_opening_tick = getcputime();
 		animate_time = form_opening_tick;
 	}
-	~pushscene() { draw::font = font; }
 };
 
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20) {
@@ -1052,10 +1051,7 @@ void paint_video() {
 		execute(buttoncancel);
 }
 
-long show_scene(fnevent before_paint, fnevent input, void* focus) {
-	rectpush push;
-	pushscene push_scene;
-	current_focus = focus;
+long show_scene_raw(fnevent before_paint, fnevent input, void* focus) {
 	while(ismodal()) {
 		before_paint();
 		domodal();
@@ -1066,13 +1062,45 @@ long show_scene(fnevent before_paint, fnevent input, void* focus) {
 	return getresult();
 }
 
+long show_scene(fnevent before_paint, fnevent input, void* focus) {
+	rectpush push;
+	pushscene push_scene;
+	current_focus = focus;
+	return show_scene_raw(before_paint, input, focus);
+}
+
+static void default_time(unsigned long& milliseconds) {
+	if(!milliseconds)
+		milliseconds = 3 * 1000;
+}
+
+void appear_scene(fnevent before_paint, unsigned long milliseconds) {
+	default_time(milliseconds);
+	screenshoot before;
+	before_paint();
+	screenshoot after;
+	before.blend(after, milliseconds);
+}
+
+void disappear_scene(unsigned long milliseconds) {
+	default_time(milliseconds);
+	screenshoot before;
+	rectpush push;
+	auto push_fore = fore; fore = colors::black;
+	caret.x = 0; caret.y = 0; width = getwidth(); height = getheight();
+	rectf();
+	fore = push_fore;
+	screenshoot after;
+	before.blend(after, milliseconds);
+}
+
 static void main_beforemodal() {
 	spot_unit = 0;
 	clear_focus_data();
 }
 
 void initialize_view(const char* title, fnevent main_scene) {
-	draw::create(-1, -1, 320, 200, 0, 32);
+	draw::create(-1, -1, 320, 200, 0, 32, false);
 	draw::setcaption(title);
 	draw::settimer(40);
 	draw::pbeforemodal = main_beforemodal;
