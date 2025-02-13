@@ -806,18 +806,22 @@ static void selection_rect_dropped(const rect& rc) {
 static void attack_by_mouse() {
 }
 
-static void selection_rect_dropped() {
+static rect drag_finish_rect(int minimal) {
 	rect rc;
 	rc.x1 = drag_mouse_start.x;
 	rc.y1 = drag_mouse_start.y;
 	rc.x2 = drag_mouse_finish.x;
 	rc.y2 = drag_mouse_finish.y;
 	rc.normalize();
-	if(rc.width() < 8 && rc.height() < 8) {
-		rc.x1 = rc.centerx(); rc.x2 = rc.x1 + 8;
-		rc.y1 = rc.centery(); rc.y2 = rc.y1 + 8;
+	if(rc.width() < minimal && rc.height() < minimal) {
+		rc.x1 = rc.centerx() - minimal / 2; rc.x2 = rc.x1 + minimal;
+		rc.y1 = rc.centery() - minimal / 2; rc.y2 = rc.y1 + minimal;
 	}
-	selection_rect_dropped(rc);
+	return rc;
+}
+
+static void selection_rect_dropped() {
+	selection_rect_dropped(drag_finish_rect(area_tile_width));
 }
 
 static void rectb_alpha_drag() {
