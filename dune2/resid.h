@@ -15,9 +15,11 @@ struct residi {
 	const char*	id;
 	const char*	folder;
 	sprite*		data;
+	int			size;
 	bool		error;
 	sprite*		get();
 };
 void clear_sprites();
+void save_sprite(resid id);
 const sprite* gres(resid i);
 // const sprite* gres(const char* id);

@@ -51,7 +51,7 @@ sprite* residi::get() {
 		return data;
 	if(!data && !error) {
 		char temp[260]; szurl(temp, sizeof(temp), folder, 0, 0, id, "pma");
-		data = (sprite*)loadb(temp);
+		data = (sprite*)loadb(temp, &size);
 		error = (data != 0);
 	}
 	return data;
@@ -77,4 +77,13 @@ void clear_sprites() {
 			e.data = 0;
 		}
 	}
+}
+
+void save_sprite(resid id) {
+	auto& e = bsdata<residi>::elements[id];
+	if(!e.size || !e.error)
+		return;
+	char temp[260]; szurl(temp, sizeof(temp), e.folder, 0, 0, e.id, "pma");
+	io::file file(temp, StreamWrite);
+	file.write(e.data, e.size);
 }

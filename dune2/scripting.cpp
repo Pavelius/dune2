@@ -130,7 +130,7 @@ static void show_introdution() {
 }
 
 void main_menu() {
-	// show_introdution();
+	//show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	animate_id = CONSTRUC;
