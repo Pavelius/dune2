@@ -13,7 +13,8 @@ const int area_frame_maximum = 389;
 const unsigned short BlockArea = 0xFFFF;
 
 struct areai {
-	typedef void(*fnsetarea)(point v, int value);
+	typedef void(*fnset)(point v, int value);
+	typedef bool(*fntest)(point v);
 	static constexpr int mx = 64;
 	static constexpr int my = 64;
 	point			maximum;
@@ -26,6 +27,8 @@ struct areai {
 	unsigned short	getframe(point v) const { return frames[v.y][v.x]; }
 	unsigned		getframeside(point v, terrainn t) const;
 	unsigned short	getframefeature(point v) const { return frames_overlay[v.y][v.x]; }
+	bool			isrock(point v) const { return get(v) >= Rock; }
+	bool			issand(point v) const { return get(v) < Rock; }
 	bool			isvalid(int x, int y) const { return x >= 0 && x < maximum.x && y >= 0 && y < maximum.y; }
 	bool			isvalid(point v) const { return isvalid(v.x, v.y); }
 	bool			is(point v, terrainn t) const;
@@ -33,13 +36,14 @@ struct areai {
 	bool			isn(point v, terrainn t) const;
 	void			makewave(point v, movementn mv) const;
 	direction		moveto(point start, direction wanted_direction = Center) const;
+	point			nearest(point v, fntest proc, int radius) const;
 	void			set(point v, terrainn t);
 	void			set(point v, featuren t, int ft = 0);
 	void			set(point v, shapen t, short unsigned* frame_list);
-	void			set(rect v, fnsetarea proc, int value);
+	void			set(rect v, fnset proc, int value);
 	void			setcamera(point v, bool center_view);
-	void			random(rect r, fnsetarea proc, int value);
-	void			random(rect r, fnsetarea proc, int value, int count);
+	void			random(rect r, fnset proc, int value);
+	void			random(rect r, fnset proc, int value, int count);
 private:
 	short unsigned	frames[my][mx];
 	short unsigned	frames_overlay[my][mx];

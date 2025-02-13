@@ -329,4 +329,9 @@
       <Filter>locale</Filter>
     </Text>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="..\README.md">
+      <Filter>doc</Filter>
+    </None>
+  </ItemGroup>
 </Project>

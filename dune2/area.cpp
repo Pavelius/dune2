@@ -1,10 +1,10 @@
 #include "area.h"
 #include "bsdata.h"
 #include "building.h"
+#include "game.h"
 #include "movement.h"
 #include "shape.h"
 #include "slice.h"
-#include "rand.h"
 
 areai area;
 point area_origin, area_spot;
@@ -227,7 +227,7 @@ void areai::set(point v, featuren f, int ft) {
 	auto cf = getfeature(v);
 	if(cf != f) {
 		if(e.random)
-			frames_overlay[v.y][v.x] = e.frame + rand() % e.random;
+			frames_overlay[v.y][v.x] = e.frame + game_rand() % e.random;
 		else
 			frames_overlay[v.y][v.x] = e.frame;
 		if(f == Explosion && ct < Rock)
@@ -274,7 +274,7 @@ void areai::decoy(point v) {
 	if(!cf)
 		return;
 	auto& e = bsdata<featurei>::elements[cf];
-	if(e.decoy && d100() < e.decoy) {
+	if(e.decoy && game_chance(e.decoy)) {
 		auto n = get_next_decoy(get(v), frames_overlay[v.y][v.x]);
 		if(n == -1)
 			frames_overlay[v.y][v.x] = NoFeature;
@@ -304,7 +304,7 @@ void areai::setcamera(point v, bool center_view) {
 	area_origin.y = (char)y;
 }
 
-void areai::set(rect r, fnsetarea proc, int value) {
+void areai::set(rect r, fnset proc, int value) {
 	for(auto y = r.y1; y <= r.y2; y++) {
 		for(auto x = r.x1; x <= r.x2; x++) {
 			if(isvalid(x, y))
@@ -313,14 +313,14 @@ void areai::set(rect r, fnsetarea proc, int value) {
 	}
 }
 
-void areai::random(rect r, fnsetarea proc, int value) {
-	auto x = xrand(r.x1, r.x2);
-	auto y = xrand(r.y1, r.y2);
+void areai::random(rect r, fnset proc, int value) {
+	auto x = game_rand(r.x1, r.x2);
+	auto y = game_rand(r.y1, r.y2);
 	if(isvalid(x, y))
 		proc(point(x, y), value);
 }
 
-void areai::random(rect r, fnsetarea proc, int value, int count) {
+void areai::random(rect r, fnset proc, int value, int count) {
 	if(!count)
 		return;
 	if(count < 0) {
@@ -367,7 +367,7 @@ void areai::setnu(point v, terrainn t) {
 	else if(e.count) {
 		auto t1 = get(v);
 		if(t1 != t)
-			frames[v.y][v.x] = e.frame + rand() % e.count;
+			frames[v.y][v.x] = e.frame + game_rand() % e.count;
 	} else
 		frames[v.y][v.x] = e.frame;
 }
@@ -475,4 +475,23 @@ direction areai::moveto(point start, direction wanted_direction) const {
 		}
 	}
 	return current_direction;
+}
+
+point areai::nearest(point v, fntest proc, int radius) const {
+	if(proc(v))
+		return v;
+	for(auto i = 1; i < radius; i++) {
+		auto n = game_chance(50) ? -i : i;
+		for(auto j = 0; j < 2; j++) {
+			auto y = n + v.y;
+			for(auto x = v.x - i; x <= v.x + i; x++) {
+				if(!isvalid(x, y))
+					continue;
+				if(proc(v))
+					return v;
+			}
+			n = -n;
+		}
+	}
+	return point(-10000, -10000);
 }

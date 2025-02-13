@@ -81,11 +81,13 @@ void human_unit_move() {
 void mouse_unit_move() {
 	auto v = (point)draw::hot.param;
 	auto p = find_unit(v);
+	auto i = 0;
 	if(p) {
 		// Enemy unit spotted?
 	} else {
+		auto index = 0;
 		for(auto p : human_selected)
-			p->move(v);
+			p->move(v, index++);
 	}
 }
 
@@ -109,4 +111,3 @@ void main_menu() {
 	add_unit({8, 7}, Down, AssaultTank, 0);
 	show_scene(paint_main_map, 0, 0);
 }
-

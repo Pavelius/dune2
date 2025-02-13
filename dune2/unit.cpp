@@ -2,7 +2,6 @@
 #include "bsdata.h"
 #include "game.h"
 #include "movement.h"
-#include "rand.h"
 #include "squad.h"
 #include "unit.h"
 #include "view.h"
@@ -18,6 +17,16 @@ BSDATA(uniti) = {
 assert_enum(uniti, AssaultTank)
 
 unit *last_unit, *spot_unit;
+
+point getformation(point dst, int index) {
+	static point formations[] = {
+		{0, 0}, {1, 0}, {-1, 0}, {2, 0}, {-2, 0}, {3, 0}, {-3, 0},
+		{0, 1}, {1, 1}, {-1, 1}, {2, 1}, {-2, 1}, {3, 1}, {-3, 1},
+		{0, 2}, {1, 2}, {-1, 2}, {2, 2}, {-2, 2}, {3, 2}, {-3, 2},
+	};
+	index %= sizeof(formations) / sizeof(formations[0]);
+	return dst + formations[index];
+}
 
 const uniti& unit::geti() const {
 	return bsdata<uniti>::elements[type];
@@ -71,7 +80,10 @@ unit* find_unit(point v) {
 	return 0;
 }
 
-void unit::blockunits() const {
+void unit::blockland() const {
+	// 1) Prepare path map and block impassable landscape
+	area.blockland(geti().move);
+	// 2) Block all tiles with units except this one
 	for(auto& e : bsdata<unit>()) {
 		if(e && &e != this)
 			path_map[e.position.y][e.position.x] = BlockArea;
@@ -85,57 +97,98 @@ int unit::getspeed() const {
 	return 64 * 4 / n;
 }
 
+direction unit::nextpath(point v) {
+	blockland();
+	if(path_map[v.y][v.x] == BlockArea)
+		return Center;
+	else {
+		area.makewave(order, geti().move); // Consume time action
+		return area.moveto(position, move_direction);
+	}
+}
+
+bool unit::ismoving() const {
+	return screen != m2sc(position);
+}
+
+static point next_screen(point v, direction d) {
+	// Center, Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp,
+	static point movesteps[LeftUp + 1] = {
+		{0, 0}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1},
+	};
+	return v + movesteps[d];
+}
+
+void unit::movescreen() {
+	screen = next_screen(screen, move_direction);
+	auto move_speed = getspeed();
+	start_time += getspeed();
+	if(isdiagonal(move_direction))
+		start_time += move_speed / 3;
+}
+
 void unit::update() {
-	auto v = m2sc(position);
-	if(ismoveorder() || screen != v) { // We move somewhere
-		if(screen == v) {
-			// Determine path direction
-			area.blockland(geti().move);
-			blockunits();
-			if(path_map[order.y][order.x] == BlockArea) {
-				stop(); // Damn, someone block path. Remove order.
-				return;
+	if(ismoving()) {// Unit just moving to neightboar tile. Must finish.
+		movescreen();
+		if(!ismoving())
+			path_direction = Center; // Arrive to next tile, we need new path direction.
+	} else if(ismoveorder()) {
+		// We ready to start movement to next tile.
+		if(path_direction==Center)
+			path_direction = nextpath(order);
+		if(path_direction == Center) {
+			if(game_chance(30))
+				stop();
+			else
+				start_time += game_rand(200, 300);
+		} else {
+			if(move_direction != path_direction) // One turn is free
+				move_direction = to(move_direction, turnto(move_direction, path_direction));
+			if(move_direction != path_direction) // More that one turn take time
+				start_time += game_rand(300, 400);
+			else {
+				position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
+				movescreen();
 			}
-			area.makewave(order, geti().move);
-			path_direction = area.moveto(position, move_direction);
-			shoot_direction = to(shoot_direction, turnto(shoot_direction, path_direction));
-		}
-		auto move_speed = getspeed();
-		start_time += move_speed;
-		if(move_direction != path_direction) {
-			// Need turn to path direction. One correction per turn can be free.
-			move_direction = to(move_direction, turnto(move_direction, path_direction));
-			start_time += move_speed / 3;
-		}
-		if(move_direction == path_direction) {
-			// Center, Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp,
-			static point movesteps[LeftUp + 1] = {
-				{0, 0}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1},
-			};
-			// Move to target point
-			screen = screen + movesteps[move_direction];
-			position = s2m(screen);
-			if(isdiagonal(move_direction))
-				start_time += move_speed / 3;
 		}
 	} else {
-		// Random look around
-		if(isturret()) {
-			auto dt = turnto(shoot_direction, move_direction);
-			if(dt != Center && d100() < 50)
-				shoot_direction = to(shoot_direction, dt);
-			else if(d100() < 30)
-				shoot_direction = to(shoot_direction, (rand() % 2) ? Left : Right);
+		if(isturret()) { // Turret random look around
+			auto turn_direction = turnto(shoot_direction, move_direction);
+			if(turn_direction != Center && game_chance(50))
+				shoot_direction = to(shoot_direction, turn_direction);
+			else if(game_chance(30))
+				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
 		}
 	}
 }
 
 void unit::move(point v) {
+	if(!area.isvalid(v))
+		return;
 	order = v;
 	start_time = game.time; // Can't wait command
 }
 
+void unit::move(point v, int index) {
+	move(getformation(v, index));
+}
+
 void unit::stop() {
+	path_direction = Center;
 	order = position;
-	start_time += xrand(500, 1000); // Need some smoke.
+	start_time += game_rand(500, 1000); // Need smoke and relax.
+}
+
+bool isnonblocked(point v) {
+	return path_map[v.y][v.x] != BlockArea;
+}
+
+bool isfreetrack(point v) {
+	if(!isnonblocked(v))
+		return false;
+	return !area.is(v, Mountain);
+}
+
+bool isfreefoot(point v) {
+	return isnonblocked(v);
 }
