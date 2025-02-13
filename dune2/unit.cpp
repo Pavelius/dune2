@@ -217,6 +217,8 @@ unit* find_unit(point v) {
 
 void addobj(point pt, unitn id, direction d) {
 	pt = area.nearest(pt, isfreetrack, 4);
+	if(!area.isvalid(pt))
+		return;
 	last_unit = bsdata<unit>::addz();
 	last_unit->render = last_unit->renderindex();
 	last_unit->screen = m2sc(pt);
