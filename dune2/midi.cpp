@@ -346,19 +346,19 @@ static void midi_play(unsigned ticks, trk* tracks, unsigned ntracks, unsigned* s
 	midi_need_close = false;
 }
 
-static HMIDIOUT sound_handle;
-
-void midi_open() {
-	midiOutOpen(&sound_handle, 0, 0, 0, CALLBACK_NULL);
-}
-
-void midi_close() {
-	midiOutClose(sound_handle);
-}
-
-void midi_event(unsigned command) {
-	midiOutShortMsg(sound_handle, command);
-}
+//static HMIDIOUT sound_handle;
+//
+//void midi_open() {
+//	midiOutOpen(&sound_handle, 0, 0, 0, CALLBACK_NULL);
+//}
+//
+//void midi_close() {
+//	midiOutClose(sound_handle);
+//}
+//
+//void midi_event(unsigned command) {
+//	midiOutShortMsg(sound_handle, command);
+//}
 
 #endif // _WIN32
 

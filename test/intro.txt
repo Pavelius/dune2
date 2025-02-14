@@ -17,8 +17,8 @@
 #16 start 02:03 lenght 00:05 show intro7a
 #17 start 02:09 lenght 00:04 show intro7b
 #18 start 02:13 lenght 00:03 show intro8a
-#19 start 02:16 lenght 00:04 show intro8b
+#19 start 02:16 lenght 00:03 show intro8b
 #20 start 02:20 lenght 00:06 show intro8c
-#21 start 02:27 lenght 00:13 show intro5
-#22 start 02:40 lenght 00:05 show NONE
-#23 start 02:45 lenght 00:05 show NONE
+#21 start 02:27 lenght 00:08 show intro5
+#22 start 02:35 lenght 00:05 show NONE
+#23 start 02:40 lenght 00:04 show NONE

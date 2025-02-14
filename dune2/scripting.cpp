@@ -4,6 +4,7 @@
 #include "draw.h"
 #include "fraction.h"
 #include "math.h"
+#include "music.h"
 #include "order.h"
 #include "pushvalue.h"
 #include "resid.h"
@@ -121,17 +122,18 @@ static void show_introdution() {
 		{INTRO7A, 0, 0, 0, 0, "IntroBattleO"},
 		{INTRO7B, 0, 0, 0, 0, "IntroBattleO"},
 		{INTRO8A, 0, 0, 0, 0, "IntroBattleH"},
-		{INTRO8B, 4 * 1000, 0, FG(Repeated), 0, "IntroBattleH"},
+		{INTRO8B, 3 * 1000 + 500, 0, FG(Repeated), 0, "IntroBattleH"},
 		{INTRO8C, 0, 0, FG(Disappearing), 0, "IntroBattleH"},
 		{INTRO5, 6 * 1000, 0, FG(Repeated) | FG(Appearing) | FG(Disappearing), 0, "Intro15"},
 		{NONE, 4 * 1000, 0, FG(Appearing), 0, "Intro16"},
-		{NONE, 4 * 1000, 0, FG(Disappearing), 0, "Intro17"},
+		{NONE, 3 * 1000, 0, FG(Disappearing), 0, "Intro17"},
 	};
 	reset_form_animation();
 	reset_video_time();
 	start_video -= 18 * 1000;
 	video_dump("test/intro.txt", source, 18 * 1000);
 	video_play(source);
+	music_play(0);
 }
 
 void main_menu() {
