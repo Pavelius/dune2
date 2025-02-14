@@ -1,5 +1,6 @@
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
 #include "direction.h"
 #include "draw.h"
 #include "drawable.h"
@@ -49,8 +50,9 @@ static void debug_map_message() {
 	auto t = area.get(area_spot);
 	string sb;
 	sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
-	if(area.isbuilding(area_spot))
-		sb.adds("Building");
+	auto pb = find_building(area.getcorner(area_spot));
+	if(pb)
+		sb.adds(pb->getname());
 	text(sb.text, -1, TextStroke);
 }
 
@@ -431,20 +433,20 @@ static point map_to_screen(point v) {
 	return {(short)(v.x * area_tile_width + area_screen.x1), (short)(v.y * area_tile_height + area_screen.y1)};
 }
 
-static void paint_cursor(int avatar, point offset) {
+static void paint_cursor(int avatar, point offset, bool choose_mode) {
 	auto v = area_spot - area_origin;
 	if(!area.isvalid(v))
 		return;
 	auto pt = map_to_screen(v) + offset;
 	image(pt.x, pt.y, gres(MOUSE), avatar, 0);
-	if(hot.key == MouseLeft && hot.pressed)
+	if(choose_mode && hot.key == MouseLeft && hot.pressed)
 		execute(buttonparam, (long)area_spot);
 }
 
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
-	paint_cursor(5, {8, 8});
+	paint_cursor(5, {8, 8}, false);
 	debug_map_message();
 }
 
@@ -645,6 +647,12 @@ static void rectb_alpha() {
 
 static void selection_rect_dropped(const rect& rc) {
 	human_selected.clear();
+	if(!area.isvalid(area_spot))
+		return;
+	auto pb = find_building(area.getcorner(area_spot));
+	if(pb) {
+		return;
+	}
 	human_selected.select(player, rc);
 }
 
@@ -784,7 +792,7 @@ static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
 
 static void paint_choose_terrain() {
 	paint_choose_panel("ChooseTarget", 17, (long)point(-1000, -1000));
-	paint_cursor(5, {8, 8});
+	paint_cursor(5, {8, 8}, true);
 }
 
 static void human_order() {
@@ -988,7 +996,6 @@ void reset_form_animation() {
 }
 
 static void main_beforemodal() {
-	spot_unit = 0;
 	clear_focus_data();
 }
 

@@ -86,6 +86,8 @@ static int find_frame(const unsigned short* source, size_t count, unsigned short
 }
 
 static featuren find_feature_by_frame(int frame) {
+	if(!frame)
+		return NoFeature;
 	for(auto& e : bsdata<featurei>()) {
 		if(frame >= e.frame && frame < e.frame + e.count)
 			return (featuren)(&e - bsdata<featurei>::elements);
@@ -381,7 +383,7 @@ bool areai::isbuilding(point v) const {
 	//return t == BuildingHead || t == BuildingLeft || t == BuildingUp;
 }
 
-void areai::set(point v, shapen t, short unsigned* frame_list) {
+void areai::set(point v, shapen t, const short unsigned* frame_list) {
 	if(!frame_list)
 		return;
 	auto& e = bsdata<shapei>::elements[t];
@@ -488,11 +490,28 @@ point areai::nearest(point v, fntest proc, int radius) const {
 			for(auto x = v.x - i; x <= v.x + i; x++) {
 				if(!isvalid(x, y))
 					continue;
-				if(proc(v))
-					return v;
+				if(proc(point(x, y)))
+					return point(x, y);
 			}
 			n = -n;
 		}
 	}
 	return point(-10000, -10000);
+}
+
+point areai::getcorner(point v) const {
+	while(isvalid(v)) {
+		auto f = frames[v.y][v.x];
+		if(!f)
+			break;
+		else if(map_features[f] == BuildingLeft)
+			v.x--;
+		else if(map_features[f] == BuildingUp)
+			v.y--;
+		else if(map_features[f] == BuildingHead)
+			return v;
+		else
+			break;
+	}
+	return v;
 }

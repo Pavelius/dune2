@@ -137,17 +137,16 @@ static void show_introdution() {
 }
 
 void main_menu() {
-	show_introdution();
+	// show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
-	animate_id = CONSTRUC;
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
 	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
-	build_structure({5, 5}, Windtrap);
-	build_structure({7, 5}, Refinery);
+	addobj({5, 5}, Windtrap);
+	addobj({7, 5}, Refinery);
 	addobj({5, 7}, Trike, Down);
 	addobj({6, 7}, Tank, Down);
 	addobj({7, 7}, AssaultTank, Down);

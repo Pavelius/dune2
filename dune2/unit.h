@@ -5,6 +5,7 @@
 #include "player.h"
 #include "order.h"
 #include "resid.h"
+#include "typeable.h"
 
 enum unitn : unsigned char {
 	LightInfantry, HeavyInfantry, Trike, Tank, AssaultTank
@@ -22,19 +23,14 @@ struct uniti : nameable {
 	unsigned char	frame, frame_shoot, frame_avatar;
 	unsigned char	stats[Armor + 1];
 };
-struct unit : drawable {
-	explicit operator bool() const { return hits > 0; }
+struct unit : drawable, playerable, typeable<uniti, unitn> {
 	unsigned long	action_time; // Start action
 	point			position, order;
-	unitn			type;
 	squadn			squad;
 	direction		move_direction, shoot_direction, path_direction;
-	unsigned char	player;
 	short			hits, supply;
-	//void			attack();
+	explicit operator bool() const { return hits > 0; }
 	void			apply(ordern type, point v);
-	const uniti&	geti() const;
-	playeri*		getplayer() const;
 	int				get(statn v) const { return geti().stats[v]; }
 	int				getmaximum(statn v) const;
 	const char*		getname() const { return geti().getname(); }
@@ -46,10 +42,7 @@ struct unit : drawable {
 	bool			isturret() const { return geti().frame_shoot != 0; }
 	bool			iswaitorder() const { return !ismoveorder() && !ismoving(); }
 	void			move(point v);
-//	void			move(point v, int index);
-	//void			reatreat();
 	void			set(point v);
-	void			setplayer(const playeri* v);
 	void			stop();
 	void			update();
 	void			wait(unsigned long n);
@@ -59,7 +52,7 @@ private:
 	void			movescreen();
 	direction		nextpath(point v);
 };
-extern unit *last_unit, *spot_unit;
+extern unit *last_unit;
 
 void addobj(point pt, unitn id, direction d);
 bool isnonblocked(point v);

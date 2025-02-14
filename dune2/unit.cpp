@@ -16,7 +16,7 @@ BSDATA(uniti) = {
 };
 assert_enum(uniti, AssaultTank)
 
-unit *last_unit, *spot_unit;
+unit *last_unit;
 
 point formation(int index) {
 	static point formations[] = {
@@ -34,23 +34,6 @@ bool unit::isbusy() const {
 
 bool unit::ismoving() const {
 	return screen != m2sc(position);
-}
-
-const uniti& unit::geti() const {
-	return bsdata<uniti>::elements[type];
-}
-
-playeri* unit::getplayer() const {
-	if(player == 0xFF)
-		return 0;
-	return bsdata<playeri>::elements + player;
-}
-
-void unit::setplayer(const playeri* v) {
-	if(v)
-		player = v - bsdata<playeri>::elements;
-	else
-		player = 0xFF;
 }
 
 int	unit::getmaximum(statn v) const {
@@ -194,12 +177,17 @@ bool isnonblocked(point v) {
 	return path_map[v.y][v.x] != BlockArea;
 }
 
+bool isunitpossible(point v) {
+	auto f = area.getfeature(v);
+	return f != BuildingHead && f != BuildingLeft && f != BuildingUp;
+}
+
 bool isfreetrack(point v) {
-	return !area.is(v, Mountain);
+	return isunitpossible(v) && !area.is(v, Mountain);
 }
 
 bool isfreefoot(point v) {
-	return true;
+	return isunitpossible(v);
 }
 
 unit* find_unit(point v) {

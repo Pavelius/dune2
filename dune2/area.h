@@ -23,6 +23,7 @@ struct areai {
 	void			blockland(movementn mv) const;
 	void			decoy(point v);
 	terrainn		get(point v) const;
+	point			getcorner(point v) const;
 	featuren		getfeature(point v) const;
 	unsigned short	getframe(point v) const { return frames[v.y][v.x]; }
 	unsigned		getframeside(point v, terrainn t) const;
@@ -39,7 +40,7 @@ struct areai {
 	point			nearest(point v, fntest proc, int radius) const;
 	void			set(point v, terrainn t);
 	void			set(point v, featuren t, int param = 0);
-	void			set(point v, shapen t, short unsigned* frame_list);
+	void			set(point v, shapen t, const short unsigned* frame_list);
 	void			set(rect v, fnset proc, int value);
 	void			setcamera(point v, bool center_view);
 	void			random(rect r, fnset proc, int value);
