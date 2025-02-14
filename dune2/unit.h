@@ -54,7 +54,7 @@ private:
 };
 extern unit *last_unit;
 
-void addobj(point pt, unitn id, direction d);
+void add_unit(point pt, unitn id, direction d);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);

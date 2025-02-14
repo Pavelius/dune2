@@ -198,7 +198,7 @@ unit* find_unit(point v) {
 	return 0;
 }
 
-void addobj(point pt, unitn id, direction d) {
+void add_unit(point pt, unitn id, direction d) {
 	pt = area.nearest(pt, isfreetrack, 4);
 	if(!area.isvalid(pt))
 		return;
@@ -224,5 +224,6 @@ void unit::apply(ordern type, point v) {
 	switch(type) {
 	case Stop: stop(); break;
 	case Move: move(v); break;
+	case Retreat: getplayer()->add(Credits, 20); break;
 	}
 }

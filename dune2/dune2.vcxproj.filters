@@ -177,6 +177,9 @@
     <ClCompile Include="order.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="indicator.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -329,6 +332,9 @@
     <ClInclude Include="order.h">
       <Filter>logic</Filter>
     </ClInclude>
+    <ClInclude Include="indicator.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">
@@ -350,6 +356,9 @@
       <Filter>locale</Filter>
     </Text>
     <Text Include="..\locale\en\intro.txt">
+      <Filter>locale</Filter>
+    </Text>
+    <Text Include="..\locale\en\buildings.txt">
       <Filter>locale</Filter>
     </Text>
   </ItemGroup>

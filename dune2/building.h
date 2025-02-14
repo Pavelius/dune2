@@ -11,14 +11,18 @@ enum buildingn : unsigned char {
 	Turret, RocketTurret,
 };
 struct buildingi : nameable {
+	unsigned char	frame_avatar;
+	short			hits;
 	shapen			shape;
 	short unsigned	frames[16], ruined[16];
 };
 struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;
+	short			hits;
 	explicit operator bool() const;
+	void			destroy();
 };
 extern building* last_building;
 
-void addobj(point pt, buildingn id);
+void add_building(point pt, buildingn id);
 building* find_building(point v);

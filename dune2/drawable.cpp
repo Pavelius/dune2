@@ -9,6 +9,7 @@ using namespace draw;
 
 typedef adat<drawable*, 256> drawablea;
 drawable *last_object;
+int object_padding = 16;
 
 void add_effect(point screen, short unsigned param, unsigned long start_time) {
 	auto p = bsdata<draweffect>::addz();
@@ -41,6 +42,7 @@ static int compare_unit(const void* v1, const void* v2) {
 void paint_objects() {
 	auto origin = caret;
 	rect rc = {camera.x, camera.y, camera.x + width, camera.y + height};
+	rc.offset(-object_padding);
 	adat<drawable*, 256> objects;
 	for(auto& e : bsdata<drawrenderi>())
 		add_objects(objects, e, rc);

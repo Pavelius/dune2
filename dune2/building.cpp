@@ -6,8 +6,8 @@ BSDATA(buildingi) = {
 	{"ConstructionYard"},
 	{"SpiceSilo"},
 	{"Starport"},
-	{"Windtrap", Shape2x2, {304, 305, 306, 307}},
-	{"Refinery", Shape3x2, {332, 333, 334, 337, 338, 339}},
+	{"Windtrap", 61, 500, Shape2x2, {304, 305, 306, 307}},
+	{"Refinery", 64, 1000, Shape3x2, {332, 333, 334, 337, 338, 339}},
 	{"RadarOutpost", Shape2x2, {}},
 	{"RepairFacility", Shape3x2, {}},
 	{"HouseOfIX"},
@@ -29,11 +29,12 @@ building::operator bool() const {
 	return area.isvalid(position);
 }
 
-void addobj(point pt, buildingn id) {
+void add_building(point pt, buildingn id) {
 	last_building = bsdata<building>::addz();
 	last_building->position = pt;
 	last_building->type = id;
 	auto& e = last_building->geti();
+	last_building->hits = e.hits;
 	area.set(last_building->position, e.shape, e.frames);
 }
 
@@ -43,4 +44,8 @@ building* find_building(point v) {
 			return &e;
 	}
 	return 0;
+}
+
+void building::destroy() {
+
 }

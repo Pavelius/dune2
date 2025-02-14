@@ -3,13 +3,14 @@
 #include "nameable.h"
 
 enum abilityn : unsigned char {
-	Credits, Rounds,
+	Credits, Energy, SpiceCapacity, Rounds,
 };
 struct abilityi : nameable {
 };
 struct playeri {
-	unsigned		abilities[Rounds + 1];
-	unsigned short	active_unit, active_platoon;
+	unsigned int	abilities[Rounds + 1];
+	void			add(abilityn v, int i) { abilities[v] += i; }
+	unsigned int	get(abilityn v) const { return abilities[v]; }
 	unsigned char	getindex() const;
 };
 struct playerable {

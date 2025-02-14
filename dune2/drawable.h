@@ -28,6 +28,7 @@ struct drawrenderi {
 	fnevent			clear; // After clearobject() called this. Can use last_object.
 };
 extern drawable* last_object;
+extern int object_padding;
 
 void add_effect(point screen, short unsigned param, unsigned long time);
 void paint_objects();

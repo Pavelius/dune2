@@ -7,6 +7,7 @@
 #include "fix.h"
 #include "fraction.h"
 #include "game.h"
+#include "indicator.h"
 #include "io_stream.h"
 #include "math.h"
 #include "order.h"
@@ -26,6 +27,7 @@ using namespace draw;
 
 static point drag_mouse_start, drag_mouse_finish;
 static bool drag_begin;
+static indicator spice;
 
 static color color_form = color(186, 190, 150);
 static color color_form_light = color(251, 255, 203);
@@ -649,10 +651,9 @@ static void selection_rect_dropped(const rect& rc) {
 	human_selected.clear();
 	if(!area.isvalid(area_spot))
 		return;
-	auto pb = find_building(area.getcorner(area_spot));
-	if(pb) {
+	last_building = find_building(area.getcorner(area_spot));
+	if(last_building)
 		return;
-	}
 	human_selected.select(player, rc);
 }
 
@@ -764,12 +765,12 @@ static void paint_shoots(int frame, int value) {
 	caret.y += 6;
 }
 
-static void paint_unit_panel() {
+static void paint_unit_panel(int frame, int hits, int hits_maximum) {
 	auto push_caret = caret;
 	auto push_width = width;
-	image(gres(SHAPES), last_unit->geti().frame_avatar, 0);
+	image(gres(SHAPES), frame, 0);
 	caret.x += 32 + 1; width -= 32 + 1;
-	paint_health_bar(last_unit->hits, last_unit->getmaximum(Hits));
+	paint_health_bar(hits, hits_maximum);
 	caret.y += 12;
 	// paint_shoots(25, 8); // 8 maximum. Can track
 	texta("Dmg", AlignCenter | TextSingleLine);
@@ -804,6 +805,15 @@ static void button(ordern order, int key) {
 	button(bsdata<orderi>::elements[order].getname(), 0, key, AlignCenter, false, human_order, order);
 }
 
+static void paint_spice() {
+	auto push_caret = caret;
+	caret.x = getwidth() - 62;
+	caret.y = 3;
+	spice.next = player->get(Credits);
+	spice.paint();
+	caret = push_caret;
+}
+
 static void paint_unit_orders() {
 	rectpush push;
 	setoffset(-1, 0);
@@ -829,15 +839,21 @@ static void paint_unit_list() {
 	caret = push_caret;
 }
 
+static void paint_building_info() {
+	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
+	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits);
+}
+
 static void paint_unit_info() {
 	rectpush push;
-	if(!human_selected)
-		return;
-	else if(human_selected.count == 1) {
+	if(!human_selected) {
+		if(last_building)
+			paint_building_info();
+	} else if(human_selected.count == 1) {
 		auto push_unit = last_unit;
 		last_unit = human_selected[0];
 		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-		paint_unit_panel();
+		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->getmaximum(Hits));
 		caret.y += 1;
 		paint_unit_orders();
 		last_unit = push_unit;
@@ -860,6 +876,7 @@ static void paint_map_info(fnevent proc) {
 
 void paint_main_map() {
 	paint_background(SCREEN);
+	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_unit_info);
 	input_game_map();
@@ -877,6 +894,7 @@ static void mouse_cancel(rect rc) {
 
 void paint_main_map_choose_terrain() {
 	paint_background(SCREEN);
+	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain);
 	paint_radar_screen();

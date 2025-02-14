@@ -140,16 +140,17 @@ void main_menu() {
 	// show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
+	player = bsdata<playeri>::elements;
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
 	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
-	addobj({5, 5}, Windtrap);
-	addobj({7, 5}, Refinery);
-	addobj({5, 7}, Trike, Down);
-	addobj({6, 7}, Tank, Down);
-	addobj({7, 7}, AssaultTank, Down);
-	addobj({8, 7}, Trike, Down);
+	add_building({5, 5}, Windtrap);
+	add_building({7, 5}, Refinery);
+	add_unit({5, 7}, Trike, Down);
+	add_unit({6, 7}, Tank, Down);
+	add_unit({7, 7}, AssaultTank, Down);
+	add_unit({8, 7}, Trike, Down);
 	show_scene(paint_main_map, 0, 0);
 }
