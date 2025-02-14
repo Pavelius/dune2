@@ -787,6 +787,14 @@ static void paint_choose_terrain() {
 	paint_cursor(5, {8, 8});
 }
 
+static void human_order() {
+	auto order = (ordern)hot.param;
+}
+
+static void button(ordern order, int key) {
+	button(bsdata<orderi>::elements[order].getname(), 0, key, AlignCenter, false, human_order, order);
+}
+
 static void paint_unit_orders() {
 	rectpush push;
 	setoffset(-1, 0);

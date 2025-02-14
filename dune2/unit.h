@@ -38,6 +38,7 @@ struct unit : drawable {
 	const char*		getname() const { return geti().getname(); }
 	int				getspeed() const;
 	bool			isbusy() const;
+	bool			isenemy() const { return false; }
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }
