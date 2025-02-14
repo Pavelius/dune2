@@ -50,7 +50,7 @@ static void paint_focus_rect(point size, color border, int focus, int origin, in
 	focus -= origin;
 	if(focus < 0)
 		return;
-	rectpush push;
+	pushrect push;
 	auto x = caret.x + (focus % per_line) * size.x - 1;
 	auto y = caret.y + (focus / per_line) * size.y - 1;
 	caret.x = x;
@@ -86,7 +86,7 @@ static void paint_sprites(resid id, color border, int index, int per_line, int l
 }
 
 static void show_sprites(resid id, point start, point size) {
-	rectpush push;
+	pushrect push;
 	auto push_fore = fore;
 	auto push_font = font; font = gres(FONT6);
 	auto maximum = gres(id)->count;
@@ -94,20 +94,20 @@ static void show_sprites(resid id, point start, point size) {
 	color backgc = color(64, 0, 128);
 	color border = color(128, 128, 128);
 	while(ismodal()) {
+		paint_background();
+		caret.x = 2; caret.y = 2;
+		width = size.x; height = size.y;
+		auto caret_origin = caret;
 		auto per_line = (getwidth() - 4) / size.x;
-		auto maximum_height = (getheight() - texth() / size.y);
+		auto maximum_height = (getheight() - caret.y - texth()) / size.y;
 		if(focus < 0)
 			focus = 0;
 		else if(focus > maximum - 1)
 			focus = maximum - 1;
 		if(focus < origin)
 			origin = (focus / per_line) * per_line;
-		else if(focus > origin + (maximum_height)*per_line)
+		else if(focus >= origin + (maximum_height)*per_line)
 			origin = ((focus - ((maximum_height - 1) * per_line)) / per_line) * per_line;
-		paint_background();
-		caret.x = 2; caret.y = 2;
-		auto caret_origin = caret;
-		width = size.x; height = size.y;
 		caret = caret + start;
 		fore = colors::white;
 		paint_sprites(id, border, origin, per_line, maximum_height, image_flags);
@@ -147,7 +147,7 @@ static void set_pixel4(unsigned char* data, point subindex, int sn, unsigned cha
 }
 
 static void paint_font_frame(int x0, int y0, const sprite* pf, int frame, color main, int zoom, unsigned char& result_index) {
-	rectpush push;
+	pushrect push;
 	pushvalue push_palt(palt);
 	static point subindex = {0, 0};
 	static unsigned char symbol_tool = '1';
@@ -236,7 +236,7 @@ static void paint_font_frame(int x0, int y0, const sprite* pf, int frame, color 
 }
 
 static void show_font(resid id, point start, point size) {
-	rectpush push;
+	pushrect push;
 	auto push_fore = fore;
 	auto push_font = font; font = gres(FONT6);
 	int focus = 0;

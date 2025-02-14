@@ -1,4 +1,5 @@
 Attack: Attack
+Exit: Exit
 Move: Move
 Retreat: Retreat
 Stop: Stop

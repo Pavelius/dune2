@@ -1141,7 +1141,7 @@ void draw::rectb3d() {
 }
 
 void draw::rectf() {
-	rectpush push;
+	pushrect push;
 	int x1 = caret.x, y1 = caret.y, x2 = caret.x + width, y2 = caret.y + height;
 	if(correct(x1, y1, x2, y2, clipping))
 		set32x(ptr(x1, y1), canvas->scanline, x2 - x1, y2 - y1);
@@ -1205,7 +1205,7 @@ void draw::rectx() {
 }
 
 void draw::rectfocus() {
-	rectpush push;
+	pushrect push;
 	setoffset(1, 1);
 	rectx();
 }
@@ -2311,7 +2311,7 @@ void draw::cbsetptr() {
 }
 
 void draw::strokeout(fnevent proc, int dx) {
-	rectpush push;
+	pushrect push;
 	if(!dx)
 		dx = metrics::border;
 	caret.x -= dx;

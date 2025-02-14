@@ -180,6 +180,9 @@
     <ClCompile Include="indicator.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="view_list.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -333,6 +336,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="indicator.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="view_list.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

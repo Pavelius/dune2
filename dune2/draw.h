@@ -182,11 +182,11 @@ extern int				tab_pixels;
 extern fnevent          pbackground, ptips, pfinish, pinput;
 extern fnevent          pbeforemodal, pleavemodal, psetfocus;
 extern unsigned			text_flags;
-struct rectpush {
+struct pushrect {
 	point caret;
 	int	width, height;
-	rectpush() : caret(draw::caret), width(draw::width), height(draw::height) {}
-	~rectpush() { draw::caret = caret; draw::width = width; draw::height = height; }
+	pushrect() : caret(draw::caret), width(draw::width), height(draw::height) {}
+	~pushrect() { draw::caret = caret; draw::width = width; draw::height = height; }
 };
 int					aligned(int x, int width, unsigned state, int string_width);
 int					alignedh(const rect& rc, const char* string, unsigned state);

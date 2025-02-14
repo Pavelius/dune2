@@ -13,6 +13,7 @@ extern const char* form_header;
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
+void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param = 0);
 void create_title_font_pallette();
 void disappear_scene(unsigned long milliseconds = 0);
 void initialize_view(const char* title, fnevent main_scene);

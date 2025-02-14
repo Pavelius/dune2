@@ -103,6 +103,7 @@ void human_unit_stop() {
 
 static void show_introdution() {
 	static videoi source[] = {
+		// {WESTWOOD, 8 * 1000, 110, FG(Appearing) | FG(Disappearing), "westwood"},
 		{INTRO1, 9 * 1000, 110, FG(Disappearing), "intro"}, // 00:18
 		{INTRO2, 8 * 1000, 150, FG(Appearing) | FG(Disappearing), 0, "Intro1"}, // 00:28
 		{INTRO3, 7 * 1000, 240, FG(Appearing), 0, "Intro2"}, // 00:38
@@ -141,6 +142,7 @@ void main_menu() {
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	player = bsdata<playeri>::elements;
+	player->add(Credits, 1000);
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);

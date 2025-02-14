@@ -182,6 +182,7 @@
     <ClCompile Include="view.cpp" />
     <ClCompile Include="view_focus.cpp" />
     <ClCompile Include="view_debug.cpp" />
+    <ClCompile Include="view_list.cpp" />
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />
     <ClCompile Include="win_time.cpp" />
@@ -237,6 +238,7 @@
     <ClInclude Include="video.h" />
     <ClInclude Include="view.h" />
     <ClInclude Include="view_focus.h" />
+    <ClInclude Include="view_list.h" />
     <ClInclude Include="win.h" />
   </ItemGroup>
   <ItemGroup>

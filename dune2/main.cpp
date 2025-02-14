@@ -13,8 +13,8 @@ void util_main();
 void main_menu();
 
 int main() {
-	//start_random_seed = getcputime();
-	start_random_seed = 122397875;
+	start_random_seed = getcputime();
+	// start_random_seed = 122397875;
 	srand(start_random_seed);
 	initialize_translation();
 	if(log::errors)

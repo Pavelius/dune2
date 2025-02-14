@@ -22,6 +22,7 @@
 #include "video.h"
 #include "view.h"
 #include "view_focus.h"
+#include "view_list.h"
 
 using namespace draw;
 
@@ -47,7 +48,7 @@ bool debug_toggle;
 void view_debug_input();
 
 static void debug_map_message() {
-	rectpush push;
+	pushrect push;
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
 	auto t = area.get(area_spot);
 	string sb;
@@ -55,7 +56,9 @@ static void debug_map_message() {
 	auto pb = find_building(area.getcorner(area_spot));
 	if(pb)
 		sb.adds(pb->getname());
-	text(sb.text, -1, TextStroke);
+	text(sb.text, -1, TextStroke); caret.y += texth();
+	sb.clear(); sb.add("Mouse %1i, %2i", hot.mouse.x, hot.mouse.y);
+	text(sb.text, -1, TextStroke); caret.y += texth();
 }
 
 static void update_tick() {
@@ -151,7 +154,7 @@ static void form_frame_rect() {
 }
 
 static void form_frame(int thickness) {
-	rectpush push;
+	pushrect push;
 	while(thickness > 0) {
 		form_frame_rect();
 		thickness--;
@@ -177,7 +180,7 @@ static void rectb_black() {
 }
 
 static bool button(const char* title, const void* button_data, unsigned key, unsigned flags = TextBold | TextSingleLine, bool allow_set_focus = false) {
-	rectpush push;
+	pushrect push;
 	draw::height = texth() + 5;
 	rectb_black();
 	setoffset(1, 1);
@@ -202,10 +205,30 @@ static bool button(const char* title, const void* button_data, unsigned key, uns
 	return run;
 }
 
-static void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param) {
+void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param) {
 	if(button(title, button_data, key, flags, allow_set_focus))
 		execute(proc, param, 0, button_data);
 	caret.y += texth() + 4;
+}
+
+static bool button(unsigned key) {
+	if(disable_input)
+		return false;
+	auto button_data = (void*)(*((int*)&caret));
+	auto ishilited = ishilite();
+	auto isfocused = (current_focus == button_data);
+	auto run = button_input(button_data, key, false);
+	if(pressed_focus == button_data)
+		button_press_effect();
+	return run;
+}
+
+static void button(rect rc, unsigned key, fnevent proc, long param) {
+	pushrect push;
+	caret.x = rc.x1; caret.y = rc.y1;
+	width = rc.width(); height = rc.height();
+	if(button(key))
+		execute(proc, param);
 }
 
 struct pushscene : pushfocus {
@@ -348,17 +371,27 @@ static void paint_mentat_background() {
 	image(0, 0, gres(MENTATS), bsdata<fractioni>::elements[last_fraction].mentat_frame, 0);
 }
 
+static void paint_mentat_exit() {
+	pushrect push;
+	auto push_fore = fore; fore = color_form_shadow;
+	caret.x += 200; caret.y += 180; width = 48; height = 24;
+	button(getnm("Exit"), 0, KeyEscape, AlignCenterCenter, false, buttoncancel, 0);
+	fore = push_fore;
+}
+
 void paint_mentat() {
 	paint_mentat_background();
 	paint_mentat_eyes();
 	paint_mentat_speaking_mouth();
 	paint_mentat_back();
+	paint_mentat_exit();
 }
 
 void paint_mentat_silent() {
 	paint_mentat_background();
 	paint_mentat_eyes();
 	paint_mentat_back();
+	paint_mentat_exit();
 }
 
 static void set_area_view() {
@@ -540,7 +573,7 @@ static void paint_effect_fix() {
 }
 
 static void paint_radar_rect() {
-	rectpush push;
+	pushrect push;
 	caret.x = getwidth() - 64 + area_origin.x;
 	caret.y = getheight() - 64 + area_origin.y;
 	width = area_screen.width() / area_tile_width;
@@ -679,12 +712,24 @@ static void selection_rect_dropped() {
 }
 
 static void rectb_alpha_drag() {
-	rectpush push;
+	pushrect push;
 	auto start = s2i(drag_mouse_start);
 	caret = hot.mouse;
 	width = start.x - caret.x;
 	height = start.y - caret.y;
 	rectb_alpha();
+}
+
+static void open_mentat() {
+	show_scene(paint_mentat_silent, 0, 0);
+}
+
+static void open_options() {
+}
+
+static void input_game_menu() {
+	button({16, 1, 94, 15}, 'M', open_mentat, 0);
+	button({104, 1, 182, 15}, 'O', open_options, 0);
 }
 
 static void input_game_map() {
@@ -749,7 +794,7 @@ static void paint_bar(int value, int value_maximum) {
 }
 
 static void paint_health_bar(int value, int value_maximum) {
-	rectpush push;
+	pushrect push;
 	height = 8; width = 27;
 	paint_bar(value, value_maximum);
 	image(caret.x, caret.y + height + 1, gres(SHAPES), 15, 0);
@@ -815,7 +860,7 @@ static void paint_spice() {
 }
 
 static void paint_unit_orders() {
-	rectpush push;
+	pushrect push;
 	setoffset(-1, 0);
 	height = 12;
 	button(Attack, 'A');
@@ -845,7 +890,7 @@ static void paint_building_info() {
 }
 
 static void paint_unit_info() {
-	rectpush push;
+	pushrect push;
 	if(!human_selected) {
 		if(last_building)
 			paint_building_info();
@@ -865,7 +910,7 @@ static void paint_unit_info() {
 }
 
 static void paint_map_info(fnevent proc) {
-	rectpush push;
+	pushrect push;
 	auto push_font = font;
 	auto push_fore = fore;
 	paint_map_info_background();
@@ -876,6 +921,7 @@ static void paint_map_info(fnevent proc) {
 
 void paint_main_map() {
 	paint_background(SCREEN);
+	input_game_menu();
 	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_unit_info);
@@ -945,7 +991,7 @@ void paint_video() {
 			palt = push_palt;
 		}
 	} else {
-		rectpush push;
+		pushrect push;
 		setoffset(32, 32);
 		if(form_header) {
 			auto push_palt = palt;
@@ -975,7 +1021,7 @@ long show_scene_raw(fnevent before_paint, fnevent input, void* focus) {
 }
 
 long show_scene(fnevent before_paint, fnevent input, void* focus) {
-	rectpush push;
+	pushrect push;
 	pushscene push_scene;
 	current_focus = focus;
 	return show_scene_raw(before_paint, input, focus);
@@ -998,7 +1044,7 @@ void appear_scene(fnevent before_paint, unsigned long milliseconds) {
 void disappear_scene(unsigned long milliseconds) {
 	default_time(milliseconds);
 	screenshoot before;
-	rectpush push;
+	pushrect push;
 	auto push_fore = fore; fore = colors::black;
 	caret.x = 0; caret.y = 0; width = getwidth(); height = getheight();
 	rectf();
