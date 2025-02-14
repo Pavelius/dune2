@@ -120,3 +120,13 @@ direction to(point s, point d) {
 direction tos(point s, point d) {
 	return getdirection(s, d, orientations_7b7);
 }
+
+point transform(point v, direction d) {
+	switch(d) {
+	case Up: return v;
+	case Down: return {v.x, -v.y}; // X coor same as Up
+	case Left: return {-v.y, v.x};
+	case Right: return {v.y, v.x}; // Y coor same as left
+	default: return v;
+	}
+}

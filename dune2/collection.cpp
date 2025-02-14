@@ -149,7 +149,7 @@ void collectiona::shuffle() {
 }
 
 void* collectiona::pick() {
-	auto result = (count > 0) ? data[0] : 0;
+	auto result = first();
 	remove(0, 1);
 	return result;
 }
@@ -157,4 +157,10 @@ void* collectiona::pick() {
 void collectiona::top(int number) {
 	if(count > (size_t)number)
 		count = number;
+}
+
+void* collectiona::first() const {
+	if(!count)
+		return 0;
+	return data[0];
 }

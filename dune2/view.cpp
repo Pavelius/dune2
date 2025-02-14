@@ -8,6 +8,7 @@
 #include "game.h"
 #include "io_stream.h"
 #include "math.h"
+#include "order.h"
 #include "pushvalue.h"
 #include "rand.h"
 #include "resid.h"
@@ -771,9 +772,9 @@ static void paint_unit_panel() {
 
 static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
 	auto y2 = caret.y + height;
-	texta(getnm(id), AlignCenter | TextSingleLine); caret.y += texth();
+	texta(getnm(id), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	image(gres(SHAPES), avatar, 0);
-	caret.y += 32; height = y2 - caret.y - texth() - 3;
+	caret.y += 32; height = y2 - caret.y - texth() - 4;
 	// rectb_black();
 	texta(getnm(ids(id, "Info")), AlignCenterCenter);
 	caret.y += height;
@@ -822,6 +823,7 @@ static void paint_unit_info() {
 		paint_unit_panel();
 		caret.y += 1;
 		paint_unit_orders();
+		last_unit = push_unit;
 	} else {
 		paint_unit_list();
 		caret.y += 16 * 2;

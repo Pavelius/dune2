@@ -18,14 +18,14 @@ assert_enum(uniti, AssaultTank)
 
 unit *last_unit, *spot_unit;
 
-point getformation(point dst, int index) {
+point formation(int index) {
 	static point formations[] = {
 		{0, 0}, {1, 0}, {-1, 0}, {2, 0}, {-2, 0}, {3, 0}, {-3, 0},
 		{0, 1}, {1, 1}, {-1, 1}, {2, 1}, {-2, 1}, {3, 1}, {-3, 1},
 		{0, 2}, {1, 2}, {-1, 2}, {2, 2}, {-2, 2}, {3, 2}, {-3, 2},
 	};
 	index %= sizeof(formations) / sizeof(formations[0]);
-	return dst + formations[index];
+	return formations[index];
 }
 
 bool unit::isbusy() const {
@@ -177,10 +177,6 @@ void unit::move(point v) {
 		return;
 	order = v;
 	start_time = game.time; // Can't wait command
-}
-
-void unit::move(point v, int index) {
-	move(getformation(v, index));
 }
 
 void unit::stop() {

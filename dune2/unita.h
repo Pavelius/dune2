@@ -6,5 +6,6 @@
 
 struct unita : collection<unit> {
 	void select(const playeri* player, const rect& screen_area);
+	rect selectrect() const;
 };
 extern unita human_selected;

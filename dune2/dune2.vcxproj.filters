@@ -323,6 +323,9 @@
     <ClInclude Include="screenshoot.h">
       <Filter>support</Filter>
     </ClInclude>
+    <ClInclude Include="order.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">

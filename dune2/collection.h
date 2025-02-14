@@ -9,6 +9,7 @@ struct collectiona : adat<void*, 256> {
 	void	add(void* p) { if(p) *adat<void*, 256>::add() = p; }
 	void	add(const collectiona& source);
 	void	distinct();
+	void*	first() const;
 	void	group(fngroup proc);
 	void	insert(int index, void* object);
 	bool	have(const void* object) { return indexof(object) != -1; }
@@ -31,6 +32,7 @@ struct collection : collectiona {
 	constexpr operator slice<T*>() const { return slice<T*>((T**)data, count); }
 	T**		begin() const { return (T**)data; }
 	T**		end() const { return (T**)data + count; }
+	T*		first() const { return (T*)collectiona::first(); }
 	T*		pick() { return (T*)collectiona::pick(); }
 	T*		random() const { return (T*)collectiona::random(); }
 	constexpr slice<T*> records() const { return {(T**)data, count}; }

@@ -4,9 +4,10 @@
 #include "draw.h"
 #include "fraction.h"
 #include "math.h"
+#include "order.h"
+#include "pushvalue.h"
 #include "resid.h"
 #include "rand.h"
-#include "pushvalue.h"
 #include "slice.h"
 #include "timer.h"
 #include "unit.h"
@@ -69,15 +70,40 @@ static point choose_terrain() {
 	return show_scene(paint_main_map_choose_terrain, 0, 0);
 }
 
+static void apply_order(ordern order, direction d, point v, unit* target, bool interactive, bool autotarget) {
+	if(interactive && !area.isvalid(v))
+		v = choose_terrain();
+	if(!area.isvalid(v))
+		return;
+	if(!target && autotarget)
+		target = find_unit(v);
+	auto index = 0;
+	for(auto p : human_selected) {
+		auto vt = formation(index++);
+		vt = v + transform(vt, d);
+		vt = area.nearest(vt, isfreetrack, 4);
+		if(!vt)
+			continue;
+		p->move(vt);
+	}
+}
+
+static void apply_units_order(point v) {
+	auto d = to(center(human_selected.selectrect()), v);
+	apply_order(Move, d, v, 0, false, false);
+}
+
 void human_unit_attack() {
-	auto result = choose_terrain();
+	auto target = choose_terrain();
+	if(!area.isvalid(target))
+		return;
 }
 
 void human_unit_move() {
 	auto target = choose_terrain();
 	if(!area.isvalid(target))
 		return;
-	last_unit->move(target);
+	apply_units_order(target);
 }
 
 void mouse_unit_move() {
@@ -86,11 +112,8 @@ void mouse_unit_move() {
 	auto i = 0;
 	if(p) {
 		// Enemy unit spotted?
-	} else {
-		auto index = 0;
-		for(auto p : human_selected)
-			p->move(v, index++);
-	}
+	} else
+		apply_units_order(v);
 }
 
 void human_unit_stop() {

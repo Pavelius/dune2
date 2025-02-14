@@ -201,6 +201,7 @@
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="movement.h" />
+    <ClInclude Include="order.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="iff.h" />
     <ClInclude Include="io_stream.h" />

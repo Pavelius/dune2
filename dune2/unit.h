@@ -41,8 +41,9 @@ struct unit : drawable {
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }
+	bool			iswaitorder() const { return !ismoveorder() && !ismoving(); }
 	void			move(point v);
-	void			move(point v, int index);
+//	void			move(point v, int index);
 	//void			reatreat();
 	void			set(point v);
 	void			setplayer(const playeri* v);
@@ -63,4 +64,4 @@ bool isfreetrack(point v);
 bool isfreefoot(point v);
 
 unit* find_unit(point s);
-point getformation(point dst, int index);
+point formation(int index);
