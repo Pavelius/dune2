@@ -18,5 +18,6 @@ struct videoi {
 };
 extern unsigned long start_video;
 
-void play_video(const slice<videoi>& source);
 void reset_video_time();
+void video_play(const slice<videoi>& source);
+void video_dump(const char* url, const slice<videoi>& source, unsigned long time);

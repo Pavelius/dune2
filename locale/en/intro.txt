@@ -11,3 +11,13 @@ Intro9: The House that produce most spice
 Intro10: will control Dune
 Intro11: Ther are not set territories
 Intro12: and no rules of engagements
+Intro13: Best armies has arrived
+Intro14: Now three Houses fight for control of Dune
+
+IntroBattleA: The noble Atreides
+IntroBattleO: The insidious Ordos
+IntroBattleH: The evil Harkonen
+
+Intro15: Only one House will survive
+Intro16: You battle for Dune begins
+Intro17: NOW

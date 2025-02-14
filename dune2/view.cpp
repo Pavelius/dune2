@@ -894,30 +894,39 @@ static void paint_video_fps() {
 
 void paint_video() {
 	paint_background(colors::black);
-	auto ps = gres(animate_id);
-	if(!ps || !ps->count)
-		return;
 	auto push_font = font; font = gres(FONT16);
 	auto push_caret = caret;
-	caret.x += (320 - ps->width) / 2;
-	caret.y += imax((100 - ps->height) / 2, 24);
-	auto frame = get_frame(animate_delay);
-	if(animate_once) {
-		if(frame >= ps->count) {
-			frame = ps->count - 1;
-			if(!animate_stop)
-				execute(buttonok);
+	auto ps = gres(animate_id);
+	if(ps) {
+		caret.x += (320 - ps->width) / 2;
+		caret.y += imax((100 - ps->height) / 2, 24);
+		auto frame = get_frame(animate_delay);
+		if(animate_once) {
+			if(frame >= ps->count) {
+				frame = ps->count - 1;
+				if(!animate_stop)
+					execute(buttonok);
+			}
+		} else
+			frame = frame % ps->count;
+		image(ps, frame, 0);
+		caret.x = push_caret.x;
+		caret.y += ps->height + 8;
+		if(form_header) {
+			auto push_palt = palt;
+			create_title_font_pallette();
+			texta(form_header, AlignCenter | ImagePallette);
+			palt = push_palt;
 		}
-	} else
-		frame = frame % ps->count;
-	image(ps, frame, 0);
-	caret.x = push_caret.x;
-	caret.y += ps->height + 8;
-	if(form_header) {
-		auto push_palt = palt;
-		create_title_font_pallette();
-		texta(form_header, AlignCenter | ImagePallette);
-		palt = push_palt;
+	} else {
+		rectpush push;
+		setoffset(32, 32);
+		if(form_header) {
+			auto push_palt = palt;
+			create_title_font_pallette();
+			texta(form_header, AlignCenterCenter | ImagePallette);
+			palt = push_palt;
+		}
 	}
 	mouse_cancel({0, 0, getwidth(), getheight()});
 	if(hot.key == KeySpace || hot.key == KeyEscape || hot.key == KeyEnter)
