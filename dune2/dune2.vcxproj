@@ -179,6 +179,7 @@
     <ClCompile Include="video.cpp" />
     <ClCompile Include="view.cpp" />
     <ClCompile Include="view_focus.cpp" />
+    <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />
     <ClCompile Include="win_time.cpp" />

@@ -98,23 +98,24 @@ void human_unit_stop() {
 
 static void show_introdution() {
 	static videoi source[] = {
-		{INTRO1, 10 * 1000, 110, FG(Disappearing), "intro"},
-		{INTRO2, 8 * 1000, 170, FG(Appearing) | FG(Disappearing), 0, "Intro1"},
-		{INTRO3, 0, 0, FG(Appearing), 0, "Intro2"},
-		{INTRO3, 0, 0, 0, 0, "Intro3"},
-		{INTRO9, 6 * 1000, 220, FG(Appearing), 0, "Intro4"},
-		{INTRO9, 6 * 1000, 220, FG(ContinueToNext), 0, "Intro5"},
-		{INTRO9, 6 * 1000, 220, FG(ContinueToNext) | FG(Disappearing), 0, "Intro6"},
-		{INTRO10, 4 * 1000, 0, FG(Appearing), 0, "Intro7"},
-		{INTRO10, 4 * 1000, 0, FG(Appearing)| FG(ContinueToNext), 0, "Intro8"},
-		{INTRO11, 6 * 1000, 0, 0, 0, "Intro9"},
-		{INTRO11, 6 * 1000, 0, FG(ContinueToNext), 0, "Intro10"},
-		{INTRO11, 6 * 1000, 0, FG(ContinueToNext), 0, "Intro11"},
-		{INTRO11, 6 * 1000, 0, FG(ContinueToNext), 0, "Intro12"},
-		//{INTRO4, 0, 0, FG(Appearing) | FG(Disappearing)},
-		//{INTRO6, 0},
-		//{INTRO7A, 0},
-		//{INTRO7B, 0},
+		{INTRO1, 9 * 1000, 110, FG(Disappearing), "intro"}, // 00:18
+		{INTRO2, 8 * 1000, 170, FG(Appearing) | FG(Disappearing), 0, "Intro1"}, // 00:28
+		{INTRO3, 7 * 1000, 240, FG(Appearing), 0, "Intro2"}, // 00:38
+		{INTRO3, 7 * 1000, 240, FG(ContinueToNext), 0, "Intro3"}, // 00:46
+		{INTRO9, 7 * 1000, 230, FG(Appearing), 0, "Intro4"}, // 00:53
+		{INTRO9, 7 * 1000, 230, FG(ContinueToNext), 0, "Intro5"}, // 01:01
+		{INTRO9, 5 * 1000, 230, FG(ContinueToNext) | FG(Disappearing), 0, "Intro6"}, // 01:09
+		{INTRO10, 3 * 1000, 0, FG(Appearing), 0, "Intro7"},  // 01:15
+		{INTRO10, 3 * 1000, 0, FG(ContinueToNext), 0, "Intro8"}, // 01:19
+		{INTRO11, 3 * 1000, 180, 0, 0, "Intro9"}, // 01:22
+		{INTRO11, 3 * 1000, 180, FG(ContinueToNext), 0, "Intro10"}, // 01:25
+		{INTRO11, 3 * 1000, 180, 0, 0, "Intro11"}, // 01:28
+		{INTRO11, 3 * 1000, 180, FG(ContinueToNext) | FG(Disappearing), 0, "Intro12"}, // 01:31
+		{INTRO4, 12 * 1000, 0, FG(Appearing), 0, 0}, // 01:35
+		{INTRO4, 5 * 1000, 0, FG(ContinueToNext) | FG(Disappearing)}, // 01:47
+		{INTRO6, 0, 0, FG(Appearing)}, // 01:53
+		{INTRO7A, 0},
+		{INTRO7B, 0},
 		//{INTRO8A, 0},
 		//{INTRO8B, 10000},
 		//{INTRO8C, 0},
@@ -130,7 +131,7 @@ static void show_introdution() {
 }
 
 void main_menu() {
-	//show_introdution();
+	// show_introdution();
 	auto size = sizeof(unit);
 	last_fraction = NoFraction;
 	animate_id = CONSTRUC;

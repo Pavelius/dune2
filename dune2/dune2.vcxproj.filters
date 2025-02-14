@@ -171,6 +171,9 @@
     <ClCompile Include="screenshoot.cpp">
       <Filter>support</Filter>
     </ClCompile>
+    <ClCompile Include="view_debug.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

@@ -27,10 +27,13 @@ void play_video(const slice<videoi>& source) {
 		animate_once = true;
 		animate_delay = e.frame_rate;
 		form_header = getnme(e.text);
+		if(e.is(Appearing)) {
+			if(!e.is(ContinueToNext))
+				reset_form_animation();
+			appear_scene(paint_video, time_appear);
+		}
 		if(!e.is(ContinueToNext))
 			reset_form_animation();
-		if(e.is(Appearing))
-			appear_scene(paint_video, time_appear);
 		if(e.is(Repeated))
 			animate_once = false;
 		else if(e.time_lenght)

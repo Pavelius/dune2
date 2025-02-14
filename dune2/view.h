@@ -7,11 +7,13 @@ enum resid : short unsigned;
 extern unsigned long animate_time, animate_delay, animate_stop;
 extern resid animate_id;
 extern bool animate_once;
+extern bool debug_toggle;
 extern const char* form_header;
 
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
+void create_title_font_pallette();
 void disappear_scene(unsigned long milliseconds = 0);
 void human_unit_attack();
 void human_unit_move();
