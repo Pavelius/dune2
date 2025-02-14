@@ -182,7 +182,6 @@ void unit::move(point v) {
 void unit::stop() {
 	path_direction = Center;
 	order = position;
-	start_time += game_rand(500, 1000); // Need smoke and relax.
 }
 
 void unit::wait(unsigned long n) {
@@ -228,4 +227,14 @@ void addobj(point pt, unitn id, direction d) {
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->supply = last_unit->getmaximum(Supply);
 	last_unit->setplayer(player);
+}
+
+void unit::apply(ordern type, point v) {
+	auto opponent = find_unit(v);
+	if(opponent)
+		return;
+	switch(type) {
+	case Stop: stop(); break;
+	case Move: move(v); break;
+	}
 }

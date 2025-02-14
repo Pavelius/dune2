@@ -71,8 +71,7 @@ static point choose_terrain() {
 }
 
 static void apply_units_order(point v) {
-	auto d = to(center(human_selected.selectrect()), v);
-	human_selected.order(Move, d, v, 0, false, false);
+	human_selected.order(Move, Center, v, false);
 }
 
 void human_unit_attack() {

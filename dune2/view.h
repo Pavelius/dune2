@@ -15,9 +15,6 @@ int get_frame(unsigned long resolution = 0); // Get animation frame
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
 void create_title_font_pallette();
 void disappear_scene(unsigned long milliseconds = 0);
-void human_unit_attack();
-void human_unit_move();
-void human_unit_stop();
 void initialize_view(const char* title, fnevent main_scene);
 void mouse_unit_move();
 void paint_main_map();

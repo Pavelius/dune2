@@ -36,24 +36,28 @@ static point choose_terrain() {
 	return show_scene(paint_main_map_choose_terrain, 0, 0);
 }
 
-void unita::order(ordern type, direction d, point v, unit* target, bool interactive, bool autotarget) const {
-	if(interactive && !area.isvalid(v))
-		v = choose_terrain();
-	if(!area.isvalid(v))
-		return;
-	if(autotarget) {
-		if(!target)
-			target = find_unit(v);
-		if(target && target->isenemy())
-			type = Attack;
+void unita::order(ordern type, direction d, point v, bool interactive) const {
+	if(interactive && !area.isvalid(v)) {
+		switch(type) {
+		case Move: case Attack:
+			v = choose_terrain();
+			if(!area.isvalid(v))
+				return;
+			break;
+		}
 	}
+	if(d==Center && area.isvalid(v))
+		d = to(center(human_selected.selectrect()), v);
 	auto index = 0;
 	for(auto p : human_selected) {
-		auto vt = formation(index++);
-		vt = v + transform(vt, d);
-		vt = area.nearest(vt, isfreetrack, 4);
-		if(!vt)
-			continue;
-		p->move(vt);
+		if(area.isvalid(v)) {
+			auto vt = formation(index++);
+			vt = v + transform(vt, d);
+			vt = area.nearest(vt, isfreetrack, 4);
+			if(!vt)
+				continue;
+			p->apply(type, vt);
+		} else
+			p->apply(type, v);
 	}
 }

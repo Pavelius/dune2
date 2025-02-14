@@ -3,6 +3,7 @@
 #include "direction.h"
 #include "drawable.h"
 #include "player.h"
+#include "order.h"
 #include "resid.h"
 
 enum unitn : unsigned char {
@@ -31,6 +32,7 @@ struct unit : drawable {
 	unsigned char	player;
 	short			hits, supply;
 	//void			attack();
+	void			apply(ordern type, point v);
 	const uniti&	geti() const;
 	playeri*		getplayer() const;
 	int				get(statn v) const { return geti().stats[v]; }

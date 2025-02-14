@@ -788,7 +788,8 @@ static void paint_choose_terrain() {
 }
 
 static void human_order() {
-	auto order = (ordern)hot.param;
+	auto type = (ordern)hot.param;
+	human_selected.order(type, Center, {-1, -1}, true);
 }
 
 static void button(ordern order, int key) {
@@ -799,10 +800,10 @@ static void paint_unit_orders() {
 	rectpush push;
 	setoffset(-1, 0);
 	height = 12;
-	button("Attack", 0, 'A', AlignCenter, false, human_unit_attack, 0);
-	button("Move", 0, 'M', AlignCenter, false, human_unit_move, 0);
-	button("Harvest", 0, 0, AlignCenter, false, buttonok, 0);
-	button("Stop", 0, 'G', AlignCenter, false, human_unit_stop, 0);
+	button(Attack, 'A');
+	button(Move, 'M');
+	button(Retreat, 0);
+	button(Stop, 'G');
 }
 
 static void paint_unit_list() {
