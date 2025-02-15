@@ -46,6 +46,22 @@ bool debug_toggle;
 // External for debug tools. In release mode must be removed by linker.
 void view_debug_input();
 
+pushcolor::pushcolor() : text(fore), main(color_form), light(color_form_light), dark(color_form_shadow) {
+}
+
+pushcolor::~pushcolor() {
+	fore = text;
+	color_form = main;
+	color_form_light = light;
+	color_form_shadow = dark;
+}
+
+pushcolor::pushcolor(color v) : pushcolor() {
+	color_form = v;
+	color_form_light = v.mix(colors::white, 216);
+	color_form_shadow = v.mix(colors::black, 128);
+}
+
 static void debug_map_message() {
 	pushrect push;
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
@@ -111,6 +127,11 @@ static int get_frame(sprite* ps, unsigned long resolution) {
 	return n % ps->count;
 }
 
+void update_buttonparam() {
+	updatewindow();
+	buttonparam();
+}
+
 static point s2i(point v) {
 	v = v - camera;
 	v.x += area_screen.x1;
@@ -173,7 +194,7 @@ static void form_frame_rect() {
 	setoffset(1, 1);
 }
 
-static void form_frame(int thickness) {
+void form_frame(int thickness) {
 	pushrect push;
 	while(thickness > 0) {
 		form_frame_rect();

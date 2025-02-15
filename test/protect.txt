@@ -1,0 +1,415 @@
+﻿Str0001: There is a traitor among us.  We are questioning everyone, including YOU! Answer this question correctly and you will prove your loyalty to House Harkonnen!
+Str0002: Correct, you are truly loyal to House Harkonnen!
+Str0003: That is the wrong answer!
+Str0004: We have reports that you have been trading confidential information with the Ordos. You must answer a question correctly to prove your innocence.
+Str0005: Very good, I am glad to see that our reports were wrong about you.
+Str0006: That is incorrect!
+Str0007: There is talk of an information leak within the ranks of the high military. To prove your innocence, you must answer the following question accurately:
+Str0008: Well done.  You are no longer under suspicion, for now.
+Str0009: You are wrong!
+Str0010: What type of structure is this?
+Str0011: slab.wsa
+Str0012: foundation
+Str0013: What type of structure is this?
+Str0014: wall.wsa
+Str0015: defensive wall
+Str0016: What type of structure is this?
+Str0017: windtrap.wsa
+Str0018: power plant
+Str0019: What type of structure is this?
+Str0020: refinery.wsa
+Str0021: industrial facility
+Str0022: What type of structure is this?
+Str0023: storage.wsa
+Str0024: storehouse
+Str0025: What type of structure is this?
+Str0026: turret.wsa
+Str0027: ground based turret
+Str0028: What type of structure is this?
+Str0029: rturret.wsa
+Str0030: ground based turret
+Str0031: What type of structure is this?
+Str0032: construc.wsa
+Str0033: production facility
+Str0034: What type of structure is this?
+Str0035: barrac.wsa
+Str0036: production facility
+Str0037: What type of structure is this?
+Str0038: wor.wsa
+Str0039: production facility
+Str0040: What type of structure is this?
+Str0041: liteftry.wsa
+Str0042: production facility
+Str0043: What type of structure is this?
+Str0044: hvyftry.wsa
+Str0045: production facility
+Str0046: What type of structure is this?
+Str0047: hitcftry.wsa
+Str0048: production facility
+Str0049: What type of structure is this?
+Str0050: repair.wsa
+Str0051: industrial facility
+Str0052: What type of structure is this?
+Str0053: ix.wsa
+Str0054: technology facility
+Str0055: What type of structure is this?
+Str0056: starport.wsa
+Str0057: advanced structure
+Str0058: What type of structure is this?
+Str0059: palace.wsa
+Str0060: capitol building
+Str0061: What is the armor level of this structure?
+Str0062: slab.wsa
+Str0063: medium
+Str0064: What is the armor level of this structure?
+Str0065: wall.wsa
+Str0066: medium
+Str0067: What is the armor level of this structure?
+Str0068: windtrap.wsa
+Str0069: light
+Str0070: What is the armor level of this structure?
+Str0071: refinery.wsa
+Str0072: medium
+Str0073: What is the armor level of this structure?
+Str0074: storage.wsa
+Str0075: light
+Str0076: What is the armor level of this structure?
+Str0077: headqrts.wsa
+Str0078: heavy
+Str0079: What is the armor level of this structure?
+Str0080: turret.wsa
+Str0081: heavy
+Str0082: What is the armor level of this structure?
+Str0083: rturret.wsa
+Str0084: heavy
+Str0085: What is the armor level of this structure?
+Str0086: construc.wsa
+Str0087: medium
+Str0088: What is the armor level of this structure?
+Str0089: barrac.wsa
+Str0090: medium
+Str0091: What is the armor level of this structure?
+Str0092: wor.wsa
+Str0093: medium
+Str0094: What is the armor level of this structure?
+Str0095: liteftry.wsa
+Str0096: medium
+Str0097: What is the armor level of this structure?
+Str0098: hvyftry.wsa
+Str0099: medium
+Str0100: What is the armor level of this structure?
+Str0101: hitcftry.wsa
+Str0102: medium
+Str0103: What is the armor level of this structure?
+Str0104: repair.wsa
+Str0105: medium
+Str0106: What is the armor level of this structure?
+Str0107: ix.wsa
+Str0108: medium
+Str0109: What is the armor level of this structure?
+Str0110: starport.wsa
+Str0111: heavy
+Str0112: What is the armor level of this structure?
+Str0113: palace.wsa
+Str0114: heavy
+Str0115: What is the weight of this structure?
+Str0116: slab.wsa
+Str0117: 1469 kg
+Str0118: What is the weight of this structure?
+Str0119: wall.wsa
+Str0120: 2245 kg
+Str0121: What is the armament of this structure?
+Str0122: turret.wsa
+Str0123: 105mm cannon
+Str0124: What is the range of this structure?
+Str0125: turret.wsa
+Str0126: 100m
+Str0127: What is the capacity of this structure?
+Str0128: storage.wsa
+Str0129: 1000 spice units
+Str0130: What is the capacity of this structure?
+Str0131: refinery.wsa
+Str0132: 1000 spice units
+Str0133: What is the armament of this structure?
+Str0134: headqrts.wsa
+Str0135: none
+Str0136: What type of unit is this?
+Str0137: harvest.wsa
+Str0138: spice recovery vehicle
+Str0139: What type of unit is this?
+Str0140: mcv.wsa
+Str0141: base deployment vehicle
+Str0142: What type of unit is this?
+Str0143: quad.wsa
+Str0144: light attack vehicle
+Str0145: What type of unit is this?
+Str0146: ltank.wsa
+Str0147: medium battle tank
+Str0148: What type of unit is this?
+Str0149: rtank.wsa
+Str0150: battlefield support vehicle
+Str0151: What type of unit is this?
+Str0152: htank.wsa
+Str0153: main battle tank
+Str0154: What type of unit is this?
+Str0155: carryall.wsa
+Str0156: airborne unit
+Str0157: What type of unit is this?
+Str0158: orni.wsa
+Str0159: close support attack craft
+Str0160: What type of unit is this?
+Str0161: worm.wsa
+Str0162: creature of dune
+Str0163: What type of unit is this?
+Str0164: stank.wsa
+Str0165: advanced battle tank
+Str0166: What type of unit is this?
+Str0167: ordrtank.wsa
+Str0168: battlefield support vehicle
+Str0169: What type of unit is this?
+Str0170: otrike.wsa
+Str0171: quick strike vehicle
+Str0172: What type of unit is this?
+Str0173: gold-bb.wsa
+Str0174: battlefield support missile
+Str0175: What type of unit is this?
+Str0176: harktank.wsa
+Str0177: advanced battle tank
+Str0178: What is the armament of this unit?
+Str0179: harvest.wsa
+Str0180: none
+Str0181: What is the armament of this unit?
+Str0182: mcv.wsa
+Str0183: none
+Str0184: What is the armament of this unit?
+Str0185: infantry.wsa
+Str0186: 9mm rp assault rifles
+Str0187: What is the armament of this unit?
+Str0188: trike.wsa
+Str0189: dual 20mm cannons
+Str0190: What is the armament of this unit?
+Str0191: quad.wsa
+Str0192: dual 30mm cannons
+Str0193: What is the armament of this unit?
+Str0194: ltank.wsa
+Str0195: 155mm gun
+Str0196: What is the armament of this unit?
+Str0197: rtank.wsa
+Str0198: missile launcher
+Str0199: What is the armament of this unit?
+Str0200: htank.wsa
+Str0201: dual 155mm cannons
+Str0202: What is the armament of this unit?
+Str0203: carryall.wsa
+Str0204: none
+Str0205: What is the armament of this unit?
+Str0206: orni.wsa
+Str0207: battle support rockets
+Str0208: What is the armament of this unit?
+Str0209: worm.wsa
+Str0210: appetite
+Str0211: What is the armament of this unit?
+Str0212: stank.wsa
+Str0213: sonic amplifier
+Str0214: What is the armament of this unit?
+Str0215: ordrtank.wsa
+Str0216: missile launcher
+Str0217: What is the armament of this unit?
+Str0218: otrike.wsa
+Str0219: dual 20mm cannons
+Str0220: What is the armament of this unit?
+Str0221: saboture.wsa
+Str0222: unknown
+Str0223: What is the armament of this unit?
+Str0224: harktank.wsa
+Str0225: dual 190mm guns
+Str0226: What is the armament of this unit?
+Str0227: sardukar.wsa
+Str0228: classified
+Str0229: What is the speed (tracked) of this unit?
+Str0230: harvest.wsa
+Str0231: 32 km/h
+Str0232: What is the speed (tracked) of this unit?
+Str0233: mcv.wsa
+Str0234: 36 km/h
+Str0235: What is the speed (foot) of this unit?
+Str0236: infantry.wsa
+Str0237: 5 km/h
+Str0238: What is the speed (foot) of this unit?
+Str0239: hyinfy.wsa
+Str0240: 12 km/h
+Str0241: What is the speed (wheel) of this unit?
+Str0242: trike.wsa
+Str0243: 72 km/h
+Str0244: What is the speed (wheel) of this unit?
+Str0245: quad.wsa
+Str0246: 59 km/h
+Str0247: What is the speed (tracked) of this unit?
+Str0248: ltank.wsa
+Str0249: 40 km/h
+Str0250: What is the speed (tracked) of this unit?
+Str0251: rtank.wsa
+Str0252: 48 km/h
+Str0253: What is the speed (tracked) of this unit?
+Str0254: htank.wsa
+Str0255: 32 km/h
+Str0256: What is the speed (airborne) of this unit?
+Str0257: carryall.wsa
+Str0258: 160 km/h
+Str0259: What is the speed (airborne) of this unit?
+Str0260: orni.wsa
+Str0261: 340 km/h
+Str0262: What is the speed of this unit?
+Str0263: worm.wsa
+Str0264: 56 km/h
+Str0265: What is the speed (foot) of this unit?
+Str0266: fremen.wsa
+Str0267: 17 km/h
+Str0268: What is the speed (tracked) of this unit?
+Str0269: stank.wsa
+Str0270: 44 km/h
+Str0271: What is the speed (tracked) of this unit?
+Str0272: ordrtank.wsa
+Str0273: 48 km/h
+Str0274: What is the speed (wheel) of this unit?
+Str0275: otrike.wsa
+Str0276: 90 km/h
+Str0277: What is the speed (trike) of this unit?
+Str0278: saboture.wsa
+Str0279: 95 km/h
+Str0280: What is the speed (tracked) of this unit?
+Str0281: harktank.wsa
+Str0282: 20 km/h
+Str0283: What is the speed (foot) of this unit?
+Str0284: sardukar.wsa
+Str0285: 15 km/h
+Str0286: What is the armor level of this unit?
+Str0287: harvest.wsa
+Str0288: medium
+Str0289: What is the armor level of this unit?
+Str0290: mcv.wsa
+Str0291: medium
+Str0292: What is the armor level of this unit?
+Str0293: infantry.wsa
+Str0294: light
+Str0295: What is the armor level of this unit?
+Str0296: hyinfy.wsa
+Str0297: light
+Str0298: What is the armor level of this unit?
+Str0299: trike.wsa
+Str0300: light
+Str0301: What is the armor level of this unit?
+Str0302: quad.wsa
+Str0303: light
+Str0304: What is the armor level of this unit?
+Str0305: ltank.wsa
+Str0306: medium
+Str0307: What is the armor level of this unit?
+Str0308: rtank.wsa
+Str0309: medium
+Str0310: What is the armor level of this unit?
+Str0311: htank.wsa
+Str0312: heavy
+Str0313: What is the armor level of this unit?
+Str0314: carryall.wsa
+Str0315: light
+Str0316: What is the armor level of this unit?
+Str0317: orni.wsa
+Str0318: light
+Str0319: What is the armor level of this unit?
+Str0320: worm.wsa
+Str0321: heavy
+Str0322: What is the armor level of this unit?
+Str0323: fremen.wsa
+Str0324: light
+Str0325: What is the armor level of this unit?
+Str0326: stank.wsa
+Str0327: medium
+Str0328: What is the armor level of this unit?
+Str0329: ordrtank.wsa
+Str0330: medium
+Str0331: What is the armor level of this unit?
+Str0332: otrike.wsa
+Str0333: light
+Str0334: What is the armor level of this unit?
+Str0335: saboture.wsa
+Str0336: light
+Str0337: What is the armor level of this unit?
+Str0338: harktank.wsa
+Str0339: heavy
+Str0340: What is the armor level of this unit?
+Str0341: sardukar.wsa
+Str0342: light
+Str0343: What is the crew compliment of this unit?
+Str0344: harvest.wsa
+Str0345: 5
+Str0346: What is the crew compliment of this unit?
+Str0347: mcv.wsa
+Str0348: 15
+Str0349: What is the crew compliment of this unit?
+Str0350: trike.wsa
+Str0351: 2
+Str0352: What is the crew compliment of this unit?
+Str0353: quad.wsa
+Str0354: 2
+Str0355: What is the crew compliment of this unit?
+Str0356: ltank.wsa
+Str0357: 2
+Str0358: What is the crew compliment of this unit?
+Str0359: rtank.wsa
+Str0360: 3
+Str0361: What is the crew compliment of this unit?
+Str0362: htank.wsa
+Str0363: 3
+Str0364: What is the crew compliment of this unit?
+Str0365: carryall.wsa
+Str0366: 4
+Str0367: What is the crew compliment of this unit?
+Str0368: orni.wsa
+Str0369: 2
+Str0370: What is the crew compliment of this unit?
+Str0371: stank.wsa
+Str0372: 2
+Str0373: What is the crew compliment of this unit?
+Str0374: ordrtank.wsa
+Str0375: 3
+Str0376: What is the crew compliment of this unit?
+Str0377: otrike.wsa
+Str0378: 2
+Str0379: What is the crew compliment of this unit?
+Str0380: harktank.wsa
+Str0381: 3
+Str0382: To which House does this unit belong?
+Str0383: stank.wsa
+Str0384: atreides
+Str0385: To which House does this unit belong?
+Str0386: ordrtank.wsa
+Str0387: ordos
+Str0388: To which House does this unit belong?
+Str0389: otrike.wsa
+Str0390: ordos
+Str0391: To which House does this unit belong?
+Str0392: saboture.wsa
+Str0393: ordos
+Str0394: To which House does this unit belong?
+Str0395: gold-bb.wsa
+Str0396: harkonnen
+Str0397: To which House does this unit belong?
+Str0398: harktank.wsa
+Str0399: harkonnen
+Str0400: To which House does this unit belong?
+Str0401: sardukar.wsa
+Str0402: emperor
+Str0403: What is the length of this unit?
+Str0404: gold-bb.wsa
+Str0405: 8.12m
+Str0406: What type of warhead does this unit have?
+Str0407: gold-bb.wsa
+Str0408: h355 hs cluster bomb
+Str0409: What is the guidance of this unit?
+Str0410: gold-bb.wsa
+Str0411: inertial
+Str0412: What is the range of this unit?
+Str0413: gold-bb.wsa
+Str0414: 1120km
+Str0415: 

@@ -5,6 +5,7 @@
 #include "pushvalue.h"
 #include "resid.h"
 #include "tree.h"
+#include "timer.h"
 #include "topic.h"
 #include "music.h"
 #include "view.h"
@@ -12,6 +13,7 @@
 
 using namespace draw;
 
+static const char* form_id;
 static unsigned long eye_clapping, eye_show_cursor;
 static fnevent paint_mentat_proc;
 static tree topics;
@@ -56,10 +58,30 @@ static void rectf_back() {
 	fore = push_fore;
 }
 
+static void paint_stat_info() {
+	if(!form_id)
+		return;
+	auto pi = getnme(ids(form_id, "Capacity"));
+	if(!pi)
+		return;
+	pushrect push;
+	string sb;
+	setoffset(4, 4);
+	auto maximum_line = get_frame(1000);
+	while(pi[0]) {
+		if(maximum_line-- <= 0)
+			break;
+		sb.clear(); pi = sb.psline(pi);
+		text(sb, -1, TextStroke);
+		caret.y += texth();
+	}
+}
+
 static void paint_mentat_subject() {
 	auto ps = gres(animate_id);
 	if(ps && ps->count)
 		image(caret.x, caret.y, ps, get_frame(400) % ps->count, 0);
+	paint_stat_info();
 }
 
 static bool allow_brief_row(int index, void* data) {
@@ -88,7 +110,9 @@ static void paint_mentat_list() {
 	setoffset(4, 4);
 	caret.x += 16; width -= 16 + 8;
 	auto header_height = texth();
+	auto push_fore = fore; fore = color(180, 228, 252);
 	text(str("%1:", getnm("ChooseSubject"))); caret.y += header_height; height -= header_height;
+	fore = push_fore;
 	font = gres(FONT6);
 	setoffset(1, 1);
 	paint_list_and_scroll(origin, topics.count, topics.data, topics.element_size, 7, paint_brief_row, allow_brief_row, buttonparam);
@@ -117,11 +141,11 @@ static void paint_mentat_background() {
 }
 
 static void paint_mentat_exit() {
+	pushcolor push_color(color(40, 40, 60));
+	pushvalue push_font(font, gres(FONT8));
 	pushrect push;
-	auto push_fore = fore; fore = colors::black;
 	caret.x += 200; caret.y += 180; width = 48; height = 24;
-	button(getnm("Exit"), 0, KeyEscape, AlignCenterCenter, false, buttoncancel, 0);
-	fore = push_fore;
+	button(getnm("Exit"), 0, KeyEscape, AlignCenterCenter, false, update_buttonparam, 0);
 }
 
 static void paint_form_header() {
@@ -185,22 +209,24 @@ static void* choose_mentat_topic() {
 static void show_mentat_subject(const char* id, resid rid) {
 	string sb;
 	pushvalue push_header(form_header);
+	pushvalue push_id(form_id, id);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject);
 	auto pi = getnme(ids(id, player->getfraction().id, "Info"));
 	if(!pi)
 		pi = getnme(ids(id, "Info"));
+	reset_form_animation();
 	if(pi) {
 		while(pi[0]) {
 			sb.clear(); pi = sb.psline(pi);
 			if(!sb)
 				break;
 			form_header = sb;
-			if(!show_scene(paint_mentat_speaking, 0, 0))
+			if(!show_scene_raw(paint_mentat_speaking, 0, 0))
 				return;
 		}
 	}
-	show_scene(paint_mentat_silent, 0, 0);
+	show_scene_raw(paint_mentat_silent, 0, 0);
 }
 
 void open_mentat() {

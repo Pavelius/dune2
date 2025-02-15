@@ -34,7 +34,7 @@ bool music_played() {
 void music_play(void* new_music) {
 	if(current_music == new_music)
 		return;
-	current_music = new_music;
+	current_music = 0;
 	midi_music_stop();
 	while(midi_busy())
 		midi_sleep(10);
@@ -42,6 +42,7 @@ void music_play(void* new_music) {
 		music_tread.close();
 		music_tread.start(music_play_background, new_music);
 	}
+	current_music = new_music;
 }
 
 void song_play(const char* id) {

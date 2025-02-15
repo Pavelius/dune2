@@ -7,7 +7,7 @@ BSDATA(buildingi) = {
 	{"ConstructionYard"},
 	{"SpiceSilo"},
 	{"Starport"},
-	{"Windtrap", NONE, 61, 500, Shape2x2, {304, 305, 306, 307}},
+	{"Windtrap", WINDTRAP, 61, 500, Shape2x2, {304, 305, 306, 307}},
 	{"Refinery", NONE, 64, 1000, Shape3x2, {332, 333, 334, 337, 338, 339}},
 	{"RadarOutpost"},
 	{"RepairFacility"},

@@ -1,24 +1,38 @@
-﻿#00 start 00:18 lenght 00:10 show intro1
-#01 start 00:28 lenght 00:10 show intro2
-#02 start 00:38 lenght 00:08 show intro3
-#03 start 00:46 lenght 00:07 show intro3
-#04 start 00:53 lenght 00:08 show intro9
-#05 start 01:01 lenght 00:07 show intro9
-#06 start 01:08 lenght 00:06 show intro9
-#07 start 01:14 lenght 00:04 show intro10
-#08 start 01:18 lenght 00:03 show intro10
-#09 start 01:21 lenght 00:03 show intro11
-#10 start 01:24 lenght 00:03 show intro11
-#11 start 01:27 lenght 00:03 show intro11
-#12 start 01:30 lenght 00:04 show intro11
-#13 start 01:34 lenght 00:13 show intro4
-#14 start 01:47 lenght 00:06 show NONE
-#15 start 01:53 lenght 00:10 show intro6
-#16 start 02:03 lenght 00:05 show intro7a
-#17 start 02:09 lenght 00:04 show intro7b
-#18 start 02:13 lenght 00:03 show intro8a
-#19 start 02:16 lenght 00:03 show intro8b
-#20 start 02:20 lenght 00:06 show intro8c
-#21 start 02:27 lenght 00:09 show intro5
-#22 start 02:36 lenght 00:05 show NONE
-#23 start 02:41 lenght 00:04 show NONE
+﻿Str0001: present
+Str0002: The Building of A Dynasty
+Str0003: The planet Arrakis, known as Dune.
+Str0004: Land of sand.
+Str0005: Home of the Spice Melange.
+Str0006: The Spice controls the Empire.
+Str0007: Whoever controls Dunecontrols the Spice.
+Str0008: The Emperor has proposed achallenge to each of the Houses.
+Str0009: The House that produces themost Spice will control Dune.
+Str0010: There are no set territories.
+Str0011: And no rules of engagement.
+Str0012: Vast armies have arrived.
+Str0013: Now three Houses fightfor control of Dune.
+Str0014: The noble Atreides.
+Str0015: The insidious Ordos.
+Str0016: And the evil Harkonnen.
+Str0017: Only one House will prevail.
+Str0018: Your battle for Dune begins
+Str0019:  NOW
+Str0020: Greetings, Emperor.
+Str0021: What is the meaningof this intrusion?
+Str0022: You are formally charged with crimesof treason against House Atreides
+Str0023: The House shall determineyour guilt or innocence.
+Str0024: Until then, you shall nolonger reign as Emperor.
+Str0025: You are, indeed, not entirelytrue to your word, Emperor.
+Str0026: You have lied to us.
+Str0027: What lies?  What areyou talking about?
+Str0028: Your lies of loyalty!Your deceit!
+Str0029: A crime for which you willindeed pay dearly...
+Str0030: ...with your life!
+Str0031: NO!  NO!  NOOO!
+Str0032: You are aware, Emperor, that wehave grown weary of your games.
+Str0033: What games?  What areyou talking about?
+Str0034: I am referring toyour game of chess.
+Str0035: We were your pawns andDune was your board.
+Str0036: We have decided to take mattersinto our own hands.
+Str0037: You are to be our pawn,in our game.
+Str0038: 

@@ -131,26 +131,27 @@ static void show_introdution() {
 		{NONE, 4 * 1000, 0, FG(Appearing), "Intro16"},
 		{NONE, 3 * 1000, 0, FG(Disappearing), "Intro17"},
 	};
+	// Logo theme
+	song_play("westwood");
 	reset_form_animation();
 	reset_video_time();
-	//song_play("westwood");
-	//video_play(main_logo);
-	//start_video -= 18 * 1000;
-	//video_dump("test/intro.txt", main_intro, 18 * 1000);
-	reset_form_animation();
-	reset_video_time();
+	video_play(main_logo);
+	// Main intro video
 	song_play("intro");
+	reset_form_animation();
+	reset_video_time();
 	video_play(main_intro);
+	// Change music
 	music_play(0);
 }
 
 void main_menu() {
-	// sshow_introdution();
+	// show_introdution();
 	auto size = sizeof(unit);
 	player = bsdata<playeri>::elements;
 	player->add(Credits, 1000);
 	player->color_index = 1;
-	player->fraction = Ordos;
+	player->fraction = Harkonens;
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);

@@ -1,0 +1,339 @@
+﻿Str0001: Attack
+Str0002: Move
+Str0003: Retreat
+Str0004: Guard
+Str0005: Area Guard
+Str0006: Harvest
+Str0007: Return
+Str0008: Stop
+Str0009: Ambush
+Str0010: Sabotage
+Str0011: Die
+Str0012: Hunt
+Str0013: Target:
+Str0014: Movement:
+Str0015: Initializing the MT-32
+Str0016: Old save game file is incompatable with latest version.
+Str0017: Insufficient memory by %ld bytes.
+Str0018: The setup program must be run first.
+Str0019: %s %s destroyed.
+Str0020: Unit is unable to deploy here.
+Str0021: Score: %d
+Str0022: Time: %dh %dm
+Str0023: You have attained the rank of
+Str0024: Units Destroyed By
+Str0025: Buildings Destroyed By
+Str0026: Spice Harvested By
+Str0027: Play a Game
+Str0028: Replay Introduction
+Str0029: Exit Game
+Str0030: Cancel
+Str0031: Deploy
+Str0032: Load
+Str0033: Next
+Str0034: Repair
+Str0035: Repairing
+Str0036: Save
+Str0037: Stop
+Str0038: Place it
+Str0039: Completed
+Str0040: On hold
+Str0041: Build it
+Str0042: Launch
+Str0043: Fremen
+Str0044: Saboteur
+Str0045: Pre-spice mound
+Str0046: %d%% done
+Str0047: Mentat Briefing
+Str0048: Select Subject:
+Str0049: DMG
+Str0050: Harvester is heading to refinery.
+Str0051: Construction complete
+Str0052: Enemy unit approaching
+Str0053: Harkonnen approaching
+Str0054: Atreides approaching
+Str0055: Ordos approaching
+Str0056: Fremen approaching
+Str0057: Sardaukar approaching
+Str0058: Mercenary approaching
+Str0059: Saboteur approaching
+Str0060: Harkonnen unit destroyed
+Str0061: Atreides unit destroyed
+Str0062: Ordos unit destroyed
+Str0063: Fremen unit destroyed
+Str0064: Sardaukar unit destroyed
+Str0065: Mercenary unit destroyed
+Str0066: Harkonnen structure destroyed
+Str0067: Atreides structure destroyed
+Str0068: Ordos structure destroyed
+Str0069: Fremen structure destroyed
+Str0070: Sardaukar structure destroyed
+Str0071: Mercenary structure destroyed
+Str0072: Harkonnen unit deployed
+Str0073: Atreides unit deployed
+Str0074: Ordos unit deployed
+Str0075: Fremen unit deployed
+Str0076: Sardaukar unit deployed
+Str0077: Mercenary unit deployed
+Str0078: Wormsign!
+Str0079: Saboteur approaching
+Str0080: Frigate arrived
+Str0081: Missile approaching
+Str0082: You have successfully completed your mission.
+Str0083: You have failed your mission.
+Str0084: SelectLocation tobuild.
+Str0085: Pick TargetT-Minus: %d
+Str0086: SelectTarget.
+Str0087: SelectDestination.
+Str0088:    Spiceholds: %4dmax: %4d
+Str0089: Power Infoneeded:output:
+Str0090: Base is under attack
+Str0091: Dune II: The Building of A Dynasty
+Str0092: Load a game
+Str0093: Save this game
+Str0094: Game controls
+Str0095: Quit playing
+Str0096: Continue game
+Str0097: Select a saved game to load:
+Str0098: Select a position to save to:
+Str0099: [ EMPTY SLOT ]
+Str0100: Enter a description of your saved game:
+Str0101: Are you sure you want to quit playing?
+Str0102: Previous
+Str0103: Restart scenario
+Str0104: Pick another house
+Str0105: ON
+Str0106: OFF
+Str0107: Yes
+Str0108: No
+Str0109: Hints are
+Str0110: Game speed
+Str0111: Music is
+Str0112: Sounds are
+Str0113: Slowest
+Str0114: Slow
+Str0115: Normal
+Str0116: Fast
+Str0117: Fastest
+Str0118: Are you sure you wish to restart?
+Str0119: Are you sure you wish to pick a new house?
+Str0120: Auto scroll is
+Str0121:  is %d percent full
+Str0122:  is %d percent full and harvesting
+Str0123:  is %d percent full and heading back
+Str0124:  is %d percent full and awaiting pickup
+Str0125:  is empty
+Str0126:  is empty and harvesting
+Str0127:  is empty and heading back
+Str0128:  is empty and awaiting pickup
+Str0129: is complete.
+Str0130: is completed and ready to place.
+Str0131: is completed and awaiting orders.
+Str0132: Insufficient funds.  Construction is halted.
+Str0133: is destroyed.
+Str0134: Can not place %s here.
+Str0135: Can not place foundation here.
+Str0136: Unable to create more.
+Str0137: Production of %s has started.
+Str0138: Repairing stops.
+Str0139: Repairing starts.
+Str0140: Upgrading stops.
+Str0141: Upgrading starts.
+Str0142: Upgrade
+Str0143: Upgrading
+Str0144: Upgrading%d%% done
+Str0145: Insufficient spice storage available.  Spice is lost.
+Str0146: Radar ScanFriend: %2dEnemy: %2d
+Str0147: Harkonnen harvester deployed
+Str0148: Atreides harvester deployed
+Str0149: Ordos harvester deployed
+Str0150: Fremen harvester deployed
+Str0151: Sardaukar harvester deployed
+Str0152: Mercenary harvester deployed
+Str0153: Destruct
+Str0154: Harkonnen unit launched
+Str0155: Atreides unit launched
+Str0156: Ordos unit launched
+Str0157: Fremen unit launched
+Str0158: Sardaukar unit launched
+Str0159: Mercenary unit launched
+Str0160: Frigate inorbit andawaitingorder.
+Str0161: FrigateArrival inT-minus %d
+Str0162: Harkonnen vehicle repaired
+Str0163: Atreides vehicle repaired
+Str0164: Ordos vehicle repaired
+Str0165: Fremen vehicle repaired
+Str0166: Sardaukar vehicle repaired
+Str0167: Mercenary vehicle repaired
+Str0168: Sand
+Str0169: Rock
+Str0170: Dune
+Str0171: Mountain
+Str0172: Spice
+Str0173: Spice Bloom
+Str0174: Structure
+Str0175: Proceed
+Str0176: Repeat
+Str0177: Cost: %3d
+Str0178: Cost: 999
+Str0179: Qty: %2d
+Str0180: Qty: 99
+Str0181: NO UNITS ON ORDER
+Str0182: Item Name                 Qty Total
+Str0183: Invoice of Units on Order
+Str0184: Total Cost :
+Str0185: OUT OF STOCK
+Str0186: NEED STRUCTURE UPGRADE
+Str0187: Upgrade Cost : %d
+Str0188: Resume Game
+Str0189: Upgrade
+Str0190: Send Order
+Str0191: Build This
+Str0192: Invoice
+Str0193: Exit
+Str0194: Carryall
+Str0195: All-Purpose Carryall
+Str0196: 'Thopter
+Str0197: Ornithipter
+Str0198: Infantry
+Str0199: Light Infantry Squad
+Str0200: Troopers
+Str0201: Heavy Trooper Squad
+Str0202: Soldier
+Str0203: Infantry Soldier
+Str0204: Trooper
+Str0205: Heavy Trooper
+Str0206: Saboteur
+Str0207: Insidious Saboteur
+Str0208: Launcher
+Str0209: Rocket Launcher
+Str0210: Deviator
+Str0211: Deviator Launcher
+Str0212: Tank
+Str0213: Combat Tank
+Str0214: Siege Tank
+Str0215: Heavy Siege Tank
+Str0216: Devastator
+Str0217: Devastator Tank
+Str0218: Sonic Tank
+Str0219: Sonic Wave Tank
+Str0220: Trike
+Str0221: Light Attack Trike
+Str0222: Raider Trike
+Str0223: Fast Raider Trike
+Str0224: Quad
+Str0225: Heavy Attack Quad
+Str0226: Harvester
+Str0227: Spice Harvester
+Str0228: MCV
+Str0229: Mobile Const. Vehicle
+Str0230: Sandworm
+Str0231: Sandworm
+Str0232: Concrete
+Str0233: Small Concrete Slab
+Str0234: Concrete 4
+Str0235: Large Concrete Slab
+Str0236: Palace
+Str0237: House Palace
+Str0238: Light Fctry
+Str0239: Light Vehicle Factory
+Str0240: Heavy Fctry
+Str0241: Heavy Vehicle Factory
+Str0242: Hi-Tech
+Str0243: Hi-Tech Factory
+Str0244: IX
+Str0245: House of IX
+Str0246: WOR
+Str0247: WOR Trooper Facility
+Str0248: Const. Yard
+Str0249: Construction Yard
+Str0250: Windtrap
+Str0251: Windtrap Power Center
+Str0252: Barracks
+Str0253: Infantry Barracks
+Str0254: Starport
+Str0255: Starport Facility
+Str0256: Refinery
+Str0257: Spice Refinery
+Str0258: Repair
+Str0259: Repair Facility
+Str0260: Wall
+Str0261: Base Defense Wall
+Str0262: Turret
+Str0263: Cannon Turret
+Str0264: R-Turret
+Str0265: Rocket Turret
+Str0266: Spice Silo
+Str0267: Spice Storage Silo
+Str0268: Outpost
+Str0269: Radar Outpost
+Str0270: Insufficient power.  Windtrap is needed.
+Str0271: Sand Flea
+Str0272: Sand Snake
+Str0273: Desert Mongoose
+Str0274: Sand Warrior
+Str0275: Dune Trooper
+Str0276: Squad Leader
+Str0277: Outpost Commander
+Str0278: Base Commander
+Str0279: Warlord
+Str0280: Chief Warlord
+Str0281: Ruler of Arrakis
+Str0282: Emperor
+Str0283: Three Houses have come to Dune.
+Str0284: To take control of the land.
+Str0285: That has become divided.
+Str0286: Select your next region
+Str0287: At the Emperor's Palace.
+Str0288: You, of all people, shouldunderstand the importance of victory!
+Str0289: Yes, your excellency. I...
+Str0290: You let the Atreides defeatyou and my Sardaukar!
+Str0291: I did not let...
+Str0292: I will not allow it to happen again!
+Str0293: At the Emperor's Palaceon Dune.
+Str0294: Fools!I gave you weapons and troops.
+Str0295: And still you failto defeat the Atreides.
+Str0296: But, excell...
+Str0297: Enough!  Together we must makesure the Atreides do not succeed!
+Str0298: At the Emperor's Palace.
+Str0299: I cannot believe theincompetence I see before me!
+Str0300: Your highness?
+Str0301: I give you my Sardaukar to assistagainst the Ordos, and you failed me!
+Str0302: We...
+Str0303: Do not fail me again!You are dismissed!
+Str0304: At the Emperor's Palaceon Dune.
+Str0305: The Ordos were notsupposed to get this far!
+Str0306: Your highness, let us explain...
+Str0307: No more explanations!You are to defend my palace.
+Str0308: Only together willwe defeat the Ordos!
+Str0309: At the Emperor's Palace.
+Str0310: You receive the assistanceyou require and then fail me!
+Str0311: No your...
+Str0312: My Sardaukar could help defeat theHarkonnen, but you wasted them!
+Str0313: We didn't have...
+Str0314: I want no excuses.Do not fail me again!
+Str0315: At the Emperor's Palaceon Dune.
+Str0316: I should have known your Housescouldn't stand up to the Harkonnen!
+Str0317: Excellency, they are...
+Str0318: Silence!
+Str0319: You are to defend my palace.
+Str0320: I will show you howto crush the Harkonnen!
+Str0321: Thank you for playing Dune II.
+Str0322: Spice storage capacity low, build silos.
+Str0323: Name and Rank
+Str0324: Battle
+Str0325: Score
+Str0326: Resume Game
+Str0327: Clear List
+Str0328: Are you sure you want to clear the high scores?
+Str0329: You:
+Str0330: Enemy:
+Str0331: Credits are low. Harvest spice for more credits.
+Str0332: Not enough power for radar.  Build windtraps.
+Str0333: Repair structure first
+Str0334: Hall of Fame
+Str0335: SelectPlace toHarvest.
+Str0336: Hall of Fame
+Str0337: There are no saved games to load.
+Str0338: Warning: Original saved games are incompatable with the new version.  The battle will be restarted.
+Str0339:  

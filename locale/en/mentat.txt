@@ -12,11 +12,11 @@ Infantry consists of lightly armored foot soldiers, equipped with 9mm RP assault
 Infantry have a limited firing range and speed.
 
 #LightInfantryCapacity
-Type:     Ground Based Military Units
+Type: Ground Based Military Units
 Armament: 9mm RP Assault Rifles
-Speed:    5 km/h (foot)
-Armor:    Light
-Crew:     1 to 3
+Speed: 5 km/h (foot)
+Armor: Light
+Crew: 1 to 3
 
 #TankInfo
 The Combat Tank is a medium armored, tracked tank firing high explosive rounds.
@@ -40,3 +40,7 @@ A Light Factory must be built before a Heavy Factory can be constructed.
 #HeavyVehicleFactoryInfo
 The Heavy Factory produces large, tracked, military or spice harvesting vehicles.
 Harvesters and tanks can be produced with a Heavy Factory.
+
+#WindtrapInfo
+The Wind Traps provide power and water to an installation.
+Large, aboveground ducts funnel wind underground into turbines which power the generators and humidity extractors.
