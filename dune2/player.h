@@ -1,5 +1,6 @@
 #pragma once
 
+#include "fraction.h"
 #include "nameable.h"
 
 enum abilityn : unsigned char {
@@ -7,7 +8,7 @@ enum abilityn : unsigned char {
 };
 struct abilityi : nameable {
 };
-struct playeri {
+struct playeri : fractionable {
 	unsigned char	color_index;
 	unsigned int	abilities[Rounds + 1];
 	void			add(abilityn v, int i) { abilities[v] += i; }

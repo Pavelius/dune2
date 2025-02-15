@@ -1,6 +1,7 @@
 #include "draw.h"
 #include "math.h"
 #include "slice.h"
+#include "view_drag.h"
 #include "view_focus.h"
 
 using namespace draw;
@@ -182,6 +183,8 @@ void clear_focus_data() {
 
 bool button_input(const void* button_data, unsigned key, bool allow_set_focus) {
 	if(!button_data)
+		return false;
+	if(mouse_drag_active())
 		return false;
 	auto ishilited = ishilite();
 	auto isfocused = (current_focus == button_data);

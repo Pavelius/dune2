@@ -18,9 +18,9 @@ void reset_video_time() {
 void video_play(const slice<videoi>& source) {
 	pushvalue push_fore(draw::fore);
 	pushvalue push_id(animate_id);
+	pushvalue push_header(form_header);
 	pushvalue push_delay(animate_delay);
 	pushvalue push_once(animate_once);
-	pushvalue push_header(form_header);
 	const unsigned long frame_delay = 100;
 	draw::fore = color(215, 0, 0);
 	for(auto& e : source) {

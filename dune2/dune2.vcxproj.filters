@@ -87,9 +87,6 @@
     <ClCompile Include="nameable.cpp">
       <Filter>support</Filter>
     </ClCompile>
-    <ClCompile Include="fraction.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="surface_serial.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -181,6 +178,15 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="view_list.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="fraction.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="view_drag.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="tree.cpp">
       <Filter>logic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -339,6 +345,12 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="view_list.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="view_drag.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="tree.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

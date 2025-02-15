@@ -4,6 +4,7 @@
 #include "thread.h"
 
 static void* current_music;
+static volatile bool thread_music_player;
 
 BSDATAD(musici)
 
@@ -22,7 +23,13 @@ void* song_get(const char* id) {
 }
 
 static void music_play_background(void* music_data) {
+	thread_music_player = true;
 	midi_play_raw(music_data);
+	thread_music_player = false;
+}
+
+bool music_played() {
+	return thread_music_player;
 }
 
 void music_play(void* new_music) {

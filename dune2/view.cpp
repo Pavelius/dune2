@@ -9,6 +9,7 @@
 #include "game.h"
 #include "io_stream.h"
 #include "math.h"
+#include "music.h"
 #include "order.h"
 #include "pushvalue.h"
 #include "rand.h"
@@ -35,6 +36,7 @@ static color color_form_light = color(251, 255, 203);
 static color color_form_shadow = color(101, 101, 77);
 static color font_pallette[16];
 static color pallette[256], pallette_original[256];
+static fnevent paint_mentat_proc;
 
 const char* form_header;
 static unsigned long form_opening_tick;
@@ -201,16 +203,16 @@ static void rectb_black() {
 	fore = push_fore;
 }
 
-static bool button(const char* title, const void* button_data, unsigned key, unsigned flags = TextBold | TextSingleLine, bool allow_set_focus = false) {
+static bool button(const char* title, unsigned key, unsigned flags, bool allow_set_focus, bool paint_rect_black, int button_height) {
 	pushrect push;
-	draw::height = texth() + 5;
-	rectb_black();
+	draw::height = button_height;
+	if(paint_rect_black)
+		rectb_black();
 	setoffset(1, 1);
 	auto push_fore = fore;
-	if(!button_data)
-		button_data = (void*)title;
-	auto run = button_input(button_data, key, allow_set_focus);
-	auto pressed = (pressed_focus == button_data);
+	auto button_focus = (void*)(*((int*)&caret));
+	auto run = button_input(button_focus, key, allow_set_focus);
+	auto pressed = (pressed_focus == button_focus);
 	if(pressed) {
 		rectb_black();
 		caret.x++;
@@ -218,7 +220,7 @@ static bool button(const char* title, const void* button_data, unsigned key, uns
 		width--; height--;
 	}
 	form_frame(1);
-	if(current_focus == button_data)
+	if(current_focus == button_focus)
 		fore = colors::active;
 	setoffset(1, 1);
 	caret.y += 1; height -= 1;
@@ -227,8 +229,12 @@ static bool button(const char* title, const void* button_data, unsigned key, uns
 	return run;
 }
 
+bool buttonwr(const char* title, const void* button_data, unsigned key, unsigned flags) {
+	return button(title, key, flags, false, false, height);
+}
+
 void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param) {
-	if(button(title, button_data, key, flags, allow_set_focus))
+	if(button(title, key, flags, allow_set_focus, true, texth() + 5))
 		execute(proc, param, 0, button_data);
 	caret.y += texth() + 4;
 }
@@ -357,10 +363,10 @@ static void paint_mentat_eyes() {
 			frame = 3;
 	}
 	switch(rid) {
-	case MENSHPA: image(40, 80, gres(rid), frame, 0); break;
-	case MENSHPH: image(32, 88, gres(rid), frame, 0); break;
-	case MENSHPO: image(16, 80, gres(rid), frame, 0); break;
-	case MENSHPM: image(64, 80, gres(rid), frame, 0); break;
+	case MENSHPA: image(caret.x + 40, caret.y + 80, gres(rid), frame, 0); break;
+	case MENSHPH: image(caret.x + 32, caret.y + 88, gres(rid), frame, 0); break;
+	case MENSHPO: image(caret.x + 16, caret.y + 80, gres(rid), frame, 0); break;
+	case MENSHPM: image(caret.x + 64, caret.y + 80, gres(rid), frame, 0); break;
 	}
 }
 
@@ -369,28 +375,49 @@ static void paint_mentat_speaking_mouth() {
 	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
 	auto frame = speak_frames[get_frame() % (sizeof(speak_frames) / sizeof(speak_frames[0]))];
 	switch(rid) {
-	case MENSHPA: image(40, 96, gres(rid), frame, 0); break;
-	case MENSHPH: image(32, 104, gres(rid), frame, 0); break;
-	case MENSHPO: image(16, 96, gres(rid), frame, 0); break;
-	case MENSHPM: image(56, 96, gres(rid), frame, 0); break;
+	case MENSHPA: image(caret.x + 40, caret.y + 96, gres(rid), frame, 0); break;
+	case MENSHPH: image(caret.x + 32, caret.y + 104, gres(rid), frame, 0); break;
+	case MENSHPO: image(caret.x + 16, caret.y + 96, gres(rid), frame, 0); break;
+	case MENSHPM: image(caret.x + 56, caret.y + 96, gres(rid), frame, 0); break;
 	}
 }
 
-static void paint_mentat_back() {
+static void paint_mentat_content() {
 	auto ps = gres(animate_id);
-	if(!ps || !ps->count)
-		return;
-	image(128, 48, ps, get_frame(400) % ps->count, 0);
+	if(ps && ps->count)
+		image(caret.x + 128, caret.y + 48, ps, get_frame(400) % ps->count, 0);
+}
+
+static void paint_brief_row(int index, void* data) {
+}
+
+static void paint_mentat_list() {
+	static int origin;
+	static const char* test[50] = {0};
+	width -= 12;
+	paint_list_and_scroll(origin, sizeof(test)/ sizeof(test[0]), test, sizeof(test[0]), 8, paint_brief_row);
+}
+
+static void paint_mentat_information() {
+	pushrect push;
+	caret.x += 128; caret.y += 48;
+	width = 184; height = 112;
+	paint_mentat_proc();
+}
+
+static void paint_mentat_back() {
+	paint_mentat_information();
 	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
 	switch(rid) {
-	case MENSHPA: image(128, 128, gres(rid), 10, 0); break;
-	case MENSHPH: image(128, 104, gres(rid), 10, 0); break;
-	case MENSHPO: image(128, 128, gres(rid), 10, 0); break;
+	case MENSHPA: image(caret.x + 128, caret.y + 128, gres(rid), 10, 0); break;
+	case MENSHPH: image(caret.x + 128, caret.y + 104, gres(rid), 10, 0); break;
+	case MENSHPO: image(caret.x + 128, caret.y + 128, gres(rid), 10, 0); break;
 	}
 }
 
 static void paint_mentat_background() {
-	image(0, 0, gres(MENTATS), bsdata<fractioni>::elements[last_fraction].mentat_frame, 0);
+	paint_background(colors::black);
+	image(gres(MENTATS), bsdata<fractioni>::elements[last_fraction].mentat_frame, 0);
 }
 
 static void paint_mentat_exit() {
@@ -760,7 +787,11 @@ static void rectb_alpha_drag() {
 }
 
 static void open_mentat() {
+	pushvalue push_fraction(last_fraction, player->fraction);
+	pushvalue push_proc(paint_mentat_proc, paint_mentat_list);
+	//song_play(str("mentat%1", player->getfractionsuffix()));
 	show_scene(paint_mentat_silent, 0, 0);
+	music_play(0);
 }
 
 static void open_options() {

@@ -11,3 +11,16 @@ BSDATA(fractioni) = {
 	{"Ordos", 2, MENSHPO},
 };
 assert_enum(fractioni, Ordos)
+
+const fractioni& fractionable::getfraction() const {
+	return bsdata<fractioni>::elements[fraction];
+}
+
+const char* fractionable::getfractionsuffix() const {
+	switch(fraction) {
+	case Atreides: return "a";
+	case Harkonens: return "h";
+	case Ordos: return "o";
+	default: return 0;
+	}
+}
