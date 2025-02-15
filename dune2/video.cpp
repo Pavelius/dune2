@@ -24,8 +24,6 @@ void video_play(const slice<videoi>& source) {
 	const unsigned long frame_delay = 100;
 	draw::fore = color(215, 0, 0);
 	for(auto& e : source) {
-		if(e.music_start)
-			song_play(e.music_start);
 		animate_id = e.id;
 		animate_stop = 0;
 		animate_once = true;
@@ -43,11 +41,11 @@ void video_play(const slice<videoi>& source) {
 		if(e.time_lenght)
 			animate_stop = animate_time + e.time_lenght;
 		if(!show_scene_raw(paint_video, 0, 0)) {
-			disappear_scene(time_appear);
+			disappear_scene(colors::black, time_appear);
 			break;
 		}
 		if(e.is(Disappearing))
-			disappear_scene(time_appear);
+			disappear_scene(e.disappear, time_appear);
 	}
 }
 

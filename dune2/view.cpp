@@ -1040,7 +1040,7 @@ void paint_video() {
 	} else {
 		pushrect push;
 		setoffset(32, 32);
-		textarc(form_header, AlignCenter | ImagePallette);
+		textarc(form_header, AlignCenterCenter | ImagePallette);
 	}
 	mouse_cancel({0, 0, getwidth(), getheight()});
 	if(hot.key == KeySpace || hot.key == KeyEscape || hot.key == KeyEnter)
@@ -1083,11 +1083,11 @@ void appear_scene(fnevent before_paint, unsigned long milliseconds) {
 	update_tick();
 }
 
-void disappear_scene(unsigned long milliseconds) {
+void disappear_scene(color back, unsigned long milliseconds) {
 	default_time(milliseconds);
 	screenshoot before;
 	pushrect push;
-	auto push_fore = fore; fore = colors::black;
+	auto push_fore = fore; fore = back;
 	caret.x = 0; caret.y = 0; width = getwidth(); height = getheight();
 	rectf();
 	fore = push_fore;

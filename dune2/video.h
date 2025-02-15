@@ -11,8 +11,8 @@ struct videoi {
 	resid			id;
 	unsigned long	time_lenght, frame_rate;
 	flag8			flags;
-	const char*		music_start;
 	const char*		text;
+	color			disappear;
 	constexpr explicit operator bool() const { return id != NONE; }
 	bool			is(videof v) const { return flags.is(v); }
 };
