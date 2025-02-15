@@ -68,7 +68,7 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	auto dy = width; height = dy;
 	if(per_page >= maximum)
 		return;
-	auto slide_height = push.height - height * 2;
+	auto slide_height = push.height - height * 2 - 1;
 	// Paint scroll up button
 	button("^", &origin, 0, AlignCenterCenter, false, cbsetint, origin - 1);
 	// Paint scroll down button
@@ -77,7 +77,7 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	// Paint slider zone
 	caret.y = push.caret.y + dy;
 	setoffset(1, 0);
-	height = slide_height;
+	height = slide_height + 1;
 	auto push_alpha = alpha; alpha = 128;
 	rectf();
 	alpha = push_alpha;
@@ -88,7 +88,6 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	mouse_input_scroll(origin, maximum, per_page, slide_height, bar_position, bar_height);
 	caret.y += bar_position;
 	height = bar_height;
-	setoffset(-1, 0);
 	buttonwr(0, 0, 0, 0);
 }
 

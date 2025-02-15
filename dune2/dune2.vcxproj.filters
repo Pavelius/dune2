@@ -186,6 +186,9 @@
     <ClCompile Include="tree.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="view_mentat.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

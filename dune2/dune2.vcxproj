@@ -184,6 +184,7 @@
     <ClCompile Include="view_focus.cpp" />
     <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="view_list.cpp" />
+    <ClCompile Include="view_mentat.cpp" />
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />
     <ClCompile Include="win_time.cpp" />

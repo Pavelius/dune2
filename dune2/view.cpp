@@ -27,8 +27,6 @@
 
 using namespace draw;
 
-// static point drag_mouse_start, drag_mouse_finish;
-// static bool drag_begin;
 static indicator spice;
 
 static color color_form = color(186, 190, 150);
@@ -36,12 +34,10 @@ static color color_form_light = color(251, 255, 203);
 static color color_form_shadow = color(101, 101, 77);
 static color font_pallette[16];
 static color pallette[256], pallette_original[256];
-static fnevent paint_mentat_proc;
 
 const char* form_header;
 static unsigned long form_opening_tick;
 static unsigned long next_game_time;
-static unsigned long eye_clapping, eye_show_cursor;
 unsigned long animate_time, animate_delay = 200, animate_stop;
 resid animate_id;
 bool animate_once;
@@ -81,7 +77,7 @@ static void update_next_turn() {
 	}
 }
 
-static int get_frame(unsigned long resolution) {
+int get_frame(unsigned long resolution) {
 	if(!resolution)
 		resolution = 200;
 	return (animate_time - form_opening_tick) / resolution;
@@ -129,7 +125,7 @@ static point i2s(point v) {
 	return v;
 }
 
-static void paint_background(color v) {
+void paint_background(color v) {
 	auto push_fore = fore;
 	fore = v; rectf();
 	caret.x = (getwidth() - 320) / 2;
@@ -206,9 +202,10 @@ static void rectb_black() {
 static bool button(const char* title, unsigned key, unsigned flags, bool allow_set_focus, bool paint_rect_black, int button_height) {
 	pushrect push;
 	draw::height = button_height;
-	if(paint_rect_black)
+	if(paint_rect_black) {
 		rectb_black();
-	setoffset(1, 1);
+		setoffset(1, 1);
+	}
 	auto push_fore = fore;
 	auto button_focus = (void*)(*((int*)&caret));
 	auto run = button_input(button_focus, key, allow_set_focus);
@@ -266,7 +263,7 @@ struct pushscene : pushfocus {
 	}
 };
 
-bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20) {
+bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause) {
 	const unsigned time_step = 100;
 	if(value <= form_opening_tick)
 		value = form_opening_tick + xrand(pause * time_step, pause * 2 * time_step);
@@ -324,100 +321,6 @@ static void common_input() {
 #ifdef _DEBUG
 	view_debug_input();
 #endif
-}
-
-static void paint_mentat_eyes() {
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
-	auto frame = 0;
-	if(time_animate(eye_clapping, 1, 16))
-		frame = 4;
-	else if(time_animate(eye_show_cursor, 30, 40)) {
-		if(hot.mouse.x > 200)
-			frame = 2;
-		else if(hot.mouse.x < 30)
-			frame = 1;
-		else if(hot.mouse.y > 130)
-			frame = 3;
-	}
-	switch(rid) {
-	case MENSHPA: image(caret.x + 40, caret.y + 80, gres(rid), frame, 0); break;
-	case MENSHPH: image(caret.x + 32, caret.y + 88, gres(rid), frame, 0); break;
-	case MENSHPO: image(caret.x + 16, caret.y + 80, gres(rid), frame, 0); break;
-	case MENSHPM: image(caret.x + 64, caret.y + 80, gres(rid), frame, 0); break;
-	}
-}
-
-static void paint_mentat_speaking_mouth() {
-	static int speak_frames[] = {5, 6, 5, 6, 5, 6, 5, 6, 7, 6, 5, 6, 7, 8, 9};
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
-	auto frame = speak_frames[get_frame() % (sizeof(speak_frames) / sizeof(speak_frames[0]))];
-	switch(rid) {
-	case MENSHPA: image(caret.x + 40, caret.y + 96, gres(rid), frame, 0); break;
-	case MENSHPH: image(caret.x + 32, caret.y + 104, gres(rid), frame, 0); break;
-	case MENSHPO: image(caret.x + 16, caret.y + 96, gres(rid), frame, 0); break;
-	case MENSHPM: image(caret.x + 56, caret.y + 96, gres(rid), frame, 0); break;
-	}
-}
-
-static void paint_mentat_content() {
-	auto ps = gres(animate_id);
-	if(ps && ps->count)
-		image(caret.x + 128, caret.y + 48, ps, get_frame(400) % ps->count, 0);
-}
-
-static void paint_brief_row(int index, void* data) {
-}
-
-static void paint_mentat_list() {
-	static int origin;
-	static const char* test[50] = {0};
-	width -= 12;
-	paint_list_and_scroll(origin, sizeof(test) / sizeof(test[0]), test, sizeof(test[0]), 8, paint_brief_row);
-}
-
-static void paint_mentat_information() {
-	pushrect push;
-	caret.x += 128; caret.y += 48;
-	width = 184; height = 112;
-	paint_mentat_proc();
-}
-
-static void paint_mentat_back() {
-	paint_mentat_information();
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
-	switch(rid) {
-	case MENSHPA: image(caret.x + 128, caret.y + 128, gres(rid), 10, 0); break;
-	case MENSHPH: image(caret.x + 128, caret.y + 104, gres(rid), 10, 0); break;
-	case MENSHPO: image(caret.x + 128, caret.y + 128, gres(rid), 10, 0); break;
-	}
-}
-
-static void paint_mentat_background() {
-	paint_background(colors::black);
-	image(gres(MENTATS), bsdata<fractioni>::elements[last_fraction].mentat_frame, 0);
-}
-
-static void paint_mentat_exit() {
-	pushrect push;
-	auto push_fore = fore; fore = color_form_shadow;
-	caret.x += 200; caret.y += 180; width = 48; height = 24;
-	button(getnm("Exit"), 0, KeyEscape, AlignCenterCenter, false, buttoncancel, 0);
-	fore = push_fore;
-}
-
-void paint_mentat() {
-	paint_mentat_background();
-	paint_mentat_eyes();
-	paint_mentat_speaking_mouth();
-	paint_mentat_back();
-	paint_mentat_exit();
-}
-
-void paint_mentat_silent() {
-	paint_mentat_background();
-	paint_mentat_eyes();
-	paint_mentat_back();
-	paint_mentat_exit();
 }
 
 static void set_area_view() {
@@ -757,14 +660,6 @@ static void rectb_alpha_drag(point mouse_start) {
 	width = start.x - caret.x;
 	height = start.y - caret.y;
 	rectb_alpha();
-}
-
-static void open_mentat() {
-	pushvalue push_fraction(last_fraction, player->fraction);
-	pushvalue push_proc(paint_mentat_proc, paint_mentat_list);
-	//song_play(str("mentat%1", player->getfractionsuffix()));
-	show_scene(paint_mentat_silent, 0, 0);
-	music_play(0);
 }
 
 static void open_options() {
