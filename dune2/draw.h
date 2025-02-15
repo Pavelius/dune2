@@ -195,6 +195,9 @@ void				blit(surface& dest, int x, int y, int width, int height, unsigned flags,
 void				circle(int size);
 void				circlef(int size);
 void				create(int x, int y, int width, int height, unsigned flags, int bpp, bool show_maximized);
+bool				dragactive(const void* object);
+bool				dragbegin(const void* object);
+const void*			dragactive();
 void				execute(fnevent proc, long value = 0, long value2 = 0, const void* object = 0);
 void				fhexagon();
 int					getbpp();

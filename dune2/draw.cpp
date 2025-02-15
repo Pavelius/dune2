@@ -81,6 +81,7 @@ int				metrics::padding = 2, metrics::border = 4;
 static bool		break_modal;
 static long		break_result;
 static fnevent	next_scene;
+static const void* mouse_drag_object;
 
 static void correct(int& x1, int& y1, int& x2, int& y2) {
 	if(x1 > x2)
@@ -2011,6 +2012,32 @@ void draw::blit(surface& dest, int x, int y, int width, int height, unsigned fla
 		const_cast<surface&>(source).ptr(x_source + ox, y_source), source.scanline, width_source, height_source);
 }
 
+const void* draw::dragactive() {
+	return mouse_drag_object;
+}
+
+bool draw::dragactive(const void* object) {
+	if(mouse_drag_object != object)
+		return false;
+	if((hot.key == MouseLeft || hot.key == MouseRight) && !hot.pressed) {
+		hot.key = InputUpdate;
+		mouse_drag_object = 0;
+		// This is last active and second call return false.
+	}
+	return true;
+}
+
+bool draw::dragbegin(const void* object) {
+	if(!mouse_drag_object) {
+		if(hot.key == MouseLeft && hot.pressed) {
+			mouse_drag_object = object;
+			hot.key = InputUpdate;
+			return true;
+		}
+	}
+	return false;
+}
+
 const pma* pma::getheader(const char* id) const {
 	auto p = this;
 	while(p->name[0]) {
@@ -2046,20 +2073,6 @@ int sprite::ganim(int index, int tick) const {
 		return 0;
 	return c->start + tick % c->count;
 }
-
-//int sprite::glyph(unsigned sym) const {
-//	// First interval (latin plus number plus ASCII)
-//	unsigned* pi = (unsigned*)edata();
-//	unsigned* p2 = pi + esize() / sizeof(unsigned);
-//	unsigned n = 0;
-//	while(pi < p2) {
-//		if(sym >= pi[0] && sym <= pi[1])
-//			return sym - pi[0] + n;
-//		n += pi[1] - pi[0] + 1;
-//		pi += 2;
-//	}
-//	return '?' - 0x21; // Unknown symbol is question mark
-//}
 
 rect sprite::frame::getrect(int x, int y, unsigned flags) const {
 	int x2, y2;

@@ -147,7 +147,6 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
     <ClCompile Include="tree.cpp" />
-    <ClCompile Include="view_drag.cpp" />
     <ClCompile Include="view_indicator.cpp" />
     <ClCompile Include="io_stream.cpp" />
     <ClCompile Include="locale.cpp" />
@@ -206,7 +205,6 @@
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="tree.h" />
-    <ClInclude Include="view_drag.h" />
     <ClInclude Include="view_indicator.h" />
     <ClInclude Include="movement.h" />
     <ClInclude Include="order.h" />

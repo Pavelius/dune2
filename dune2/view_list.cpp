@@ -1,6 +1,5 @@
 #include "draw.h"
 #include "view.h"
-#include "view_drag.h"
 #include "view_list.h"
 
 using namespace draw;
@@ -34,13 +33,14 @@ static bool mouse_drag_change() {
 
 static void mouse_input_scroll(int& origin, int maximum, int per_page, int slider_height, int bar_position, int bar_height) {
 	static int bar_position_start;
+	static point mouse_start;
 	pushrect push;
 	rect ru = {caret.x, caret.y, caret.x + width, caret.y + bar_position - 1};
 	rect rb = {caret.x, caret.y + bar_position, caret.x + width, caret.y + bar_position + bar_height - 1};
 	rect rd = {caret.x, caret.y + bar_position + bar_height, caret.x + width, caret.y + slider_height};
-	if(mouse_drag_active()) {
+	if(dragactive(mouse_input_scroll)) {
 		if(mouse_drag_change()) {
-			auto new_origin = (bar_position_start + (hot.mouse.y - mouse_drag_start.y)) * maximum / slider_height;
+			auto new_origin = (bar_position_start + (hot.mouse.y - mouse_start.y)) * maximum / slider_height;
 			execute(cbsetint, new_origin, 0, &origin);
 		}
 	} else {
@@ -51,8 +51,10 @@ static void mouse_input_scroll(int& origin, int maximum, int per_page, int slide
 			if(!hot.pressed)
 				execute(cbsetint, origin + per_page - 1, 0, &origin);
 		} else if(hot.mouse.in(rb)) {
-			if(mouse_drag_begin())
+			if(dragbegin(mouse_input_scroll)) {
+				mouse_start = hot.mouse;
 				bar_position_start = bar_position;
+			}
 		}
 	}
 }

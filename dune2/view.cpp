@@ -27,8 +27,8 @@
 
 using namespace draw;
 
-static point drag_mouse_start, drag_mouse_finish;
-static bool drag_begin;
+// static point drag_mouse_start, drag_mouse_finish;
+// static bool drag_begin;
 static indicator spice;
 
 static color color_form = color(186, 190, 150);
@@ -279,31 +279,8 @@ bool time_animate(unsigned long& value, unsigned long duration, unsigned long pa
 	return false;
 }
 
-static point same_point(point v) {
-	return {v.x / 2, v.y / 2};
-}
-
-static bool mouse_dragged(point mouse, fnevent dropped) {
-	switch(hot.key) {
-	case MouseLeft:
-		if(hot.pressed) {
-			if(!drag_begin) {
-				drag_begin = true;
-				drag_mouse_start = mouse;
-			}
-		} else {
-			if(drag_begin) {
-				drag_begin = false;
-				drag_mouse_finish = mouse;
-				execute(dropped);
-			} else
-				drag_mouse_start = point(-10000, -10000);
-		}
-		break;
-	}
-	if(drag_begin)
-		return same_point(drag_mouse_start) != same_point(mouse);
-	return false;
+static point same_point(point v, int resolution = 2) {
+	return {v.x / resolution, v.y / resolution};
 }
 
 static bool mouse_hower(unsigned long duration = 1000, bool single_time = true) {
@@ -395,7 +372,7 @@ static void paint_mentat_list() {
 	static int origin;
 	static const char* test[50] = {0};
 	width -= 12;
-	paint_list_and_scroll(origin, sizeof(test)/ sizeof(test[0]), test, sizeof(test[0]), 8, paint_brief_row);
+	paint_list_and_scroll(origin, sizeof(test) / sizeof(test[0]), test, sizeof(test[0]), 8, paint_brief_row);
 }
 
 static void paint_mentat_information() {
@@ -759,12 +736,12 @@ static void selection_rect_dropped(const rect& rc) {
 static void attack_by_mouse() {
 }
 
-static rect drag_finish_rect(int minimal) {
+static rect drag_finish_rect(point start, point finish, int minimal) {
 	rect rc;
-	rc.x1 = drag_mouse_start.x;
-	rc.y1 = drag_mouse_start.y;
-	rc.x2 = drag_mouse_finish.x;
-	rc.y2 = drag_mouse_finish.y;
+	rc.x1 = start.x;
+	rc.y1 = start.y;
+	rc.x2 = finish.x;
+	rc.y2 = finish.y;
 	rc.normalize();
 	if(rc.width() < minimal && rc.height() < minimal) {
 		rc.x1 = rc.centerx() - minimal / 2; rc.x2 = rc.x1 + minimal;
@@ -773,13 +750,9 @@ static rect drag_finish_rect(int minimal) {
 	return rc;
 }
 
-static void selection_rect_dropped() {
-	selection_rect_dropped(drag_finish_rect(area_tile_width));
-}
-
-static void rectb_alpha_drag() {
+static void rectb_alpha_drag(point mouse_start) {
 	pushrect push;
-	auto start = s2i(drag_mouse_start);
+	auto start = s2i(mouse_start);
 	caret = hot.mouse;
 	width = start.x - caret.x;
 	height = start.y - caret.y;
@@ -803,6 +776,7 @@ static void input_game_menu() {
 }
 
 static void input_game_map() {
+	static point mouse_start;
 	if(!hot.mouse.in(area_screen))
 		return;
 	switch(hot.key) {
@@ -814,8 +788,14 @@ static void input_game_map() {
 		execute(set_area_view, (long)area_spot, 1);
 		break;
 	}
-	if(mouse_dragged(i2s(hot.mouse), selection_rect_dropped))
-		rectb_alpha_drag();
+	auto mouse_finish = i2s(hot.mouse);
+	if(dragactive(input_game_map)) {
+		if(!dragactive()) // Drop dragged object
+			selection_rect_dropped(drag_finish_rect(mouse_start, mouse_finish, 8));
+		else if(same_point(mouse_start, 3) != same_point(mouse_finish, 3))
+			rectb_alpha_drag(mouse_start);
+	} else if(dragbegin(input_game_map))
+		mouse_start = mouse_finish;
 }
 
 static void paint_game_map() {
