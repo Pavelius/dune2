@@ -1,2 +1,5 @@
 ﻿Error in file `UnknownNames.txt`:
- Define translation for `Exit`
+ Define translation for `AssaultTank`
+ Define translation for `HeavyInfantry`
+ Define translation for `Tank`
+ Define translation for `Trike`

@@ -1,18 +1,19 @@
 #include "area.h"
 #include "bsdata.h"
 #include "building.h"
+#include "resid.h"
 
 BSDATA(buildingi) = {
 	{"ConstructionYard"},
 	{"SpiceSilo"},
 	{"Starport"},
-	{"Windtrap", 61, 500, Shape2x2, {304, 305, 306, 307}},
-	{"Refinery", 64, 1000, Shape3x2, {332, 333, 334, 337, 338, 339}},
-	{"RadarOutpost", Shape2x2, {}},
-	{"RepairFacility", Shape3x2, {}},
+	{"Windtrap", NONE, 61, 500, Shape2x2, {304, 305, 306, 307}},
+	{"Refinery", NONE, 64, 1000, Shape3x2, {332, 333, 334, 337, 338, 339}},
+	{"RadarOutpost"},
+	{"RepairFacility"},
 	{"HouseOfIX"},
 	{"Palace"},
-	{"Barracks"},
+	{"Barracks", BARRAC},
 	{"WOR"},
 	{"LightVehicleFactory"},
 	{"HeavyVehicleFactory"},

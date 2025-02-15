@@ -189,6 +189,9 @@
     <ClCompile Include="view_mentat.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="topic.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -350,6 +353,12 @@
     <ClInclude Include="tree.h">
       <Filter>logic</Filter>
     </ClInclude>
+    <ClInclude Include="topic.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="topicable.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">
@@ -374,6 +383,9 @@
       <Filter>locale</Filter>
     </Text>
     <Text Include="..\locale\en\buildings.txt">
+      <Filter>locale</Filter>
+    </Text>
+    <Text Include="..\locale\en\mentat.txt">
       <Filter>locale</Filter>
     </Text>
   </ItemGroup>

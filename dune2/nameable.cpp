@@ -20,3 +20,9 @@
 const char*	nameable::getname() const {
 	return getnm(id);
 }
+
+int compare_by_name(const void* v1, const void* v2) {
+	auto p1 = (nameable*)v1;
+	auto p2 = (nameable*)v2;
+	return szcmp(p1->getname(), p2->getname());
+}

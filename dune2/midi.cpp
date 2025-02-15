@@ -30,6 +30,7 @@ struct evt {
 }
 
 static volatile bool midi_need_close;
+static unsigned int current_time;
 
 static unsigned long read_var_long(unsigned char* buf, unsigned int* bytesread) {
 	unsigned long var = 0;
@@ -193,7 +194,6 @@ static unsigned int get_buffer_ex9(struct trk* tracks, unsigned int ntracks, uns
 	MIDIEVENT e, *p;
 	unsigned int streamlen = 0;
 	unsigned int i;
-	static unsigned int current_time = 0;
 
 	if(!tracks || !out || !outlen)
 		return 0;
@@ -353,6 +353,7 @@ void midi_play_raw(void* mid_data) {
 	if(!mid_data)
 		return;
 
+	current_time = 0;
 	auto midibuf = (unsigned char*)mid_data;
 	auto hdr = (mid_header*)mid_data;
 	midibuf += sizeof(struct mid_header);

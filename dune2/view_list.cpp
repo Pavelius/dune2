@@ -4,6 +4,8 @@
 
 using namespace draw;
 
+int list_hilite;
+
 void correct_list(int& origin, int maximum, int per_page) {
 	if(origin + per_page >= maximum)
 		origin = maximum - per_page;
@@ -68,22 +70,23 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	auto dy = width; height = dy;
 	if(per_page >= maximum)
 		return;
-	auto slide_height = push.height - height * 2 - 1;
+	auto slide_height = push.height - height * 2;
 	// Paint scroll up button
-	button("^", &origin, 0, AlignCenterCenter, false, cbsetint, origin - 1);
+	if(buttonwr("^", 0, 0, AlignCenterCenter))
+		execute(cbsetint, origin - 1, 0, &origin);
 	// Paint scroll down button
-	caret.y = push.caret.y + push.height - height - 1;
-	button("U", &origin, 0, AlignCenterCenter, false, cbsetint, origin + 1);
+	caret.y = push.caret.y + push.height - height;
+	if(buttonwr("^", &origin, 0, AlignCenterCenter))
+		execute(cbsetint, origin + 1, 0, &origin);
 	// Paint slider zone
 	caret.y = push.caret.y + dy;
-	setoffset(1, 0);
-	height = slide_height + 1;
+	height = slide_height;
 	auto push_alpha = alpha; alpha = 128;
 	rectf();
 	alpha = push_alpha;
 	// Paint slider
 	auto bar_position = slide_height * origin / maximum;
-	auto bar_height = slide_height * per_page / maximum + 2;
+	auto bar_height = slide_height * per_page / maximum + 1;
 	caret.y = push.caret.y + dy;
 	mouse_input_scroll(origin, maximum, per_page, slide_height, bar_position, bar_height);
 	caret.y += bar_position;
@@ -91,7 +94,15 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	buttonwr(0, 0, 0, 0);
 }
 
-void paint_list(int& origin, int maximum, void* elements, size_t element_size, int row_height, fnlistrow proc) {
+static void rectf_hilite() {
+	auto push_alpha = alpha; alpha = hot.pressed ? 64 : 32;
+	auto push_fore = fore; fore = colors::white;
+	rectf();
+	fore = push_fore;
+	alpha = push_alpha;
+}
+
+void paint_list(int& origin, int maximum, void* elements, size_t element_size, int row_height, fnlistrow proc, fnlistrowallow proc_allow, fnevent choose) {
 	if(!height || !width || !row_height)
 		return;
 	pushrect push;
@@ -99,18 +110,33 @@ void paint_list(int& origin, int maximum, void* elements, size_t element_size, i
 	auto per_page = height / row_height;
 	correct_list(origin, maximum, per_page);
 	mouse_input_list(origin, maximum, row_height);
+	if(!ishilite())
+		list_hilite = -1;
+	else
+		list_hilite = origin + (hot.mouse.y - caret.y) / row_height;
+	height = row_height;
 	for(auto i = origin; i < maximum; i++) {
 		if(i > origin + per_page)
 			break;
-		proc(i, (unsigned char*)elements + element_size * i);
+		auto pd = (unsigned char*)elements + element_size * i;
+		auto allow = proc_allow ? proc_allow(i, pd) : true;
+		if(i == list_hilite) {
+			if(allow)
+				rectf_hilite();
+		}
+		proc(i, pd);
+		if(allow && choose && i == list_hilite) {
+			if(hot.key == MouseLeft && !hot.pressed)
+				execute(choose, (long)pd, i, 0);
+		}
 		caret.y += row_height;
 	}
 	clipping = push_clip;
 }
 
-void paint_list_and_scroll(int& origin, int maximum, void* elements, size_t element_size, int row_height, fnlistrow proc) {
+void paint_list_and_scroll(int& origin, int maximum, void* elements, size_t element_size, int row_height, fnlistrow proc, fnlistrowallow allow, fnevent choose) {
 	pushrect push;
-	paint_list(origin, maximum, elements, element_size, row_height, proc);
-	caret.x += width; width = 12;
+	paint_list(origin, maximum, elements, element_size, row_height, proc, allow, choose);
+	caret.x += width; width = 8;
 	paint_scroll(origin, maximum, row_height);
 }

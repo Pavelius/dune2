@@ -4,4 +4,12 @@ Move: Move
 Retreat: Retreat
 Stop: Stop
 
+Houses: Houses 
+NoFraction: None of House
+Atreides: Atreides
+Harkonens: Harkonens
+Ordos: Ordos
+
+ChooseSubject: Select Subject
+
 Cancel: Cancel

@@ -1,13 +1,12 @@
 #pragma once
 
-#include "nameable.h"
+#include "topicable.h"
 
-enum resid : short unsigned;
 enum fractionn : unsigned char {
 	NoFraction, Atreides, Harkonens, Ordos,
 };
 extern fractionn last_fraction;
-struct fractioni : nameable {
+struct fractioni : topicable {
 	int			mentat_frame;
 	resid		mentat_face;
 };

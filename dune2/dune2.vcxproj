@@ -146,6 +146,7 @@
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
+    <ClCompile Include="topic.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="view_indicator.cpp" />
     <ClCompile Include="io_stream.cpp" />
@@ -205,6 +206,8 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="topic.h" />
+    <ClInclude Include="topicable.h" />
     <ClInclude Include="tree.h" />
     <ClInclude Include="view_indicator.h" />
     <ClInclude Include="movement.h" />
@@ -250,6 +253,7 @@
     <Text Include="..\locale\en\actions.txt" />
     <Text Include="..\locale\en\buildings.txt" />
     <Text Include="..\locale\en\intro.txt" />
+    <Text Include="..\locale\en\mentat.txt" />
     <Text Include="..\locale\en\terrains.txt" />
     <Text Include="..\locale\en\units.txt" />
     <Text Include="..\locale\en\UnknownNames.txt" />

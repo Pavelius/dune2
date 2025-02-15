@@ -82,6 +82,7 @@ public:
 	void			left(size_t value) { auto pn = pb + value; if(p > pn) { p = pn; p[0] = 0; }}
 	void			lower();
 	const char*		psidf(const char* pb);
+	const char*		psline(const char* p);
 	const char*		psparam(const char* p);
 	const char*		psstr(const char* p, char end_symbol);
 	const char*		psstrlf(const char* p);
@@ -92,7 +93,7 @@ public:
 	void			upper();
 };
 struct string : stringbuilder {
-	char			text[260];
+	char			text[512];
 	string() : stringbuilder(text) {}
 };
 typedef const char* (*fntext)(const void* object, stringbuilder& sb);

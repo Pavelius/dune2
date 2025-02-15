@@ -1,8 +1,8 @@
 #pragma once
 
-#include "nameable.h"
 #include "player.h"
 #include "shape.h"
+#include "topicable.h"
 #include "typeable.h"
 
 enum buildingn : unsigned char {
@@ -10,7 +10,7 @@ enum buildingn : unsigned char {
 	Barracks, WOR, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
 	Turret, RocketTurret,
 };
-struct buildingi : nameable {
+struct buildingi : topicable {
 	unsigned char	frame_avatar;
 	short			hits;
 	shapen			shape;

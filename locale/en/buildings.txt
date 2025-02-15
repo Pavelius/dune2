@@ -1,2 +1,18 @@
+Buildings: Buildings
+
+Barracks: Barracks
+ConstructionYard: Construction Yard
+LightVehicleFactory: Light Vehicle Factory
+HeavyVehicleFactory: Heavy Vehicle Factory
+HighTechFacility: High-tech Facility
+HouseOfIX: House of IX
+Palace: Palace
+RadarOutpost: Radar Outpost 
 Refinery: Refinery
+RepairFacility: Repair Facility
+RocketTurret: Rocket Turret
+SpiceSilo: Spice Silo
+Starport: Starport
+Turret: Turret
+WOR: WOR
 Windtrap: Wind Trap

@@ -5,6 +5,7 @@
 #include "player.h"
 #include "order.h"
 #include "resid.h"
+#include "topicable.h"
 #include "typeable.h"
 
 enum unitn : unsigned char {
@@ -17,7 +18,7 @@ enum squadn : unsigned char;
 enum movementn : unsigned char;
 struct stati : nameable {
 };
-struct uniti : nameable {
+struct uniti : topicable {
 	movementn		move;
 	resid			res;
 	unsigned char	frame, frame_shoot, frame_avatar;

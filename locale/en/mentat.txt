@@ -1,0 +1,42 @@
+#AssaultTankInfo
+The Siege Tank is a tracked vehicle with dual cannons.
+These cannons fire armor piercing incendiary rounds, giving it more than twice the firepower of the smaller Combat tank.
+It has twice the armor, and is slower than most tanks.
+
+#HeavyInfantryInfo
+Troopers are armed with 10mm Rotary Cannons firing armor piercing incendiary rounds and FS rockets.
+Troopers wear heavy, mechanized power suits which enhance performance and speed.
+
+#LightInfantryInfo
+Infantry consists of lightly armored foot soldiers, equipped with 9mm RP assault rifles which fire armor piercing rounds.
+Infantry have a limited firing range and speed.
+
+#LightInfantryCapacity
+Type:     Ground Based Military Units
+Armament: 9mm RP Assault Rifles
+Speed:    5 km/h (foot)
+Armor:    Light
+Crew:     1 to 3
+
+#TankInfo
+The Combat Tank is a medium armored, tracked tank firing high explosive rounds.
+It is slower than the average tank and has limited manoeuvrability.
+
+#TrikeInfo
+The Trike is a lightly armored, three-wheeled, vehicle which fires armor piercing rounds.
+It has limited firing range, but moves rapidly.
+
+
+#BarracksInfo
+Barracks are required to produce and train Light Infantry units.
+
+#WORInfo
+The WOR facility produces Heavy Trooper units by providing advanced training and weaponry.
+
+#LightVehicleFactoryInfo
+The Light Factory produces small, lightly armored, combat vehicles.
+A Light Factory must be built before a Heavy Factory can be constructed.
+
+#HeavyVehicleFactoryInfo
+The Heavy Factory produces large, tracked, military or spice harvesting vehicles.
+Harvesters and tanks can be produced with a Heavy Factory.

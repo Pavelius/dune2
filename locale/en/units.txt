@@ -1,6 +1,10 @@
 ChooseTarget: Target
 ChooseTargetInfo: Choose move target
 
+Units: Units
+
 AssaultTank: Assault Tank
+HeavyInfantry: Heavy Infantry
+LightInfantry: Light Infantry
 Tank: Tank
 Trike: Trike

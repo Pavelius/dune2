@@ -13,7 +13,7 @@ struct tree : array {
 		bool			is(treef v) const;
 		void			set(treef v);
 	};
-	tree() : array(sizeof(tree)) {}
+	tree() : array(sizeof(element)) {}
 	element*			addchild(void* data, unsigned short param);
 	element*			addgroup(void* data, unsigned char level, unsigned short param);
 	element*			begin() { return (element*)data; }

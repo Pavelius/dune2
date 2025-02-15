@@ -451,8 +451,8 @@ void stringbuilder::add(char sym) {
 }
 
 void stringbuilder::add(const char* format, ...) {
-   XVA_FORMAT(format);
-   addv(format, format_param);
+	XVA_FORMAT(format);
+	addv(format, format_param);
 }
 
 void stringbuilder::addv(const char* src, const char* vl) {
@@ -647,6 +647,15 @@ const char* stringbuilder::psstrlf(const char* p) {
 			continue;
 		} else if(*p == '\n' || *p == '\r')
 			break;
+		addch(*p++);
+	}
+	return p;
+}
+
+const char* stringbuilder::psline(const char* p) {
+	while(*p) {
+		if(p[0] == '\n' || p[1] == '\r')
+			return skipspcr(p + 1);
 		addch(*p++);
 	}
 	return p;

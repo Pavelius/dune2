@@ -26,14 +26,14 @@ tree::element* tree::addchild(void* data, unsigned short param) {
 
 tree::element* tree::last() {
 	if(count)
-		return (element*)data + (count - 1);
+		return ((element*)data) + (count - 1);
 	return 0;
 }
 
 tree::element* tree::addgroup(void* data, unsigned char level, unsigned short param) {
 	element* p;
 	element* pr = last();
-	if(pr->is(Group))
+	if(pr && pr->is(Group))
 		p = pr;
 	else {
 		p = (element*)add();
