@@ -46,7 +46,7 @@ static void paint_background() {
 	fore = push_fore;
 }
 
-static void paint_focus_rect(point size, color border, int focus, int origin, int per_line) {
+static void paint_focus_rect(point size, color border, int focus, int origin, int per_line, int dy = 0) {
 	focus -= origin;
 	if(focus < 0)
 		return;
@@ -55,8 +55,8 @@ static void paint_focus_rect(point size, color border, int focus, int origin, in
 	auto y = caret.y + (focus / per_line) * size.y - 1;
 	caret.x = x;
 	caret.y = y;
-	width = size.x + 2;
-	height = size.y + 2;
+	width = size.x + 2 + dy;
+	height = size.y + 2 + dy;
 	fore = border;
 	rectb();
 }
@@ -296,6 +296,48 @@ static void random_explosion() {
 	add_area_effect(area_spot, n);
 }
 
+static void show_pallette(resid id, int dy) {
+	pushrect push;
+	auto push_fore = fore;
+	auto push_font = font; font = gres(FONT6);
+	int focus = 0;
+	auto pallette = (color*)gres(id)->ptr(gres(id)->get(0).pallette);
+	while(ismodal()) {
+		paint_background();
+		caret.y = 4; caret.x += 4;
+		if(focus < 0)
+			focus = 0;
+		else if(focus > 256 - 1)
+			focus = 256 - 1;
+		auto push_caret = caret;
+		width = dy - 1; height = dy - 1;
+		for(auto y = 0; y < 16; y++) {
+			for(auto x = 0; x < 16; x++) {
+				caret.x = x * (width + 1) + push_caret.x;
+				caret.y = y * (height + 1) + push_caret.y;
+				fore = pallette[y * 16 + x];
+				rectf();
+			}
+		}
+		caret = push_caret;
+		paint_focus_rect({dy, dy}, colors::gray, focus, 0, 16, -1);
+		caret = {1, getheight() - 8};
+		auto value = pallette[focus];
+		text(str("index %1i (0x%5.2h), color %2i, %3i, %4i", focus, value.r, value.g, value.b, focus), -1, TextBold);
+		domodal();
+		switch(hot.key) {
+		case KeyRight: focus++; break;
+		case KeyLeft: focus--; break;
+		case KeyDown: focus += 16; break;
+		case KeyUp: focus -= 16; break;
+		case KeyEscape: breakmodal(0); break;
+		}
+		focus_input();
+	}
+	font = push_font;
+	fore = push_fore;
+}
+
 void view_debug_input() {
 	switch(hot.key) {
 	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}); break;
@@ -305,6 +347,7 @@ void view_debug_input() {
 	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}); break;
 	case Ctrl + 'F': show_font(FONT6, {4, 4}, {8, 8}); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}); break;
+	case Ctrl + 'P': show_pallette(SHAPES, 8); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': debug_toggle = !debug_toggle; break;
 	case 'E': random_explosion(); break;

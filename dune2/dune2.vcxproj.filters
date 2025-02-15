@@ -177,7 +177,7 @@
     <ClCompile Include="order.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="indicator.cpp">
+    <ClCompile Include="view_indicator.cpp">
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="view_list.cpp">
@@ -335,7 +335,7 @@
     <ClInclude Include="order.h">
       <Filter>logic</Filter>
     </ClInclude>
-    <ClInclude Include="indicator.h">
+    <ClInclude Include="view_indicator.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="view_list.h">

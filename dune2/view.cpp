@@ -7,7 +7,6 @@
 #include "fix.h"
 #include "fraction.h"
 #include "game.h"
-#include "indicator.h"
 #include "io_stream.h"
 #include "math.h"
 #include "order.h"
@@ -22,6 +21,7 @@
 #include "video.h"
 #include "view.h"
 #include "view_focus.h"
+#include "view_indicator.h"
 #include "view_list.h"
 
 using namespace draw;
@@ -34,6 +34,7 @@ static color color_form = color(186, 190, 150);
 static color color_form_light = color(251, 255, 203);
 static color color_form_shadow = color(101, 101, 77);
 static color font_pallette[16];
+static color pallette[256], pallette_original[256];
 
 const char* form_header;
 static unsigned long form_opening_tick;
@@ -82,6 +83,27 @@ static int get_frame(unsigned long resolution) {
 	if(!resolution)
 		resolution = 200;
 	return (animate_time - form_opening_tick) / resolution;
+}
+
+static int get_alpha(int base, unsigned range, int tick) {
+	auto seed = tick % range;
+	auto half = range / 2;
+	if(seed < half)
+		return base * seed / half;
+	else
+		return base * (range - seed) / half;
+}
+
+static int get_alpha(int base, unsigned range) {
+	return get_alpha(base, range, (animate_time - form_opening_tick) / 10);
+}
+
+static color get_flash(color main, color back, int base, int range, int resolution = 10) {
+	auto alpha = get_alpha(320, 256, (animate_time - form_opening_tick) / resolution);
+	if(alpha >= 256)
+		return main;
+	else
+		return main.mix(back, alpha);
 }
 
 static int get_frame(sprite* ps, unsigned long resolution) {
@@ -485,6 +507,21 @@ static void paint_main_map_debug() {
 	debug_map_message();
 }
 
+static void update_pallette_by_player(int index) {
+	auto j = 128 + index * 16;
+	for(auto i = 0; i < 6; i++)
+		pallette[144 + i] = pallette_original[j + i];
+}
+
+static void update_pallette_by_player() {
+	update_pallette_by_player(2);
+}
+
+static void update_pallette_colors() {
+	// Wind trap
+	pallette[223] = get_flash(color(80, 152, 232), colors::black, 640, 512, 20);
+}
+
 static void paint_map_tiles() {
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
@@ -497,7 +534,7 @@ static void paint_map_tiles() {
 				if(map_alternate[i])
 					i = map_alternate[i];
 			}
-			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, 0);
+			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, ImagePallette);
 		}
 	}
 }
@@ -519,19 +556,20 @@ static void paint_map_features() {
 
 static void paint_platform(const sprite* ps, int frame, direction d) {
 	switch(d) {
-	case Up: image(ps, frame + 0, 0); break;
-	case RightUp: image(ps, frame + 1, 0); break;
-	case Right: image(ps, frame + 2, 0); break;
-	case RightDown: image(ps, frame + 3, 0); break;
-	case Down: image(ps, frame + 4, 0); break;
-	case LeftDown: image(caret.x, caret.y, ps, frame + 3, ImageMirrorH); break;
-	case Left: image(caret.x, caret.y, ps, frame + 2, ImageMirrorH); break;
-	case LeftUp: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH); break;
+	case Up: image(ps, frame + 0, ImagePallette); break;
+	case RightUp: image(ps, frame + 1, ImagePallette); break;
+	case Right: image(ps, frame + 2, ImagePallette); break;
+	case RightDown: image(ps, frame + 3, ImagePallette); break;
+	case Down: image(ps, frame + 4, ImagePallette); break;
+	case LeftDown: image(caret.x, caret.y, ps, frame + 3, ImageMirrorH | ImagePallette); break;
+	case Left: image(caret.x, caret.y, ps, frame + 2, ImageMirrorH | ImagePallette); break;
+	case LeftUp: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH | ImagePallette); break;
 	default: break;
 	}
 }
 
-static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction) {
+static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction, unsigned char color_index) {
+	update_pallette_by_player(color_index);
 	paint_platform(gres(e.res), e.frame, move_direction);
 	if(e.frame_shoot)
 		paint_platform(gres(e.res), e.frame_shoot, shoot_direction);
@@ -540,6 +578,7 @@ static void paint_unit(const uniti& e, direction move_direction, direction shoot
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	auto& e = p->geti();
+	update_pallette_by_player(p->getplayer()->color_index);
 	paint_platform(gres(e.res), e.frame, p->move_direction);
 	if(e.frame_shoot)
 		paint_platform(gres(e.res), e.frame_shoot, p->shoot_direction);
@@ -653,7 +692,7 @@ static void paint_background(resid rid) {
 	caret.x = 0; caret.y = 0;
 	if(rid == SCREEN) {
 		const int right_panel = 120;
-		image(0, 0, gres(rid), 0, 0);
+		image(0, 0, gres(rid), 0, ImagePallette);
 		caret.x = 0; caret.y = 40;
 		if(width > 320) {
 			copybits(320 - right_panel, 0, right_panel, 200, width - right_panel, 0);
@@ -873,7 +912,7 @@ static void paint_unit_list() {
 	auto push_caret = caret;
 	caret = push_caret + point(6, 8);
 	for(auto p : human_selected) {
-		paint_unit(p->geti(), RightDown, RightDown);
+		paint_unit(p->geti(), RightDown, RightDown, p->getplayer()->color_index);
 		caret.x += 16;
 		if(caret.x >= clipping.x2) {
 			caret.x = push_caret.x;
@@ -920,7 +959,9 @@ static void paint_map_info(fnevent proc) {
 }
 
 void paint_main_map() {
+	update_pallette_by_player();
 	paint_background(SCREEN);
+	update_pallette_colors();
 	input_game_menu();
 	paint_spice();
 	paint_game_map();
@@ -939,7 +980,9 @@ static void mouse_cancel(rect rc) {
 }
 
 void paint_main_map_choose_terrain() {
+	update_pallette_by_player();
 	paint_background(SCREEN);
+	update_pallette_colors();
 	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain);
@@ -964,6 +1007,15 @@ static void paint_video_fps() {
 	caret.x = 4; caret.y = 4; text(sb, -1, TextBold);
 }
 
+static void textarc(const char* format, unsigned flags) {
+	if(!format)
+		return;
+	auto push_palt = palt;
+	create_title_font_pallette();
+	texta(form_header, flags);
+	palt = push_palt;
+}
+
 void paint_video() {
 	paint_background(colors::black);
 	auto push_font = font; font = gres(FONT16);
@@ -984,21 +1036,11 @@ void paint_video() {
 		image(ps, frame, 0);
 		caret.x = push_caret.x;
 		caret.y += ps->height + 8;
-		if(form_header) {
-			auto push_palt = palt;
-			create_title_font_pallette();
-			texta(form_header, AlignCenter | ImagePallette);
-			palt = push_palt;
-		}
+		textarc(form_header, AlignCenter | ImagePallette);
 	} else {
 		pushrect push;
 		setoffset(32, 32);
-		if(form_header) {
-			auto push_palt = palt;
-			create_title_font_pallette();
-			texta(form_header, AlignCenterCenter | ImagePallette);
-			palt = push_palt;
-		}
+		textarc(form_header, AlignCenter | ImagePallette);
 	}
 	mouse_cancel({0, 0, getwidth(), getheight()});
 	if(hot.key == KeySpace || hot.key == KeyEscape || hot.key == KeyEnter)
@@ -1063,6 +1105,15 @@ static void main_beforemodal() {
 	clear_focus_data();
 }
 
+static void make_pallette() {
+	auto p = gres(ICONS);
+	if(!p)
+		return;
+	memcpy(pallette, p->ptr(p->get(0).pallette), sizeof(pallette));
+	memcpy(pallette_original, pallette, sizeof(pallette));
+	palt = pallette;
+}
+
 void initialize_view(const char* title, fnevent main_scene) {
 	draw::create(-1, -1, 320, 200, 0, 32, false);
 	draw::setcaption(title);
@@ -1070,6 +1121,7 @@ void initialize_view(const char* title, fnevent main_scene) {
 	draw::pbeforemodal = main_beforemodal;
 	font = gres(FONT6);
 	fore = colors::white;
+	make_pallette();
 	set_next_scene(main_scene);
 	run_next_scene();
 }

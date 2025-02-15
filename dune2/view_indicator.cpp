@@ -1,7 +1,7 @@
 #include "draw.h"
-#include "indicator.h"
 #include "resid.h"
 #include "view.h"
+#include "view_indicator.h"
 
 const int indicator_change_time = 500;
 const int indicator_digits = 6;
@@ -26,13 +26,11 @@ static void paint_control(int v1, int v2) {
 	auto push = caret;
 	auto ps = gres(SHAPES);
 	for(auto i = 0; i < 6; i++) {
-		if(i != 0 && !v1 && !v2)
-			break;
 		auto i1 = v1 % 10; v1 = v1 / 10;
 		auto i2 = v2 % 10; v2 = v2 / 10;
 		if(i1 != i2) {
 			image(ps, i1 + 2, 0);
-			image(caret.x, caret.y + 8, ps, i1 + 2, 0);
+			image(caret.x, caret.y + 8, ps, i2 + 2, 0);
 		}
 		caret.x -= indicator_digit_width;
 	}
@@ -55,10 +53,16 @@ void indicator::paint() {
 	else {
 		auto push_clip = clipping;
 		setclip({push.caret.x, caret.y - 1, push.caret.x + indicator_digits * indicator_digit_width, caret.y + 8});
-		caret.y -= (short)(t * 8 / indicator_change_time);
-		paint_control(value);
-		caret.y += 8;
-		paint_control(next);
+		if(false) {
+			caret.y -= (short)(t * 8 / indicator_change_time);
+			paint_control(value);
+			caret.y += 8;
+			paint_control(next);
+		} else {
+			paint_control(value);
+			caret.y -= (short)(t * 8 / indicator_change_time);
+			paint_control(value, next);
+		}
 		clipping = push_clip;
 	}
 }

@@ -146,7 +146,7 @@
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
-    <ClCompile Include="indicator.cpp" />
+    <ClCompile Include="view_indicator.cpp" />
     <ClCompile Include="io_stream.cpp" />
     <ClCompile Include="locale.cpp" />
     <ClCompile Include="log.cpp" />
@@ -203,7 +203,7 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="indicator.h" />
+    <ClInclude Include="view_indicator.h" />
     <ClInclude Include="movement.h" />
     <ClInclude Include="order.h" />
     <ClInclude Include="player.h" />
