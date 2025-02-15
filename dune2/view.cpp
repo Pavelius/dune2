@@ -421,7 +421,7 @@ static void update_pallette_by_player(int index) {
 }
 
 static void update_pallette_by_player() {
-	update_pallette_by_player(2);
+	update_pallette_by_player(player->color_index);
 }
 
 static void update_pallette_colors() {

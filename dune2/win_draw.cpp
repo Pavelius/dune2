@@ -202,13 +202,15 @@ void draw::updatewindow() {
 		ShowWindow(hwnd, SW_SHOW);
 	if(window_surface.width != window_size_real.x || window_surface.height != window_size_real.y)
 		window_surface.resize(window_size_real.x, window_size_real.y, draw::canvas->bpp, true);
-	scale3x(
-		window_surface.bits, window_surface.scanline,
-		draw::canvas->bits, draw::canvas->scanline,
-		draw::canvas->bpp / 8,
-		draw::canvas->width, draw::canvas->height);
-	fill_last_pixels();
-	InvalidateRect(hwnd, 0, 1);
+	if(window_size_real.x) {
+		scale3x(
+			window_surface.bits, window_surface.scanline,
+			draw::canvas->bits, draw::canvas->scanline,
+			draw::canvas->bpp / 8,
+			draw::canvas->width, draw::canvas->height);
+		fill_last_pixels();
+		InvalidateRect(hwnd, 0, 1);
+	}
 	UpdateWindow(hwnd);
 }
 

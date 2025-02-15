@@ -147,11 +147,10 @@ static void show_introdution() {
 void main_menu() {
 	// sshow_introdution();
 	auto size = sizeof(unit);
-	last_fraction = NoFraction;
 	player = bsdata<playeri>::elements;
 	player->add(Credits, 1000);
-	player->color_index = 2;
-	player->fraction = Atreides;
+	player->color_index = 1;
+	player->fraction = Ordos;
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
