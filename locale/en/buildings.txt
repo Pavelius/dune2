@@ -1,7 +1,7 @@
 Buildings: Buildings
 
 Barracks: Barracks
-ConstructionYard: Construction Yard
+ConstructionYard: Base
 LightVehicleFactory: Light Vehicle Factory
 HeavyVehicleFactory: Heavy Vehicle Factory
 HighTechFacility: High-tech Facility

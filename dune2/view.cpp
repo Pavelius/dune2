@@ -850,9 +850,36 @@ static void paint_unit_list() {
 	caret = push_caret;
 }
 
+static void paint_build_button(const char* format, int avatar, shapen shape, unsigned key) {
+	bool pressed;
+	auto push_fore = fore;
+	if(true) {
+		pushrect push;
+		rectb_black();
+		setoffset(1, 1);
+		auto button_focus = (void*)(*((int*)&caret));
+		auto run = button_input(button_focus, key, false);
+		pressed = (pressed_focus == button_focus);
+		form_frame(1);
+		setoffset(2, 2);
+		image(gres(SHAPES), avatar, 0);
+		image(caret.x + 35, caret.y + 2, gres(SHAPES), 51, 0);
+		fore = color_form_shadow;
+		caret.y += 24; texta(format, AlignCenter);
+	}
+	if(pressed)
+		button_press_effect();
+	fore = push_fore;
+}
+
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits);
+	caret.y += 14;
+	auto push_height = height; height = 36;
+	setoffset(-1, 0);
+	paint_build_button("Build It", 61, Shape2x2, 'B');
+	height = push_height;
 }
 
 static void paint_unit_info() {

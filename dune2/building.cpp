@@ -4,7 +4,7 @@
 #include "resid.h"
 
 BSDATA(buildingi) = {
-	{"ConstructionYard"},
+	{"ConstructionYard", CONSTRUC, 60, 1000, Shape2x2, {292, 293, 295, 296}},
 	{"SpiceSilo"},
 	{"Starport"},
 	{"Windtrap", WINDTRAP, 61, 500, Shape2x2, {304, 305, 306, 307}},

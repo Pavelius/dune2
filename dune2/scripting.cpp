@@ -157,6 +157,8 @@ void main_menu() {
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
 	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
+	area.set({5, 2, 9, 8}, set_terrain, Rock);
+	add_building({6, 3}, ConstructionYard);
 	add_building({5, 5}, Windtrap);
 	add_building({7, 5}, Refinery);
 	add_unit({5, 7}, Trike, Down);

@@ -44,3 +44,9 @@ Harvesters and tanks can be produced with a Heavy Factory.
 #WindtrapInfo
 The Wind Traps provide power and water to an installation.
 Large, aboveground ducts funnel wind underground into turbines which power the generators and humidity extractors.
+
+#WindtrapCapacity
+Type: Power Plant
+Armor: Light
+Armament: none
+Generators: ESkort 650 hp EL-2A DT
