@@ -15,7 +15,7 @@
 using namespace draw;
 
 static const char* form_id;
-static unsigned long eye_clapping, eye_show_cursor;
+static unsigned long eye_clapping, eye_show_cursor, first_action;
 static fnevent paint_mentat_proc;
 static tree topics;
 
@@ -25,7 +25,7 @@ static void paint_eyes() {
 	if(time_animate(eye_clapping, 1, 16))
 		frame = 4;
 	else if(time_animate(eye_show_cursor, 30, 40)) {
-		if(hot.mouse.x > 200)
+		if(hot.mouse.x > 150)
 			frame = 2;
 		else if(hot.mouse.x < 30)
 			frame = 1;
@@ -37,6 +37,23 @@ static void paint_eyes() {
 	case MENSHPH: image(caret.x + 32, caret.y + 88, gres(rid), frame, 0); break;
 	case MENSHPO: image(caret.x + 16, caret.y + 80, gres(rid), frame, 0); break;
 	case MENSHPM: image(caret.x + 64, caret.y + 80, gres(rid), frame, 0); break;
+	}
+}
+
+static void paint_action() {
+	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
+	auto frame = 0;
+	auto ps = gres(rid);
+	if(time_animate(first_action, 20, 32)) {
+		frame = 12 + (animate_time - first_action) / 200;
+		if(frame >= ps->count)
+			frame = 0;
+	}
+	if(!frame)
+		return;
+	switch(rid) {
+	case MENSHPA: image(caret.x + 72, caret.y + 152, ps, frame, 0); break;
+	case MENSHPO: image(caret.x + 88, caret.y + 144, ps, frame, 0); break;
 	}
 }
 
@@ -176,6 +193,7 @@ void paint_mentat_silent() {
 	paint_background();
 	paint_eyes();
 	paint_mentat_back();
+	paint_action();
 	paint_exit();
 }
 

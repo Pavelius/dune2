@@ -12,7 +12,7 @@ enum unitn : unsigned char {
 	LightInfantry, HeavyInfantry, Trike, Tank, AssaultTank
 };
 enum statn : unsigned char {
-	Hits, Damage, Attacks, Speed, Supply, Armor,
+	Hits, Damage, Attacks, Speed, Armor,
 };
 enum squadn : unsigned char;
 enum movementn : unsigned char;
@@ -29,7 +29,7 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	point			position, order;
 	squadn			squad;
 	direction		move_direction, shoot_direction, path_direction;
-	short			hits, supply;
+	short			hits;
 	explicit operator bool() const { return hits > 0; }
 	void			apply(ordern type, point v);
 	int				get(statn v) const { return geti().stats[v]; }

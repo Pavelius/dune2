@@ -31,6 +31,21 @@ static void update_unit_time() {
 	}
 }
 
+static void update_player_time() {
+	// Remove all calculable ability
+	for(auto& e : bsdata<playeri>()) {
+		e.abilities[Energy] = 0;
+		e.abilities[SpiceCapacity] = 0;
+	}
+	// Calculate new values
+	for(auto& e : bsdata<building>()) {
+		switch(e.type) {
+		case Refinery: case SpiceSilo: bsdata<playeri>::elements[e.player].add(SpiceCapacity, 1000); break;
+		case Windtrap: bsdata<playeri>::elements[e.player].add(Energy, 100); break;
+		}
+	}
+}
+
 static void update_building_time() {
 	for(auto& e : bsdata<building>()) {
 		if(!e)

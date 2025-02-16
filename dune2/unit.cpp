@@ -213,7 +213,6 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->shoot_direction = d;
 	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
-	last_unit->supply = last_unit->getmaximum(Supply);
 	last_unit->setplayer(player);
 }
 

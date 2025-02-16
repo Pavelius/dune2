@@ -4,13 +4,13 @@
 #include "nameable.h"
 
 enum abilityn : unsigned char {
-	Credits, Energy, SpiceCapacity, Rounds,
+	Credits, Energy, Supply, SpiceCapacity
 };
 struct abilityi : nameable {
 };
 struct playeri : fractionable {
 	unsigned char	color_index;
-	unsigned int	abilities[Rounds + 1];
+	unsigned int	abilities[SpiceCapacity + 1];
 	void			add(abilityn v, int i) { abilities[v] += i; }
 	unsigned int	get(abilityn v) const { return abilities[v]; }
 	unsigned char	getindex() const;
