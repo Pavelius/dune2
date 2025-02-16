@@ -126,8 +126,8 @@ static void show_introdution() {
 		{INTRO7B, 0, 0, 0, "IntroBattleO"},
 		{INTRO8A, 0, 0, 0, "IntroBattleH"},
 		{INTRO8B, 3 * 1000 + 500, 0, FG(Repeated), "IntroBattleH"},
-		{INTRO8C, 0, 0, FG(Disappearing), "IntroBattleH", color(255, 255, 255)},
-		{INTRO5, 7 * 1000, 0, FG(Repeated) | FG(Appearing) | FG(Disappearing), "Intro15"},
+		{INTRO8C, 0, 0, 0, "IntroBattleH"},
+		{INTRO5, 8 * 1000, 0, FG(Repeated) | FG(Appearing) | FG(Disappearing), "Intro15"},
 		{NONE, 4 * 1000, 0, FG(Appearing), "Intro16"},
 		{NONE, 3 * 1000, 0, FG(Disappearing), "Intro17"},
 	};

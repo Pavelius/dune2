@@ -2,13 +2,6 @@
 
 #include "color.h"
 
-struct pushcolor {
-	color text, main, light, dark;
-	pushcolor();
-	pushcolor(color v);
-	~pushcolor();
-};
-
 typedef void(*fnevent)();
 
 enum resid : short unsigned;
@@ -22,17 +15,22 @@ extern const char* form_header;
 int get_frame(unsigned long resolution = 0); // Get animation frame
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
-void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param = 0);
-bool buttonwr(const char* title, const void* button_data, unsigned key, unsigned flags);
-void create_title_font_pallette();
+void copybits(int x, int y, int width, int height, int x1, int y1);
 void disappear_scene(color back, unsigned long milliseconds = 0);
+void fillbitsh(int x, int y, int width, int height, int total_width);
+void fillbitsv(int x, int y, int width, int height, int total_height);
 void form_frame(int thickness);
+void form_press_effect();
+void form_press_button_effect();
+void form_shadow_effect();
 void initialize_view(const char* title, fnevent main_scene);
 void mouse_unit_move();
 void open_mentat();
+void open_building();
 void paint_background(color v);
 void paint_main_map();
 void paint_main_map_choose_terrain();
+void paint_spice();
 void paint_video();
 void reset_form_animation();
 long show_scene(fnevent before_paint, fnevent input, void* focus);

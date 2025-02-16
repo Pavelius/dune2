@@ -22,6 +22,7 @@ BSDATA(residi) = {
 	{"arrows", root},
 	{"mouse", root},
 	{"screen", root},
+	{"choam", root},
 	{"fartr", mentat},
 	{"fhark", mentat},
 	{"fordos", mentat},

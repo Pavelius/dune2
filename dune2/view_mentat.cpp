@@ -10,6 +10,7 @@
 #include "music.h"
 #include "view.h"
 #include "view_list.h"
+#include "view_theme.h"
 
 using namespace draw;
 
@@ -18,7 +19,7 @@ static unsigned long eye_clapping, eye_show_cursor;
 static fnevent paint_mentat_proc;
 static tree topics;
 
-static void paint_mentat_eyes() {
+static void paint_eyes() {
 	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
 	auto frame = 0;
 	if(time_animate(eye_clapping, 1, 16))
@@ -39,7 +40,7 @@ static void paint_mentat_eyes() {
 	}
 }
 
-static void paint_mentat_speaking_mouth() {
+static void paint_speaking_mouth() {
 	static int speak_frames[] = {5, 6, 5, 6, 5, 6, 5, 6, 7, 6, 5, 6, 7, 8, 9};
 	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
 	auto frame = speak_frames[get_frame() % (sizeof(speak_frames) / sizeof(speak_frames[0]))];
@@ -52,10 +53,7 @@ static void paint_mentat_speaking_mouth() {
 }
 
 static void rectf_back() {
-	auto push_fore = fore;
-	fore = colors::gray.mix(colors::black);
-	rectf();
-	fore = push_fore;
+	rectf(colors::gray.mix(colors::black));
 }
 
 static void paint_stat_info() {
@@ -135,17 +133,18 @@ static void paint_mentat_back() {
 	}
 }
 
-static void paint_mentat_background() {
+static void paint_background() {
 	paint_background(colors::black);
 	image(gres(MENTATS), bsdata<fractioni>::elements[last_fraction].mentat_frame, 0);
 }
 
-static void paint_mentat_exit() {
-	pushcolor push_color(color(40, 40, 60));
-	pushvalue push_font(font, gres(FONT8));
+static void paint_exit() {
 	pushrect push;
-	caret.x += 200; caret.y += 180; width = 48; height = 24;
-	button(getnm("Exit"), 0, KeyEscape, AlignCenterCenter, false, update_buttonparam, 0);
+	pushtheme theme(ButtonDark);
+	pushfontb theme_font(TextYellow);
+	caret.x += 198; caret.y += 169; width = 52;
+	if(button(getnm("Exit"), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+		execute(update_buttonparam, 0);
 }
 
 static void paint_form_header() {
@@ -159,25 +158,25 @@ static void paint_form_header() {
 }
 
 static void input_accept() {
-	if((hot.key == MouseLeft && !hot.pressed) || hot.key==KeyEnter || hot.key==KeySpace)
+	if((hot.key == MouseLeft && !hot.pressed) || hot.key == KeyEnter || hot.key == KeySpace)
 		execute(buttonok);
 }
 
 static void paint_mentat_speaking() {
-	paint_mentat_background();
-	paint_mentat_eyes();
-	paint_mentat_speaking_mouth();
+	paint_background();
+	paint_eyes();
+	paint_speaking_mouth();
 	paint_mentat_back();
-	paint_mentat_exit();
+	paint_exit();
 	paint_form_header();
 	input_accept();
 }
 
 void paint_mentat_silent() {
-	paint_mentat_background();
-	paint_mentat_eyes();
+	paint_background();
+	paint_eyes();
 	paint_mentat_back();
-	paint_mentat_exit();
+	paint_exit();
 }
 
 static int compare_topic_by_name(const void* v1, const void* v2) {

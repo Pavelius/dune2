@@ -75,7 +75,7 @@
     <ClCompile Include="resid.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="view.cpp">
+    <ClCompile Include="view_game_map.cpp">
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="view_focus.cpp">
@@ -190,6 +190,12 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="topic.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="view_theme.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="view_build.cpp">
       <Filter>logic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -357,6 +363,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="topicable.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="view_theme.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

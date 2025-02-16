@@ -12,7 +12,6 @@ struct videoi {
 	unsigned long	time_lenght, frame_rate;
 	flag8			flags;
 	const char*		text;
-	color			disappear;
 	constexpr explicit operator bool() const { return id != NONE; }
 	bool			is(videof v) const { return flags.is(v); }
 };

@@ -7,6 +7,7 @@
 #include "slice.h"
 #include "view.h"
 #include "view_focus.h"
+#include "view_theme.h"
 
 using namespace draw;
 
@@ -152,8 +153,6 @@ static void paint_font_frame(int x0, int y0, const sprite* pf, int frame, color 
 	static point subindex = {0, 0};
 	static unsigned char symbol_tool = '1';
 	auto push_fore = fore; fore = main;
-	create_title_font_pallette();
-	palt[0] = colors::gray.mix(colors::black);
 	auto pd = (unsigned char*)pf->ptr(pf->get(frame).offset);
 	auto sx = pf->get(frame).sx;
 	auto sy = pf->get(frame).sy;
@@ -345,7 +344,7 @@ void view_debug_input() {
 	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}); break;
 	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}); break;
 	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}); break;
-	case Ctrl + 'F': show_font(FONT6, {4, 4}, {8, 8}); break;
+	case Ctrl + 'F': show_font(FONT16, {4, 4}, {16, 16}); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}); break;
 	case Ctrl + 'P': show_pallette(SHAPES, 8); break;
 	case 'B': area.set(area_spot, Blood); break;

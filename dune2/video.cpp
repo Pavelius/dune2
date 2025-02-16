@@ -6,6 +6,7 @@
 #include "music.h"
 #include "video.h"
 #include "view.h"
+#include "view_theme.h"
 
 const unsigned long time_appear = 1 * 1000;
 
@@ -16,13 +17,12 @@ void reset_video_time() {
 }
 
 void video_play(const slice<videoi>& source) {
-	pushvalue push_fore(draw::fore);
+	pushfontb push_theme(TextRed);
 	pushvalue push_id(animate_id);
 	pushvalue push_header(form_header);
 	pushvalue push_delay(animate_delay);
 	pushvalue push_once(animate_once);
 	const unsigned long frame_delay = 100;
-	draw::fore = color(215, 0, 0);
 	for(auto& e : source) {
 		animate_id = e.id;
 		animate_stop = 0;
@@ -45,7 +45,7 @@ void video_play(const slice<videoi>& source) {
 			break;
 		}
 		if(e.is(Disappearing))
-			disappear_scene(e.disappear, time_appear);
+			disappear_scene(colors::black, time_appear);
 	}
 }
 

@@ -1,5 +1,5 @@
 #include "draw.h"
-#include "view.h"
+#include "view_theme.h"
 #include "view_list.h"
 
 using namespace draw;
@@ -72,11 +72,11 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 		return;
 	auto slide_height = push.height - height * 2;
 	// Paint scroll up button
-	if(buttonwr("^", 0, 0, AlignCenterCenter))
+	if(button("^", 0, AlignCenterCenter))
 		execute(cbsetint, origin - 1, 0, &origin);
 	// Paint scroll down button
 	caret.y = push.caret.y + push.height - height;
-	if(buttonwr("^", &origin, 0, AlignCenterCenter))
+	if(button("^", 0, AlignCenterCenter))
 		execute(cbsetint, origin + 1, 0, &origin);
 	// Paint slider zone
 	caret.y = push.caret.y + dy;
@@ -91,7 +91,7 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	mouse_input_scroll(origin, maximum, per_page, slide_height, bar_position, bar_height);
 	caret.y += bar_position;
 	height = bar_height;
-	buttonwr(0, 0, 0, 0);
+	button(0, 0, 0);
 }
 
 static void rectf_hilite() {

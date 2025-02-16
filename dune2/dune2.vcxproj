@@ -146,6 +146,8 @@
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
+    <ClCompile Include="view_build.cpp" />
+    <ClCompile Include="view_theme.cpp" />
     <ClCompile Include="topic.cpp" />
     <ClCompile Include="tree.cpp" />
     <ClCompile Include="view_indicator.cpp" />
@@ -181,7 +183,7 @@
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="unita.cpp" />
     <ClCompile Include="video.cpp" />
-    <ClCompile Include="view.cpp" />
+    <ClCompile Include="view_game_map.cpp" />
     <ClCompile Include="view_focus.cpp" />
     <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="view_list.cpp" />
@@ -206,6 +208,7 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="view_theme.h" />
     <ClInclude Include="topic.h" />
     <ClInclude Include="topicable.h" />
     <ClInclude Include="tree.h" />

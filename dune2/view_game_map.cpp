@@ -24,15 +24,12 @@
 #include "view_focus.h"
 #include "view_indicator.h"
 #include "view_list.h"
+#include "view_theme.h"
 
 using namespace draw;
 
 static indicator spice;
 
-static color color_form = color(186, 190, 150);
-static color color_form_light = color(251, 255, 203);
-static color color_form_shadow = color(101, 101, 77);
-static color font_pallette[16];
 static color pallette[256], pallette_original[256];
 
 const char* form_header;
@@ -45,22 +42,6 @@ bool debug_toggle;
 
 // External for debug tools. In release mode must be removed by linker.
 void view_debug_input();
-
-pushcolor::pushcolor() : text(fore), main(color_form), light(color_form_light), dark(color_form_shadow) {
-}
-
-pushcolor::~pushcolor() {
-	fore = text;
-	color_form = main;
-	color_form_light = light;
-	color_form_shadow = dark;
-}
-
-pushcolor::pushcolor(color v) : pushcolor() {
-	color_form = v;
-	color_form_light = v.mix(colors::white, 216);
-	color_form_shadow = v.mix(colors::black, 128);
-}
 
 static void debug_map_message() {
 	pushrect push;
@@ -146,141 +127,9 @@ static point i2s(point v) {
 	return v;
 }
 
-void paint_background(color v) {
-	auto push_fore = fore;
-	fore = v; rectf();
-	caret.x = (getwidth() - 320) / 2;
-	caret.y = (getheight() - 200) / 2;
-	width = 320;
-	height = 200;
-	fore = push_fore;
-}
-
-void create_title_font_pallette() {
-	font_pallette[1] = fore;
-	font_pallette[2] = fore_stroke;
-	font_pallette[3] = colors::gray.mix(fore_stroke, 64);
-	font_pallette[5] = fore.mix(fore_stroke, 140);
-	font_pallette[6] = fore.mix(fore_stroke, 107);
-	palt = font_pallette;
-}
-
-static void form_frame(color light_left_up, color shadow_right_down) {
-	auto push_fore = fore;
-	auto push_caret = caret;
-	fore = light_left_up;
-	line(caret.x + width - 1, caret.y);
-	fore = shadow_right_down;
-	line(caret.x, caret.y + height - 1);
-	line(caret.x - (width - 1), caret.y);
-	fore = light_left_up;
-	line(caret.x, caret.y - (height - 2));
-	fore = light_left_up.mix(shadow_right_down, 128);
-	pixel(push_caret.x + width - 1, push_caret.y);
-	pixel(push_caret.x, push_caret.y + height - 1);
-	caret = push_caret;
-	fore = push_fore;
-}
-
-static void form_frame() {
-	auto push_fore = fore;
-	fore = color_form;
-	rectf();
-	fore = push_fore;
-}
-
-static void form_frame_rect() {
-	form_frame(color_form_light, color_form_shadow);
-	setoffset(1, 1);
-}
-
-void form_frame(int thickness) {
-	pushrect push;
-	while(thickness > 0) {
-		form_frame_rect();
-		thickness--;
-	}
-	form_frame();
-}
-
-static void button_press_effect() {
-	auto size = sizeof(color) * (width - 1);
-	for(auto y = caret.y + height - 2; y >= caret.y; y--) {
-		memmove(canvas->ptr(caret.x + 1, y + 1), canvas->ptr(caret.x, y), size);
-		*((color*)canvas->ptr(caret.x, y)) = color();
-		*((color*)canvas->ptr(caret.x, y + 1)) = color();
-	}
-	memset(canvas->ptr(caret.x, caret.y), 0, width * sizeof(color));
-}
-
-static void rectb_black() {
-	auto push_fore = fore;
-	fore = colors::black;
-	rectb();
-	fore = push_fore;
-}
-
-static bool button(const char* title, unsigned key, unsigned flags, bool allow_set_focus, bool paint_rect_black, int button_height) {
-	pushrect push;
-	draw::height = button_height;
-	if(paint_rect_black) {
-		rectb_black();
-		setoffset(1, 1);
-	}
-	auto push_fore = fore;
-	auto button_focus = (void*)(*((int*)&caret));
-	auto run = button_input(button_focus, key, allow_set_focus);
-	auto pressed = (pressed_focus == button_focus);
-	if(pressed) {
-		rectb_black();
-		caret.x++;
-		caret.y++;
-		width--; height--;
-	}
-	form_frame(1);
-	if(current_focus == button_focus)
-		fore = colors::active;
-	setoffset(1, 1);
-	caret.y += 1; height -= 1;
-	texta(title, flags);
-	fore = push_fore;
-	return run;
-}
-
-bool buttonwr(const char* title, const void* button_data, unsigned key, unsigned flags) {
-	return button(title, key, flags, false, false, height);
-}
-
-void button(const char* title, const void* button_data, unsigned key, unsigned flags, bool allow_set_focus, fnevent proc, long param) {
-	if(button(title, key, flags, allow_set_focus, true, texth() + 5))
-		execute(proc, param, 0, button_data);
-	caret.y += texth() + 4;
-}
-
-static bool button(unsigned key) {
-	if(disable_input)
-		return false;
-	auto button_data = (void*)(*((int*)&caret));
-	auto ishilited = ishilite();
-	auto isfocused = (current_focus == button_data);
-	auto run = button_input(button_data, key, false);
-	if(pressed_focus == button_data)
-		button_press_effect();
-	return run;
-}
-
-static void button(rect rc, unsigned key, fnevent proc, long param) {
-	pushrect push;
-	caret.x = rc.x1; caret.y = rc.y1;
-	width = rc.width(); height = rc.height();
-	if(button(key))
-		execute(proc, param);
-}
-
 struct pushscene : pushfocus {
 	pushscene() : pushfocus() {
-		form_opening_tick = getcputime();
-		animate_time = form_opening_tick;
+		reset_form_animation();
 	}
 };
 
@@ -571,7 +420,9 @@ static void paint_radar_screen() {
 	fore = push_fore;
 }
 
-static void copybits(int x, int y, int width, int height, int x1, int y1) {
+void copybits(int x, int y, int width, int height, int x1, int y1) {
+	if(x == x1 && y == y1)
+		return;
 	auto ps = canvas->ptr(x, y);
 	auto pd = canvas->ptr(x1, y1);
 	auto sn = canvas->scanline;
@@ -588,7 +439,7 @@ static void copybits(int x, int y, int width, int height, int x1, int y1) {
 	}
 }
 
-static void fillbitsh(int x, int y, int width, int height, int total_width) {
+void fillbitsh(int x, int y, int width, int height, int total_width) {
 	total_width -= width;
 	if(total_width <= 0 || width <= 0)
 		return;
@@ -602,7 +453,7 @@ static void fillbitsh(int x, int y, int width, int height, int total_width) {
 		copybits(x, y, total_width, height, x1, y);
 }
 
-static void fillbitsv(int x, int y, int width, int height, int total_height) {
+void fillbitsv(int x, int y, int width, int height, int total_height) {
 	total_height -= height;
 	if(total_height <= 0 || height <= 0)
 		return;
@@ -657,9 +508,6 @@ static void selection_rect_dropped(const rect& rc) {
 	human_selected.select(player, rc);
 }
 
-static void attack_by_mouse() {
-}
-
 static rect drag_finish_rect(point start, point finish, int minimal) {
 	rect rc;
 	rc.x1 = start.x;
@@ -686,9 +534,17 @@ static void rectb_alpha_drag(point mouse_start) {
 static void open_options() {
 }
 
+static void button(rect rc, unsigned key, fnevent pressed_effect, fnevent proc, long param) {
+	pushrect push;
+	caret.x = rc.x1; caret.y = rc.y1;
+	width = rc.width(); height = rc.height();
+	if(button(key, pressed_effect))
+		execute(proc, param);
+}
+
 static void input_game_menu() {
-	button({16, 1, 94, 15}, 'M', open_mentat, 0);
-	button({104, 1, 182, 15}, 'O', open_options, 0);
+	button({16, 1, 94, 15}, 'M', form_press_effect, open_mentat, 0);
+	button({104, 1, 182, 15}, 'O', form_press_effect, open_options, 0);
 }
 
 static void input_game_map() {
@@ -776,10 +632,12 @@ static void paint_shoots(int frame, int value) {
 	caret.y += 6;
 }
 
-static void paint_unit_panel(int frame, int hits, int hits_maximum) {
+static void paint_unit_panel(int frame, int hits, int hits_maximum, fnevent proc, long param) {
 	auto push_caret = caret;
 	auto push_width = width;
 	image(gres(SHAPES), frame, 0);
+	if(proc)
+		button({caret.x, caret.y, caret.x + 32, caret.y + 24}, 0, form_shadow_effect, proc, param);
 	caret.x += 32 + 1; width -= 32 + 1;
 	paint_health_bar(hits, hits_maximum);
 	caret.y += 12;
@@ -799,7 +657,7 @@ static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
 	texta(getnm(ids(id, "Info")), AlignCenterCenter);
 	caret.y += height;
 	setoffset(-1, -1);
-	button(getnm("Cancel"), 0, KeyEscape, AlignCenterCenter, false, buttonparam, cancel_result);
+	button(getnm("Cancel"), KeyEscape, AlignCenterCenter, buttonparam, cancel_result);
 }
 
 static void paint_choose_terrain() {
@@ -813,10 +671,10 @@ static void human_order() {
 }
 
 static void button(ordern order, int key) {
-	button(bsdata<orderi>::elements[order].getname(), 0, key, AlignCenter, false, human_order, order);
+	button(bsdata<orderi>::elements[order].getname(), key, AlignCenter, human_order, order);
 }
 
-static void paint_spice() {
+void paint_spice() {
 	auto push_caret = caret;
 	caret.x = getwidth() - 62;
 	caret.y = 3;
@@ -850,6 +708,15 @@ static void paint_unit_list() {
 	caret = push_caret;
 }
 
+static void paint_build_shape(int x, int y, shapen shape) {
+	auto ps = gres(SHAPES);
+	image(x, y, ps, 51, 0);
+	auto& ei = bsdata<shapei>::elements[shape];
+	x++; y++;
+	for(auto i = 0; i < ei.count; i++)
+		image(x + 6 * ei.points[i].x, y + 6 * ei.points[i].y, ps, 12, 0);
+}
+
 static void paint_build_button(const char* format, int avatar, shapen shape, unsigned key) {
 	bool pressed;
 	auto push_fore = fore;
@@ -863,18 +730,18 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 		form_frame(1);
 		setoffset(2, 2);
 		image(gres(SHAPES), avatar, 0);
-		image(caret.x + 35, caret.y + 2, gres(SHAPES), 51, 0);
-		fore = color_form_shadow;
+		paint_build_shape(caret.x + 35, caret.y + 2, shape);
+		fore = form_button_light;
 		caret.y += 24; texta(format, AlignCenter);
 	}
 	if(pressed)
-		button_press_effect();
+		form_press_effect();
 	fore = push_fore;
 }
 
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits);
+	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, open_building, (long)last_building);
 	caret.y += 14;
 	auto push_height = height; height = 36;
 	setoffset(-1, 0);
@@ -891,7 +758,7 @@ static void paint_unit_info() {
 		auto push_unit = last_unit;
 		last_unit = human_selected[0];
 		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->getmaximum(Hits));
+		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->getmaximum(Hits), 0, 0);
 		caret.y += 1;
 		paint_unit_orders();
 		last_unit = push_unit;
@@ -961,15 +828,6 @@ static void paint_video_fps() {
 	caret.x = 4; caret.y = 4; text(sb, -1, TextBold);
 }
 
-static void textarc(const char* format, unsigned flags) {
-	if(!format)
-		return;
-	auto push_palt = palt;
-	create_title_font_pallette();
-	texta(form_header, flags);
-	palt = push_palt;
-}
-
 void paint_video() {
 	paint_background(colors::black);
 	auto push_font = font; font = gres(FONT16);
@@ -990,11 +848,11 @@ void paint_video() {
 		image(ps, frame, 0);
 		caret.x = push_caret.x;
 		caret.y += ps->height + 8;
-		textarc(form_header, AlignCenter | ImagePallette);
+		texta(form_header, AlignCenter | ImagePallette);
 	} else {
 		pushrect push;
 		setoffset(32, 32);
-		textarc(form_header, AlignCenterCenter | ImagePallette);
+		texta(form_header, AlignCenterCenter | ImagePallette);
 	}
 	mouse_cancel({0, 0, getwidth(), getheight()});
 	if(hot.key == KeySpace || hot.key == KeyEscape || hot.key == KeyEnter)
