@@ -89,7 +89,7 @@ static void paint_buttons(const topicable* subject) {
 	caret.y += 168;
 	width = 119;
 	height = (getheight() - caret.y) / 2;
-	if(button(getnm("BuildThis"), KeyEnter, AlignCenterCenter, true, height - 1, form_press_button_effect))
+	if(button(getnm("BuildIt"), KeyEnter, AlignCenterCenter, true, height - 1, form_press_button_effect))
 		execute(buttonok, (long)subject);
 	paint_shadow_border();
 	caret.y += height;

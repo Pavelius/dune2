@@ -10,7 +10,7 @@ Atreides: Atreides
 Harkonens: Harkonens
 Ordos: Ordos
 
-BuildThis: Build This
+BuildIt: Build It
 Cost: Cost
 ChooseSubject: Select Subject
 ResumeGame: Resume Game
