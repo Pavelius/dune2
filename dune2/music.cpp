@@ -3,8 +3,7 @@
 #include "music.h"
 #include "thread.h"
 
-static volatile void* current_music;
-static volatile bool music_player_repeated;
+static void* current_music;
 
 BSDATAD(musici)
 

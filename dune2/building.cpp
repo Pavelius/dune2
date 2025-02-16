@@ -5,7 +5,7 @@
 #include "resid.h"
 #include "topicablea.h"
 
-static buildingn base_produce[] = {Barracks, Windtrap, Refinery, SpiceSilo};
+static buildingn base_produce[] = {Barracks, Windtrap, Refinery, SpiceSilo, RadarOutpost};
 
 BSDATA(buildingi) = {
 	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce},
@@ -13,7 +13,7 @@ BSDATA(buildingi) = {
 	{"Starport"},
 	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 0, 0, 0, 0}},
 	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 0, 0, 0, 1000}},
-	{"RadarOutpost"},
+	{"RadarOutpost", HEADQRTS, 70, 500, 1000, Shape2x2, {379, 380, 386, 387}, {}, {}, {0, 0, 0, 0, 0}},
 	{"RepairFacility"},
 	{"HouseOfIX"},
 	{"Palace"},

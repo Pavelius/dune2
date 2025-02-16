@@ -190,6 +190,15 @@ static bool mouse_hower(unsigned long duration = 1000, bool single_time = true) 
 	}
 }
 
+static void music_play(const char* id, int index) {
+	song_play(str("%1%2.2i", id, index));
+}
+
+static void check_played_music() {
+//	if(!music_played())
+//		music_play("ambient", xrand(1, 10));
+}
+
 static void make_screenshoot() {
 	auto index = get_file_number("screenshoots", "scr*.bmp");
 	char temp[260]; stringbuilder sb(temp);
@@ -200,6 +209,7 @@ static void make_screenshoot() {
 
 static void common_input() {
 	update_tick();
+	check_played_music();
 	switch(hot.key) {
 	case Ctrl + F5: make_screenshoot(); break;
 	}
@@ -472,8 +482,16 @@ static void paint_radar_buildings() {
 static void input_radar() {
 	point hot_mouse = hot.mouse - caret;
 	if((hot_mouse.x < width && hot_mouse.x > 0) && (hot_mouse.y < height && hot_mouse.y > 0)) {
-		if(hot.key == MouseLeft && hot.pressed)
-			execute(set_area_view, (long)(hot_mouse), 1);
+		switch(hot.key) {
+		case MouseLeft:
+			if(hot.pressed)
+				execute(set_area_view, (long)(hot_mouse), 1);
+			break;
+		case MouseRight:
+			if(hot.pressed)
+				execute(mouse_unit_move, (long)hot_mouse);
+			break;
+		}
 	}
 }
 
@@ -493,7 +511,7 @@ static void paint_radar_land() {
 
 static void paint_radar_off() {
 	rectf(colors::black);
-	paint_radar_units();
+	// paint_radar_units();
 	paint_radar_buildings();
 	input_radar();
 }
@@ -772,7 +790,7 @@ static void paint_choose_terrain() {
 }
 
 static void paint_choose_terrain_placement() {
-	paint_choose_panel("ChooseTarget", 17, (long)point(-1000, -1000));
+	paint_choose_panel("ChoosePlacement", 17, (long)point(-1000, -1000));
 	paint_cursor(placement_size, true);
 }
 

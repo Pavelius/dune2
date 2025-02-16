@@ -1,3 +1,6 @@
+ChoosePlacement: Placement
+ChoosePlacementInfo: Place buidling on rock
+
 Mountain: Mountain
 Rock: Rock
 Sand: Sand

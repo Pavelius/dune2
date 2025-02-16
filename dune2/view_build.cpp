@@ -109,7 +109,8 @@ static void paint_elements() {
 	static int origin;
 	pushrect push;
 	caret.x += 68; width -= 212 + caret.x;
-	caret.y += 20; height -= 50 + caret.y;
+	caret.y += 20; height -= 18 + caret.y;
+	// rectb();
 	auto hilite = get_flash(pallette[145], colors::white, 512, 256);
 	paint_list(origin, build_current, subjects.count, subjects.data, sizeof(subjects.data[0]),
 		hilite, {40, 32}, {4, 4}, paint_subject);

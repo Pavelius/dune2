@@ -167,7 +167,7 @@ void paint_list(int& origin, int& current, int maximum, void* elements, size_t e
 	pushrect push;
 	auto push_clip = clipping; setcliparea();
 	auto per_row = imax(1, width / size.x);
-	auto per_page = (height / size.y) * per_row;
+	auto per_page = ((height + size.y - 1) / size.y) * per_row;
 	correct_list(origin, maximum, per_page);
 	mouse_input_list(origin, maximum, size);
 	list_hilite = -1;

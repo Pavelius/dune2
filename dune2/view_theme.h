@@ -2,6 +2,7 @@
 
 #include "color.h"
 #include "nameable.h"
+#include "point.h"
 
 typedef void(*fnevent)();
 

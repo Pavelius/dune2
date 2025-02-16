@@ -35,6 +35,7 @@ BSDATA(residi) = {
 	{"barrac", mentat},
 	{"carryall", mentat},
 	{"construc", mentat},
+	{"headqrts", mentat},
 	{"refinery", mentat},
 	{"storage", mentat},
 	{"wall", mentat},
