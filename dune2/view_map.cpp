@@ -146,22 +146,15 @@ bool time_animate(unsigned long& value, unsigned long duration, unsigned long pa
 	return false;
 }
 
-static point same_point(point v, int resolution = 2) {
-	return {v.x / resolution, v.y / resolution};
-}
-
 static bool mouse_hower(unsigned long duration = 1000, bool single_time = true) {
 	static point pos;
 	static unsigned long pos_time;
-	point v;
-	v.x = hot.mouse.x / 2;
-	v.y = hot.mouse.y / 2;
 	if(pos_time < form_opening_tick) {
-		pos = {-1000, -1000};
+		pos = {-10000, -10000};
 		pos_time = form_opening_tick;
 	}
-	if(pos != v) {
-		pos = v;
+	if(same_point(pos, 4) != same_point(hot.mouse, 4)) {
+		pos = hot.mouse;
 		pos_time = animate_time;
 		return false;
 	} else if(pos_time + duration > animate_time)
@@ -221,21 +214,26 @@ static rect get_corner_area(direction d) {
 
 static int get_arrows_frame(direction d) {
 	switch(d) {
-	case LeftUp: return 0;
-	case Up: return 1;
-	case RightUp: return 2;
-	case Right: return 3;
-	case RightDown: return 4;
-	case Down: return 5;
-	case LeftDown: return 6;
-	case Left: return 7;
+	case LeftUp: return 1;
+	case Up: return 2;
+	case RightUp: return 3;
+	case Right: return 4;
+	case RightDown: return 5;
+	case Down: return 6;
+	case LeftDown: return 7;
+	case Left: return 8;
 	default: return -1;
 	}
 }
 
-static void show_mouse_camera_slider(int x, int y, int frame) {
+static void show_mouse_camera_slider(direction d, int x, int y, int frame) {
 	auto ps = gres(ARROWS);
 	auto& fr = ps->get(frame);
+	switch(d) {
+	case Down: case Up: x = hot.mouse.x; break;
+	case Left: case Right: y = hot.mouse.y; break;
+	default: break;
+	}
 	x -= fr.sx / 2;
 	y -= fr.sy / 2;
 	if(x < clipping.x1)
@@ -256,7 +254,7 @@ static void check_mouse_corner_slice() {
 	for(auto d : all) {
 		auto rc = get_corner_area(d);
 		if(hot.mouse.in(rc)) {
-			show_mouse_camera_slider(rc.centerx(), rc.centery(), get_arrows_frame(d));
+			show_mouse_camera_slider(d, rc.centerx(), rc.centery(), get_arrows_frame(d));
 			if(mouse_hower(100, false))
 				execute(set_area_view, (long)(area_origin + getpoint(d)));
 		}

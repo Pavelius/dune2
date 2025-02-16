@@ -184,7 +184,7 @@
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="unita.cpp" />
     <ClCompile Include="video.cpp" />
-    <ClCompile Include="view_game_map.cpp" />
+    <ClCompile Include="view_map.cpp" />
     <ClCompile Include="view_focus.cpp" />
     <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="view_list.cpp" />

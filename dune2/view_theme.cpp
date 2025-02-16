@@ -178,6 +178,10 @@ void paint_background(color v) {
 	fore = push_fore;
 }
 
+point same_point(point v, int resolution) {
+	return {v.x / resolution, v.y / resolution};
+}
+
 BSDATA(themei) = {
 	{"ButtonLight", color(186, 190, 150), color(251, 255, 203), color(101, 101, 77), color(69, 69, 52)},
 	{"ButtonDark", color(40, 40, 60), color(65, 65, 89), color(40, 40, 60), color(255, 215, 138)},

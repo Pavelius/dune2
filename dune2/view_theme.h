@@ -28,6 +28,8 @@ struct pushfontb {
 extern color form_button, form_button_light, form_button_dark;
 extern color font_pallette[16];
 
+point same_point(point v, int resolution = 2);
+
 bool button(const char* title, unsigned key, unsigned flags, bool paint_rect_black, int button_height, fnevent press_effect);
 bool button(const char* title, unsigned key, unsigned flags);
 void button(const char* title, unsigned key, unsigned flags, fnevent proc, long param);
