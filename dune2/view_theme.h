@@ -6,7 +6,7 @@
 typedef void(*fnevent)();
 
 enum themen : unsigned char {
-	ButtonLight, ButtonDark, TextRed, TextYellow,
+	ButtonLight, ButtonDark, ButtonYellow, TextRed, TextYellow,
 };
 enum resid : unsigned short;
 struct sprite;

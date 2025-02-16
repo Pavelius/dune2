@@ -10,6 +10,8 @@ Atreides: Atreides
 Harkonens: Harkonens
 Ordos: Ordos
 
+BuildThis: Build This
 ChooseSubject: Select Subject
+ResumeGame: Resume Game
 
 Cancel: Cancel

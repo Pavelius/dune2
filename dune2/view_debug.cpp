@@ -148,11 +148,18 @@ static void set_pixel4(unsigned char* data, point subindex, int sn, unsigned cha
 }
 
 static void paint_font_frame(int x0, int y0, const sprite* pf, int frame, color main, int zoom, unsigned char& result_index) {
-	pushrect push;
-	pushvalue push_palt(palt);
 	static point subindex = {0, 0};
 	static unsigned char symbol_tool = '1';
-	auto push_fore = fore; fore = main;
+	pushrect push;
+	pushfontb push_palt(TextYellow);
+	font_pallette[0] = colors::green;
+	font_pallette[2] = colors::green.mix(colors::black, 32); // Shadow color
+	font_pallette[3] = colors::green.mix(colors::black, 128); // Light color
+	font_pallette[7] = colors::green.mix(colors::red, 128);
+	font_pallette[10] = colors::green.mix(colors::red, 32);
+	font_pallette[12] = colors::green.mix(colors::black, 128); // Light of second color
+	font_pallette[14] = colors::green.mix(colors::black, 32); // Sadow of second color
+	auto push_fore = fore;
 	auto pd = (unsigned char*)pf->ptr(pf->get(frame).offset);
 	auto sx = pf->get(frame).sx;
 	auto sy = pf->get(frame).sy;
@@ -211,6 +218,7 @@ static void paint_font_frame(int x0, int y0, const sprite* pf, int frame, color 
 			sb.adds("%1i", index);
 		index++;
 	}
+	font = gres(FONT6);
 	text(sb); caret.y += texth();
 	sb.clear();
 	sb.addn("Tool %1i", symbol_tool);
@@ -344,7 +352,7 @@ void view_debug_input() {
 	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}); break;
 	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}); break;
 	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}); break;
-	case Ctrl + 'F': show_font(FONT16, {4, 4}, {16, 16}); break;
+	case Ctrl + 'F': show_font(FONT10, {4, 3}, {12, 12}); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}); break;
 	case Ctrl + 'P': show_pallette(SHAPES, 8); break;
 	case 'B': area.set(area_spot, Blood); break;
