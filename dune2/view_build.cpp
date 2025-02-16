@@ -138,6 +138,6 @@ void open_building() {
 		build_current = index;
 	if(choose_build()) {
 		last_building->build = (buildingn)((buildingi*)subjects.data[build_current] - bsdata<buildingi>::elements);
-		// last_building->progress();
+		last_building->progress();
 	}
 }

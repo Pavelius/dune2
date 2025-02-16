@@ -35,6 +35,7 @@ color pallette[256], pallette_original[256];
 const char* form_header;
 static unsigned long form_opening_tick;
 static unsigned long next_game_time;
+static point placement_size;
 unsigned long animate_time, animate_delay = 200, animate_stop;
 resid animate_id;
 bool animate_once;
@@ -685,7 +686,7 @@ static void paint_choose_terrain() {
 
 static void paint_choose_terrain_placement() {
 	paint_choose_panel("ChooseTarget", 17, (long)point(-1000, -1000));
-	paint_cursor({2, 2}, true);
+	paint_cursor(placement_size, true);
 }
 
 static void human_order() {
@@ -748,8 +749,12 @@ static void human_build() {
 	auto p = (building*)hot.object;
 	if(!p->isworking())
 		p->progress();
-	else if(p->getprogress() == 100)
+	else if(p->getprogress() == 100) {
+		auto push = placement_size;
+		placement_size = p->getbuildsize();
 		p->construct(choose_placement());
+		placement_size = push;
+	}
 }
 
 static void human_cancel() {
@@ -789,10 +794,12 @@ static void paint_building_info() {
 		auto push_height = height; height = 36;
 		setoffset(-1, 0);
 		auto& ei = bsdata<buildingi>::elements[last_building->build];
+		const char* format = 0;
 		if(last_building->isworking())
-			paint_build_button(str("%1i%%", last_building->getprogress()), ei.frame_avatar, Shape2x2, 'B');
+			format = str("%1i%%", last_building->getprogress());
 		else
-			paint_build_button("Build It", ei.frame_avatar, Shape2x2, 'B');
+			format = getnm("BuildIt");
+		paint_build_button(format, ei.frame_avatar, ei.shape, 'B');
 		height = push_height;
 	} else {
 		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);

@@ -158,9 +158,6 @@ void main_menu() {
 	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
 	area.set({5, 2, 9, 8}, set_terrain, Rock);
-	subjects.clear();
-	subjects.add(bsdata<buildingi>::elements + Windtrap);
-	subjects.add(bsdata<buildingi>::elements + Barracks);
 	add_building({6, 3}, ConstructionYard);
 	add_building({5, 5}, Windtrap);
 	add_building({7, 5}, Refinery);

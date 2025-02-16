@@ -87,6 +87,12 @@ int	building::getprogress() const {
 	return build_spend * 100 / build_cost;
 }
 
+point building::getbuildsize() const {
+	if(!build)
+		return {};
+	return bsdata<shapei>::elements[bsdata<buildingi>::elements[build].shape].size;
+}
+
 bool building::progress() {
 	if(canbuild()) {
 		unsigned short can_spend = 10;

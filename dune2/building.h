@@ -29,6 +29,7 @@ struct building : playerable, typeable<buildingi, buildingn> {
 	void			construct(point v);
 	void			destroy();
 	int				getprogress() const;
+	point			getbuildsize() const;
 	bool			isworking() const { return build_spend != 0; }
 	bool			progress();
 	void			update();

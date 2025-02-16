@@ -279,7 +279,7 @@ void areai::decoy(point v) {
 	auto& e = bsdata<featurei>::elements[cf];
 	if(e.decoy && game_chance(e.decoy)) {
 		auto n = get_next_decoy(get(v), frames_overlay[v.y][v.x]);
-		if(n == -1)
+		if(n <= 0)
 			frames_overlay[v.y][v.x] = NoFeature;
 		else if(n > 0)
 			frames_overlay[v.y][v.x] = n;
