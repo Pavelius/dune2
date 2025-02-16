@@ -1,4 +1,6 @@
 #include "draw.h"
+#include "math.h"
+#include "view.h"
 #include "view_theme.h"
 #include "view_list.h"
 
@@ -16,10 +18,25 @@ void correct_list(int& origin, int maximum, int per_page) {
 static void mouse_input_list(int& origin, int maximum, int row_height) {
 	if(!ishilite())
 		return;
+	auto per_row = width / row_height;
 	auto per_page = height / row_height;
 	switch(hot.key) {
 	case MouseWheelUp: execute(cbsetint, origin - 1, 0, &origin); break;
 	case MouseWheelDown: execute(cbsetint, origin + 1, 0, &origin); break;
+	default: break;
+	}
+}
+
+static void mouse_input_list(int& origin, int maximum, point size) {
+	if(!size.x || !size.y)
+		return;
+	if(!ishilite())
+		return;
+	auto per_row = imax(1, width / size.x);
+	auto per_page = (height / size.y) * per_row;
+	switch(hot.key) {
+	case MouseWheelUp: execute(cbsetint, origin - per_row, 0, &origin); break;
+	case MouseWheelDown: execute(cbsetint, origin + per_row, 0, &origin); break;
 	default: break;
 	}
 }
@@ -130,6 +147,50 @@ void paint_list(int& origin, int maximum, void* elements, size_t element_size, i
 				execute(choose, (long)pd, i, 0);
 		}
 		caret.y += row_height;
+	}
+	clipping = push_clip;
+}
+
+static void rectb_hilite(int thickness, color main) {
+	pushrect push;
+	auto push_fore = fore; fore = main;
+	for(auto i = 0; i < thickness; i++) {
+		setoffset(-1, -1);
+		rectb();
+	}
+	fore = push_fore;
+}
+
+void paint_list(int& origin, int& current, int maximum, void* elements, size_t element_size, color hilite, point size, point offset, fnlistrow proc) {
+	if(!height || !width || !size.y || !size.x)
+		return;
+	pushrect push;
+	auto push_clip = clipping; setcliparea();
+	auto per_row = imax(1, width / size.x);
+	auto per_page = (height / size.y) * per_row;
+	correct_list(origin, maximum, per_page);
+	mouse_input_list(origin, maximum, size);
+	list_hilite = -1;
+	height = size.y;
+	width = size.x;
+	for(auto i = origin; i < maximum; i++) {
+		if(i > origin + per_page)
+			break;
+		caret.x = push.caret.x + ((i - origin) % per_row) * size.x + offset.x;
+		caret.y = push.caret.y + ((i - origin) / per_row) * size.y + offset.y;
+		width = size.x - offset.x * 2;
+		height = size.y - offset.y * 2;
+		if(ishilite())
+			list_hilite = i;
+		auto pd = (unsigned char*)elements + element_size * i;
+		proc(i, pd);
+		if(i == current)
+			rectb_hilite(2, hilite);
+		if(i == list_hilite) {
+			rectb_hilite(1, hilite);
+			if(hot.key == MouseLeft && !hot.pressed)
+				execute(cbsetint, i, 0, &current);
+		}
 	}
 	clipping = push_clip;
 }

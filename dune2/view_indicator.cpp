@@ -3,7 +3,7 @@
 #include "view.h"
 #include "view_indicator.h"
 
-const int indicator_change_time = 500;
+const int indicator_change_time = 300;
 const int indicator_digits = 6;
 const int indicator_digit_width = 10;
 

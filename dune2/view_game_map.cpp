@@ -30,7 +30,7 @@ using namespace draw;
 
 static indicator spice;
 
-static color pallette[256], pallette_original[256];
+color pallette[256], pallette_original[256];
 
 const char* form_header;
 static unsigned long form_opening_tick;
@@ -93,7 +93,7 @@ static int get_alpha(int base, unsigned range) {
 	return get_alpha(base, range, (animate_time - form_opening_tick) / 10);
 }
 
-static color get_flash(color main, color back, int base, int range, int resolution = 10) {
+color get_flash(color main, color back, int base, int range, int resolution) {
 	auto alpha = get_alpha(320, 256, (animate_time - form_opening_tick) / resolution);
 	if(alpha >= 256)
 		return main;
@@ -267,12 +267,32 @@ static point map_to_screen(point v) {
 	return {(short)(v.x * area_tile_width + area_screen.x1), (short)(v.y * area_tile_height + area_screen.y1)};
 }
 
+static void rectb_hilite() {
+	auto push = fore;
+	fore = get_flash(colors::gray, colors::white, 512, 256);
+	rectb();
+	fore = push;
+}
+
 static void paint_cursor(int avatar, point offset, bool choose_mode) {
 	auto v = area_spot - area_origin;
 	if(!area.isvalid(v))
 		return;
 	auto pt = map_to_screen(v) + offset;
 	image(pt.x, pt.y, gres(MOUSE), avatar, 0);
+	if(choose_mode && hot.key == MouseLeft && hot.pressed)
+		execute(buttonparam, (long)area_spot);
+}
+
+static void paint_cursor(point size, bool choose_mode) {
+	auto v = area_spot - area_origin;
+	if(!area.isvalid(v))
+		return;
+	pushrect push;
+	width = 16 * size.x;
+	height = 16 * size.y;
+	caret = map_to_screen(v);
+	rectb_hilite();
 	if(choose_mode && hot.key == MouseLeft && hot.pressed)
 		execute(buttonparam, (long)area_spot);
 }
@@ -355,7 +375,7 @@ static void paint_unit(const uniti& e, direction move_direction, direction shoot
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	auto& e = p->geti();
-	update_pallette_by_player(p->getplayer()->color_index);
+	update_pallette_by_player(p->getplayer().color_index);
 	paint_platform(gres(e.res), e.frame, p->move_direction);
 	if(e.frame_shoot)
 		paint_platform(gres(e.res), e.frame_shoot, p->shoot_direction);
@@ -665,6 +685,11 @@ static void paint_choose_terrain() {
 	paint_cursor(5, {8, 8}, true);
 }
 
+static void paint_choose_terrain_placement() {
+	paint_choose_panel("ChooseTarget", 17, (long)point(-1000, -1000));
+	paint_cursor({2, 2}, true);
+}
+
 static void human_order() {
 	auto type = (ordern)hot.param;
 	human_selected.order(type, Center, {-1, -1}, true);
@@ -697,7 +722,7 @@ static void paint_unit_list() {
 	auto push_caret = caret;
 	caret = push_caret + point(6, 8);
 	for(auto p : human_selected) {
-		paint_unit(p->geti(), RightDown, RightDown, p->getplayer()->color_index);
+		paint_unit(p->geti(), RightDown, RightDown, p->getplayer().color_index);
 		caret.x += 16;
 		if(caret.x >= clipping.x2) {
 			caret.x = push_caret.x;
@@ -717,6 +742,23 @@ static void paint_build_shape(int x, int y, shapen shape) {
 		image(x + 6 * ei.points[i].x, y + 6 * ei.points[i].y, ps, 12, 0);
 }
 
+static point choose_placement() {
+	return show_scene(paint_main_map_choose_placement, 0, 0);
+}
+
+static void human_build() {
+	auto p = (building*)hot.object;
+	if(!p->isworking())
+		p->progress();
+	else if(p->getprogress() == 100)
+		p->construct(choose_placement());
+}
+
+static void human_cancel() {
+	auto p = (building*)hot.object;
+	p->cancel();
+}
+
 static void paint_build_button(const char* format, int avatar, shapen shape, unsigned key) {
 	bool pressed;
 	auto push_fore = fore;
@@ -733,6 +775,8 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 		paint_build_shape(caret.x + 35, caret.y + 2, shape);
 		fore = form_button_light;
 		caret.y += 24; texta(format, AlignCenter);
+		if(run)
+			execute((hot.key == MouseRight) ? human_cancel : human_build, 0, 0, last_building);
 	}
 	if(pressed)
 		form_press_effect();
@@ -741,12 +785,20 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, open_building, (long)last_building);
-	caret.y += 14;
-	auto push_height = height; height = 36;
-	setoffset(-1, 0);
-	paint_build_button("Build It", 61, Shape2x2, 'B');
-	height = push_height;
+	if(last_building->canbuild()) {
+		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, open_building, (long)last_building);
+		caret.y += 14;
+		auto push_height = height; height = 36;
+		setoffset(-1, 0);
+		auto& ei = bsdata<buildingi>::elements[last_building->build];
+		if(last_building->isworking())
+			paint_build_button(str("%1i%%", last_building->getprogress()), ei.frame_avatar, Shape2x2, 'B');
+		else
+			paint_build_button("Build It", ei.frame_avatar, Shape2x2, 'B');
+		height = push_height;
+	} else {
+		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
+	}
 }
 
 static void paint_unit_info() {
@@ -807,6 +859,19 @@ void paint_main_map_choose_terrain() {
 	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain);
+	paint_radar_screen();
+	paint_radar_rect();
+	mouse_cancel({0, 0, getwidth(), area_screen.y1});
+	update_next_turn();
+}
+
+void paint_main_map_choose_placement() {
+	update_pallette_by_player();
+	paint_background(SCREEN);
+	update_pallette_colors();
+	paint_spice();
+	paint_game_map();
+	paint_map_info(paint_choose_terrain_placement);
 	paint_radar_screen();
 	paint_radar_rect();
 	mouse_cancel({0, 0, getwidth(), area_screen.y1});

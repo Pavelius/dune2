@@ -1,6 +1,7 @@
 #pragma once
 
 #include "player.h"
+#include "slice.h"
 #include "shape.h"
 #include "topicable.h"
 #include "typeable.h"
@@ -11,16 +12,26 @@ enum buildingn : unsigned char {
 	Turret, RocketTurret,
 };
 struct buildingi : topicable {
-	unsigned char	frame_avatar;
 	short			hits;
 	shapen			shape;
 	short unsigned	frames[16], ruined[16];
+	slice<buildingn> build;
 };
 struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;
+	buildingn		build;
+	unsigned short	build_spend;
 	short			hits;
 	explicit operator bool() const;
+	bool			canbuild() const { return geti().build.operator bool(); }
+	void			canbuildlist() const;
+	void			cancel();
+	void			construct(point v);
 	void			destroy();
+	int				getprogress() const;
+	bool			isworking() const { return build_spend != 0; }
+	bool			progress();
+	void			update();
 };
 extern building* last_building;
 

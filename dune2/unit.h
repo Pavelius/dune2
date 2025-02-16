@@ -21,7 +21,7 @@ struct stati : nameable {
 struct uniti : topicable {
 	movementn		move;
 	resid			res;
-	unsigned char	frame, frame_shoot, frame_avatar;
+	unsigned char	frame, frame_shoot;
 	unsigned char	stats[Armor + 1];
 };
 struct unit : drawable, playerable, typeable<uniti, unitn> {

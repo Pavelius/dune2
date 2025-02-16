@@ -1,5 +1,6 @@
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
 #include "game.h"
 #include "player.h"
 #include "rand.h"
@@ -17,16 +18,7 @@ static void update_area_decoy() {
 			area.decoy(point(x, y));
 }
 
-void update_game_turn() {
-	game.turn++;
-	// Some visual effect
-	switch(game.turn % 5) {
-	case 0: update_area_decoy(); break;
-	}
-}
-
 static void update_unit_time() {
-	auto push = last_unit;
 	for(auto& e : bsdata<unit>()) {
 		if(!e.start_time)
 			e.start_time = game.time;
@@ -37,9 +29,29 @@ static void update_unit_time() {
 				e.start_time += 1000; // Pause to think
 		}
 	}
-	last_unit = push;
+}
+
+static void update_building_time() {
+	for(auto& e : bsdata<building>()) {
+		if(!e)
+			continue;
+		e.update();
+	}
+}
+
+static void update_game_turn() {
+	while(game.start_turn < game.time) {
+		game.start_turn += 500;
+		game.turn++;
+		update_building_time();
+		// Some visual effect
+		switch(game.turn % 10) {
+		case 0: update_area_decoy(); break;
+		}
+	}
 }
 
 void update_game_time() {
 	update_unit_time();
+	update_game_turn();
 }

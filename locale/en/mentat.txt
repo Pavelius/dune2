@@ -41,6 +41,26 @@ A Light Factory must be built before a Heavy Factory can be constructed.
 The Heavy Factory produces large, tracked, military or spice harvesting vehicles.
 Harvesters and tanks can be produced with a Heavy Factory.
 
+#RefineryInfo
+The Refinery is the basis of all spice production on Dune. Harvesters transport mined spice to the Refinery where it is converted into credits.
+Refined spice is automatically distributed among the silos for storage. All Refineries will be provided with a Harvester.
+
+#RefineryCapacity
+Type: Industrial Facility
+Armor: Medium
+Armament: none
+Capacity: 1000 spice units
+
+#SpiceSiloInfo
+Spice Silos hold harvested spice. When the Refinery completes the conversion process, it automatically distributes the spice evenly among the silos.
+Note: When harvested spice quantities exceed Silo capacity, the excess will be lost.
+
+#SpiceSiloCapacity
+Type: Storehouse
+Armor: Light
+Armament: none
+Capacity: 1000 spice units
+
 #WindtrapInfo
 The Wind Traps provide power and water to an installation.
 Large, aboveground ducts funnel wind underground into turbines which power the generators and humidity extractors.

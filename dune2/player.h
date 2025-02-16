@@ -17,7 +17,7 @@ struct playeri : fractionable {
 };
 struct playerable {
 	unsigned char	player;
-	playeri*		getplayer() const;
+	playeri&		getplayer() const;
 	void			setplayer(const playeri* v);
 };
 extern playeri* player;

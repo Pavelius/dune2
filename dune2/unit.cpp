@@ -8,11 +8,11 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"LightInfantry", INFANTRY, Footed, UNITS, 0, 0, 90},
-	{"HeavyInfantry", HYINFY, Footed, UNITS, 0, 0, 76},
-	{"Trike", TRIKE, Wheeled, UNITS, 5, 0, 80, {6, 3, 2, 10}},
-	{"Tank", LTANK, Tracked, UNITS2, 0, 5, 78, {8, 5, 1, 5}},
-	{"AssaultTank", HTANK, Tracked, UNITS2, 10, 15, 72, {12, 6, 2, 4}},
+	{"LightInfantry", INFANTRY, 90, 0, Footed, UNITS, 0, 0},
+	{"HeavyInfantry", HYINFY, 76, 0, Footed, UNITS, 0, 0},
+	{"Trike", TRIKE, 80, 0, Wheeled, UNITS, 5, 0, {6, 3, 2, 10}},
+	{"Tank", LTANK, 78, 0, Tracked, UNITS2, 0, 5, {8, 5, 1, 5}},
+	{"AssaultTank", HTANK, 72, 0, Tracked, UNITS2, 10, 15, {12, 6, 2, 4}},
 };
 assert_enum(uniti, AssaultTank)
 
@@ -224,6 +224,6 @@ void unit::apply(ordern type, point v) {
 	switch(type) {
 	case Stop: stop(); break;
 	case Move: move(v); break;
-	case Retreat: getplayer()->add(Credits, 20); break;
+	case Retreat: getplayer().add(Credits, 20); break;
 	}
 }

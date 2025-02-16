@@ -11,6 +11,7 @@ Harkonens: Harkonens
 Ordos: Ordos
 
 BuildThis: Build This
+Cost: Cost
 ChooseSubject: Select Subject
 ResumeGame: Resume Game
 

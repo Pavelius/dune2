@@ -181,7 +181,7 @@ void paint_background(color v) {
 BSDATA(themei) = {
 	{"ButtonLight", color(186, 190, 150), color(251, 255, 203), color(101, 101, 77), color(69, 69, 52)},
 	{"ButtonDark", color(40, 40, 60), color(65, 65, 89), color(40, 40, 60), color(255, 215, 138)},
-	{"ButtonYellow", color(203, 142, 16), color(255, 182, 44), color(154, 105, 0), color(24, 32, 125)},
+	{"ButtonYellow", color(203, 142, 16), color(255, 182, 44), color(154, 105, 0), color(60, 36, 0)},
 	{"TextRed", color(215, 0, 0), color(89, 0, 0), color(65, 0, 0), color(20, 20, 40)},
 	{"TextYellow", color(255, 215, 138), color(195, 154, 65), color(113, 89, 8), color(20, 20, 40)},
 };

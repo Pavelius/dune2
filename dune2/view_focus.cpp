@@ -187,11 +187,11 @@ bool button_input(const void* button_data, unsigned key, bool allow_set_focus) {
 		return false;
 	auto ishilited = ishilite();
 	auto isfocused = (current_focus == button_data);
-	if(allow_set_focus && hot.key == MouseLeft && hot.pressed && ishilited && current_focus != button_data)
+	if(allow_set_focus && (hot.key == MouseLeft || hot.key == MouseRight) && hot.pressed && ishilited && current_focus != button_data)
 		execute(cbsetptr, (long)button_data, 0, &current_focus);
 	else if((isfocused && hot.key == KeyEnter) || (key && hot.key == key) || (ishilited && hot.pressed))
 		pressed_focus = (void*)button_data;
-	else if((hot.key == InputKeyUp && pressed_focus == button_data) || (ishilited && hot.key == MouseLeft && !hot.pressed)) {
+	else if((hot.key == InputKeyUp && pressed_focus == button_data) || (ishilited && (hot.key == MouseLeft || hot.key == MouseRight) && !hot.pressed)) {
 		pressed_focus = 0;
 		return true;
 	}

@@ -1,3 +1,2 @@
 ﻿Error in file `UnknownNames.txt`:
- Define translation for `BuildThis`
- Define translation for `ResumeGame`
+ Define translation for `Cost`

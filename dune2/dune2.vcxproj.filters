@@ -198,6 +198,9 @@
     <ClCompile Include="view_build.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="topicablea.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -366,6 +369,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="view_theme.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="topicablea.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

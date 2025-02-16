@@ -5,10 +5,10 @@
 fractionn last_fraction;
 
 BSDATA(fractioni) = {
-	{"NoFraction", NONE, 3, MENSHPM},
-	{"Atreides", FARTR, 0, MENSHPA},
-	{"Harkonens", FHARK, 1, MENSHPH},
-	{"Ordos", FORDOS, 2, MENSHPO},
+	{"NoFraction", NONE, 0, 3, MENSHPM},
+	{"Atreides", FARTR, 0, 0, MENSHPA},
+	{"Harkonens", FHARK, 0, 1, MENSHPH},
+	{"Ordos", FORDOS, 0, 2, MENSHPO},
 };
 assert_enum(fractioni, Ordos)
 
