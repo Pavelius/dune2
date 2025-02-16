@@ -40,7 +40,7 @@ static int compare_unit(const void* v1, const void* v2) {
 }
 
 void paint_objects() {
-	auto origin = caret;
+	pushrect origin;
 	rect rc = {camera.x, camera.y, camera.x + width, camera.y + height};
 	rc.offset(-object_padding);
 	adat<drawable*, 256> objects;
@@ -50,7 +50,7 @@ void paint_objects() {
 	auto push = last_object;
 	for(auto p : objects) {
 		last_object = p;
-		caret = last_object->screen - camera + origin;
+		caret = last_object->screen - camera + origin.caret;
 		bsdata<drawrenderi>::elements[p->render].paint();
 	}
 	last_object = push;

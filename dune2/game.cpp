@@ -35,14 +35,23 @@ static void update_player_time() {
 	// Remove all calculable ability
 	for(auto& e : bsdata<playeri>()) {
 		e.abilities[Energy] = 0;
+		e.abilities[EnergyCapacity] = 0;
+		e.abilities[SupplyCapacity] = 0;
 		e.abilities[SpiceCapacity] = 0;
+		memset(e.buildings, 0, sizeof(e.buildings));
+		memset(e.units, 0, sizeof(e.units));
 	}
-	// Calculate new values
+	// Calculate building count
 	for(auto& e : bsdata<building>()) {
-		switch(e.type) {
-		case Refinery: case SpiceSilo: bsdata<playeri>::elements[e.player].add(SpiceCapacity, 1000); break;
-		case Windtrap: bsdata<playeri>::elements[e.player].add(Energy, 100); break;
-		}
+		if(!e)
+			continue;
+		e.getplayer().buildings[e.type]++;
+	}
+	// Calculate units count
+	for(auto& e : bsdata<unit>()) {
+		if(!e)
+			continue;
+		e.getplayer().units[e.type]++;
 	}
 }
 
@@ -58,10 +67,11 @@ static void update_game_turn() {
 	while(game.start_turn < game.time) {
 		game.start_turn += 500;
 		game.turn++;
-		update_building_time();
+		update_building_time();		
 		// Some visual effect
-		switch(game.turn % 10) {
+		switch(game.turn % 6) {
 		case 0: update_area_decoy(); break;
+		case 1: update_player_time(); break;
 		}
 	}
 }

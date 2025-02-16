@@ -44,6 +44,27 @@ bool debug_toggle;
 // External for debug tools. In release mode must be removed by linker.
 void view_debug_input();
 
+static void debug_control() {
+	pushrect push;
+	auto push_fore = fore; fore = pallette[144];
+	auto push_alpha = alpha; alpha = 128;
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	width = 14; height = 14;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
+			if(path_map[v.y][v.x] == 0 || path_map[v.y][v.x] >= 0xFF00)
+				continue;
+			caret.x = x * area_tile_width + push.caret.x + 1;
+			caret.y = y * area_tile_height + push.caret.y + 1;
+			rectf();
+		}
+	}
+	alpha = push_alpha;
+	fore = push_fore;
+}
+
 static void debug_map_message() {
 	pushrect push;
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
@@ -299,6 +320,7 @@ static void paint_cursor(point size, bool choose_mode) {
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
+	debug_control();
 	paint_cursor(5, {8, 8}, false);
 	debug_map_message();
 }
@@ -416,27 +438,82 @@ static void paint_radar_rect() {
 	rectb();
 }
 
-static void paint_radar_screen() {
+static color get_color_by_index(int index) {
+	return pallette_original[128 + index * 16 + 2];
+}
+
+static void paint_radar_units() {
+	auto player_index = player->getindex();
+	auto push_fore = fore; fore = get_color_by_index(player->color_index);
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.player!=player_index)
+			continue;
+		pixel(caret.x + e.position.x, caret.y + e.position.y);
+	}
+	fore = push_fore;
+}
+
+static void paint_radar_buildings() {
+	auto player_index = player->getindex();
+	auto push_fore = fore; fore = get_color_by_index(player->color_index);
+	for(auto& e : bsdata<building>()) {
+		if(!e || e.player != player_index)
+			continue;
+		auto size = e.getsize();
+		auto pt = caret + e.position;
+		for(auto y1 = 0; y1 < size.y; y1++) {
+			for(auto x1 = 0; x1 < size.x; x1++)
+				pixel(pt.x + x1, pt.y + y1);
+		}
+	}
+	fore = push_fore;
+}
+
+static void input_radar() {
+	point hot_mouse = hot.mouse - caret;
+	if((hot_mouse.x < width && hot_mouse.x > 0) && (hot_mouse.y < height && hot_mouse.y > 0)) {
+		if(hot.key == MouseLeft && hot.pressed)
+			execute(set_area_view, (long)(hot_mouse), 1);
+	}
+}
+
+static void paint_radar_land() {
 	auto push_fore = fore;
-	auto x1 = getwidth() - 64;
-	auto y1 = getheight() - 64;
 	for(auto y = 0; y < area.maximum.y; y++) {
 		for(auto x = 0; x < area.maximum.x; x++) {
 			auto t = area.get(point(x, y));
 			if(t > Mountain)
 				continue;
 			fore = bsdata<terraini>::elements[t].minimap;
-			pixel(x1 + x, y1 + y);
+			pixel(caret.x + x, caret.y + y);
 		}
 	}
-	point hot_mouse = hot.mouse;
-	hot_mouse.x -= x1;
-	hot_mouse.y -= y1;
-	if((hot_mouse.x < 64 && hot_mouse.x > 0) && (hot_mouse.y < 64 && hot_mouse.y > 0)) {
-		if(hot.key == MouseLeft && hot.pressed)
-			execute(set_area_view, (long)(hot_mouse), 1);
-	}
 	fore = push_fore;
+}
+
+static void paint_radar_off() {
+	rectf(colors::black);
+	paint_radar_units();
+	paint_radar_buildings();
+	input_radar();
+}
+
+static void paint_radar_on() {
+	paint_radar_land();
+	paint_radar_units();
+	paint_radar_buildings();
+	input_radar();
+}
+
+static void paint_radar() {
+	pushrect push;
+	width = 64; height = 64;
+	caret.x = getwidth() - width;
+	caret.y = getheight() - height;
+	if(player->buildings[RadarOutpost])
+		paint_radar_on();
+	else
+		paint_radar_off();
 }
 
 void copybits(int x, int y, int width, int height, int x1, int y1) {
@@ -589,6 +666,16 @@ static void input_game_map() {
 		mouse_start = mouse_finish;
 }
 
+static void rectb_last_building() {
+	if(!last_building)
+		return;
+	pushrect push;
+	caret = s2i(m2s(last_building->position));
+	width = last_building->getsize().x * area_tile_width;
+	height = last_building->getsize().y * area_tile_height;
+	rectb_hilite();
+}
+
 static void paint_game_map() {
 	auto push_clip = clipping; setclip(area_screen);
 	camera = m2s(area_origin);
@@ -600,9 +687,9 @@ static void paint_game_map() {
 	paint_map_tiles();
 	paint_map_features();
 	paint_objects();
-	if(area.isvalid(area_spot)) {
+	rectb_last_building();
+	if(area.isvalid(area_spot))
 		check_mouse_corner_slice();
-	}
 	paint_main_map_debug();
 	clipping = push_clip;
 }
@@ -786,23 +873,28 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 	fore = push_fore;
 }
 
+static void paint_build_button() {
+	auto push_height = height; height = 36;
+	setoffset(-1, 0);
+	auto& ei = bsdata<buildingi>::elements[last_building->build];
+	const char* format = 0;
+	if(last_building->isworking())
+		format = str("%1i%%", last_building->getprogress());
+	else
+		format = getnm("BuildIt");
+	paint_build_button(format, ei.frame_avatar, ei.shape, 'B');
+	height = push_height;
+}
+
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	if(last_building->canbuild()) {
 		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, open_building, (long)last_building);
 		caret.y += 14;
-		auto push_height = height; height = 36;
-		setoffset(-1, 0);
-		auto& ei = bsdata<buildingi>::elements[last_building->build];
-		const char* format = 0;
-		if(last_building->isworking())
-			format = str("%1i%%", last_building->getprogress());
-		else
-			format = getnm("BuildIt");
-		paint_build_button(format, ei.frame_avatar, ei.shape, 'B');
-		height = push_height;
+		paint_build_button();
 	} else {
 		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
+		caret.y += 14;
 	}
 }
 
@@ -845,7 +937,7 @@ void paint_main_map() {
 	paint_game_map();
 	paint_map_info(paint_unit_info);
 	input_game_map();
-	paint_radar_screen();
+	paint_radar();
 	paint_radar_rect();
 	update_next_turn();
 }
@@ -864,7 +956,7 @@ void paint_main_map_choose_terrain() {
 	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain);
-	paint_radar_screen();
+	paint_radar();
 	paint_radar_rect();
 	mouse_cancel({0, 0, getwidth(), area_screen.y1});
 	update_next_turn();
@@ -877,7 +969,7 @@ void paint_main_map_choose_placement() {
 	paint_spice();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain_placement);
-	paint_radar_screen();
+	paint_radar();
 	paint_radar_rect();
 	mouse_cancel({0, 0, getwidth(), area_screen.y1});
 	update_next_turn();

@@ -420,6 +420,20 @@ void areai::blockland(movementn mv) const {
 	}
 }
 
+void areai::blockcontrol() const {
+	auto md = bsdata<movementi>::elements[Tracked].cost;
+	for(auto y = 0; y < maximum.y; y++) {
+		for(auto x = 0; x < maximum.x; x++) {
+			auto t = get(point(x, y));
+			auto f = map_features[frames[y][x]];
+			if(md[t] == 0xFF)
+				path_map[y][x] = BlockArea;
+			else
+				path_map[y][x] = 0;
+		}
+	}
+}
+
 void areai::makewave(point start, movementn mv) const {
 	if(!isvalid(start))
 		return;
@@ -455,6 +469,63 @@ void areai::makewave(point start, movementn mv) const {
 			if(a != BlockArea && (!a || (cost + m) < a)) {
 				push_value(v);
 				path_map[v.y][v.x] = cost + m;
+			}
+		}
+	}
+}
+
+bool allowcontrol(point v) {
+	auto t = area.get(v);
+	if(t == Rock) {
+		auto f = area.getfeature(v);
+		if(f == Slab || f == BuildingHead || f == BuildingLeft || f == BuildingUp)
+			return true;
+	}
+	return false;
+}
+
+bool allowbuild(point v) {
+	if(area.get(v) != Rock)
+		return false;
+	auto f = area.getfeature(v);
+	if(f >= BuildingHead)
+		return false;
+	return true;
+}
+
+void blockarea(areai::fntest proc) {
+	for(auto y = 0; y < area.maximum.y; y++) {
+		for(auto x = 0; x < area.maximum.x; x++) {
+			if(!proc(point(x, y)))
+				path_map[y][x] = BlockArea;
+		}
+	}
+}
+
+void areai::controlwave(point start, fntest proc) const {
+	if(!isvalid(start))
+		return;
+	clear_stack();
+	if(path_map[start.y][start.x] == BlockArea)
+		return;
+	if(!proc(start))
+		return;
+	push_value(start);
+	path_map[start.y][start.x] = 1;
+	while(stack_valid()) {
+		auto vc = pop_value();
+		auto cost = path_map[vc.y][vc.x];
+		if(cost >= 0xFF00)
+			break;
+		for(auto d : all_strait_directions) {
+			auto v = to(vc, d);
+			if(!isvalid(v))
+				continue;
+			auto a = path_map[v.y][v.x];
+			if(a != BlockArea && (!a || (cost + 1 < a))) {
+				path_map[v.y][v.x] = cost + 1;
+				if(proc(v))
+					push_value(v);
 			}
 		}
 	}

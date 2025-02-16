@@ -16,6 +16,7 @@ struct buildingi : topicable {
 	shapen			shape;
 	short unsigned	frames[16], ruined[16];
 	slice<buildingn> build;
+	short unsigned	abilities[SpiceCapacity + 1];
 };
 struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;
@@ -30,6 +31,7 @@ struct building : playerable, typeable<buildingi, buildingn> {
 	void			destroy();
 	int				getprogress() const;
 	point			getbuildsize() const;
+	point			getsize() const;
 	bool			isworking() const { return build_spend != 0; }
 	bool			progress();
 	void			update();

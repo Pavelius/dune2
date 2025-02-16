@@ -345,6 +345,15 @@ static void show_pallette(resid id, int dy) {
 	fore = push_fore;
 }
 
+static void change_debug() {
+	debug_toggle = !debug_toggle;
+	if(!debug_toggle)
+		return;
+	area.blockcontrol();
+	area.controlwave(area_spot, allowcontrol);
+	blockarea(allowbuild);
+}
+
 void view_debug_input() {
 	switch(hot.key) {
 	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}); break;
@@ -356,7 +365,7 @@ void view_debug_input() {
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}); break;
 	case Ctrl + 'P': show_pallette(SHAPES, 8); break;
 	case 'B': area.set(area_spot, Blood); break;
-	case 'D': debug_toggle = !debug_toggle; break;
+	case 'D': change_debug(); break;
 	case 'E': random_explosion(); break;
 	case 'F': area.set(area_spot, d100() < 60 ? Body : Bodies); break;
 	}

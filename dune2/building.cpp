@@ -9,15 +9,15 @@ static buildingn base_produce[] = {Barracks, Windtrap, Refinery, SpiceSilo};
 
 BSDATA(buildingi) = {
 	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce},
-	{"SpiceSilo", STORAGE, 69, 100, 500, Shape2x2, {372, 373, 375, 376}},
+	{"SpiceSilo", STORAGE, 69, 100, 500, Shape2x2, {372, 373, 375, 376}, {}, {}, {0, 0, 0, 0, 1000}},
 	{"Starport"},
-	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}},
-	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}},
+	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 0, 0, 0, 0}},
+	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 0, 0, 0, 1000}},
 	{"RadarOutpost"},
 	{"RepairFacility"},
 	{"HouseOfIX"},
 	{"Palace"},
-	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {285, 286, 288, 289}},
+	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {285, 286, 288, 289}, {}, {}, {0, 0, 0, 0, 0}},
 	{"WOR"},
 	{"LightVehicleFactory"},
 	{"HeavyVehicleFactory"},
@@ -91,6 +91,10 @@ point building::getbuildsize() const {
 	if(!build)
 		return {};
 	return bsdata<shapei>::elements[bsdata<buildingi>::elements[build].shape].size;
+}
+
+point building::getsize() const {
+	return bsdata<shapei>::elements[geti().shape].size;
 }
 
 bool building::progress() {
