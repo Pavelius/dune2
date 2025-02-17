@@ -193,8 +193,10 @@ static void music_play(const char* id, int index) {
 }
 
 static void check_played_music() {
-//	if(!music_played())
-//		music_play("ambient", xrand(1, 10));
+	if(music_disabled)
+		return;
+	if(!music_played())
+		music_play("ambient", xrand(1, 10));
 }
 
 static void make_screenshoot() {

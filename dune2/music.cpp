@@ -4,6 +4,7 @@
 #include "thread.h"
 
 static void* current_music;
+bool music_disabled;
 
 BSDATAD(musici)
 
@@ -34,6 +35,8 @@ void music_play(void* new_music) {
 	if(current_music == new_music)
 		return;
 	current_music = 0;
+	if(music_disabled)
+		new_music = 0;
 	midi_music_stop();
 	while(midi_busy())
 		midi_sleep(10);
