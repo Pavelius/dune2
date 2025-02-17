@@ -709,7 +709,10 @@ static void paint_fow() {
 				rectf();
 			} else {
 				auto frame = area.getframefow(v, player_index, Explored);
-				// image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, i, ImagePallette);
+				frame ^= 0x0f;
+				if(frame==0 || frame==15)
+					continue;
+				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
 			}
 		}
 	}
@@ -735,8 +738,11 @@ static void paint_visibility() {
 				caret.y = y * area_tile_height + push.caret.y;
 				rectf();
 			} else {
-				auto frame = area.getframefow(v, player_index, Explored);
-				// image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, i, ImagePallette);
+				auto frame = area.getframefow(v, player_index, Visible);
+				frame ^= 0x0f;
+				if(frame == 0 || frame == 15)
+					continue;
+				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
 			}
 		}
 	}
