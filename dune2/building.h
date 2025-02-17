@@ -1,6 +1,7 @@
 #pragma once
 
 #include "player.h"
+#include "rect.h"
 #include "slice.h"
 #include "shape.h"
 #include "topicable.h"
@@ -29,11 +30,14 @@ struct building : playerable, typeable<buildingi, buildingn> {
 	void			cancel();
 	void			construct(point v);
 	void			destroy();
+	int				getlos() const;
 	int				getprogress() const;
 	point			getbuildsize() const;
+	rect			getrect() const;
 	point			getsize() const;
 	bool			isworking() const { return build_spend != 0; }
 	bool			progress();
+	void			scouting();
 	void			update();
 };
 extern building* last_building;

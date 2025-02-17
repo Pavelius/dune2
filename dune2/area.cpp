@@ -160,6 +160,22 @@ unsigned areai::getframeside(point v, terrainn t) const {
 	return r;
 }
 
+unsigned areai::getframefow(point v, unsigned player, areaf t) const {
+	unsigned r = 0;
+	if(isn(v + getpoint(Left), player, t))
+		r |= 1;
+	r <<= 1;
+	if(isn(v + getpoint(Down), player, t))
+		r |= 1;
+	r <<= 1;
+	if(isn(v + getpoint(Right), player, t))
+		r |= 1;
+	r <<= 1;
+	if(isn(v + getpoint(Up), player, t))
+		r |= 1;
+	return r;
+}
+
 bool areai::is(point v, terrainn t) const {
 	if(!isvalid(v))
 		return false;
@@ -176,6 +192,12 @@ bool areai::isn(point v, terrainn t) const {
 	if(same && same.is(n))
 		return true;
 	return false;
+}
+
+bool areai::isn(point v, unsigned char player, areaf t) const {
+	if(!isvalid(v))
+		return true;
+	return is(v, player, t);
 }
 
 point areai::correct(point v) const {
@@ -308,8 +330,8 @@ void areai::setcamera(point v, bool center_view) {
 }
 
 void areai::set(rect r, fnset proc, int value) {
-	for(auto y = r.y1; y <= r.y2; y++) {
-		for(auto x = r.x1; x <= r.x2; x++) {
+	for(auto y = r.y1; y < r.y2; y++) {
+		for(auto x = r.x1; x < r.x2; x++) {
 			if(isvalid(x, y))
 				proc(point(x, y), value);
 		}
@@ -502,6 +524,11 @@ void blockarea(areai::fntest proc) {
 	}
 }
 
+void setareascout(point v, int player_index) {
+	area.set(v, player_index, Explored);
+	area.set(v, player_index, Visible);
+}
+
 void areai::controlwave(point start, fntest proc) const {
 	if(!isvalid(start))
 		return;
@@ -585,4 +612,40 @@ point areai::getcorner(point v) const {
 			break;
 	}
 	return v;
+}
+
+void areai::scouting(point v, unsigned char player, int radius) {
+	auto x2 = v.x + radius;
+	auto y2 = v.y + radius;
+	for(auto y = v.y - radius; y <= y2; y++) {
+		for(auto x = v.x - radius; x <= x2; x++) {
+			if(!area.isvalid(x, y))
+				continue;
+			area.set(point(x, y), player, Explored);
+			area.set(point(x, y), player, Visible);
+		}
+	}
+}
+
+void areai::scouting(point v, point size, unsigned char player, int radius) {
+	auto x2 = v.x + size.x + radius;
+	auto y2 = v.y + size.y + radius;
+	for(auto y = v.y - radius; y < y2; y++) {
+		for(auto x = v.x - radius; x < x2; x++) {
+			if(!area.isvalid(x, y))
+				continue;
+			area.set(point(x, y), player, Explored);
+			area.set(point(x, y), player, Visible);
+		}
+	}
+}
+
+void areai::remove(unsigned char player, areaf f) {
+	auto mx = area.maximum.x;
+	auto my = area.maximum.y;
+	unsigned char v = ~(1 << f);
+	for(auto y = 0; y < my; y++) {
+		for(auto x = 0; x < mx; x++)
+			flags[player][y][x] &= v;
+	}
 }

@@ -48,6 +48,10 @@ void unit::set(point v) {
 	screen = m2sc(v);
 }
 
+void unit::scouting() {
+	area.scouting(position, player, 2);
+}
+
 void unit::blockland() const {
 	// 1) Prepare path map and block impassable landscape
 	area.blockland(geti().move);
@@ -123,8 +127,10 @@ void unit::update() {
 				wait(1000);
 			}
 		}
-		if(!ismoving())
+		if(!ismoving()) {
+			scouting();
 			path_direction = Center; // Arrive to next tile, we need new path direction.
+		}
 	} else if(ismoveorder()) {
 		// We ready to start movement to next tile.
 		if(path_direction == Center)
@@ -214,6 +220,7 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->setplayer(player);
+	last_unit->scouting();
 }
 
 void unit::apply(ordern type, point v) {

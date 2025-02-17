@@ -20,4 +20,4 @@ BSDATA(featurei) = {
 	{"BuildingUp"},
 	{"FogOfWar", 108, 16},
 };
-assert_enum(featurei, FogOfWar)
+assert_enum(featurei, FogOfWarFeature)

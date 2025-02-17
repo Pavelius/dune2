@@ -43,6 +43,7 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	bool			isturret() const { return geti().frame_shoot != 0; }
 	bool			iswaitorder() const { return !ismoveorder() && !ismoving(); }
 	void			move(point v);
+	void			scouting();
 	void			set(point v);
 	void			stop();
 	void			update();

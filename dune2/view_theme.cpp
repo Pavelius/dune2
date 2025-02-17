@@ -146,7 +146,6 @@ bool button(const char* title, unsigned key, unsigned flags, bool paint_rect_bla
 }
 
 bool button(const char* title, unsigned key, unsigned flags) {
-	//return button(title, key, flags, false, height, form_press_button_effect);
 	return button(title, key, flags, false, height, form_press_button_effect);
 }
 
@@ -180,6 +179,11 @@ void paint_background(color v) {
 
 point same_point(point v, int resolution) {
 	return {v.x / resolution, v.y / resolution};
+}
+
+void update_buttonparam() {
+	updatewindow();
+	buttonparam();
 }
 
 BSDATA(themei) = {

@@ -33,8 +33,7 @@ static indicator spice;
 color pallette[256], pallette_original[256];
 
 const char* form_header;
-static unsigned long form_opening_tick;
-static unsigned long next_game_time;
+static unsigned long form_opening_tick, next_game_time, time_move_order;
 static point placement_size;
 unsigned long animate_time, animate_delay = 200, animate_stop;
 resid animate_id;
@@ -130,11 +129,6 @@ static int get_frame(sprite* ps, unsigned long resolution) {
 	return n % ps->count;
 }
 
-void update_buttonparam() {
-	updatewindow();
-	buttonparam();
-}
-
 static point s2i(point v) {
 	v = v - camera;
 	v.x += area_screen.x1;
@@ -154,6 +148,10 @@ struct pushscene : pushfocus {
 		reset_form_animation();
 	}
 };
+
+void hilite_unit_orders() {
+	time_move_order = animate_time;
+}
 
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause) {
 	const unsigned time_step = 100;
@@ -694,6 +692,76 @@ static void rectb_last_building() {
 	rectb_hilite();
 }
 
+static void paint_fow() {
+	pushrect push;
+	auto push_fore = fore; fore = colors::black;
+	auto player_index = player->getindex();
+	auto ps = gres(ICONS);
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	width = area_tile_width; height = area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
+			if(!area.is(v, player_index, Explored)) {
+				caret.x = x * area_tile_width + push.caret.x;
+				caret.y = y * area_tile_height + push.caret.y;
+				rectf();
+			} else {
+				auto frame = area.getframefow(v, player_index, Explored);
+				// image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, i, ImagePallette);
+			}
+		}
+	}
+	fore = push_fore;
+}
+
+static void paint_visibility() {
+	pushrect push;
+	auto push_alpha = alpha; alpha = 32;
+	auto push_fore = fore; fore = colors::black;
+	auto player_index = player->getindex();
+	auto ps = gres(ICONS);
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	width = area_tile_width; height = area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
+			if(!area.is(v, player_index, Explored))
+				continue;
+			if(!area.is(v, player_index, Visible)) {
+				caret.x = x * area_tile_width + push.caret.x;
+				caret.y = y * area_tile_height + push.caret.y;
+				rectf();
+			} else {
+				auto frame = area.getframefow(v, player_index, Explored);
+				// image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, i, ImagePallette);
+			}
+		}
+	}
+	alpha = push_alpha;
+	fore = push_fore;
+}
+
+static void paint_move_order() {
+	if(!time_move_order)
+		return;
+	auto duration = (animate_time - time_move_order);
+	if(duration > 1000)
+		return;
+	auto push_alpha = alpha;
+	alpha = get_alpha(164, 1000, duration);
+	auto ps = gres(MOUSE);
+	for(auto p : human_selected) {
+		if(!p->operator bool() || !area.isvalid(p->order))
+			continue;
+		auto v = s2i(m2sc(p->order));
+		image(v.x, v.y, ps, 5, 0);
+	}
+	alpha = push_alpha;
+}
+
 static void paint_game_map() {
 	auto push_clip = clipping; setclip(area_screen);
 	camera = m2s(area_origin);
@@ -706,6 +774,9 @@ static void paint_game_map() {
 	paint_map_features();
 	paint_objects();
 	rectb_last_building();
+	paint_visibility();
+	paint_fow();
+	paint_move_order();
 	if(area.isvalid(area_spot))
 		check_mouse_corner_slice();
 	paint_main_map_debug();

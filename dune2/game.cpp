@@ -63,6 +63,21 @@ static void update_building_time() {
 	}
 }
 
+static void update_scouting() {
+	for(auto i = 0; i < playeri::maximum; i++)
+		area.remove(i, Visible);
+	for(auto& e : bsdata<building>()) {
+		if(!e)
+			continue;
+		e.scouting();
+	}
+	for(auto& e : bsdata<unit>()) {
+		if(!e)
+			continue;
+		e.scouting();
+	}
+}
+
 static void update_game_turn() {
 	while(game.start_turn < game.time) {
 		game.start_turn += 500;
@@ -72,6 +87,7 @@ static void update_game_turn() {
 		switch(game.turn % 6) {
 		case 0: update_area_decoy(); break;
 		case 1: update_player_time(); break;
+		case 2: update_scouting(); break;
 		}
 	}
 }

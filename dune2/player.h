@@ -9,6 +9,7 @@ enum abilityn : unsigned char {
 struct abilityi : nameable {
 };
 struct playeri : fractionable {
+	constexpr static int maximum = 6; // 0 - neutral and 1-5 for player humans/ai.
 	unsigned char	color_index;
 	unsigned int	abilities[SpiceCapacity + 1];
 	unsigned short	buildings[32]; // Count of all buildings by type

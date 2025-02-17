@@ -40,3 +40,4 @@ void form_frame_rect();
 void form_frame(color light_left_up, color shadow_right_down);
 void rectb_black();
 void rectf(color form);
+void update_buttonparam();

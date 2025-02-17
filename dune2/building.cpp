@@ -43,6 +43,7 @@ void add_building(point pt, buildingn id) {
 	if(e.build)
 		last_building->build = e.build[0];
 	area.set(last_building->position, e.shape, e.frames);
+	last_building->scouting();
 }
 
 building* find_building(point v) {
@@ -53,8 +54,19 @@ building* find_building(point v) {
 	return 0;
 }
 
+void building::scouting() {
+	area.scouting(position, getsize(), player, getlos());
+}
+
 void building::destroy() {
 
+}
+
+int	building::getlos() const {
+	switch(type) {
+	case RadarOutpost: return 8;
+	default: return 2;
+	}
 }
 
 void building::construct(point v) {
@@ -121,4 +133,9 @@ void building::canbuildlist() const {
 	subjects.clear();
 	for(auto n : geti().build)
 		subjects.add(bsdata<buildingi>::elements + n);
+}
+
+rect building::getrect() const {
+	auto size = getsize();
+	return {position.x, position.y, position.x + size.x, position.y + size.y};
 }

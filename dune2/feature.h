@@ -8,7 +8,7 @@ enum featuren : unsigned char {
 	Explosion, AircraftRemains, CarRemains, StructureRemains, Body, Bodies, Blood, Trail,
 	Slab, Wall,
 	BuildingHead, BuildingLeft, BuildingUp,
-	FogOfWar
+	FogOfWarFeature
 };
 struct featurei : nameable {
 	unsigned short	frame, count, random;
