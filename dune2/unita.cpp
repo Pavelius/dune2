@@ -60,5 +60,6 @@ void unita::order(ordern type, direction d, point v, bool interactive) const {
 		} else
 			p->apply(type, v);
 	}
-	hilite_unit_orders();
+	if(type==Move)
+		hilite_unit_orders();
 }

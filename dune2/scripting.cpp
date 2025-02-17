@@ -146,6 +146,7 @@ static void show_introdution() {
 }
 
 void main_menu() {
+	music_disabled = true;
 	// show_introdution();
 	auto size = sizeof(unit);
 	player = bsdata<playeri>::elements;
@@ -159,6 +160,7 @@ void main_menu() {
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
 	area.set({5, 2, 9, 8}, set_terrain, Rock);
 	add_building({6, 3}, ConstructionYard);
+	add_building({8, 3}, RadarOutpost);
 	add_building({5, 5}, Windtrap);
 	add_building({7, 5}, Refinery);
 	add_unit({5, 7}, Trike, Down);

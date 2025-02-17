@@ -36,6 +36,10 @@ bool unit::ismoving() const {
 	return screen != m2sc(position);
 }
 
+short unsigned unit::getindex() const {
+	return this - bsdata<unit>::elements;
+}
+
 int	unit::getmaximum(statn v) const {
 	switch(v) {
 	case Hits: case Supply: return get(v) * 10;
@@ -104,6 +108,10 @@ static int get_trail_param(direction d) {
 	}
 }
 
+bool unit::isattackorder() const {
+	return area.isvalid(order_attack);
+}
+
 void unit::leavetrail() {
 	auto previous_position = s2m(screen);
 	if(previous_position != position) {
@@ -122,7 +130,9 @@ void unit::update() {
 		movescreen();
 		leavetrail();
 		if(!isbusy()) { // If not busy we can make some actions when moving
-			if(isturret() && shoot_direction != move_direction) {
+			if(isattackorder()) {
+				// Have attack target
+			} else if(isturret() && shoot_direction != move_direction) {
 				shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
 				wait(1000);
 			}
@@ -151,7 +161,9 @@ void unit::update() {
 			}
 		}
 	} else {
-		if(isturret()) { // Turret random look around
+		if(isattackorder()) {
+			// Route path to target
+		} else if(isturret()) { // Turret random look around
 			auto turn_direction = turnto(shoot_direction, move_direction);
 			if(turn_direction != Center && game_chance(50))
 				shoot_direction = to(shoot_direction, turn_direction);
@@ -219,17 +231,44 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->shoot_direction = d;
 	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
+	last_unit->target = 0xFFFF;
 	last_unit->setplayer(player);
 	last_unit->scouting();
 }
 
+void unit::attack(unit* opponent) {
+	if(!opponent)
+		target = 0xFFFF;
+	else {
+		target = opponent->getindex();
+		order_attack = opponent->position;
+	}
+}
+
 void unit::apply(ordern type, point v) {
 	auto opponent = find_unit(v);
-	if(opponent)
-		return;
 	switch(type) {
-	case Stop: stop(); break;
-	case Move: move(v); break;
-	case Retreat: getplayer().add(Credits, 20); break;
+	case Attack:
+		if(opponent)
+			attack(opponent);
+		else
+			order_attack = v;
+		break;
+	case Stop:
+		stop();
+		break;
+	case Move:
+		if(!opponent)
+			move(v);
+		break;
+	case Retreat:
+		getplayer().add(Credits, 20);
+		break;
 	}
+}
+
+unit* unit::getenemy() const {
+	if(target == 0xFFFF)
+		return 0;
+	return bsdata<unit>::elements + target;
 }

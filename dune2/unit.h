@@ -26,18 +26,22 @@ struct uniti : topicable {
 };
 struct unit : drawable, playerable, typeable<uniti, unitn> {
 	unsigned long	action_time; // Start action
-	point			position, order;
+	point			position, order, guard, order_attack;
 	squadn			squad;
 	direction		move_direction, shoot_direction, path_direction;
+	short unsigned	target; // Enemy target
 	short			hits;
 	explicit operator bool() const { return hits > 0; }
 	void			apply(ordern type, point v);
+	void			attack(unit* opponent);
 	int				get(statn v) const { return geti().stats[v]; }
+	unit*			getenemy() const;
 	int				getmaximum(statn v) const;
+	short unsigned	getindex() const;
 	const char*		getname() const { return geti().getname(); }
 	int				getspeed() const;
+	bool			isattackorder() const;
 	bool			isbusy() const;
-	bool			isenemy() const { return false; }
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }

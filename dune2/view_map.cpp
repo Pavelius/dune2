@@ -368,12 +368,15 @@ static void paint_map_tiles() {
 }
 
 static void paint_map_features() {
+	auto player_index = player->getindex();
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
+			if(!area.is(v, player_index, Visible))
+				continue;
 			auto i = area.getframefeature(v);
 			if(!i)
 				continue;
@@ -456,7 +459,7 @@ static void paint_radar_units() {
 	auto player_index = player->getindex();
 	auto push_fore = fore; fore = get_color_by_index(player->color_index);
 	for(auto& e : bsdata<unit>()) {
-		if(!e || e.player!=player_index)
+		if(!e || !area.is(e.position, player_index, Visible))
 			continue;
 		pixel(caret.x + e.position.x, caret.y + e.position.y);
 	}
@@ -472,8 +475,11 @@ static void paint_radar_buildings() {
 		auto size = e.getsize();
 		auto pt = caret + e.position;
 		for(auto y1 = 0; y1 < size.y; y1++) {
-			for(auto x1 = 0; x1 < size.x; x1++)
+			for(auto x1 = 0; x1 < size.x; x1++) {
+				if(!area.is(e.position, player_index, Visible))
+					continue;
 				pixel(pt.x + x1, pt.y + y1);
+			}
 		}
 	}
 	fore = push_fore;
@@ -497,12 +503,21 @@ static void input_radar() {
 
 static void paint_radar_land() {
 	auto push_fore = fore;
+	auto player_index = player->getindex();
 	for(auto y = 0; y < area.maximum.y; y++) {
 		for(auto x = 0; x < area.maximum.x; x++) {
-			auto t = area.get(point(x, y));
+			auto v = point(x, y);
+			auto t = area.get(v);
 			if(t > Mountain)
 				continue;
+			if(!area.is(v, player_index, Explored)) {
+				fore = colors::black;
+				pixel(caret.x + x, caret.y + y);
+				continue;
+			}
 			fore = bsdata<terraini>::elements[t].minimap;
+			if(!area.is(v, player_index, Visible))
+				fore = fore.mix(colors::black, 256-32);
 			pixel(caret.x + x, caret.y + y);
 		}
 	}
