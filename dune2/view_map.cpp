@@ -415,30 +415,61 @@ static void paint_unit() {
 		paint_platform(gres(e.res), e.frame_shoot, p->shoot_direction);
 }
 
+static int calculate(int v1, int v2, int n, int m) {
+	return v1 + (v2 - v1) * n / m;
+}
+
 static void paint_effect_fix() {
 	auto p = (draweffect*)last_object;
 	if(!p->param || p->start_time > animate_time)
 		return;
 	auto pf = bsdata<fixeffecti>::elements + p->param;
 	auto delay = pf->milliseconds;
+	if(p->from != p->to)
+		delay = delay * p->from.range(p->to) / area_tile_width;
 	if(!delay)
 		delay = 60;
 	auto frame = pf->frame;
-	auto frame_offset = (short unsigned)((animate_time - p->start_time) / delay);
-	if(frame_offset >= pf->count) {
-		if(pf->apply)
-			pf->apply();
-		if(pf->next) {
-			p->param = pf->next;
-			p->start_time = animate_time;
-			pf = bsdata<fixeffecti>::elements + pf->next;
-			frame = pf->frame;
+	auto duration = animate_time - p->start_time;
+	if(p->from == p->to) {
+		auto frame_offset = (short unsigned)(duration / delay);
+		if(frame_offset >= pf->count) {
+			if(pf->apply)
+				pf->apply();
+			if(pf->next) {
+				p->param = pf->next;
+				p->start_time = animate_time;
+				pf = bsdata<fixeffecti>::elements + pf->next;
+				frame = pf->frame;
+			} else {
+				p->clearobject();
+				return; // No render image
+			}
+		} else
+			frame += frame_offset;
+	} else {
+		if(duration >= delay) {
+			if(pf->apply)
+				pf->apply();
+			if(pf->next) {
+				caret = s2i(p->to);
+				p->screen = p->to;
+				p->from = p->to;
+				p->to = p->to;
+				p->param = pf->next;
+				p->start_time = animate_time;
+				pf = bsdata<fixeffecti>::elements + pf->next;
+				frame = pf->frame;
+			} else {
+				p->clearobject();
+				return; // No render image
+			}
 		} else {
-			p->clearobject();
-			return; // No render image
+			caret.x = calculate(p->from.x, p->to.x, duration, delay);
+			caret.y = calculate(p->from.y, p->to.y, duration, delay);
+			caret = s2i(caret);
 		}
-	} else
-		frame += frame_offset;
+	}
 	image(gres(pf->rid), frame, 0);
 }
 

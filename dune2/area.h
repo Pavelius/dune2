@@ -77,6 +77,7 @@ bool allowcontrol(point v);
 bool allowbuild(point v);
 void blockarea(areai::fntest proc);
 void setareascout(point v, int player_index);
+void setnofeature(point v, int param);
 
 inline point m2s(point v) { return point(v.x * area_tile_width, v.y * area_tile_height); }
 inline point m2sc(point v) { return point(v.x * area_tile_width + area_tile_width / 2, v.y * area_tile_height + area_tile_height / 2); }

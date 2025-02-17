@@ -18,6 +18,7 @@ struct drawable {
 	unsigned short	objectindex() const;
 };
 struct draweffect : drawable {
+	point			from, to;
 	explicit operator bool() const { return start_time != 0; }
 };
 struct drawrenderi {
@@ -31,4 +32,5 @@ extern drawable* last_object;
 extern int object_padding;
 
 void add_effect(point screen, short unsigned param, unsigned long time);
+void add_effect(point from, point to, short unsigned param, unsigned long start_time);
 void paint_objects();

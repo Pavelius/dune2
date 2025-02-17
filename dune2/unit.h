@@ -57,6 +57,9 @@ private:
 	void			leavetrail();
 	void			movescreen();
 	direction		nextpath(point v);
+	void			tracking();
+	direction		targetdirection() const;
+	void			turnturret(direction d);
 };
 extern unit *last_unit;
 

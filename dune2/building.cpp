@@ -44,6 +44,7 @@ void add_building(point pt, buildingn id) {
 		last_building->build = e.build[0];
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
+	area.set(last_building->getrect(), setnofeature, 0);
 }
 
 building* find_building(point v) {

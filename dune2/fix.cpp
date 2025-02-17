@@ -13,8 +13,18 @@ void add_effect(point v, fixn i) {
 	add_effect(v, i, animate_time);
 }
 
+void add_effect(point from, point to, fixn i) {
+	add_effect(from, to, i, animate_time);
+}
+
 BSDATA(fixeffecti) = {
 	{"NoEffect"},
+	{"ShootHandGun", 100, UNITS1, 23, 1, 0, FixSmallHit},
+	{"ShootHeavyGun", 100, UNITS1, 24, 1, 0, FixMediumHit},
+	{"ShootBigGun", 100, UNITS1, 25, 1, 0, FixLargeHit},
+	{"FixSmallHit", 0, UNITS1, 2, 1, add_explosion_tile},
+	{"FixMediumHit", 0, UNITS1, 3, 1, add_explosion_tile},
+	{"FixLargeHit", 0, UNITS1, 4, 1, add_explosion_tile},
 	{"FixExplosion", 0, UNITS1, 32, 5, add_explosion_tile},
 	{"FixBigExplosion", 0, UNITS1, 37, 5, add_explosion_tile},
 	{"FixBikeExplosion", 100, UNITS1, 32, 2, 0, FixBikeExplosionEnd},

@@ -529,6 +529,10 @@ void setareascout(point v, int player_index) {
 	area.set(v, player_index, Visible);
 }
 
+void setnofeature(point v, int player_index) {
+	area.set(v, NoFeature);
+}
+
 void areai::controlwave(point start, fntest proc) const {
 	if(!isvalid(start))
 		return;

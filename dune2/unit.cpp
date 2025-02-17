@@ -125,13 +125,39 @@ void unit::leavetrail() {
 	}
 }
 
+void unit::turnturret(direction d) {
+	auto turn_direction = turnto(shoot_direction, d);
+	if(turn_direction != Center)
+		shoot_direction = to(shoot_direction, turn_direction);
+}
+
+void unit::tracking() {
+	auto enemy = getenemy();
+	if(enemy)
+		order_attack = enemy->position;
+}
+
+direction unit::targetdirection() const {
+	if(area.isvalid(order_attack))
+		return to(position, order_attack);
+	return Center;
+}
+
 void unit::update() {
+	tracking();
 	if(ismoving()) {// Unit just moving to neightboar tile. Must finish.
 		movescreen();
 		leavetrail();
 		if(!isbusy()) { // If not busy we can make some actions when moving
 			if(isattackorder()) {
-				// Have attack target
+				if(isturret()) {
+					auto d = targetdirection();
+					turnturret(d);
+					if(shoot_direction == d) {
+
+					} else
+						wait(1000);
+				}
 			} else if(isturret() && shoot_direction != move_direction) {
 				shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
 				wait(1000);
@@ -162,7 +188,16 @@ void unit::update() {
 		}
 	} else {
 		if(isattackorder()) {
-			// Route path to target
+			if(isturret()) {
+				auto d = targetdirection();
+				turnturret(d);
+				if(shoot_direction == d) {
+
+				} else {
+					wait(400);
+					start_time += 400;
+				}
+			}
 		} else if(isturret()) { // Turret random look around
 			auto turn_direction = turnto(shoot_direction, move_direction);
 			if(turn_direction != Center && game_chance(50))
@@ -183,6 +218,7 @@ void unit::move(point v) {
 void unit::stop() {
 	path_direction = Center;
 	order = position;
+	order_attack = {-10000, -10000};
 }
 
 void unit::wait(unsigned long n) {
@@ -225,6 +261,7 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->screen = m2sc(pt);
 	last_unit->position = pt;
 	last_unit->order = pt;
+	last_unit->order_attack = {-10000, -10000};
 	last_unit->type = id;
 	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;

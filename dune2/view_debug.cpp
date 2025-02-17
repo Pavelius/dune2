@@ -1,10 +1,12 @@
 #include "area.h"
+#include "bsdata.h"
 #include "draw.h"
 #include "fix.h"
 #include "pushvalue.h"
 #include "rand.h"
 #include "resid.h"
 #include "slice.h"
+#include "unit.h"
 #include "view.h"
 #include "view_focus.h"
 #include "view_theme.h"
@@ -367,6 +369,7 @@ void view_debug_input() {
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': change_debug(); break;
 	case 'E': random_explosion(); break;
+	case 'W': add_effect(m2sc(last_unit->position), m2sc(area_spot), ShootBigGun); break;
 	case 'F': area.set(area_spot, d100() < 60 ? Body : Bodies); break;
 	}
 }
