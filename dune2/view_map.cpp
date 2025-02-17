@@ -449,11 +449,11 @@ static void paint_effect_fix() {
 			frame += frame_offset;
 	} else {
 		if(duration >= delay) {
+			caret = s2i(p->to);
+			p->screen = p->to;
 			if(pf->apply)
 				pf->apply();
 			if(pf->next) {
-				caret = s2i(p->to);
-				p->screen = p->to;
 				p->from = p->to;
 				p->to = p->to;
 				p->param = pf->next;
@@ -465,9 +465,9 @@ static void paint_effect_fix() {
 				return; // No render image
 			}
 		} else {
-			caret.x = calculate(p->from.x, p->to.x, duration, delay);
-			caret.y = calculate(p->from.y, p->to.y, duration, delay);
-			caret = s2i(caret);
+			p->screen.x = calculate(p->from.x, p->to.x, duration, delay);
+			p->screen.y = calculate(p->from.y, p->to.y, duration, delay);
+			caret = s2i(p->screen);
 		}
 	}
 	image(gres(pf->rid), frame, 0);

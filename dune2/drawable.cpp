@@ -11,23 +11,25 @@ typedef adat<drawable*, 256> drawablea;
 drawable *last_object;
 int object_padding = 16;
 
-void add_effect(point screen, short unsigned param, unsigned long start_time) {
+void add_effect(point screen, short unsigned param, unsigned long start_time, short unsigned owner) {
 	auto p = bsdata<draweffect>::addz();
 	p->screen = screen;
 	p->from = screen;
 	p->to = screen;
 	p->render = p->renderindex();
 	p->param = param;
+	p->owner = owner;
 	p->start_time = start_time;
 }
 
-void add_effect(point from, point to, short unsigned param, unsigned long start_time) {
+void add_effect(point from, point to, short unsigned param, unsigned long start_time, short unsigned owner) {
 	auto p = bsdata<draweffect>::addz();
 	p->screen = from;
 	p->from = from;
 	p->to = to;
 	p->render = p->renderindex();
 	p->param = param;
+	p->owner = owner;
 	p->start_time = start_time;
 }
 

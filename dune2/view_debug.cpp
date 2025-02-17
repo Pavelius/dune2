@@ -302,7 +302,7 @@ static void random_explosion() {
 	static fixn source[] = {FixBikeExplosion, FixExplosion, FixBigExplosion};
 	auto n = source[rand() % sizeof(source) / sizeof(source[0])];
 	// auto n = FixHitSand;
-	add_area_effect(area_spot, n);
+	add_effect(m2sc(area_spot), n, 0xFFFF);
 }
 
 static void show_pallette(resid id, int dy) {
@@ -369,7 +369,6 @@ void view_debug_input() {
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': change_debug(); break;
 	case 'E': random_explosion(); break;
-	case 'W': add_effect(m2sc(last_unit->position), m2sc(area_spot), ShootBigGun); break;
 	case 'F': area.set(area_spot, d100() < 60 ? Body : Bodies); break;
 	}
 }

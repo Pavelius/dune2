@@ -26,7 +26,7 @@ static void update_unit_time() {
 			auto n = e.start_time;
 			e.update();
 			if(n == e.start_time)
-				e.start_time += 1000; // Pause to think
+				e.start_time += 500; // Pause to think
 		}
 	}
 }

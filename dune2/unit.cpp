@@ -1,22 +1,35 @@
 #include "area.h"
 #include "bsdata.h"
+#include "fix.h"
 #include "game.h"
+#include "math.h"
 #include "movement.h"
 #include "squad.h"
 #include "unit.h"
 #include "view.h"
 
+///////////////////////////////////////////////////////////
+// SOME DESCRIPTION
+///////////////////////////////////////////////////////////
+// Units with turret have advantage. They can move and shoot.
+// Bikes can move, but must stop and turn to shoot directions.
+// Damage mechanic is next. Each unit have Damage rating. Value between 3-10.
+
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"LightInfantry", INFANTRY, 90, 0, Footed, UNITS, 0, 0},
-	{"HeavyInfantry", HYINFY, 76, 0, Footed, UNITS, 0, 0},
-	{"Trike", TRIKE, 80, 0, Wheeled, UNITS, 5, 0, {6, 3, 2, 10}},
-	{"Tank", LTANK, 78, 0, Tracked, UNITS2, 0, 5, {8, 5, 1, 5}},
-	{"AssaultTank", HTANK, 72, 0, Tracked, UNITS2, 10, 15, {12, 6, 2, 4}},
+	{"LightInfantry", INFANTRY, 90, 0, Footed, UNITS, 0, 0, {4, 2, 1, 3}, {}, {}},
+	{"HeavyInfantry", HYINFY, 76, 0, Footed, UNITS, 0, 0, {4, 3, 1, 3, 1}, {FG(Footed)}, {}},
+	{"Trike", TRIKE, 80, 0, Wheeled, UNITS, 5, 0, {6, 4, 2, 10, 2}, {FG(Footed)}},
+	{"Tank", LTANK, 78, 0, Tracked, UNITS2, 0, 5, {8, 6, 1, 5, 3}, {}, {FG(Footed)}},
+	{"AssaultTank", HTANK, 72, 0, Tracked, UNITS2, 10, 15, {9, 6, 2, 4, 4}, {}, {FG(Footed)}},
 };
 assert_enum(uniti, AssaultTank)
 
 unit *last_unit;
+
+const unsigned long shoot_duration = 1000 * 3;
+const unsigned long shoot_next_attack = 200;
+const unsigned long look_duration = 500;
 
 point formation(int index) {
 	static point formations[] = {
@@ -28,8 +41,33 @@ point formation(int index) {
 	return formations[index];
 }
 
+static bool turn(direction& result, direction new_direction) {
+	if(new_direction == Center)
+		return false;
+	if(result != new_direction)
+		result = to(result, turnto(result, new_direction));
+	return result == new_direction;
+}
+
+void unit::damage(int value) {
+	if(hits > value) {
+		hits -= value;
+		return;
+	}
+	cleanup();
+	switch(geti().move) {
+	case Wheeled:
+		add_effect(m2sc(position), FixBikeExplosion, 0xFFFF);
+		break;
+	case Tracked:
+		add_effect(m2sc(position), FixExplosion, 0xFFFF);
+		break;
+	}
+	clear();
+}
+
 bool unit::isbusy() const {
-	return action_time > game.time;
+	return shoot_time > game.time;
 }
 
 bool unit::ismoving() const {
@@ -52,8 +90,24 @@ void unit::set(point v) {
 	screen = m2sc(v);
 }
 
+void unit::cleanup() {
+	auto i = getindex();
+	for(auto& e : bsdata<unit>()) {
+		if(!e)
+			continue;
+		if(e.target == i)
+			e.stopattack();
+	}
+	for(auto& e : bsdata<draweffect>()) {
+		if(!e)
+			continue;
+		if(e.owner == i)
+			e.owner = 0xFFFF;
+	}
+}
+
 void unit::scouting() {
-	area.scouting(position, player, 2);
+	area.scouting(position, player, getlos());
 }
 
 void unit::blockland() const {
@@ -69,7 +123,7 @@ void unit::blockland() const {
 int unit::getspeed() const {
 	auto n = get(Speed);
 	if(!n)
-		return 10;
+		return 64 * 4 * 2;
 	return 64 * 4 / n;
 }
 
@@ -94,7 +148,7 @@ static point next_screen(point v, direction d) {
 void unit::movescreen() {
 	screen = next_screen(screen, move_direction);
 	auto move_speed = getspeed();
-	start_time += getspeed();
+	start_time += move_speed;
 	if(isdiagonal(move_direction))
 		start_time += move_speed / 3;
 }
@@ -108,7 +162,7 @@ static int get_trail_param(direction d) {
 	}
 }
 
-bool unit::isattackorder() const {
+bool unit::isattacking() const {
 	return area.isvalid(order_attack);
 }
 
@@ -125,42 +179,82 @@ void unit::leavetrail() {
 	}
 }
 
-void unit::turnturret(direction d) {
-	auto turn_direction = turnto(shoot_direction, d);
-	if(turn_direction != Center)
-		shoot_direction = to(shoot_direction, turn_direction);
-}
-
 void unit::tracking() {
 	auto enemy = getenemy();
 	if(enemy)
 		order_attack = enemy->position;
 }
 
-direction unit::targetdirection() const {
-	if(area.isvalid(order_attack))
-		return to(position, order_attack);
-	return Center;
+void unit::stopattack() {
+	target = 0xFFFF;
+	order_attack = {-10000, -10000};
+}
+
+bool unit::canshoot() const {
+	if(!area.isvalid(order_attack))
+		return false;
+	if(!area.is(order_attack, player, Visible))
+		return false;
+	auto range = position.range(order_attack);
+	return range <= getshootrange();
+}
+
+void unit::fixshoot() {
+	auto weapon = ShootHandGun;
+	add_effect(screen, m2sc(order_attack), weapon, getindex());
+}
+
+bool unit::shoot() {
+	if(shoot_time > game.time) {
+		if(attacks) {// Allow multi-attacks
+			if((shoot_time - game.time) >= (attacks * shoot_next_attack)) {
+				fixshoot(); // Can make next attack on same target
+				attacks++;
+				if(attacks >= geti().stats[Attack])
+					attacks = 0;
+			}
+		}
+		return true;
+	}
+	if(!canshoot())
+		stopattack();
+	else {
+		auto d = to(position, order_attack);
+		if(isturret()) {
+			if(!turn(shoot_direction, d)) {
+				wait(look_duration);
+				return true;
+			}
+		} else {
+			if(!turn(move_direction, d)) {
+				wait(look_duration);
+				return true;
+			}
+		}
+		fixshoot();
+		wait(shoot_duration);
+		if(get(Attacks) > 1)
+			attacks = 1;
+		else
+			attacks = 0;
+		return true;
+	}
+	return false;
 }
 
 void unit::update() {
 	tracking();
-	if(ismoving()) {// Unit just moving to neightboar tile. Must finish.
+	if(ismoving()) {// Unit just moving to neightboar tile. MUST FINISH!!!
 		movescreen();
 		leavetrail();
-		if(!isbusy()) { // If not busy we can make some actions when moving
-			if(isattackorder()) {
-				if(isturret()) {
-					auto d = targetdirection();
-					turnturret(d);
-					if(shoot_direction == d) {
-
-					} else
-						wait(1000);
+		if(isturret()) {
+			if(shoot()) { // Turret vehicle can shoot on moving
+				// After shoot do nothing
+			} else if(!isbusy()) {// If not busy we can make some actions while moving
+				if(shoot_direction != move_direction) {
+					shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
+					wait(look_duration);
 				}
-			} else if(isturret() && shoot_direction != move_direction) {
-				shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
-				wait(1000);
 			}
 		}
 		if(!ismoving()) {
@@ -172,39 +266,26 @@ void unit::update() {
 		if(path_direction == Center)
 			path_direction = nextpath(order);
 		if(path_direction == Center) {
-			if(game_chance(30))
+			if(game_chance(30)) // Something in the way. Wait or cancel order?
 				stop();
 			else
 				start_time += game_rand(200, 300);
 		} else {
-			if(move_direction != path_direction) // One turn is free
-				move_direction = to(move_direction, turnto(move_direction, path_direction));
-			if(move_direction != path_direction) // More that one turn take time
-				start_time += game_rand(300, 400);
+			if(!turn(move_direction, path_direction)) // More that one turn take time
+				start_time += game_rand(300, 400); // Turning pause
 			else {
 				position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
-				movescreen();
+				movescreen(); // Start moving to next tile.
 			}
 		}
-	} else {
-		if(isattackorder()) {
-			if(isturret()) {
-				auto d = targetdirection();
-				turnturret(d);
-				if(shoot_direction == d) {
-
-				} else {
-					wait(400);
-					start_time += 400;
-				}
-			}
-		} else if(isturret()) { // Turret random look around
-			auto turn_direction = turnto(shoot_direction, move_direction);
-			if(turn_direction != Center && game_chance(50))
-				shoot_direction = to(shoot_direction, turn_direction);
-			else if(game_chance(30))
-				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
-		}
+	} else if(shoot()) {
+		// After shoot: do nothing now
+	} else if(isturret()) { // Turret random look around
+		auto turn_direction = turnto(shoot_direction, move_direction);
+		if(turn_direction != Center && game_chance(50))
+			shoot_direction = to(shoot_direction, turn_direction);
+		else if(game_chance(30))
+			shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
 	}
 }
 
@@ -218,13 +299,13 @@ void unit::move(point v) {
 void unit::stop() {
 	path_direction = Center;
 	order = position;
-	order_attack = {-10000, -10000};
+	stopattack();
 }
 
 void unit::wait(unsigned long n) {
-	if(action_time < game.time)
-		action_time = game.time;
-	action_time += n;
+	if(shoot_time < game.time)
+		shoot_time = game.time;
+	shoot_time += n;
 }
 
 bool isnonblocked(point v) {
@@ -273,23 +354,21 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->scouting();
 }
 
-void unit::attack(unit* opponent) {
-	if(!opponent)
-		target = 0xFFFF;
-	else {
-		target = opponent->getindex();
-		order_attack = opponent->position;
-	}
+void unit::clear() {
+	memset(this, 0, sizeof(*this));
 }
 
 void unit::apply(ordern type, point v) {
 	auto opponent = find_unit(v);
 	switch(type) {
 	case Attack:
-		if(opponent)
-			attack(opponent);
-		else
+		if(opponent) {
+			target = opponent->getindex();
+			order_attack = opponent->position;
+		} else {
+			target = 0xFFFF;
 			order_attack = v;
+		}
 		break;
 	case Stop:
 		stop();
@@ -299,7 +378,6 @@ void unit::apply(ordern type, point v) {
 			move(v);
 		break;
 	case Retreat:
-		getplayer().add(Credits, 20);
 		break;
 	}
 }

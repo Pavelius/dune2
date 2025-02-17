@@ -146,7 +146,7 @@ static void show_introdution() {
 }
 
 void main_menu() {
-	music_disabled = true;
+	// music_disabled = true;
 	// show_introdution();
 	auto size = sizeof(unit);
 	player = bsdata<playeri>::elements;
