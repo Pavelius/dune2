@@ -46,11 +46,11 @@ void unita::order(ordern type, direction d, point v, bool interactive) const {
 			break;
 		}
 	}
-	if(d==Center && area.isvalid(v))
+	if(d == Center && area.isvalid(v))
 		d = to(center(human_selected.selectrect()), v);
 	auto index = 0;
 	for(auto p : human_selected) {
-		if(area.isvalid(v)) {
+		if(area.isvalid(v) && type == Move) {
 			auto vt = formation(index++);
 			vt = v + transform(vt, d);
 			vt = area.nearest(vt, isfreetrack, 4);
@@ -60,6 +60,6 @@ void unita::order(ordern type, direction d, point v, bool interactive) const {
 		} else
 			p->apply(type, v);
 	}
-	if(type==Move)
+	if(type == Move)
 		hilite_unit_orders();
 }

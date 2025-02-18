@@ -6,6 +6,7 @@
 #include "shape.h"
 #include "topicable.h"
 #include "typeable.h"
+#include "unit.h"
 
 enum buildingn : unsigned char {
 	ConstructionYard, SpiceSilo, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
@@ -16,22 +17,23 @@ struct buildingi : topicable {
 	short			hits;
 	shapen			shape;
 	short unsigned	frames[16], ruined[16];
-	slice<buildingn> build;
+	slice<topicable*> build;
 	short unsigned	abilities[SpiceCapacity + 1];
 };
 struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;
-	buildingn		build;
+	unsigned char	build_index;
 	unsigned short	build_spend;
 	short			hits;
 	explicit operator bool() const;
+	void			buildlist() const;
 	bool			canbuild() const { return geti().build.operator bool(); }
-	void			canbuildlist() const;
 	void			cancel();
 	void			construct(point v);
 	void			destroy();
 	int				getlos() const;
 	int				getprogress() const;
+	topicable*		getbuild() const;
 	point			getbuildsize() const;
 	rect			getrect() const;
 	point			getsize() const;

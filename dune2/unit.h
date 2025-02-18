@@ -2,6 +2,7 @@
 
 #include "direction.h"
 #include "drawable.h"
+#include "fix.h"
 #include "flagable.h"
 #include "player.h"
 #include "order.h"
@@ -21,10 +22,10 @@ struct stati : nameable {
 };
 struct uniti : topicable {
 	movementn		move;
+	fixn			weapon;
 	resid			res;
 	unsigned char	frame, frame_shoot;
 	unsigned char	stats[Armor + 1];
-	flag8			advantage, disadvantage;
 };
 struct unit : drawable, playerable, typeable<uniti, unitn> {
 	unsigned long	shoot_time; // Start action
@@ -48,6 +49,7 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	int				getspeed() const;
 	bool			isattacking() const;
 	bool			isbusy() const;
+	bool			isenemy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }

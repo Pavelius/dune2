@@ -17,11 +17,11 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"LightInfantry", INFANTRY, 90, 0, Footed, UNITS, 0, 0, {4, 2, 1, 3}, {}, {}},
-	{"HeavyInfantry", HYINFY, 76, 0, Footed, UNITS, 0, 0, {4, 3, 1, 3, 1}, {FG(Footed)}, {}},
-	{"Trike", TRIKE, 80, 0, Wheeled, UNITS, 5, 0, {6, 4, 2, 10, 2}, {FG(Footed)}},
-	{"Tank", LTANK, 78, 0, Tracked, UNITS2, 0, 5, {8, 6, 1, 5, 3}, {}, {FG(Footed)}},
-	{"AssaultTank", HTANK, 72, 0, Tracked, UNITS2, 10, 15, {9, 6, 2, 4, 4}, {}, {FG(Footed)}},
+	{"LightInfantry", INFANTRY, 81, 100, Footed, ShootHandGun, UNITS, 0, 0, {4, 2, 1, 3}},
+	{"HeavyInfantry", HYINFY, 91, 170, Footed, ShootHandGun, UNITS, 0, 0, {4, 3, 1, 3, 1}},
+	{"Trike", TRIKE, 80, 0, Wheeled, ShootHandGun, UNITS, 5, 0, {6, 4, 2, 10, 2}},
+	{"Tank", LTANK, 78, 0, Tracked, ShootHeavyGun, UNITS2, 0, 5, {8, 6, 1, 5, 3}},
+	{"AssaultTank", HTANK, 72, 0, Tracked, ShootHeavyGun, UNITS2, 10, 15, {9, 6, 2, 4, 4}},
 };
 assert_enum(uniti, AssaultTank)
 
@@ -68,6 +68,10 @@ void unit::damage(int value) {
 
 bool unit::isbusy() const {
 	return shoot_time > game.time;
+}
+
+bool unit::isenemy() const {
+	return player == ::player->getindex();
 }
 
 bool unit::ismoving() const {
@@ -200,7 +204,7 @@ bool unit::canshoot() const {
 }
 
 void unit::fixshoot() {
-	auto weapon = ShootHandGun;
+	auto weapon = geti().weapon;
 	add_effect(screen, m2sc(order_attack), weapon, getindex());
 }
 
@@ -362,6 +366,8 @@ void unit::apply(ordern type, point v) {
 	auto opponent = find_unit(v);
 	switch(type) {
 	case Attack:
+		if(opponent == this)
+			break; // Big mistake
 		if(opponent) {
 			target = opponent->getindex();
 			order_attack = opponent->position;
@@ -370,14 +376,14 @@ void unit::apply(ordern type, point v) {
 			order_attack = v;
 		}
 		break;
-	case Stop:
-		stop();
-		break;
 	case Move:
-		if(!opponent)
+		if(opponent && opponent->isenemy())
+			apply(Attack, v);
+		else
 			move(v);
 		break;
-	case Retreat:
+	default:
+		stop();
 		break;
 	}
 }

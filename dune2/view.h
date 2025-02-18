@@ -28,7 +28,6 @@ void form_press_button_effect();
 void form_shadow_effect();
 void hilite_unit_orders();
 void initialize_view(const char* title, fnevent main_scene);
-void mouse_unit_move();
 void open_mentat();
 void open_building();
 void paint_background(color v);

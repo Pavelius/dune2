@@ -5,7 +5,8 @@
 #include "resid.h"
 #include "topicablea.h"
 
-static buildingn base_produce[] = {Barracks, Windtrap, Refinery, SpiceSilo, RadarOutpost};
+static topicable* base_produce[] = {bse<buildingi>(Barracks), bse<buildingi>(Windtrap), bse<buildingi>(Refinery), bse<buildingi>(SpiceSilo), bse<buildingi>(RadarOutpost)};
+static topicable* barrac_produce[] = {bse<uniti>(LightInfantry)};
 
 BSDATA(buildingi) = {
 	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce},
@@ -17,7 +18,7 @@ BSDATA(buildingi) = {
 	{"RepairFacility"},
 	{"HouseOfIX"},
 	{"Palace"},
-	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {285, 286, 288, 289}, {}, {}, {0, 0, 0, 0, 0}},
+	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {285, 286, 288, 289}, {}, barrac_produce, {0, 0, 0, 0, 0}},
 	{"WOR"},
 	{"LightVehicleFactory"},
 	{"HeavyVehicleFactory"},
@@ -40,8 +41,6 @@ void add_building(point pt, buildingn id) {
 	last_building->type = id;
 	auto& e = last_building->geti();
 	last_building->hits = e.hits;
-	if(e.build)
-		last_building->build = e.build[0];
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
 	area.set(last_building->getrect(), setnofeature, 0);
@@ -70,10 +69,22 @@ int	building::getlos() const {
 	}
 }
 
+topicable* building::getbuild() const {
+	auto& ei = geti();
+	if(!ei.build)
+		return 0;
+	return ei.build[build_index];
+}
+
 void building::construct(point v) {
 	if(!area.isvalid(v))
 		return;
-	add_building(v, build);
+	auto pe = getbuild();
+	if(bsdata<buildingi>::have(pe))
+		add_building(v, (buildingn)((buildingi*)pe - bsdata<buildingi>::elements));
+	else if(bsdata<uniti>::have(pe)) {
+
+	}
 	build_spend = 0;
 }
 
@@ -92,7 +103,10 @@ void building::update() {
 int	building::getprogress() const {
 	if(!build_spend)
 		return 0;
-	auto build_cost = bsdata<buildingi>::elements[build].cost;
+	auto pe = getbuild();
+	if(!pe)
+		return 0;
+	auto build_cost = pe->cost;
 	if(!build_cost)
 		return 100;
 	if(build_spend >= build_cost)
@@ -101,9 +115,12 @@ int	building::getprogress() const {
 }
 
 point building::getbuildsize() const {
-	if(!build)
+	auto pe = getbuild();
+	if(!pe)
 		return {};
-	return bsdata<shapei>::elements[bsdata<buildingi>::elements[build].shape].size;
+	if(bsdata<buildingi>::have(pe))
+		return bsdata<shapei>::elements[((buildingi*)pe)->shape].size;
+	return {1, 1};
 }
 
 point building::getsize() const {
@@ -111,9 +128,10 @@ point building::getsize() const {
 }
 
 bool building::progress() {
-	if(canbuild()) {
+	auto pe = getbuild();
+	if(pe) {
 		unsigned short can_spend = 10;
-		auto build_cost = bsdata<buildingi>::elements[build].cost;
+		auto build_cost = pe->cost;
 		if(build_cost <= 10)
 			can_spend = 1;
 		auto credits = getplayer().get(Credits);
@@ -130,10 +148,10 @@ bool building::progress() {
 	return false;
 }
 
-void building::canbuildlist() const {
+void building::buildlist() const {
 	subjects.clear();
-	for(auto n : geti().build)
-		subjects.add(bsdata<buildingi>::elements + n);
+	for(auto p : geti().build)
+		subjects.add(p);
 }
 
 rect building::getrect() const {

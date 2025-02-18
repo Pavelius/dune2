@@ -62,45 +62,6 @@ static void set_terrain_big_circle(point v, int value) {
 	set_terrain_circle(v, value, xrand(0, 8) - 2);
 }
 
-static void build_structure(point v, buildingn type) {
-	auto& e = bsdata<buildingi>::elements[type];
-	area.set(v, e.shape, e.frames);
-}
-
-static point choose_terrain() {
-	return show_scene(paint_main_map_choose_terrain, 0, 0);
-}
-
-static void apply_units_order(point v) {
-	human_selected.order(Move, Center, v, false);
-}
-
-void human_unit_attack() {
-	auto target = choose_terrain();
-	if(!area.isvalid(target))
-		return;
-}
-
-void human_unit_move() {
-	auto target = choose_terrain();
-	if(!area.isvalid(target))
-		return;
-	apply_units_order(target);
-}
-
-void mouse_unit_move() {
-	auto v = (point)draw::hot.param;
-	auto p = find_unit(v);
-	auto i = 0;
-	if(p) {
-		// Enemy unit spotted?
-	} else
-		apply_units_order(v);
-}
-
-void human_unit_stop() {
-}
-
 static void show_introdution() {
 	static videoi main_logo[] = {
 		{WESTWOOD, 7 * 1000, 110, FG(Disappearing)},

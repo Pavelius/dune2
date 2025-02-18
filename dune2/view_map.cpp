@@ -516,6 +516,11 @@ static void paint_radar_buildings() {
 	fore = push_fore;
 }
 
+static void mouse_unit_move() {
+	auto v = (point)draw::hot.param;
+	human_selected.order(Move, Center, v, false);
+}
+
 static void input_radar() {
 	point hot_mouse = hot.mouse - caret;
 	if((hot_mouse.x < width && hot_mouse.x > 0) && (hot_mouse.y < height && hot_mouse.y > 0)) {
@@ -1005,8 +1010,9 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 		form_frame(1);
 		setoffset(2, 2);
 		image(gres(SHAPES), avatar, 0);
-		paint_build_shape(caret.x + 35, caret.y + 2, shape);
-		fore = form_button_light;
+		if(shape != NoShape)
+			paint_build_shape(caret.x + 35, caret.y + 2, shape);
+		fore = form_button_dark;
 		caret.y += 24; texta(format, AlignCenter);
 		if(run)
 			execute((hot.key == MouseRight) ? human_cancel : human_build, 0, 0, last_building);
@@ -1019,13 +1025,16 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 static void paint_build_button() {
 	auto push_height = height; height = 36;
 	setoffset(-1, 0);
-	auto& ei = bsdata<buildingi>::elements[last_building->build];
+	auto pe = last_building->getbuild();
+	shapen shape = NoShape;
+	if(bsdata< buildingi>::have(pe))
+		shape = ((buildingi*)pe)->shape;
 	const char* format = 0;
 	if(last_building->isworking())
 		format = str("%1i%%", last_building->getprogress());
 	else
 		format = getnm("BuildIt");
-	paint_build_button(format, ei.frame_avatar, ei.shape, 'B');
+	paint_build_button(format, pe->frame_avatar, shape, 'B');
 	height = push_height;
 }
 

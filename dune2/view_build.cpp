@@ -133,12 +133,10 @@ static bool choose_build() {
 void open_building() {
 	auto push = subjects;
 	last_building = (building*)hot.param;
-	last_building->canbuildlist();
-	auto index = subjects.find(bsdata<buildingi>::elements + last_building->build);
-	if(index != -1)
-		build_current = index;
+	last_building->buildlist();
+	build_current = last_building->build_index;
 	if(choose_build()) {
-		last_building->build = (buildingn)((buildingi*)subjects.data[build_current] - bsdata<buildingi>::elements);
+		last_building->build_index = build_current;
 		last_building->progress();
 	}
 }
