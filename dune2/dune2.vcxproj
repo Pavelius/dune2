@@ -266,6 +266,7 @@
     <Text Include="..\locale\en\UnknownNames.txt" />
   </ItemGroup>
   <ItemGroup>
+    <None Include="..\doc\units.md" />
     <None Include="..\README.md" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

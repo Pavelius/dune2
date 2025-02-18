@@ -972,11 +972,12 @@ static void paint_unit_orders() {
 static void paint_unit_list() {
 	auto push_caret = caret;
 	caret = push_caret + point(6, 8);
+	auto caret_origin = caret;
 	for(auto p : human_selected) {
 		paint_unit(p->geti(), RightDown, RightDown, p->getplayer().color_index, 0);
 		caret.x += 16;
 		if(caret.x >= clipping.x2) {
-			caret.x = push_caret.x;
+			caret.x = caret_origin.x;
 			if(p != *human_selected.end() - 1)
 				caret.y += 16;
 		}

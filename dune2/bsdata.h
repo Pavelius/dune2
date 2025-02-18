@@ -45,4 +45,3 @@ NOBSDATA(bool)
 
 template<typename T> short unsigned getbsi(const T* v) { return bsdata<T>::source.indexof(v); }
 template<typename T> T* getbs(short unsigned v) { return (v == 0xFFFF) ? 0 : (T*)bsdata<T>::source.ptr(v); }
-template<typename T> constexpr T* bse(short unsigned v) { return bsdata<T>::elements + v; }

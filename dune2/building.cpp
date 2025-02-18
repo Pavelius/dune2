@@ -6,8 +6,13 @@
 #include "resid.h"
 #include "topicablea.h"
 
-static topicable* base_produce[] = {bse<buildingi>(Barracks), bse<buildingi>(Windtrap), bse<buildingi>(Refinery), bse<buildingi>(SpiceSilo), bse<buildingi>(RadarOutpost)};
-static topicable* barrac_produce[] = {bse<uniti>(LightInfantry)};
+#define BS(T,V) bsdata<T>::elements + V
+
+static topicable* base_produce[] = {
+	BS(buildingi, Barracks),
+	BS(buildingi, Windtrap), BS(buildingi, Refinery), BS(buildingi, SpiceSilo), BS(buildingi, RadarOutpost)
+};
+static topicable* barrac_produce[] = {BS(uniti, LightInfantry)};
 
 BSDATA(buildingi) = {
 	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce},
