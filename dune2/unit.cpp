@@ -226,7 +226,7 @@ bool unit::shoot() {
 	if(shoot_time > game.time) {
 		if(attacks) {// Allow multi-attacks
 			if((shoot_time - game.time) >= (attacks * shoot_next_attack)) {
-				fixshoot(40); // Can make next attack on same target
+				fixshoot(40); // Can make next attack on same target, but can miss
 				attacks++;
 				if(attacks >= geti().stats[Attack])
 					attacks = 0;

@@ -406,6 +406,9 @@
     <Text Include="..\locale\en\mentat.txt">
       <Filter>locale</Filter>
     </Text>
+    <Text Include="..\locale\en\scenaries.txt">
+      <Filter>locale</Filter>
+    </Text>
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md">

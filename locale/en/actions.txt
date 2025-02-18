@@ -14,5 +14,7 @@ BuildIt: Build It
 Cost: Cost
 ChooseSubject: Select Subject
 ResumeGame: Resume Game
+Proceed: Proceed
+Repeat: Repeat
 
 Cancel: Cancel

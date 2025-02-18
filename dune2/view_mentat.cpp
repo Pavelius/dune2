@@ -99,6 +99,12 @@ static void paint_mentat_subject() {
 	paint_stat_info();
 }
 
+static void paint_mentat_subject_ni() {
+	auto ps = gres(animate_id);
+	if(ps && ps->count)
+		image(caret.x, caret.y, ps, get_frame(400) % ps->count, 0);
+}
+
 static bool allow_brief_row(int index, void* data) {
 	auto po = (tree::element*)data;
 	return !po->is(tree::Group);
@@ -164,6 +170,18 @@ static void paint_exit() {
 		execute(update_buttonparam, 0);
 }
 
+static void paint_proceed_repeat() {
+	pushrect push;
+	pushtheme theme(ButtonDark);
+	pushfontb theme_font(TextYellow);
+	caret.x += 168; caret.y += 169; width = 68;
+	if(button(getnm("Proceed"), KeyEnter, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+		execute(update_buttonparam, 1);
+	caret.x += 72;
+	if(button(getnm("Repeat"), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+		execute(update_buttonparam, 0);
+}
+
 static void paint_form_header() {
 	if(!form_header)
 		return;
@@ -184,7 +202,6 @@ static void paint_mentat_speaking() {
 	paint_eyes();
 	paint_speaking_mouth();
 	paint_mentat_back();
-	paint_exit();
 	paint_form_header();
 	input_accept();
 }
@@ -194,7 +211,6 @@ void paint_mentat_silent() {
 	paint_eyes();
 	paint_mentat_back();
 	paint_action();
-	paint_exit();
 }
 
 static int compare_topic_by_name(const void* v1, const void* v2) {
@@ -220,7 +236,7 @@ static void update_topics() {
 static void* choose_mentat_topic() {
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_list);
 	update_topics();
-	return (void*)show_scene(paint_mentat_silent, 0, 0);
+	return (void*)show_scene(paint_mentat_silent, paint_exit, 0);
 }
 
 static void show_mentat_subject(const char* id, resid rid) {
@@ -243,7 +259,33 @@ static void show_mentat_subject(const char* id, resid rid) {
 				return;
 		}
 	}
-	show_scene_raw(paint_mentat_silent, 0, 0);
+	show_scene_raw(paint_mentat_silent, paint_exit, 0);
+}
+
+void show_scenario_prompt(const char* id, resid rid, int level) {
+	pushvalue push_fraction(last_fraction, player->fraction);
+	pushvalue push_header(form_header);
+	pushvalue push_animation(animate_id, rid);
+	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject_ni);
+	auto pi = getnme(str("%1%2%3.2i", player->getfraction().id, id, level));
+	if(!pi)
+		return;
+	song_play(str("mentat%1", player->getfractionsuffix()));
+	reset_form_animation();
+	string sb;
+	while(true) {
+		auto ps = pi;
+		while(pi[0]) {
+			sb.clear(); ps = sb.psline(ps);
+			if(!sb)
+				break;
+			form_header = sb;
+			if(!show_scene_raw(paint_mentat_speaking, 0, 0))
+				return;
+		}
+		if(show_scene_raw(paint_mentat_silent, paint_proceed_repeat, 0))
+			break;
+	}
 }
 
 void open_mentat() {
