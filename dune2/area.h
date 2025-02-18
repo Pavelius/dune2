@@ -69,7 +69,6 @@ extern areai area;
 extern point area_origin;
 extern point area_spot;
 extern rect area_screen;
-extern direction all_strait_directions[4];
 extern unsigned short map_alternate[area_frame_maximum];
 extern unsigned short path_map[areai::my][areai::mx];
 

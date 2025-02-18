@@ -7,6 +7,10 @@ enum direction : unsigned char {
 	Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp,
 };
 
+extern direction all_strait_directions[4];
+extern direction all_diagonal_directions[4];
+extern direction all_directions[8];
+
 point getpoint(direction d);
 direction to(direction d, direction s);
 direction turnto(direction d, direction t);

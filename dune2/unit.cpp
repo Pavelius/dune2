@@ -206,16 +206,27 @@ bool unit::canshoot() const {
 	return range <= getshootrange();
 }
 
-void unit::fixshoot() {
+static point random_near(point v) {
+	return to(v, all_directions[game_rand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
+}
+
+void unit::fixshoot(int chance_miss) {
 	auto weapon = geti().weapon;
-	add_effect(screen, m2sc(order_attack), weapon, getindex());
+	if(chance_miss && game_chance(chance_miss)) {
+		auto miss = random_near(order_attack);
+		auto current = s2m(screen);
+		if(miss == current)
+			return; // Hit itself?
+		add_effect(screen, m2sc(miss), weapon, getindex());
+	} else
+		add_effect(screen, m2sc(order_attack), weapon, getindex());
 }
 
 bool unit::shoot() {
 	if(shoot_time > game.time) {
 		if(attacks) {// Allow multi-attacks
 			if((shoot_time - game.time) >= (attacks * shoot_next_attack)) {
-				fixshoot(); // Can make next attack on same target
+				fixshoot(40); // Can make next attack on same target
 				attacks++;
 				if(attacks >= geti().stats[Attack])
 					attacks = 0;
@@ -238,7 +249,7 @@ bool unit::shoot() {
 				return true;
 			}
 		}
-		fixshoot();
+		fixshoot(0);
 		wait(shoot_duration);
 		if(get(Attacks) > 1)
 			attacks = 1;

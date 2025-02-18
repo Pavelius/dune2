@@ -18,9 +18,6 @@ unsigned short path_map[areai::my][areai::mx];
 
 static point stack[256 * 16];
 static size_t push_stack, pop_stack;
-direction all_strait_directions[4] = {Up, Right, Down, Left};
-direction all_diagonal_directions[4] = {RightUp, RightDown, LeftDown, LeftUp};
-direction all_directions[] = {Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp};
 
 static point pop_value() {
 	if(pop_stack >= sizeof(stack) / sizeof(stack[0]))

@@ -69,7 +69,7 @@ private:
 	direction		nextpath(point v);
 	void			tracking();
 	bool			shoot();
-	void			fixshoot();
+	void			fixshoot(int chance_miss);
 };
 extern unit *last_unit;
 

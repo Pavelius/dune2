@@ -1,6 +1,10 @@
 #include "direction.h"
 #include "math.h"
 
+direction all_strait_directions[4] = {Up, Right, Down, Left};
+direction all_diagonal_directions[4] = {RightUp, RightDown, LeftDown, LeftUp};
+direction all_directions[8] = {Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp};
+
 direction turnto(direction d, direction t) {
 	if(d == Center || t == Center)
 		return Center;
