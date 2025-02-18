@@ -11,12 +11,14 @@
 #define	lenghtof(C) (sizeof(C)/sizeof(C[0]))
 #define	FO(T,R) ((size_t)&((T*)0)->R)
 
+#define BS(V) bsdata<decltype(V)>::elements + V
 #define BSDATA(e) BSDATATMPL e bsdata<e>::elements[]
 #define BSDATAD(e) BSDATATMPL array bsdata<e>::source(sizeof(e));
 #define BSDATAE(e) BSDATATMPL array bsdata<e>::source(bsdata<e>::elements, sizeof(bsdata<e>::elements[0]), 0, lenghtof(bsdata<e>::elements));
 #define BSDATAF(e) BSDATATMPL array bsdata<e>::source(bsdata<e>::elements, sizeof(bsdata<e>::elements[0]), lenghtof(bsdata<e>::elements), lenghtof(bsdata<e>::elements));
 #define BSDATAC(e, c) BSDATATMPL e bsdata<e>::elements[c]; BSDATAE(e)
-#define NOBSDATA(e) template<> struct bsdata<e> : bsdata<int> {};
+#define BSLINK(E,T) template<> struct bsdata<E> : bsdata<T> {};
+#define NOBSDATA(E) BSLINK(E,int)
 #define assert_enum(e, last) static_assert(sizeof(bsdata<e>::elements) / sizeof(bsdata<e>::elements[0]) == static_cast<int>(last) + 1, "Invalid count of " #e " elements"); BSDATAF(e)
 
 template<typename T>

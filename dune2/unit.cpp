@@ -18,7 +18,7 @@
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
 	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootHandGun, UNITS, 91, 0, {4, 2, 1, 3}},
-	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootHandGun, UNITS, 0, 0, {4, 3, 1, 3, 1}},
+	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootHandGun, UNITS, 103, 0, {4, 3, 1, 2, 1}},
 	{"Trike", TRIKE, 80, 0, Wheeled, ShootHandGun, UNITS, 5, 0, {6, 4, 2, 10, 2}},
 	{"Tank", LTANK, 78, 0, Tracked, ShootHeavyGun, UNITS2, 0, 5, {8, 6, 1, 5, 3}},
 	{"AssaultTank", HTANK, 72, 0, Tracked, ShootHeavyGun, UNITS2, 10, 15, {9, 6, 2, 4, 4}},

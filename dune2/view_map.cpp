@@ -387,9 +387,9 @@ static void paint_map_features() {
 
 static void paint_foot(const sprite* ps, int frame, direction d) {
 	switch(d) {
-	case Down: image(ps, frame + 0 * 4, ImagePallette); break;
+	case Down: image(ps, frame + 2 * 4, ImagePallette); break;
 	case RightUp: case Right: case RightDown: image(ps, frame + 1 * 4, ImagePallette); break;
-	case Up: image(ps, frame + 0 * 4, ImageMirrorH | ImagePallette); break;
+	case Up: image(ps, frame + 0 * 4, ImagePallette); break;
 	case LeftDown: case Left: case LeftUp: image(ps, frame + 1 * 4, ImageMirrorH | ImagePallette); break;
 	default: break;
 	}
