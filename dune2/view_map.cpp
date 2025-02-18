@@ -604,53 +604,6 @@ static void paint_radar() {
 		paint_radar_off();
 }
 
-void copybits(int x, int y, int width, int height, int x1, int y1) {
-	if(x == x1 && y == y1)
-		return;
-	auto ps = canvas->ptr(x, y);
-	auto pd = canvas->ptr(x1, y1);
-	auto sn = canvas->scanline;
-	auto sz = width * sizeof(color);
-	if(y < y1) {
-		ps = canvas->ptr(x, y + height - 1);
-		pd = canvas->ptr(x1, y1 + height - 1);
-		sn = -sn;
-	}
-	for(auto i = 0; i < height; i++) {
-		memmove(pd, ps, sz);
-		ps += sn;
-		pd += sn;
-	}
-}
-
-void fillbitsh(int x, int y, int width, int height, int total_width) {
-	total_width -= width;
-	if(total_width <= 0 || width <= 0)
-		return;
-	auto x1 = x + width;
-	for(auto n = total_width / width; n > 0; n--) {
-		copybits(x, y, width, height, x1, y);
-		x1 += width;
-		total_width -= width;
-	}
-	if(total_width)
-		copybits(x, y, total_width, height, x1, y);
-}
-
-void fillbitsv(int x, int y, int width, int height, int total_height) {
-	total_height -= height;
-	if(total_height <= 0 || height <= 0)
-		return;
-	auto y1 = y + height;
-	for(auto n = total_height / height; n > 0; n--) {
-		copybits(x, y, width, height, x, y1);
-		y1 += height;
-		total_height -= height;
-	}
-	if(total_height)
-		copybits(x, y, width, total_height, x, y1);
-}
-
 static void paint_background(resid rid) {
 	caret.x = 0; caret.y = 0;
 	if(rid == SCREEN) {
@@ -1231,14 +1184,13 @@ void appear_scene(fnevent before_paint, unsigned long milliseconds) {
 	update_tick();
 }
 
-void disappear_scene(color back, unsigned long milliseconds) {
+void disappear_scene(unsigned long milliseconds) {
 	default_time(milliseconds);
 	screenshoot before;
 	pushrect push;
-	auto push_fore = fore; fore = back;
+	pushfore pushf(colors::black);
 	caret.x = 0; caret.y = 0; width = getwidth(); height = getheight();
 	rectf();
-	fore = push_fore;
 	screenshoot after;
 	before.blend(after, milliseconds);
 	update_tick();

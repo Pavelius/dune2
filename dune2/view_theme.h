@@ -35,9 +35,16 @@ bool button(const char* title, unsigned key, unsigned flags, bool paint_rect_bla
 bool button(const char* title, unsigned key, unsigned flags);
 void button(const char* title, unsigned key, unsigned flags, fnevent proc, long param);
 bool button(unsigned key, fnevent pressed_effect);
+void copybits(int x, int y, int width, int height, int x1, int y1);
+void fillbitsh(int x, int y, int width, int height, int total_width);
+void fillbitsv(int x, int y, int width, int height, int total_height);
 void form_frame();
+void form_frame(int thickness);
 void form_frame_rect();
 void form_frame(color light_left_up, color shadow_right_down);
+void form_press_effect();
+void form_press_button_effect();
+void form_shadow_effect();
 void rectb_black();
 void rectf(color form);
 void update_buttonparam();

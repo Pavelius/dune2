@@ -41,11 +41,11 @@ void video_play(const slice<videoi>& source) {
 		if(e.time_lenght)
 			animate_stop = animate_time + e.time_lenght;
 		if(!show_scene_raw(paint_video, 0, 0)) {
-			disappear_scene(colors::black, time_appear);
+			disappear_scene(time_appear);
 			break;
 		}
 		if(e.is(Disappearing))
-			disappear_scene(colors::black, time_appear);
+			disappear_scene(time_appear);
 	}
 }
 

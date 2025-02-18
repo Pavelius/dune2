@@ -3,7 +3,6 @@
 #include "math.h"
 #include "resid.h"
 #include "screenshoot.h"
-#include "view.h"
 #include "view_focus.h"
 #include "view_theme.h"
 

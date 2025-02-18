@@ -39,11 +39,56 @@ pushfontb::~pushfontb() {
 	font_pallette[6] = fpal6;
 }
 
+void copybits(int x, int y, int width, int height, int x1, int y1) {
+	if(x == x1 && y == y1)
+		return;
+	auto ps = canvas->ptr(x, y);
+	auto pd = canvas->ptr(x1, y1);
+	auto sn = canvas->scanline;
+	auto sz = width * sizeof(color);
+	if(y < y1) {
+		ps = canvas->ptr(x, y + height - 1);
+		pd = canvas->ptr(x1, y1 + height - 1);
+		sn = -sn;
+	}
+	for(auto i = 0; i < height; i++) {
+		memmove(pd, ps, sz);
+		ps += sn;
+		pd += sn;
+	}
+}
+
+void fillbitsh(int x, int y, int width, int height, int total_width) {
+	total_width -= width;
+	if(total_width <= 0 || width <= 0)
+		return;
+	auto x1 = x + width;
+	for(auto n = total_width / width; n > 0; n--) {
+		copybits(x, y, width, height, x1, y);
+		x1 += width;
+		total_width -= width;
+	}
+	if(total_width)
+		copybits(x, y, total_width, height, x1, y);
+}
+
+void fillbitsv(int x, int y, int width, int height, int total_height) {
+	total_height -= height;
+	if(total_height <= 0 || height <= 0)
+		return;
+	auto y1 = y + height;
+	for(auto n = total_height / height; n > 0; n--) {
+		copybits(x, y, width, height, x, y1);
+		y1 += height;
+		total_height -= height;
+	}
+	if(total_height)
+		copybits(x, y, width, total_height, x, y1);
+}
+
 void rectf(color v) {
-	auto push_fore = fore;
-	fore = v;
+	pushfore push(v);
 	rectf();
-	fore = push_fore;
 }
 
 void form_frame(color light_left_up, color shadow_right_down) {
@@ -65,6 +110,11 @@ void form_frame(color light_left_up, color shadow_right_down) {
 
 void form_frame() {
 	rectf(form_button);
+}
+
+void rectb_black() {
+	pushfore push(colors::black);
+	rectb();
 }
 
 void form_frame_rect() {
@@ -110,13 +160,6 @@ void form_shadow_effect() {
 	rectf();
 	fore = push_fore;
 	alpha = push_alpha;
-}
-
-void rectb_black() {
-	auto push_fore = fore;
-	fore = colors::black;
-	rectb();
-	fore = push_fore;
 }
 
 bool button(const char* title, unsigned key, unsigned flags, bool paint_rect_black, int button_height, fnevent press_effect) {
@@ -166,13 +209,11 @@ bool button(unsigned key, fnevent pressed_effect) {
 }
 
 void paint_background(color v) {
-	auto push_fore = fore;
-	fore = v; rectf();
 	caret.x = (getwidth() - 320) / 2;
 	caret.y = (getheight() - 200) / 2;
 	width = 320;
 	height = 200;
-	fore = push_fore;
+	rectf(v);
 }
 
 point same_point(point v, int resolution) {

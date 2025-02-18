@@ -20,14 +20,7 @@ extern color pallette[256];
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
 bool confirm(const char* header, const char* yes, const char* no);
-void copybits(int x, int y, int width, int height, int x1, int y1);
-void disappear_scene(color back, unsigned long milliseconds = 0);
-void fillbitsh(int x, int y, int width, int height, int total_width);
-void fillbitsv(int x, int y, int width, int height, int total_height);
-void form_frame(int thickness);
-void form_press_effect();
-void form_press_button_effect();
-void form_shadow_effect();
+void disappear_scene(unsigned long milliseconds = 0);
 void hilite_unit_orders();
 void initialize_view(const char* title, fnevent main_scene);
 void open_mentat();
