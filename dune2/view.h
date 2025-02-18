@@ -1,6 +1,7 @@
 #pragma once
 
 #include "color.h"
+#include "point.h"
 
 typedef void(*fnevent)();
 
@@ -18,6 +19,7 @@ color get_flash(color main, color back, int base, int range, int resolution = 10
 extern color pallette[256];
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
+bool confirm(const char* header, const char* yes, const char* no);
 void copybits(int x, int y, int width, int height, int x1, int y1);
 void disappear_scene(color back, unsigned long milliseconds = 0);
 void fillbitsh(int x, int y, int width, int height, int total_width);

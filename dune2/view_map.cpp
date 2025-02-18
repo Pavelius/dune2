@@ -715,16 +715,6 @@ static void rectb_alpha_drag(point mouse_start) {
 	rectb_alpha();
 }
 
-static void open_options() {
-	pushanswer push;
-	an.addv((void*)1, "Load a game", 0, '1');
-	an.addv((void*)2, "Save this game", 0, '2');
-	an.addv((void*)3, "Game controls", 0, '3');
-	an.addv((void*)4, "Restart scenario", 0, '4');
-	an.addv((void*)5, "Pick another house", 0, '5');
-	show_menu("Dune II: Building denasty", {200, 16}, "Cancel", "Quit", 0);
-}
-
 static void button(rect rc, unsigned key, fnevent pressed_effect, fnevent proc, long param) {
 	pushrect push;
 	caret.x = rc.x1; caret.y = rc.y1;
@@ -773,7 +763,7 @@ static void rectb_last_building() {
 
 static void paint_fow() {
 	pushrect push;
-	auto push_fore = fore; fore = colors::black;
+	pushfore push_fore(colors::black);
 	auto player_index = player->getindex();
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
@@ -795,13 +785,12 @@ static void paint_fow() {
 			}
 		}
 	}
-	fore = push_fore;
 }
 
 static void paint_visibility() {
 	pushrect push;
+	pushfore push_fore(colors::black);
 	auto push_alpha = alpha; alpha = 32;
-	auto push_fore = fore; fore = colors::black;
 	auto player_index = player->getindex();
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
@@ -826,7 +815,6 @@ static void paint_visibility() {
 		}
 	}
 	alpha = push_alpha;
-	fore = push_fore;
 }
 
 static void paint_move_order() {

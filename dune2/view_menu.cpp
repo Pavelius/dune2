@@ -10,6 +10,8 @@
 using namespace draw;
 
 static bool menu_button(int index, const void* data, const char* text, unsigned key) {
+	if(!data)
+		data = text;
 	if(true) {
 		pushrect push;
 		form_frame(2);
@@ -22,29 +24,30 @@ static bool menu_button(int index, const void* data, const char* text, unsigned 
 	return run;
 }
 
-long show_menu(const char* header, point size, const char* cancel, const char* additional, fnevent proc) {
+long show_menu(const char* header, point size, const char* cancel, const char* additional, fnevent additional_proc) {
 	const int additional_offset = 6;
 	const int padding = 2;
-	auto push_font = font; font = gres(FONT8);
 	pushtheme push_theme(ButtonMenu);
+	pushfont push_font(gres(FONT8));
 	screenshoot push_screen;
 	point window_size(getwidth(), getheight());
+	if(!additional_proc)
+		additional_proc = buttoncancel;
 	while(ismodal()) {
 		push_screen.restore();
-		width = size.x + additional_offset * 2;
-		height = an.getcount() * (size.y + padding) + additional_offset * 2 - padding;
+		draw::width = size.x + additional_offset * 2;
+		draw::height = (an.getcount() + 1) * (size.y + padding) + additional_offset * 2 - padding;
 		if(header)
-			height += texth() + padding * 2;
-		caret.x = (getwidth() - width) / 2;
-		caret.y = imax(24, (getheight() - height) / 2);
+			draw::height += texth() + padding * 2;
+		caret.x = (getwidth() - draw::width) / 2;
+		caret.y = imax(24, (getheight() - draw::height) / 2);
 		form_frame(2);
 		setoffset(12, 6);
-		height = size.y;
+		draw::height = size.y;
 		auto index = 0;
 		if(header) {
-			auto push_fore = fore; fore = color(255, 215, 138);
+			pushfore push(form_button_dark);
 			texta(header, AlignCenterCenter);
-			fore = push_fore;
 			caret.y += texth() + padding * 2;
 		}
 		for(auto& e : an) {
@@ -52,10 +55,22 @@ long show_menu(const char* header, point size, const char* cancel, const char* a
 				execute(update_buttonparam, (long)e.value, 0, 0);
 			caret.y += size.y + padding;
 		}
+		auto width_origin = draw::width;
+		draw::width = (width_origin - padding) / 2;
+		if(menu_button(-1, 0, additional, 0))
+			execute(additional_proc);
+		caret.x = caret.x + width_origin - draw::width;
+		if(menu_button(-1, 0, cancel, KeyEscape))
+			execute(buttoncancel);
 		domodal();
 		if(window_size.x != getwidth() || window_size.y != getheight())
 			breakmodal(0);
 	}
-	font = push_font;
+	push_screen.restore();
 	return getresult();
+}
+
+bool confirm(const char* header, const char* yes, const char* no) {
+	pushanswer push;
+	return show_menu(header, {200, 14}, no, yes, buttonok);
 }

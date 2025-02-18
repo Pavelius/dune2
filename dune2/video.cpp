@@ -17,7 +17,7 @@ void reset_video_time() {
 }
 
 void video_play(const slice<videoi>& source) {
-	pushfontb push_theme(TextRed);
+	pushfontb push_theme(TextRed); draw::font = gres(FONT16);
 	pushvalue push_id(animate_id);
 	pushvalue push_header(form_header);
 	pushvalue push_delay(animate_delay);

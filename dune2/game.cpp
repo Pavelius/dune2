@@ -1,4 +1,5 @@
 #include "area.h"
+#include "answers.h"
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
@@ -8,6 +9,7 @@
 #include "rand.h"
 #include "unit.h"
 #include "view.h"
+#include "view_theme.h"
 #include "video.h"
 
 gamei game;
@@ -189,6 +191,26 @@ static void show_introdution() {
 	video_play(main_intro);
 	// Change music
 	music_play(0);
+}
+
+static void load_game() {
+	confirm("Do you really want to load game?", "Yes", "No");
+}
+
+void open_options() {
+	pushanswer push;
+	while(true) {
+		an.clear();
+		an.addv(load_game, "Load a game", 0, '1');
+		an.addv((void*)2, "Save this game", 0, '2');
+		an.addv((void*)3, "Game controls", 0, '3');
+		an.addv((void*)4, "Restart scenario", 0, '4');
+		an.addv((void*)5, "Pick another house", 0, '5');
+		auto p = (fnevent)show_menu("Dune II: Building denasty", {200, 16}, "Cancel", "Quit", 0);
+		if(!p)
+			break;
+		p();
+	}
 }
 
 void main_menu() {

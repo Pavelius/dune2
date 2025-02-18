@@ -1,6 +1,5 @@
 #include "bsdata.h"
 #include "draw.h"
-#include "resid.h"
 #include "view_focus.h"
 #include "view_theme.h"
 
@@ -27,7 +26,6 @@ pushtheme::~pushtheme() {
 pushfontb::pushfontb(themen id) : font(draw::font), fpal1(font_pallette[1]), fpal5(font_pallette[5]), fpal6(font_pallette[6]), palt(draw::palt) {
 	auto& ei = bsdata<themei>::elements[id];
 	draw::palt = font_pallette;
-	draw::font = gres(FONT16);
 	font_pallette[1] = ei.form;
 	font_pallette[5] = ei.light;
 	font_pallette[6] = ei.dark;

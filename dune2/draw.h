@@ -188,6 +188,18 @@ struct pushrect {
 	pushrect() : caret(draw::caret), width(draw::width), height(draw::height) {}
 	~pushrect() { draw::caret = caret; draw::width = width; draw::height = height; }
 };
+struct pushfont {
+	const sprite* font;
+	pushfont() : font(draw::font) {}
+	pushfont(const sprite* v) : font(draw::font) { draw::font = v; }
+	~pushfont() { draw::font = font; }
+};
+struct pushfore {
+	color fore;
+	pushfore() : fore(draw::fore) {}
+	pushfore(color v) : fore(draw::fore) { draw::fore = v; }
+	~pushfore() { draw::fore = fore; }
+};
 int					aligned(int x, int width, unsigned state, int string_width);
 int					alignedh(const rect& rc, const char* string, unsigned state);
 void				blit(surface& dest, int x, int y, int width, int height, unsigned flags, const surface& source, int x_source, int y_source);

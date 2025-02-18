@@ -20,9 +20,9 @@ struct pushtheme {
 	~pushtheme();
 };
 struct pushfontb {
+	const sprite* font;
 	color fpal1, fpal5, fpal6;
 	color* palt;
-	const sprite* font;
 	pushfontb(themen id);
 	~pushfontb();
 };
