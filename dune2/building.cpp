@@ -2,6 +2,7 @@
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
+#include "pointa.h"
 #include "resid.h"
 #include "topicablea.h"
 
@@ -82,9 +83,6 @@ void building::construct(point v) {
 	auto pe = getbuild();
 	if(bsdata<buildingi>::have(pe))
 		add_building(v, (buildingn)((buildingi*)pe - bsdata<buildingi>::elements));
-	else if(bsdata<uniti>::have(pe)) {
-
-	}
 	build_spend = 0;
 }
 
@@ -95,9 +93,36 @@ void building::cancel() {
 	}
 }
 
+static point get_unit_place_point(point start, int range) {
+	pointa points;
+	area.blockcontrol();
+	area.controlwave(start, allowcontrol, range);
+	blockarea(isunitpossible);
+	blockunits(0);
+	points.selectfree();
+	return points.random();
+}
+
+bool building::autoproduct() {
+	auto pe = getbuild();
+	if(!pe)
+		return false;
+	if(build_spend < pe->cost)
+		return false;
+	if(!bsdata<uniti>::have(pe))
+		return false;
+	auto v = get_unit_place_point(position, 32);
+	if(area.isvalid(v))
+		add_unit(v, (unitn)getbsi((uniti*)pe), to(position, v));
+	build_spend = 0;
+	return true;
+}
+
 void building::update() {
-	if(isworking())
+	if(isworking()) {
 		progress();
+		autoproduct();
+	}
 }
 
 int	building::getprogress() const {

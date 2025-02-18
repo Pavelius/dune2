@@ -146,6 +146,7 @@
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
+    <ClCompile Include="pointa.cpp" />
     <ClCompile Include="topicablea.cpp" />
     <ClCompile Include="view_build.cpp" />
     <ClCompile Include="view_theme.cpp" />
@@ -209,6 +210,7 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="pointa.h" />
     <ClInclude Include="topicablea.h" />
     <ClInclude Include="view_theme.h" />
     <ClInclude Include="topic.h" />

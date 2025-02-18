@@ -201,6 +201,9 @@
     <ClCompile Include="topicablea.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="pointa.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -372,6 +375,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="topicablea.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="pointa.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

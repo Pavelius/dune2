@@ -352,8 +352,10 @@ static void change_debug() {
 	if(!debug_toggle)
 		return;
 	area.blockcontrol();
-	area.controlwave(area_spot, allowcontrol);
-	blockarea(allowbuild);
+	area.controlwave(area_spot, allowcontrol, 32);
+	// blockarea(allowbuild);
+	blockarea(isunitpossible);
+	blockunits(0);
 }
 
 void view_debug_input() {

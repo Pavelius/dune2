@@ -17,7 +17,7 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"LightInfantry", INFANTRY, 81, 100, Footed, ShootHandGun, UNITS, 0, 0, {4, 2, 1, 3}},
+	{"LightInfantry", INFANTRY, 81, 100, Footed, ShootHandGun, UNITS, 91, 0, {4, 2, 1, 3}},
 	{"HeavyInfantry", HYINFY, 91, 170, Footed, ShootHandGun, UNITS, 0, 0, {4, 3, 1, 3, 1}},
 	{"Trike", TRIKE, 80, 0, Wheeled, ShootHandGun, UNITS, 5, 0, {6, 4, 2, 10, 2}},
 	{"Tank", LTANK, 78, 0, Tracked, ShootHeavyGun, UNITS2, 0, 5, {8, 6, 1, 5, 3}},
@@ -114,14 +114,16 @@ void unit::scouting() {
 	area.scouting(position, player, getlos());
 }
 
-void unit::blockland() const {
-	// 1) Prepare path map and block impassable landscape
-	area.blockland(geti().move);
-	// 2) Block all tiles with units except this one
+void blockunits(const unit* exclude) {
 	for(auto& e : bsdata<unit>()) {
-		if(e && &e != this)
+		if(e && &e != exclude)
 			path_map[e.position.y][e.position.x] = BlockArea;
 	}
+}
+
+void unit::blockland() const {
+	area.blockland(geti().move);
+	blockunits(this);
 }
 
 int unit::getspeed() const {
@@ -274,6 +276,10 @@ void unit::update() {
 				stop();
 			else
 				start_time += game_rand(200, 300);
+		} else if(geti().move == Footed) {
+			move_direction = path_direction; // Footed units turn around momentary.
+			position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
+			movescreen(); // Start moving to next tile.
 		} else {
 			if(!turn(move_direction, path_direction)) // More that one turn take time
 				start_time += game_rand(300, 400); // Turning pause

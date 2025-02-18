@@ -41,6 +41,8 @@ struct building : playerable, typeable<buildingi, buildingn> {
 	bool			progress();
 	void			scouting();
 	void			update();
+private:
+	bool			autoproduct();
 };
 extern building* last_building;
 

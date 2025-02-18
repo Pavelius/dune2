@@ -74,9 +74,11 @@ private:
 extern unit *last_unit;
 
 void add_unit(point pt, unitn id, direction d);
+void blockunits(const unit* exclude);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);
+bool isunitpossible(point v);
 
 unit* find_unit(point s);
 point formation(int index);

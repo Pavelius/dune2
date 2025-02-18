@@ -385,6 +385,16 @@ static void paint_map_features() {
 	}
 }
 
+static void paint_foot(const sprite* ps, int frame, direction d) {
+	switch(d) {
+	case Down: image(ps, frame + 0 * 4, ImagePallette); break;
+	case RightUp: case Right: case RightDown: image(ps, frame + 1 * 4, ImagePallette); break;
+	case Up: image(ps, frame + 0 * 4, ImageMirrorH | ImagePallette); break;
+	case LeftDown: case Left: case LeftUp: image(ps, frame + 1 * 4, ImageMirrorH | ImagePallette); break;
+	default: break;
+	}
+}
+
 static void paint_platform(const sprite* ps, int frame, direction d) {
 	switch(d) {
 	case Up: image(ps, frame + 0, ImagePallette); break;
@@ -399,20 +409,27 @@ static void paint_platform(const sprite* ps, int frame, direction d) {
 	}
 }
 
-static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction, unsigned char color_index) {
+static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction, unsigned char color_index, int index) {
 	update_pallette_by_player(color_index);
-	paint_platform(gres(e.res), e.frame, move_direction);
-	if(e.frame_shoot)
-		paint_platform(gres(e.res), e.frame_shoot, shoot_direction);
+	if(e.move == Footed)
+		paint_foot(gres(e.res), e.frame + index, move_direction);
+	else {
+		paint_platform(gres(e.res), e.frame, move_direction);
+		if(e.frame_shoot)
+			paint_platform(gres(e.res), e.frame_shoot, shoot_direction);
+	}
+}
+
+static int get_animation_frame(point n1, point n2) {
+	auto i = iabs(n1.x - n2.x);
+	auto j = iabs(n1.y - n2.y);
+	return imax(i, j);
 }
 
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
-	auto& e = p->geti();
-	update_pallette_by_player(p->getplayer().color_index);
-	paint_platform(gres(e.res), e.frame, p->move_direction);
-	if(e.frame_shoot)
-		paint_platform(gres(e.res), e.frame_shoot, p->shoot_direction);
+	paint_unit(p->geti(), p->move_direction, p->shoot_direction,
+		p->getplayer().color_index, get_animation_frame(p->screen, m2sc(p->position)) % 4);
 }
 
 static int calculate(int v1, int v2, int n, int m) {
@@ -553,7 +570,7 @@ static void paint_radar_land() {
 			}
 			fore = bsdata<terraini>::elements[t].minimap;
 			if(!area.is(v, player_index, Visible))
-				fore = fore.mix(colors::black, 256-32);
+				fore = fore.mix(colors::black, 256 - 32);
 			pixel(caret.x + x, caret.y + y);
 		}
 	}
@@ -763,7 +780,7 @@ static void paint_fow() {
 			} else {
 				auto frame = area.getframefow(v, player_index, Explored);
 				frame ^= 0x0f;
-				if(frame==0 || frame==15)
+				if(frame == 0 || frame == 15)
 					continue;
 				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
 			}
@@ -956,7 +973,7 @@ static void paint_unit_list() {
 	auto push_caret = caret;
 	caret = push_caret + point(6, 8);
 	for(auto p : human_selected) {
-		paint_unit(p->geti(), RightDown, RightDown, p->getplayer().color_index);
+		paint_unit(p->geti(), RightDown, RightDown, p->getplayer().color_index, 0);
 		caret.x += 16;
 		if(caret.x >= clipping.x2) {
 			caret.x = push_caret.x;

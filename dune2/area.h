@@ -25,7 +25,7 @@ struct areai {
 	point			correct(point v) const;
 	void			blockland(movementn mv) const;
 	void			blockcontrol() const;
-	void			controlwave(point start, fntest proc) const;
+	void			controlwave(point start, fntest proc, int range) const;
 	void			decoy(point v);
 	terrainn		get(point v) const;
 	point			getcorner(point v) const;
@@ -78,6 +78,8 @@ bool allowbuild(point v);
 void blockarea(areai::fntest proc);
 void setareascout(point v, int player_index);
 void setnofeature(point v, int param);
+
+point anynonblock();
 
 inline point m2s(point v) { return point(v.x * area_tile_width, v.y * area_tile_height); }
 inline point m2sc(point v) { return point(v.x * area_tile_width + area_tile_width / 2, v.y * area_tile_height + area_tile_height / 2); }

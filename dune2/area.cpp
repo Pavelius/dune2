@@ -434,7 +434,7 @@ void areai::blockland(movementn mv) const {
 			if(f == BuildingHead || f == BuildingLeft || f == BuildingUp) {
 				path_map[y][x] = BlockArea;
 				continue;
-			} else if(md[t]==0xFF)
+			} else if(md[t] == 0xFF)
 				path_map[y][x] = BlockArea;
 			else
 				path_map[y][x] = 0;
@@ -443,12 +443,10 @@ void areai::blockland(movementn mv) const {
 }
 
 void areai::blockcontrol() const {
-	auto md = bsdata<movementi>::elements[Tracked].cost;
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++) {
 			auto t = get(point(x, y));
-			auto f = map_features[frames[y][x]];
-			if(md[t] == 0xFF)
+			if(t == Mountain)
 				path_map[y][x] = BlockArea;
 			else
 				path_map[y][x] = 0;
@@ -533,7 +531,7 @@ void setnofeature(point v, int player_index) {
 	area.set(v, NoFeature);
 }
 
-void areai::controlwave(point start, fntest proc) const {
+void areai::controlwave(point start, fntest proc, int range) const {
 	if(!isvalid(start))
 		return;
 	clear_stack();
@@ -548,9 +546,11 @@ void areai::controlwave(point start, fntest proc) const {
 		auto cost = path_map[vc.y][vc.x];
 		if(cost >= 0xFF00)
 			break;
-		for(auto d : all_strait_directions) {
+		for(auto d : all_strait_directions) { // No diagonal allowed
 			auto v = to(vc, d);
 			if(!isvalid(v))
+				continue;
+			if(range && start.range(v) > range)
 				continue;
 			auto a = path_map[v.y][v.x];
 			if(a != BlockArea && (!a || (cost + 1 < a))) {
