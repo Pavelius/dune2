@@ -1,4 +1,5 @@
 #include "area.h"
+#include "answers.h"
 #include "bsdata.h"
 #include "building.h"
 #include "direction.h"
@@ -715,6 +716,13 @@ static void rectb_alpha_drag(point mouse_start) {
 }
 
 static void open_options() {
+	pushanswer push;
+	an.addv((void*)1, "Load a game", 0, '1');
+	an.addv((void*)2, "Save this game", 0, '2');
+	an.addv((void*)3, "Game controls", 0, '3');
+	an.addv((void*)4, "Restart scenario", 0, '4');
+	an.addv((void*)5, "Pick another house", 0, '5');
+	show_menu("Dune II: Building denasty", {200, 16}, "Cancel", "Quit", 0);
 }
 
 static void button(rect rc, unsigned key, fnevent pressed_effect, fnevent proc, long param) {

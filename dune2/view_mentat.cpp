@@ -286,6 +286,7 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 		if(show_scene_raw(paint_mentat_silent, paint_proceed_repeat, 0))
 			break;
 	}
+	music_play(0);
 }
 
 void open_mentat() {

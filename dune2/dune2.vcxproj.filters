@@ -201,6 +201,12 @@
     <ClCompile Include="pointa.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="view_menu.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="answers.cpp">
+      <Filter>support</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -376,6 +382,9 @@
     </ClInclude>
     <ClInclude Include="pointa.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="answers.h">
+      <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

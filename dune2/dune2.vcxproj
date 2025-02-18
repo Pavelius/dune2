@@ -132,6 +132,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="answers.cpp" />
     <ClCompile Include="area.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="building.cpp" />
@@ -149,6 +150,7 @@
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="topicablea.cpp" />
     <ClCompile Include="view_build.cpp" />
+    <ClCompile Include="view_menu.cpp" />
     <ClCompile Include="view_theme.cpp" />
     <ClCompile Include="topic.cpp" />
     <ClCompile Include="tree.cpp" />
@@ -195,6 +197,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="adat.h" />
+    <ClInclude Include="answers.h" />
     <ClInclude Include="area.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="bsdata.h" />

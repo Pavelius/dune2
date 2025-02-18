@@ -187,6 +187,7 @@ void update_buttonparam() {
 }
 
 BSDATA(themei) = {
+	{"ButtonMenu", color(178, 178, 199), color(255, 255, 255), color(85, 85, 121), color(68, 68, 96)},
 	{"ButtonLight", color(186, 190, 150), color(251, 255, 203), color(101, 101, 77), color(69, 69, 52)},
 	{"ButtonDark", color(40, 40, 60), color(65, 65, 89), color(40, 40, 60), color(255, 215, 138)},
 	{"ButtonYellow", color(203, 142, 16), color(255, 182, 44), color(154, 105, 0), color(60, 36, 0)},

@@ -192,14 +192,14 @@ static void show_introdution() {
 }
 
 void main_menu() {
-	music_disabled = true;
+	// music_disabled = true;
 	// show_introdution();
 	auto size = sizeof(unit);
 	player = bsdata<playeri>::elements;
 	player->add(Credits, 3000);
 	player->color_index = 2;
 	player->fraction = Atreides;
-	show_scenario_prompt("Brief", HARVEST, 1);
+	// show_scenario_prompt("Brief", HARVEST, 1);
 	area.clear();
 	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
 	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
