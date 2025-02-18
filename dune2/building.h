@@ -10,8 +10,8 @@
 
 enum buildingn : unsigned char {
 	ConstructionYard, SpiceSilo, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
-	Barracks, WOR, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
-	Turret, RocketTurret,
+	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
+	Slab, Slab4, Turret, RocketTurret,
 };
 struct buildingi : topicable {
 	short			hits;
@@ -19,6 +19,7 @@ struct buildingi : topicable {
 	short unsigned	frames[16], ruined[16];
 	slice<topicable*> build;
 	short unsigned	abilities[SpiceCapacity + 1];
+	buildingn		getindex() const;
 };
 struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;

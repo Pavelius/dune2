@@ -136,6 +136,7 @@ void initialize_translation();
 bool szstart(const char* text, const char* value);
 bool szmatch(const char* text, const char* value);
 bool szpmatch(const char* text, const char* pattern);
+void szupper(char* p);
 
 constexpr bool ischa(unsigned char s) { return (s >= 'A' && s <= 'Z') || (s >= 'a' && s <= 'z') || s >= 0xC0; }
 constexpr bool isnum(unsigned char s) { return s >= '0' && s <= '9'; }

@@ -90,9 +90,6 @@
     <ClCompile Include="surface_serial.cpp">
       <Filter>support</Filter>
     </ClCompile>
-    <ClCompile Include="scripting.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
     <ClCompile Include="iff.cpp">
       <Filter>support</Filter>
     </ClCompile>

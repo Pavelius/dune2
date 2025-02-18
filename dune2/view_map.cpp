@@ -429,7 +429,8 @@ static int get_animation_frame(point n1, point n2) {
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	paint_unit(p->geti(), p->move_direction, p->shoot_direction,
-		p->getplayer().color_index, get_animation_frame(p->screen, m2sc(p->position)) % 4);
+		p->getplayer().color_index,
+		get_animation_frame(p->screen, m2sc(p->position)) % 4);
 }
 
 static int calculate(int v1, int v2, int n, int m) {

@@ -6,7 +6,7 @@
 enum featuren : unsigned char {
 	NoFeature,
 	Explosion, AircraftRemains, CarRemains, StructureRemains, Body, Bodies, Blood, Trail,
-	Slab, Wall,
+	SlabFeature, WallFeature,
 	BuildingHead, BuildingLeft, BuildingUp,
 	FogOfWarFeature
 };

@@ -173,7 +173,6 @@
     <ClCompile Include="resid.cpp" />
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="screenshoot.cpp" />
-    <ClCompile Include="scripting.cpp" />
     <ClCompile Include="shape.cpp" />
     <ClCompile Include="sprite_util.cpp" />
     <ClCompile Include="squad.cpp" />

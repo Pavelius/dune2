@@ -26,6 +26,10 @@ It is slower than the average tank and has limited manoeuvrability.
 The Trike is a lightly armored, three-wheeled, vehicle which fires armor piercing rounds.
 It has limited firing range, but moves rapidly.
 
+#QuadInfo
+The Quad is a lightly armored, four-wheeled vehicle which fires armor piercing incendiary rounds.
+The slower Quad is stronger than the Trike in both armor and firepower.
+
 
 #BarracksInfo
 Barracks are required to produce and train Light Infantry units.

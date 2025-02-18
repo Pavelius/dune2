@@ -405,6 +405,19 @@ bool areai::isbuilding(point v) const {
 	//return t == BuildingHead || t == BuildingLeft || t == BuildingUp;
 }
 
+void areai::set(point v, shapen t, featuren f) {
+	auto& e = bsdata<shapei>::elements[t];
+	if(!e.count)
+		return;
+	auto j = bsdata<featurei>::elements[f].frame;
+	for(auto i = 0; i < e.count; i++) {
+		auto n = v + e.points[i];
+		if(!isvalid(n))
+			continue;
+		frames_overlay[n.y][n.x] = j;
+	}
+}
+
 void areai::set(point v, shapen t, const short unsigned* frame_list) {
 	if(!frame_list)
 		return;
@@ -498,7 +511,7 @@ bool allowcontrol(point v) {
 	auto t = area.get(v);
 	if(t == Rock) {
 		auto f = area.getfeature(v);
-		if(f == Slab || f == BuildingHead || f == BuildingLeft || f == BuildingUp)
+		if(f >= SlabFeature)
 			return true;
 	}
 	return false;

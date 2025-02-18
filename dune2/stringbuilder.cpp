@@ -321,6 +321,11 @@ void stringbuilder::lower() {
 		*p = lower_symbol(*p);
 }
 
+void szupper(char* p) {
+	for(;*p; p++)
+		*p = upper_symbol(*p);
+}
+
 void stringbuilder::upper() {
 	for(auto p = pb; *p; p++)
 		*p = upper_symbol(*p);

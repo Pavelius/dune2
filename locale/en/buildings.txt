@@ -11,6 +11,8 @@ RadarOutpost: Radar Outpost
 Refinery: Refinery
 RepairFacility: Repair Facility
 RocketTurret: Rocket Turret
+Slab: Slab
+Slab4: Slab blocks
 SpiceSilo: Spice Silo
 Starport: Starport
 Turret: Turret

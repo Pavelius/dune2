@@ -10,32 +10,37 @@ BSLINK(buildingn, buildingi)
 BSLINK(unitn, uniti)
 
 static topicable* base_produce[] = {
-	BS(RadarOutpost), BS(Barracks),
+	BS(Slab), BS(Slab4),
+	BS(RadarOutpost), BS(Barracks), BS(Wor),
 	BS(Refinery), BS(SpiceSilo),
 	BS(Windtrap),
 };
 static topicable* barrac_produce[] = {
 	BS(LightInfantry),
+};
+static topicable* wor_produce[] = {
 	BS(HeavyInfantry),
 };
 
 BSDATA(buildingi) = {
 	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce},
 	{"SpiceSilo", STORAGE, 69, 100, 500, Shape2x2, {372, 373, 375, 376}, {}, {}, {0, 0, 0, 0, 1000}},
-	{"Starport"},
+	{"Starport", STARPORT, 57},
 	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 0, 0, 0, 0}},
 	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 0, 0, 0, 1000}},
 	{"RadarOutpost", HEADQRTS, 70, 500, 1000, Shape2x2, {379, 380, 386, 387}, {}, {}, {0, 0, 0, 0, 0}},
-	{"RepairFacility"},
+	{"RepairFacility", REPAIR},
 	{"HouseOfIX"},
-	{"Palace"},
-	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {285, 286, 288, 289}, {}, barrac_produce, {0, 0, 0, 0, 0}},
-	{"WOR"},
-	{"LightVehicleFactory"},
-	{"HeavyVehicleFactory"},
+	{"Palace", PALACE, 54},
+	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {299, 300, 301, 302}, {}, barrac_produce, {0, 0, 0, 0, 0}},
+	{"WOR", WOR, 59, 500, 1500, Shape2x2, {285, 286, 288, 289}, {}, wor_produce, {}},
+	{"LightVehicleFactory", LITEFTRY, 55},
+	{"HeavyVehicleFactory", HVYFTRY, 56},
 	{"HighTechFacility"},
-	{"Turret"},
-	{"RocketTurret"}
+	{"Slab", SLAB, 53, 2, 0, Shape1x1, {126}},
+	{"Slab4", SLAB4, 71, 5, 0, Shape2x2, {}},
+	{"Turret", TURRET},
+	{"RocketTurret", RTURRET}
 };
 assert_enum(buildingi, RocketTurret)
 
@@ -44,6 +49,12 @@ building* last_building;
 
 building::operator bool() const {
 	return area.isvalid(position);
+}
+
+buildingn buildingi::getindex() const {
+	if(!this)
+		return Slab;
+	return (buildingn)(this - bsdata<buildingi>::elements);
 }
 
 void add_building(point pt, buildingn id) {
@@ -91,8 +102,16 @@ void building::construct(point v) {
 	if(!area.isvalid(v))
 		return;
 	auto pe = getbuild();
-	if(bsdata<buildingi>::have(pe))
-		add_building(v, (buildingn)((buildingi*)pe - bsdata<buildingi>::elements));
+	if(bsdata<buildingi>::have(pe)) {
+		auto pb = ((buildingi*)pe);
+		auto t = pb->getindex();
+		if(t == Slab || t == Slab4) {
+			auto size = bsdata<shapei>::elements[pb->shape].size;
+			area.set(v, pb->shape, SlabFeature);
+			area.scouting(v, size, player, getlos());
+		} else
+			add_building(v, t);
+	}
 	build_spend = 0;
 }
 
