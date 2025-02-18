@@ -11,7 +11,7 @@ BSLINK(unitn, uniti)
 
 static topicable* base_produce[] = {
 	BS(Slab), BS(Slab4),
-	BS(RadarOutpost), BS(Barracks), BS(Wor),
+	BS(RadarOutpost), BS(Barracks), BS(Wor), BS(LightVehicleFactory),
 	BS(Refinery), BS(SpiceSilo),
 	BS(Windtrap),
 };
@@ -20,6 +20,10 @@ static topicable* barrac_produce[] = {
 };
 static topicable* wor_produce[] = {
 	BS(HeavyInfantry),
+};
+static topicable* lftr_produce[] = {
+	BS(Trike),
+	BS(Quad),
 };
 
 BSDATA(buildingi) = {
@@ -34,8 +38,8 @@ BSDATA(buildingi) = {
 	{"Palace", PALACE, 54},
 	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {299, 300, 301, 302}, {}, barrac_produce, {0, 0, 0, 0, 0}},
 	{"WOR", WOR, 59, 500, 1500, Shape2x2, {285, 286, 288, 289}, {}, wor_produce, {}},
-	{"LightVehicleFactory", LITEFTRY, 55},
-	{"HeavyVehicleFactory", HVYFTRY, 56},
+	{"LightVehicleFactory", LITEFTRY, 55, 1000, 2000, Shape2x2, {241, 242, 248, 249}, {}, lftr_produce},
+	{"HeavyVehicleFactory", HVYFTRY, 56, 2000, 2000},
 	{"HighTechFacility"},
 	{"Slab", SLAB, 53, 2, 0, Shape1x1, {126}},
 	{"Slab4", SLAB4, 71, 5, 0, Shape2x2, {}},
@@ -118,6 +122,7 @@ void building::construct(point v) {
 void building::cancel() {
 	if(build_spend && canbuild()) {
 		getplayer().add(Credits, build_spend);
+		build_count = 0;
 		build_spend = 0;
 	}
 }
@@ -150,7 +155,12 @@ bool building::autoproduct() {
 void building::update() {
 	if(isworking()) {
 		progress();
-		autoproduct();
+		if(autoproduct()) {
+			if(build_count) {
+				progress();
+				build_count--;
+			}
+		}
 	}
 }
 

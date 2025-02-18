@@ -917,7 +917,7 @@ static void paint_unit_panel(int frame, int hits, int hits_maximum, fnevent proc
 	texta("Dmg", AlignCenter | TextSingleLine);
 	caret = push_caret;
 	width = push_width;
-	caret.y += 24;
+	caret.y += 25;
 }
 
 static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
@@ -1008,6 +1008,9 @@ static void human_build() {
 		placement_size = p->getbuildsize();
 		p->construct(choose_placement());
 		placement_size = push;
+	} else if(bsdata<uniti>::have(p->getbuild())) {
+		if(p->build_count < 199)
+			p->build_count++;
 	}
 }
 
@@ -1016,7 +1019,7 @@ static void human_cancel() {
 	p->cancel();
 }
 
-static void paint_build_button(const char* format, int avatar, shapen shape, unsigned key) {
+static void paint_build_button(const char* format, int avatar, shapen shape, unsigned key, int count) {
 	bool pressed;
 	auto push_fore = fore;
 	if(true) {
@@ -1031,6 +1034,13 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 		image(gres(SHAPES), avatar, 0);
 		if(shape != NoShape)
 			paint_build_shape(caret.x + 35, caret.y + 2, shape);
+		if(count >= 2) {
+			pushrect push;
+			char temp[32]; stringbuilder sb(temp); sb.add("x%1i", count);
+			caret.x += 32; width -= 32;
+			fore = form_button_dark;
+			texta(temp, AlignCenterCenter);
+		}
 		fore = form_button_dark;
 		caret.y += 24; texta(format, AlignCenter);
 		if(run)
@@ -1053,7 +1063,7 @@ static void paint_build_button() {
 		format = str("%1i%%", last_building->getprogress());
 	else
 		format = getnm("BuildIt");
-	paint_build_button(format, pe->frame_avatar, shape, 'B');
+	paint_build_button(format, pe->frame_avatar, shape, 'B', last_building->build_count + 1);
 	height = push_height;
 }
 
@@ -1061,11 +1071,9 @@ static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	if(last_building->canbuild()) {
 		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, open_building, (long)last_building);
-		caret.y += 14;
 		paint_build_button();
 	} else {
 		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
-		caret.y += 14;
 	}
 }
 
@@ -1079,7 +1087,6 @@ static void paint_unit_info() {
 		last_unit = human_selected[0];
 		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->getmaximum(Hits), 0, 0);
-		caret.y += 1;
 		paint_unit_orders();
 		last_unit = push_unit;
 	} else {

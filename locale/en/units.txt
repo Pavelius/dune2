@@ -6,5 +6,6 @@ Units: Units
 AssaultTank: Assault Tank
 HeavyInfantry: Heavy Infantry
 LightInfantry: Light Infantry
+Quad: Quad
 Tank: Tank
 Trike: Trike

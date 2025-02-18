@@ -23,7 +23,7 @@ struct buildingi : topicable {
 };
 struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;
-	unsigned char	build_index;
+	unsigned char	build_index, build_count;
 	unsigned short	build_spend;
 	short			hits;
 	explicit operator bool() const;
