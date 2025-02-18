@@ -1,3 +1,2 @@
 ﻿Error in file `UnknownNames.txt`:
- Define translation for `Proceed`
- Define translation for `Repeat`
+ Define translation for `Harvest`

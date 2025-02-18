@@ -5,3 +5,4 @@ Mountain: Mountain
 Rock: Rock
 Sand: Sand
 Spice: Spice
+SpiceRich: Spice

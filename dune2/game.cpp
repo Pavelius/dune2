@@ -197,20 +197,29 @@ static void load_game() {
 	confirm("Do you really want to load game?", "Yes", "No");
 }
 
+static void save_game() {
+}
+
+static void controls_game() {
+}
+
+static void restart_scenario() {
+}
+
+static void pick_house() {
+}
+
 void open_options() {
 	pushanswer push;
-	while(true) {
-		an.clear();
-		an.addv(load_game, "Load a game", 0, '1');
-		an.addv((void*)2, "Save this game", 0, '2');
-		an.addv((void*)3, "Game controls", 0, '3');
-		an.addv((void*)4, "Restart scenario", 0, '4');
-		an.addv((void*)5, "Pick another house", 0, '5');
-		auto p = (fnevent)show_menu("Dune II: Building denasty", {200, 16}, "Cancel", "Quit", 0);
-		if(!p)
-			break;
-		p();
-	}
+	an.addv(load_game, "Load a game", 0, '1');
+	an.addv(save_game, "Save this game", 0, '2');
+	an.addv(controls_game, "Game controls", 0, '3');
+	an.addv(restart_scenario, "Restart scenario", 0, '4');
+	an.addv(pick_house, "Pick another house", 0, '5');
+	auto p = (fnevent)show_menu("Dune II: Building denasty", {200, 16}, "Cancel", "Quit", 0);
+	if(!p)
+		return;
+	p();
 }
 
 void main_menu() {
@@ -233,7 +242,7 @@ void main_menu() {
 	add_building({5, 5}, Windtrap);
 	add_building({7, 5}, Refinery);
 	add_unit({5, 7}, Trike, Down);
-	add_unit({6, 7}, Tank, Down);
+	add_unit({6, 7}, Harvester, Down);
 	add_unit({7, 7}, AssaultTank, Down);
 	add_unit({8, 7}, Trike, Down);
 	show_scene(paint_main_map, 0, 0);

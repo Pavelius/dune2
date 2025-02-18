@@ -11,7 +11,7 @@
 #include "typeable.h"
 
 enum unitn : unsigned char {
-	LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank
+	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank
 };
 enum statn : unsigned char {
 	Hits, Damage, Attacks, Speed, Armor,
@@ -28,13 +28,13 @@ struct uniti : topicable {
 	unsigned char	stats[Armor + 1];
 };
 struct unit : drawable, playerable, typeable<uniti, unitn> {
-	unsigned long	shoot_time; // Start action
+	unsigned long	action_time; // Start action
 	point			position, order, guard, order_attack;
 	squadn			squad;
 	direction		move_direction, shoot_direction, path_direction;
 	unsigned char	attacks;
 	short unsigned	target; // Enemy target
-	short			hits;
+	short unsigned	hits;
 	explicit operator bool() const { return hits > 0; }
 	void			apply(ordern type, point v);
 	void			clear();
@@ -52,7 +52,9 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	bool			isenemy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
+	bool			isnoweapon() const { return geti().stats[Attacks] == 0; }
 	bool			isturret() const { return geti().frame_shoot != 0; }
+	bool			isharvest() const;
 	void			move(point v);
 	void			scouting();
 	void			set(point v);
@@ -63,13 +65,15 @@ private:
 	void			blockland() const;
 	bool			canshoot() const;
 	void			cleanup();
-	void			stopattack();
+	void			fixshoot(int chance_miss);
+	void			harvest();
 	void			leavetrail();
 	void			movescreen();
 	direction		nextpath(point v);
+	void			returnbase() {}
 	void			tracking();
 	bool			shoot();
-	void			fixshoot(int chance_miss);
+	void			stopattack();
 };
 extern unit *last_unit;
 

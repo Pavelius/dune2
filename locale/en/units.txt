@@ -4,6 +4,7 @@ ChooseTargetInfo: Choose move target
 Units: Units
 
 AssaultTank: Assault Tank
+Harvester: Harvester
 HeavyInfantry: Heavy Infantry
 LightInfantry: Light Infantry
 Quad: Quad

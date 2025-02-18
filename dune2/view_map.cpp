@@ -331,7 +331,7 @@ static void paint_cursor(point size, bool choose_mode) {
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
-	debug_control();
+	// debug_control();
 	paint_cursor(5, {8, 8}, false);
 	debug_map_message();
 }
@@ -410,6 +410,29 @@ static void paint_platform(const sprite* ps, int frame, direction d) {
 	}
 }
 
+static void paint_harvest(direction d) {
+	const auto k = 3;
+	auto ps = gres(UNITS1);
+	auto frame = 72 + (game.time / 200) % k;
+	switch(d) {
+	case Up: image(caret.x, caret.y + 8, ps, frame + 0 * k, ImagePallette); break;
+	case RightUp: image(caret.x - 7, caret.y + 7, ps, frame + 1 * k, ImagePallette); break;
+	case Right: image(caret.x - 14, caret.y, ps, frame + 2 * k, ImagePallette); break;
+	case RightDown: image(caret.x - 7, caret.y - 7, ps, frame + 3 * k, ImagePallette); break;
+	case Down: image(caret.x, caret.y - 9, ps, frame + 4 * k, ImagePallette); break;
+	case LeftDown: image(caret.x + 7, caret.y - 7, ps, frame + 3 * k, ImageMirrorH | ImagePallette); break;
+	case Left: image(caret.x + 14, caret.y, ps, frame + 2 * k, ImageMirrorH | ImagePallette); break;
+	case LeftUp: image(caret.x + 7, caret.y + 7, ps, frame + 1 * k, ImageMirrorH | ImagePallette); break;
+	default: break;
+	}
+}
+
+static void paint_unit_harvest(const uniti& e, direction move_direction, unsigned char color_index) {
+	update_pallette_by_player(color_index);
+	paint_platform(gres(e.res), e.frame, move_direction);
+	paint_harvest(move_direction);
+}
+
 static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction, unsigned char color_index, int index) {
 	update_pallette_by_player(color_index);
 	if(e.move == Footed)
@@ -429,9 +452,13 @@ static int get_animation_frame(point n1, point n2) {
 
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
-	paint_unit(p->geti(), p->move_direction, p->shoot_direction,
-		p->getplayer().color_index,
-		get_animation_frame(p->screen, m2sc(p->position)) % 4);
+	if(p->type == Harvester && p->isbusy())
+		paint_unit_harvest(p->geti(), p->move_direction, p->getplayer().color_index);
+	else {
+		paint_unit(p->geti(), p->move_direction, p->shoot_direction,
+			p->getplayer().color_index,
+			get_animation_frame(p->screen, m2sc(p->position)) % 4);
+	}
 }
 
 static int calculate(int v1, int v2, int n, int m) {
@@ -537,7 +564,11 @@ static void paint_radar_buildings() {
 
 static void mouse_unit_move() {
 	auto v = (point)draw::hot.param;
-	human_selected.order(Move, Center, v, false);
+	auto p = find_unit(v);
+	if(p && p->isenemy())
+		human_selected.order(Attack, v, false);
+	else
+		human_selected.order(Move, v, false);
 }
 
 static void input_radar() {
@@ -643,6 +674,7 @@ static void selection_rect_dropped(const rect& rc) {
 	if(last_building)
 		return;
 	human_selected.select(player, rc);
+	human_selected.formation();
 }
 
 static rect drag_finish_rect(point start, point finish, int minimal) {
@@ -893,7 +925,7 @@ static void paint_choose_terrain_placement() {
 
 static void human_order() {
 	auto type = (ordern)hot.param;
-	human_selected.order(type, Center, {-1, -1}, true);
+	human_selected.order(type, {-10000, -10000}, true);
 }
 
 static void button(ordern order, int key) {
@@ -913,7 +945,14 @@ static void paint_unit_orders() {
 	pushrect push;
 	setoffset(-1, 0);
 	height = 12;
-	button(Attack, 'A');
+	switch(last_unit->type) {
+	case Harvester:
+		button(Harvest, 'H');
+		break;
+	default:
+		button(Attack, 'A');
+		break;
+	}
 	button(Move, 'M');
 	button(Retreat, 0);
 	button(Stop, 'G');
@@ -1109,8 +1148,8 @@ void check_animation_time() {
 
 static void paint_video_fps() {
 	pushvalue push(caret);
-	pushvalue push_font(font, gres(FONT8));
-	pushvalue push_fore(fore, colors::white);
+	pushfont push_font(gres(FONT8));
+	pushfore push_fore(colors::white);
 	auto seconds = (animate_time - start_video) / 1000;
 	auto minutes = seconds / 60;
 	string sb; sb.add("%1.2i:%2.2i", minutes, seconds % 60);

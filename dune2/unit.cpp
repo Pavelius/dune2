@@ -17,6 +17,7 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
+	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 0, 4, 4}},
 	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootHandGun, UNITS, 91, 0, {4, 2, 1, 3}},
 	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootHandGun, UNITS, 103, 0, {4, 3, 1, 2, 1}},
 	{"Trike", TRIKE, 80, 100, Wheeled, ShootHandGun, UNITS, 5, 0, {6, 3, 2, 10, 2}},
@@ -68,11 +69,11 @@ void unit::damage(int value) {
 }
 
 bool unit::isbusy() const {
-	return shoot_time > game.time;
+	return action_time > game.time;
 }
 
 bool unit::isenemy() const {
-	return player == ::player->getindex();
+	return player != ::player->getindex();
 }
 
 bool unit::ismoving() const {
@@ -223,9 +224,11 @@ void unit::fixshoot(int chance_miss) {
 }
 
 bool unit::shoot() {
-	if(shoot_time > game.time) {
+	if(isnoweapon())
+		return false;
+	if(action_time > game.time) {
 		if(attacks) {// Allow multi-attacks
-			if((shoot_time - game.time) >= (attacks * shoot_next_attack)) {
+			if((action_time - game.time) >= (attacks * shoot_next_attack)) {
 				fixshoot(40); // Can make next attack on same target, but can miss
 				attacks++;
 				if(attacks >= geti().stats[Attack])
@@ -260,6 +263,34 @@ bool unit::shoot() {
 	return false;
 }
 
+bool unit::isharvest() const {
+	if(type != Harvester)
+		return false;
+	return action_time > game.time;
+}
+
+void unit::harvest() {
+	if(type != Harvester)
+		return;
+	auto t = area.get(position);
+	if(attacks > 10)
+		returnbase();
+	else if(t == Spice || t == SpiceRich) {
+		attacks++;
+		start_time += 1000 * 4;
+		action_time = start_time;
+		switch(area.get(position)) {
+		case Spice:
+			area.set(position, Sand);
+			break;
+		case SpiceRich:
+			area.set(position, Spice);
+			attacks++;
+			break;
+		}
+	}
+}
+
 void unit::update() {
 	tracking();
 	if(ismoving()) {// Unit just moving to neightboar tile. MUST FINISH!!!
@@ -278,6 +309,7 @@ void unit::update() {
 		if(!ismoving()) {
 			scouting();
 			path_direction = Center; // Arrive to next tile, we need new path direction.
+			harvest();
 		}
 	} else if(ismoveorder()) {
 		// We ready to start movement to next tile.
@@ -316,6 +348,8 @@ void unit::move(point v) {
 		return;
 	order = v;
 	start_time = game.time; // Can't wait command
+	if(action_time > start_time)
+		start_time = action_time;
 }
 
 void unit::stop() {
@@ -325,9 +359,9 @@ void unit::stop() {
 }
 
 void unit::wait(unsigned long n) {
-	if(shoot_time < game.time)
-		shoot_time = game.time;
-	shoot_time += n;
+	if(action_time < game.time)
+		action_time = game.time;
+	action_time += n;
 }
 
 bool isnonblocked(point v) {
@@ -393,6 +427,10 @@ void unit::apply(ordern type, point v) {
 			target = 0xFFFF;
 			order_attack = v;
 		}
+		break;
+	case Harvest:
+		target = 0xFFFF;
+		order_attack = v;
 		break;
 	case Move:
 		if(opponent && opponent->isenemy())

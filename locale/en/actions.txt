@@ -1,5 +1,6 @@
 Attack: Attack
 Exit: Exit
+Harvest: Harvest
 Move: Move
 Retreat: Retreat
 Stop: Stop

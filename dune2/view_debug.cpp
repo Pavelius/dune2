@@ -90,7 +90,7 @@ static void paint_sprites(resid id, color border, int index, int per_line, int l
 
 static void show_sprites(resid id, point start, point size) {
 	pushrect push;
-	auto push_fore = fore;
+	pushfore push_fore;
 	auto push_font = font; font = gres(FONT6);
 	auto maximum = gres(id)->count;
 	auto focus = 0, origin = 0, image_flags = 0;
@@ -138,7 +138,6 @@ static void show_sprites(resid id, point start, point size) {
 		focus_input();
 	}
 	font = push_font;
-	fore = push_fore;
 }
 
 static void set_pixel4(unsigned char* data, point subindex, int sn, unsigned char v) {
@@ -349,22 +348,21 @@ static void show_pallette(resid id, int dy) {
 
 static void change_debug() {
 	debug_toggle = !debug_toggle;
-	if(!debug_toggle)
-		return;
-	area.blockcontrol();
-	area.controlwave(area_spot, allowcontrol, 32);
-	// blockarea(allowbuild);
-	blockarea(isunitpossible);
-	blockunits(0);
+	//if(!debug_toggle)
+	//	return;
+	//area.blockcontrol();
+	//area.controlwave(area_spot, allowcontrol, 32);
+	//blockarea(isunitpossible);
+	//blockunits(0);
 }
 
 void view_debug_input() {
 	switch(hot.key) {
 	case Ctrl + 'S': show_sprites(SHAPES, {0, 0}, {32, 24}); break;
 	case Ctrl + 'I': show_sprites(ICONS, {0, 0}, {16, 16}); break;
-	case Ctrl + 'A': show_sprites(UNITS1, {8, 8}, {16, 16}); break;
-	case Ctrl + 'B': show_sprites(UNITS2, {8, 8}, {16, 16}); break;
-	case Ctrl + 'C': show_sprites(UNITS, {8, 8}, {16, 16}); break;
+	case Ctrl + 'A': show_sprites(UNITS, {8, 8}, {16, 16}); break;
+	case Ctrl + 'B': show_sprites(UNITS1, {8, 8}, {16, 16}); break;
+	case Ctrl + 'C': show_sprites(UNITS2, {8, 8}, {16, 16}); break;
 	case Ctrl + 'F': show_font(FONT10, {4, 3}, {12, 12}); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}); break;
 	case Ctrl + 'P': show_pallette(SHAPES, 8); break;

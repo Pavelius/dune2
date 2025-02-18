@@ -209,11 +209,11 @@ bool button(unsigned key, fnevent pressed_effect) {
 }
 
 void paint_background(color v) {
+	rectf(v);
 	caret.x = (getwidth() - 320) / 2;
 	caret.y = (getheight() - 200) / 2;
 	width = 320;
 	height = 200;
-	rectf(v);
 }
 
 point same_point(point v, int resolution) {

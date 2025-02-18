@@ -165,6 +165,7 @@ static void paint_exit() {
 	pushrect push;
 	pushtheme theme(ButtonDark);
 	pushfontb theme_font(TextYellow);
+	pushfont push_font(gres(FONT16));
 	caret.x += 198; caret.y += 169; width = 52;
 	if(button(getnm("Exit"), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
 		execute(update_buttonparam, 0);
@@ -174,6 +175,7 @@ static void paint_proceed_repeat() {
 	pushrect push;
 	pushtheme theme(ButtonDark);
 	pushfontb theme_font(TextYellow);
+	pushfont push_font(gres(FONT16));
 	caret.x += 168; caret.y += 169; width = 68;
 	if(button(getnm("Proceed"), KeyEnter, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
 		execute(update_buttonparam, 1);
