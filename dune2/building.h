@@ -48,4 +48,5 @@ private:
 extern building* last_building;
 
 void add_building(point pt, buildingn id);
+building* find_base(buildingn type, unsigned char player);
 building* find_building(point v);

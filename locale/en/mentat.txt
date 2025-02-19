@@ -3,9 +3,46 @@ The Siege Tank is a tracked vehicle with dual cannons.
 These cannons fire armor piercing incendiary rounds, giving it more than twice the firepower of the smaller Combat tank.
 It has twice the armor, and is slower than most tanks.
 
+#AssaultTankCapacity
+Type: Main Battle Tank
+Armament: Daul 155mm cannons
+Speed: 32 km/h (tracked)
+Armor: Heavy
+Crew: 3
+
+#CarryallInfo
+The Carryall is a lightly armored aircraft with no weapons.
+It is able to lift and transport heavy machinery and vehicles.
+Carryalls are utilized primarily for transporting Harvesters.
+
+#CarryallCapacity
+Type: Airborne Unit
+Armament: none
+Speed: 160 km/h (airborne)
+Armor: Light
+Crew: 4
+
+#HarvesterInfo
+The Harvester separate spice from the sand. Unusable sand is then dumped through the exhaust system.
+Once filled, the Harvester will automatically take raw spice to the Refinery for processing.
+
+#HarvesterCapacity
+Type: Spice Recovery Vehicle
+Armament: none
+Speed: 32 km/h
+Armor: Medium
+Crew: 4
+
 #HeavyInfantryInfo
 Troopers are armed with 10mm Rotary Cannons firing armor piercing incendiary rounds and FS rockets.
 Troopers wear heavy, mechanized power suits which enhance performance and speed.
+
+#HeavyInfantryCapacity
+Type: Ground Based Military Units
+Armament: 10mm Rotary Cannons; FS Rockets
+Speed: 12 km/h (foot)
+Armor: Light
+Crew: 1 to 3
 
 #LightInfantryInfo
 Infantry consists of lightly armored foot soldiers, equipped with 9mm RP assault rifles which fire armor piercing rounds.
@@ -18,9 +55,39 @@ Speed: 5 km/h (foot)
 Armor: Light
 Crew: 1 to 3
 
+#MCVInfo
+The MCV scout vehicle is used to find rock outcroppings suitable for erection of new installations.
+Upon locating an appropriate site the MCV will transform itself to a Construction Yard.
+
+#MCVCapacity
+Type: Base Deployment Vehicle
+Armament: none
+Speed: 36 km/h (tracked)
+Armor: Medium
+Crew: 15
+
+#OrnithopterInfo
+The Ornithopter is a lightly armored aircraft capable of firing battle support rockets.
+The Ornithopter utilizes the unusual M-Flex technology which creates the distinctive "flapping" motion of the wings.
+The Ornithopter is highly manoeuvrable and the fastest aircraft on Dune.
+
+#OrnithopterCapacity
+Type: Close Support Attack Aircraft
+Armament: Battle Support Rockets
+Speed: 340 km/h (airborne)
+Armor: Light
+Crew: 2
+
 #TankInfo
 The Combat Tank is a medium armored, tracked tank firing high explosive rounds.
 It is slower than the average tank and has limited manoeuvrability.
+
+#TankCapacity
+Type: Medium Battle Tank
+Armament: 155mm gun
+Speed: 40 km/h (tracked)
+Armor: Medium
+Crew: 2
 
 #TrikeInfo
 The Trike is a lightly armored, three-wheeled, vehicle which fires armor piercing rounds.
@@ -47,6 +114,10 @@ Crew: 2
 #BarracksInfo
 Barracks are required to produce and train Light Infantry units.
 
+#BarracksCapacity
+Type: Production Facility
+Armor: Medium
+
 #WORInfo
 The WOR facility produces Heavy Trooper units by providing advanced training and weaponry.
 
@@ -65,8 +136,17 @@ Refined spice is automatically distributed among the silos for storage. All Refi
 #RefineryCapacity
 Type: Industrial Facility
 Armor: Medium
-Armament: none
 Capacity: 1000 spice units
+
+#SlabInfo
+Concrete Slabs may serve as roadways and make up the foundations that are required before erecting structures.
+Concrete slabs cannot be repaired if damaged, and must be replaced or abandoned.
+
+#SlabCapacity
+Type: Foundation
+Material: Gravel/Sand base mix
+Weight: 1,469 kg
+Armor: Medium
 
 #SpiceSiloInfo
 Spice Silos hold harvested spice. When the Refinery completes the conversion process, it automatically distributes the spice evenly among the silos.
@@ -75,7 +155,6 @@ Note: When harvested spice quantities exceed Silo capacity, the excess will be l
 #SpiceSiloCapacity
 Type: Storehouse
 Armor: Light
-Armament: none
 Capacity: 1000 spice units
 
 #WindtrapInfo
@@ -85,5 +164,4 @@ Large, aboveground ducts funnel wind underground into turbines which power the g
 #WindtrapCapacity
 Type: Power Plant
 Armor: Light
-Armament: none
 Generators: ESkort 650 hp EL-2A DT

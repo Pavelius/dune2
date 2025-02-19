@@ -20,3 +20,4 @@ All movement in the game divided in several group
 ### Tracked
 
 - Can move and shoot if have turret.
+- Can destroy foot squad by squeze on it.

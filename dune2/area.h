@@ -43,7 +43,8 @@ struct areai {
 	bool			isbuilding(point v) const;
 	bool			isn(point v, terrainn t) const;
 	bool			isn(point v, unsigned char player, areaf t) const;
-	void			makewave(point v, movementn mv) const;
+	void			movewave(point v, movementn mv, point size) const;
+	void			movewave(point v, movementn mv) const;
 	direction		moveto(point start, direction wanted_direction = Center) const;
 	point			nearest(point v, fntest proc, int radius) const;
 	void			set(point v, terrainn t);
@@ -79,8 +80,7 @@ void blockarea(areai::fntest proc);
 void setareascout(point v, int player_index);
 void setnofeature(point v, int param);
 
-point anynonblock();
-
+point find_smallest_position();
 inline point m2s(point v) { return point(v.x * area_tile_width, v.y * area_tile_height); }
 inline point m2sc(point v) { return point(v.x * area_tile_width + area_tile_width / 2, v.y * area_tile_height + area_tile_height / 2); }
 inline point s2m(point v) { return point(v.x / area_tile_width, v.y / area_tile_height); }

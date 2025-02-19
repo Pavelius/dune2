@@ -464,14 +464,34 @@ void areai::blockcontrol() const {
 	}
 }
 
-void areai::makewave(point start, movementn mv) const {
+point find_smallest_position() {
+	auto n = 0xFFFF;
+	auto r = point(-10000, -10000);
+	for(auto y = 0; y < area.maximum.y; y++) {
+		for(auto x = 0; x < area.maximum.x; x++) {
+			auto i = path_map[y][x];
+			if(i == BlockArea || i==1)
+				continue; // Blocked or started area don't count
+			if(i < n) {
+				r = point(x, y);
+				n = i;
+			}
+		}
+	}
+	return r;
+}
+
+void areai::movewave(point start, movementn mv, point size) const {
 	if(!isvalid(start))
 		return;
-	clear_stack();
-	if(path_map[start.y][start.x] == BlockArea)
-		return;
-	push_value(start);
-	path_map[start.y][start.x] = 1;
+	for(auto y = start.y; y < start.y + size.y; y++) {
+		for(auto x = start.x; x < start.x + size.x; x++) {
+			if(!isvalid(x, y))
+				continue;
+			path_map[y][x] = 1;
+			push_value(point(x, y));
+		}
+	}
 	auto cost_map = bsdata<movementi>::elements[mv].cost;
 	while(stack_valid()) {
 		auto vc = pop_value();
@@ -502,6 +522,15 @@ void areai::makewave(point start, movementn mv) const {
 			}
 		}
 	}
+}
+
+void areai::movewave(point start, movementn mv) const {
+	if(!isvalid(start))
+		return;
+	clear_stack();
+	if(path_map[start.y][start.x] == BlockArea)
+		return;
+	movewave(start, mv, {1, 1});
 }
 
 bool allowcontrol(point v) {

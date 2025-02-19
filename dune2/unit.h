@@ -64,6 +64,7 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 private:
 	void			blockland() const;
 	bool			canshoot() const;
+	void			cantdothis();
 	void			cleanup();
 	void			fixshoot(int chance_miss);
 	bool			harvest();
@@ -71,7 +72,7 @@ private:
 	void			leavetrail();
 	void			movescreen();
 	direction		nextpath(point v);
-	void			returnbase() {}
+	bool			returnbase();
 	void			tracking();
 	bool			shoot();
 	void			stopattack();

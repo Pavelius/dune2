@@ -1,5 +1,6 @@
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
 #include "fix.h"
 #include "game.h"
 #include "math.h"
@@ -140,7 +141,7 @@ direction unit::nextpath(point v) {
 	if(path_map[v.y][v.x] == BlockArea)
 		return Center;
 	else {
-		area.makewave(order, geti().move); // Consume time action
+		area.movewave(order, geti().move); // Consume time action
 		return area.moveto(position, move_direction);
 	}
 }
@@ -281,11 +282,13 @@ bool unit::istrallfull() const {
 bool unit::harvest() {
 	if(getpurpose() != Harvest)
 		return false;
+	if(!area.isvalid(order_attack))
+		return false;
 	if(istrallfull()) {
 		returnbase();
 		return true;
 	}
-	auto v = area.nearest(position, isspicefield, getlos());
+	auto v = area.nearest(position, isspicefield, 4 + getlos());
 	if(!area.isvalid(v))
 		return false;
 	if(position == v) {
@@ -424,6 +427,61 @@ void add_unit(point pt, unitn id, direction d) {
 
 void unit::clear() {
 	memset(this, 0, sizeof(*this));
+}
+
+void unit::cantdothis() {
+	start_time += game_rand(4, 8) * 1000;
+	// TODO: Fix error
+}
+
+bool unit::returnbase() {
+	auto kind = getpurpose();
+	if(kind == Harvest) {
+		auto pb = find_base(Refinery, player);
+		if(!pb) {
+			cantdothis(); // Something wrong
+			return false; // Not any valid base present
+		}
+		blockland();
+		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
+		auto v = find_smallest_position();
+		if(!area.isvalid(v)) {
+			cantdothis(); // Something wrong
+			return false;
+		}
+		if(position == v) {
+			// Temporary fast reload tank
+			getplayer().add(Credits, attacks * 100);
+			attacks = 0;
+			if(area.isvalid(order_attack))
+				apply(Move, order_attack);
+		} else
+			apply(Move, v);
+		return true;
+	} else {
+		auto pb = find_base(ConstructionYard, player);
+		if(!pb)
+			pb = find_base(HeavyVehicleFactory, player);
+		if(!pb)
+			pb = find_base(RadarOutpost, player);
+		if(!pb) {
+			cantdothis(); // Something wrong
+			stop();
+			return false; // Not any valid base present
+		}
+		blockland();
+		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
+		auto v = find_smallest_position();
+		if(!area.isvalid(v)) {
+			cantdothis(); // Something wrong - path is blocking
+			return false;
+		}
+		if(position == v)
+			stop(); // Just arrived to final place
+		else
+			apply(Move, v);
+	}
+	return false;
 }
 
 void unit::apply(ordern type, point v) {

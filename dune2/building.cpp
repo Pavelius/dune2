@@ -222,3 +222,13 @@ rect building::getrect() const {
 	auto size = getsize();
 	return {position.x, position.y, position.x + size.x, position.y + size.y};
 }
+
+building* find_base(buildingn type, unsigned char player) {
+	for(auto& e : bsdata<building>()) {
+		if(!e)
+			continue;
+		if(e.player == player && e.type == type)
+			return &e;
+	}
+	return 0;
+}
