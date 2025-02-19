@@ -452,7 +452,7 @@ static int get_animation_frame(point n1, point n2) {
 
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
-	if(p->type == Harvester && p->isbusy())
+	if(p->isharvest())
 		paint_unit_harvest(p->geti(), p->move_direction, p->getplayer().color_index);
 	else {
 		paint_unit(p->geti(), p->move_direction, p->shoot_direction,

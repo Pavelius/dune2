@@ -68,8 +68,8 @@ void unit::damage(int value) {
 	clear();
 }
 
-bool unit::isbusy() const {
-	return action_time > game.time;
+bool unit::isready() const {
+	return ready_time <= game.time;
 }
 
 bool unit::isenemy() const {
@@ -207,6 +207,13 @@ bool unit::canshoot() const {
 	return range <= getshootrange();
 }
 
+ordern unit::getpurpose() const {
+	switch(type) {
+	case Harvester: return Harvest;
+	default: return Attack;
+	}
+}
+
 static point random_near(point v) {
 	return to(v, all_directions[game_rand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
 }
@@ -226,9 +233,9 @@ void unit::fixshoot(int chance_miss) {
 bool unit::shoot() {
 	if(isnoweapon())
 		return false;
-	if(action_time > game.time) {
+	if(ready_time > game.time) {
 		if(attacks) {// Allow multi-attacks
-			if((action_time - game.time) >= (attacks * shoot_next_attack)) {
+			if((ready_time - game.time) >= (attacks * shoot_next_attack)) {
 				fixshoot(40); // Can make next attack on same target, but can miss
 				attacks++;
 				if(attacks >= geti().stats[Attack])
@@ -264,21 +271,27 @@ bool unit::shoot() {
 }
 
 bool unit::isharvest() const {
-	if(type != Harvester)
-		return false;
-	return action_time > game.time;
+	return getpurpose() == Harvest && ready_time > game.time;
 }
 
-void unit::harvest() {
-	if(type != Harvester)
-		return;
-	auto t = area.get(position);
-	if(attacks > 10)
+bool unit::istrallfull() const {
+	return getpurpose() == Harvest && attacks > 10;
+}
+
+bool unit::harvest() {
+	if(getpurpose() != Harvest)
+		return false;
+	if(istrallfull()) {
 		returnbase();
-	else if(t == Spice || t == SpiceRich) {
+		return true;
+	}
+	auto v = area.nearest(position, isspicefield, getlos());
+	if(!area.isvalid(v))
+		return false;
+	if(position == v) {
 		attacks++;
 		start_time += 1000 * 4;
-		action_time = start_time;
+		ready_time = start_time;
 		switch(area.get(position)) {
 		case Spice:
 			area.set(position, Sand);
@@ -288,7 +301,9 @@ void unit::harvest() {
 			attacks++;
 			break;
 		}
-	}
+	} else
+		apply(Move, v);
+	return true;
 }
 
 void unit::update() {
@@ -299,7 +314,7 @@ void unit::update() {
 		if(isturret()) {
 			if(shoot()) { // Turret vehicle can shoot on moving
 				// After shoot do nothing
-			} else if(!isbusy()) {// If not busy we can make some actions while moving
+			} else if(isready()) { // If not busy we can make some actions while moving
 				if(shoot_direction != move_direction) {
 					shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
 					wait(look_duration);
@@ -309,7 +324,6 @@ void unit::update() {
 		if(!ismoving()) {
 			scouting();
 			path_direction = Center; // Arrive to next tile, we need new path direction.
-			harvest();
 		}
 	} else if(ismoveorder()) {
 		// We ready to start movement to next tile.
@@ -332,24 +346,17 @@ void unit::update() {
 				movescreen(); // Start moving to next tile.
 			}
 		}
-	} else if(shoot()) {
-		// After shoot: do nothing now
-	} else if(isturret()) { // Turret random look around
+	} else if(harvest())
+		return;
+	else if(shoot())
+		return;
+	else if(isturret()) { // Turret random look around
 		auto turn_direction = turnto(shoot_direction, move_direction);
 		if(turn_direction != Center && game_chance(50))
 			shoot_direction = to(shoot_direction, turn_direction);
 		else if(game_chance(30))
 			shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
 	}
-}
-
-void unit::move(point v) {
-	if(!area.isvalid(v))
-		return;
-	order = v;
-	start_time = game.time; // Can't wait command
-	if(action_time > start_time)
-		start_time = action_time;
 }
 
 void unit::stop() {
@@ -359,9 +366,9 @@ void unit::stop() {
 }
 
 void unit::wait(unsigned long n) {
-	if(action_time < game.time)
-		action_time = game.time;
-	action_time += n;
+	if(ready_time < game.time)
+		ready_time = game.time;
+	ready_time += n;
 }
 
 bool isnonblocked(point v) {
@@ -379,6 +386,11 @@ bool isfreetrack(point v) {
 
 bool isfreefoot(point v) {
 	return isunitpossible(v);
+}
+
+bool isspicefield(point v) {
+	auto t = area.get(v);
+	return (t == Spice || t == SpiceRich);
 }
 
 unit* find_unit(point v) {
@@ -418,25 +430,34 @@ void unit::apply(ordern type, point v) {
 	auto opponent = find_unit(v);
 	switch(type) {
 	case Attack:
+		target = 0xFFFF;
+		order_attack = {-10000, -10000};
 		if(opponent == this)
 			break; // Big mistake
 		if(opponent) {
 			target = opponent->getindex();
 			order_attack = opponent->position;
-		} else {
-			target = 0xFFFF;
+		} else if(area.isvalid(v))
 			order_attack = v;
-		}
 		break;
 	case Harvest:
 		target = 0xFFFF;
-		order_attack = v;
+		order_attack = {-10000, -10000};
+		if(area.isvalid(v))
+			order_attack = v;
 		break;
 	case Move:
 		if(opponent && opponent->isenemy())
 			apply(Attack, v);
-		else
-			move(v);
+		else if(area.isvalid(v)) {
+			order = v;
+			start_time = game.time; // Can't wait command
+			if(ready_time > start_time)
+				start_time = ready_time;
+		}
+		break;
+	case Retreat:
+		returnbase();
 		break;
 	default:
 		stop();

@@ -28,7 +28,7 @@ struct uniti : topicable {
 	unsigned char	stats[Armor + 1];
 };
 struct unit : drawable, playerable, typeable<uniti, unitn> {
-	unsigned long	action_time; // Start action
+	unsigned long	ready_time; // Start action
 	point			position, order, guard, order_attack;
 	squadn			squad;
 	direction		move_direction, shoot_direction, path_direction;
@@ -45,17 +45,17 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	short unsigned	getindex() const;
 	int				getlos() const { return 2; }
 	const char*		getname() const { return geti().getname(); }
+	ordern			getpurpose() const;
 	int				getshootrange() const { return 3; }
 	int				getspeed() const;
 	bool			isattacking() const;
-	bool			isbusy() const;
 	bool			isenemy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isnoweapon() const { return geti().stats[Attacks] == 0; }
+	bool			isready() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }
 	bool			isharvest() const;
-	void			move(point v);
 	void			scouting();
 	void			set(point v);
 	void			stop();
@@ -66,7 +66,8 @@ private:
 	bool			canshoot() const;
 	void			cleanup();
 	void			fixshoot(int chance_miss);
-	void			harvest();
+	bool			harvest();
+	bool			istrallfull() const;
 	void			leavetrail();
 	void			movescreen();
 	direction		nextpath(point v);
@@ -82,6 +83,7 @@ void blockunits(const unit* exclude);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);
+bool isspicefield(point v);
 bool isunitpossible(point v);
 
 unit* find_unit(point s);
