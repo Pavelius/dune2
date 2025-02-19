@@ -15,16 +15,21 @@ const unsigned short BlockArea = 0xFFFF;
 enum areaf : unsigned char {
 	Explored, Visible,
 };
+struct tilepatch {
+	short unsigned	from;
+	short unsigned	to;
+};
 struct areai {
 	typedef void(*fnset)(point v, int value);
 	typedef bool(*fntest)(point v);
 	static constexpr int mx = 64;
 	static constexpr int my = 64;
 	point			maximum;
+	void			blockcontrol() const;
+	void			blockland(movementn mv) const;
+	void			changealternate();
 	void			clear();
 	point			correct(point v) const;
-	void			blockland(movementn mv) const;
-	void			blockcontrol() const;
 	void			controlwave(point start, fntest proc, int range) const;
 	void			decoy(point v);
 	terrainn		get(point v) const;
@@ -54,6 +59,8 @@ struct areai {
 	void			set(rect v, fnset proc, int value);
 	void			set(point v, unsigned char player, areaf t) { flags[player][v.y][v.x] |= (1 << t); }
 	void			setcamera(point v, bool center_view);
+	void			patch(point v, const tilepatch* tiles, size_t count);
+	void			patch(point v, point size, const tilepatch* tiles, size_t count);
 	void			random(rect r, fnset proc, int value);
 	void			random(rect r, fnset proc, int value, int count);
 	void			remove(unsigned char player, areaf t);
@@ -70,7 +77,7 @@ extern areai area;
 extern point area_origin;
 extern point area_spot;
 extern rect area_screen;
-extern unsigned short map_alternate[area_frame_maximum];
+// extern unsigned short map_alternate[area_frame_maximum];
 extern unsigned short path_map[areai::my][areai::mx];
 
 void area_initialization();

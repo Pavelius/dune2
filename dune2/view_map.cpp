@@ -75,6 +75,8 @@ static void debug_map_message() {
 	if(pb)
 		sb.adds(pb->getname());
 	text(sb.text, -1, TextStroke); caret.y += texth();
+	sb.clear(); sb.add("Frame %1i", area.getframe(area_spot));
+	text(sb.text, -1, TextStroke); caret.y += texth();
 	sb.clear(); sb.add("Mouse %1i, %2i", hot.mouse.x, hot.mouse.y);
 	text(sb.text, -1, TextStroke); caret.y += texth();
 }
@@ -358,12 +360,7 @@ static void paint_map_tiles() {
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
-			auto i = area.getframe(v);
-			if((animate_time / 300) % 2) {
-				if(map_alternate[i])
-					i = map_alternate[i];
-			}
-			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, ImagePallette);
+			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, area.getframe(v), ImagePallette);
 		}
 	}
 }

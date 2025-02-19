@@ -13,7 +13,7 @@ rect area_screen;
 static terrainn map_terrain[area_frame_maximum];
 static featuren map_features[area_frame_maximum];
 static unsigned char map_count[area_frame_maximum];
-unsigned short map_alternate[area_frame_maximum];
+static unsigned short map_alternate[area_frame_maximum];
 unsigned short path_map[areai::my][areai::mx];
 
 static point stack[256 * 16];
@@ -51,28 +51,39 @@ static terrainn find_terrain_by_frame(int frame) {
 	return Sand;
 }
 
-static short unsigned get_alternate_frame(int frame) {
-	switch(frame) {
-	case 216: return 219;
-	case 242: return 243;
-	case 254: return 257;
-	case 276: return 279;
-	case 283: return 284;
-	case 288: return 290;
-	case 292: return 294;
-	case 302: return 303;
-	case 307: return 308;
-	case 309: return 312;
-	case 333: return 335;
-	case 346: return 348;
-	case 373: return 374;
-	case 380: return 381;
-	case 381: return 382;
-	case 382: return 383;
-	case 386: return 388;
-	default: return 0;
-	}
-}
+static tilepatch tiles_animation[] = {
+	{216, 219},
+	{219, 216},
+	{242, 243},
+	{243, 242},
+	{254, 257},
+	{257, 254},
+	{276, 279},
+	{279, 276},
+	{283, 284},
+	{284, 283},
+	{288, 290},
+	{290, 288},
+	{292, 294},
+	{294, 292},
+	{302, 303},
+	{303, 302},
+	{307, 308},
+	{308, 307},
+	{309, 312},
+	{312, 309},
+	{333, 335},
+	{335, 333},
+	{346, 348},
+	{348, 346},
+	{373, 374},
+	{374, 373},
+	{380, 381},
+	{381, 382},
+	{382, 383},
+	{383, 380},
+	{386, 388},
+};
 
 static int find_frame(const unsigned short* source, size_t count, unsigned short value) {
 	for(size_t i = 0; i < count; i++) {
@@ -116,11 +127,21 @@ static featuren find_feature_by_frame(int frame) {
 	}
 }
 
+static void initialize_alternate() {
+	memset(map_alternate, 0, sizeof(map_alternate));
+	for(auto& e : tiles_animation)
+		map_alternate[e.from] = e.to;
+}
+
 void area_initialization() {
+	initialize_alternate();
 	for(auto i = 0; i < area_frame_maximum; i++) {
 		map_terrain[i] = find_terrain_by_frame(i);
+		if(map_alternate[i])
+			map_terrain[map_alternate[i]] = map_terrain[i];
 		map_features[i] = find_feature_by_frame(i);
-		map_alternate[i] = get_alternate_frame(i);
+		if(map_alternate[i])
+			map_features[map_alternate[i]] = map_features[i];
 	}
 }
 
@@ -216,6 +237,16 @@ featuren areai::getfeature(point v) const {
 	if(n)
 		return n;
 	return map_features[frames[v.y][v.x]];
+}
+
+void areai::changealternate() {
+	for(auto y = 0; y < maximum.y; y++) {
+		for(auto x = 0; x < maximum.x; x++) {
+			auto t = map_alternate[frames[y][x]];
+			if(t)
+				frames[y][x] = t;
+		}
+	}
 }
 
 static int get_feature_count(int frame) {
@@ -691,4 +722,23 @@ void areai::remove(unsigned char player, areaf f) {
 		for(auto x = 0; x < mx; x++)
 			flags[player][y][x] &= v;
 	}
+}
+
+void areai::patch(point v, const tilepatch* tiles, size_t count) {
+	if(!isvalid(v))
+		return;
+	auto t = frames[v.y][v.x];
+	for(size_t i = 0; i < count; i += 2) {
+		if(t == tiles[i].from) {
+			frames[v.y][v.x] = tiles[i].to;
+			return;
+		}
+	}
+	return;
+}
+
+void areai::patch(point v, point size, const tilepatch* tiles, size_t count) {
+	for(auto y = v.y; y < v.y + size.y; y++)
+		for(auto x = v.x; x < v.x + size.x; x++)
+			patch(point(x, y), tiles, count);
 }

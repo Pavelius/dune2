@@ -51,6 +51,11 @@ assert_enum(buildingi, RocketTurret)
 BSDATAC(building, 512)
 building* last_building;
 
+static tilepatch refinery_unload[] = {
+	{334, 342}, {342, 334},
+	{339, 344}, {344, 339},
+};
+
 building::operator bool() const {
 	return area.isvalid(position);
 }
@@ -70,6 +75,10 @@ void add_building(point pt, buildingn id) {
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
 	area.set(last_building->getrect(), setnofeature, 0);
+}
+
+static void tile_patch(const building* p, const slice<tilepatch>& source) {
+	area.patch(p->position, p->getsize(), source.begin(), source.size());
 }
 
 building* find_building(point v) {

@@ -85,11 +85,16 @@ static void update_scouting() {
 	}
 }
 
+static void update_animated_tiles() {
+	area.changealternate();
+}
+
 static void update_game_turn() {
 	while(game.start_turn < game.time) {
 		game.start_turn += 500;
 		game.turn++;
-		update_building_time();		
+		update_building_time();
+		update_animated_tiles();
 		// Some visual effect
 		switch(game.turn % 6) {
 		case 0: update_area_decoy(); break;

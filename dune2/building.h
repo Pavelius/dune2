@@ -25,6 +25,7 @@ struct building : playerable, typeable<buildingi, buildingn> {
 	point			position;
 	unsigned char	build_index, build_count;
 	unsigned short	build_spend;
+	unsigned short	units_hold;
 	short			hits;
 	explicit operator bool() const;
 	void			buildlist() const;
