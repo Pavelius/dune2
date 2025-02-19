@@ -214,6 +214,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="pointa.h" />
     <ClInclude Include="topicablea.h" />
+    <ClInclude Include="view_menu.h" />
     <ClInclude Include="view_theme.h" />
     <ClInclude Include="topic.h" />
     <ClInclude Include="topicable.h" />

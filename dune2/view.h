@@ -19,7 +19,6 @@ color get_flash(color main, color back, int base, int range, int resolution = 10
 extern color pallette[256];
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
-bool confirm(const char* header, const char* yes, const char* no);
 void disappear_scene(unsigned long milliseconds = 0);
 void hilite_unit_orders();
 void initialize_view(const char* title, fnevent main_scene);
@@ -32,7 +31,6 @@ void paint_main_map_choose_placement();
 void paint_spice();
 void paint_video();
 void reset_form_animation();
-long show_menu(const char* header, point size, const char* cancel, const char* additional, fnevent proc);
 long show_scene(fnevent before_paint, fnevent input, void* focus);
 long show_scene_raw(fnevent before_paint, fnevent input, void* focus);
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20);

@@ -10,6 +10,7 @@
 #include "unit.h"
 #include "view.h"
 #include "view_theme.h"
+#include "view_menu.h"
 #include "video.h"
 
 gamei game;
@@ -210,13 +211,14 @@ static void pick_house() {
 }
 
 void open_options() {
-	pushanswer push;
-	an.addv(load_game, "Load a game", 0, '1');
-	an.addv(save_game, "Save this game", 0, '2');
-	an.addv(controls_game, "Game controls", 0, '3');
-	an.addv(restart_scenario, "Restart scenario", 0, '4');
-	an.addv(pick_house, "Pick another house", 0, '5');
-	auto p = (fnevent)show_menu("Dune II: Building denasty", {200, 16}, "Cancel", "Quit", 0);
+	static menui elements[] = {
+		{"LoadGame", load_game},
+		{"SaveGame", save_game},
+		{"GameControls", controls_game},
+		{"RestartScenario", restart_scenario},
+		{"PickAnotherHouse", pick_house},
+		{}};
+	auto p = show_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), 0, elements);
 	if(!p)
 		return;
 	p();

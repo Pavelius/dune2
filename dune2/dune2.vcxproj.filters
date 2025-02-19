@@ -386,6 +386,9 @@
     <ClInclude Include="answers.h">
       <Filter>support</Filter>
     </ClInclude>
+    <ClInclude Include="view_menu.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">

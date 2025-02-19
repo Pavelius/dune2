@@ -14,8 +14,15 @@ Ordos: Ordos
 BuildIt: Build It
 Cost: Cost
 ChooseSubject: Select Subject
-ResumeGame: Resume Game
+GameTitle: Dune II: Building dinasty
+GameControls: Game controls
+LoadGame: Load game
+PickAnotherHouse: Pick another house
+QuitGame: Quit game
+ResumeGame: Resume game
 Proceed: Proceed
 Repeat: Repeat
+RestartScenario: Restart scenario
+SaveGame: Save this game
 
 Cancel: Cancel
