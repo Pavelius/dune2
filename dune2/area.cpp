@@ -83,6 +83,7 @@ static tilepatch tiles_animation[] = {
 	{382, 383},
 	{383, 380},
 	{386, 388},
+	{388, 386},
 };
 
 static int find_frame(const unsigned short* source, size_t count, unsigned short value) {
