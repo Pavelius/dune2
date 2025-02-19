@@ -728,7 +728,7 @@ void areai::patch(point v, const tilepatch* tiles, size_t count) {
 	if(!isvalid(v))
 		return;
 	auto t = frames[v.y][v.x];
-	for(size_t i = 0; i < count; i += 2) {
+	for(size_t i = 0; i < count; i++) {
 		if(t == tiles[i].from) {
 			frames[v.y][v.x] = tiles[i].to;
 			return;

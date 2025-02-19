@@ -1,5 +1,6 @@
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
 #include "draw.h"
 #include "fix.h"
 #include "pushvalue.h"
@@ -348,8 +349,10 @@ static void show_pallette(resid id, int dy) {
 
 static void change_debug() {
 	debug_toggle = !debug_toggle;
-	//if(!debug_toggle)
-	//	return;
+	if(debug_toggle)
+		last_building->changetiles(0);
+	else
+		last_building->changetiles(1);
 	//area.blockcontrol();
 	//area.controlwave(area_spot, allowcontrol, 32);
 	//blockarea(isunitpossible);

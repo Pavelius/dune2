@@ -18,6 +18,7 @@ enum areaf : unsigned char {
 struct tilepatch {
 	short unsigned	from;
 	short unsigned	to;
+	short unsigned	action;
 };
 struct areai {
 	typedef void(*fnset)(point v, int value);

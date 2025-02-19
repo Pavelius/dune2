@@ -25,13 +25,19 @@ static topicable* lftr_produce[] = {
 	BS(Trike),
 	BS(Quad),
 };
+static tilepatch refinery_tiles[] = {
+	{334, 342, 0},
+	{339, 344, 0},
+	{342, 334, 1},
+	{344, 339, 1},
+};
 
 BSDATA(buildingi) = {
 	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce},
 	{"SpiceSilo", STORAGE, 69, 100, 500, Shape2x2, {372, 373, 375, 376}, {}, {}, {0, 0, 0, 0, 1000}},
 	{"Starport", STARPORT, 57},
 	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 0, 0, 0, 0}},
-	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 0, 0, 0, 1000}},
+	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 0, 0, 0, 1000}, refinery_tiles},
 	{"RadarOutpost", HEADQRTS, 70, 500, 1000, Shape2x2, {379, 380, 386, 387}, {}, {}, {0, 0, 0, 0, 0}},
 	{"RepairFacility", REPAIR},
 	{"HouseOfIX"},
@@ -77,8 +83,22 @@ void add_building(point pt, buildingn id) {
 	area.set(last_building->getrect(), setnofeature, 0);
 }
 
-static void tile_patch(const building* p, const slice<tilepatch>& source) {
-	area.patch(p->position, p->getsize(), source.begin(), source.size());
+static const tilepatch* find_patch(const tilepatch* pb, const tilepatch* pe, int action) {
+	while(pb < pe) {
+		if(pb->action == action)
+			return pb;
+		pb++;
+	}
+	return 0;
+}
+
+static const tilepatch* find_patch_ne(const tilepatch* pb, const tilepatch* pe, int action) {
+	while(pb < pe) {
+		if(pb->action != action)
+			return pb;
+		pb++;
+	}
+	return 0;
 }
 
 building* find_building(point v) {
@@ -87,6 +107,19 @@ building* find_building(point v) {
 			return &e;
 	}
 	return 0;
+}
+
+void building::changetiles(int action) {
+	auto& ei = geti();
+	auto pb = ei.tilepatches.begin();
+	auto pe = ei.tilepatches.end();
+	auto p1 = find_patch(pb, pe, action);
+	if(!p1)
+		return;
+	auto p2 = find_patch_ne(p1, pe, action);
+	if(!p2)
+		p2 = pe;
+	area.patch(position, getsize(), p1, p2 - p1);
 }
 
 void building::scouting() {

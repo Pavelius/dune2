@@ -13,12 +13,14 @@ enum buildingn : unsigned char {
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
 	Slab, Slab4, Turret, RocketTurret,
 };
+struct tilepatch;
 struct buildingi : topicable {
 	short			hits;
 	shapen			shape;
 	short unsigned	frames[16], ruined[16];
 	slice<topicable*> build;
 	short unsigned	abilities[SpiceCapacity + 1];
+	slice<tilepatch> tilepatches;
 	buildingn		getindex() const;
 };
 struct building : playerable, typeable<buildingi, buildingn> {
@@ -31,6 +33,7 @@ struct building : playerable, typeable<buildingi, buildingn> {
 	void			buildlist() const;
 	bool			canbuild() const { return geti().build.operator bool(); }
 	void			cancel();
+	void			changetiles(int action);
 	void			construct(point v);
 	void			destroy();
 	int				getlos() const;
