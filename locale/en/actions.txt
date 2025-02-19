@@ -18,7 +18,9 @@ GameTitle: Dune II: Building dinasty
 GameControls: Game controls
 LoadGame: Load game
 PickAnotherHouse: Pick another house
+PickAnotherHouseConfirm: Do you really want to end this game and pick another house?
 QuitGame: Quit game
+QuitGameConfirm: Do you really want to quit this game? All unsaved changes will be lost.
 ResumeGame: Resume game
 Proceed: Proceed
 Repeat: Repeat
@@ -26,3 +28,5 @@ RestartScenario: Restart scenario
 SaveGame: Save this game
 
 Cancel: Cancel
+No: No
+Yes: Yes

@@ -208,6 +208,13 @@ static void restart_scenario() {
 }
 
 static void pick_house() {
+	if(!confirm(getnm("PickAnotherHouseConfirm"), getnm("Yes"), getnm("No")))
+		return;
+}
+
+static void quit_game() {
+	if(!confirm(getnm("QuitGameConfirm"), getnm("Yes"), getnm("No")))
+		return;
 }
 
 void open_options() {
@@ -218,10 +225,7 @@ void open_options() {
 		{"RestartScenario", restart_scenario},
 		{"PickAnotherHouse", pick_house},
 		{}};
-	auto p = show_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), 0, elements);
-	if(!p)
-		return;
-	p();
+	execute_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), quit_game, elements);
 }
 
 void main_menu() {

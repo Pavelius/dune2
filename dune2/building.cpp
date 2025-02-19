@@ -194,7 +194,7 @@ point building::getsize() const {
 bool building::progress() {
 	auto pe = getbuild();
 	if(pe) {
-		unsigned short can_spend = 10;
+		unsigned short can_spend = 5;
 		auto build_cost = pe->cost;
 		if(build_cost <= 10)
 			can_spend = 1;

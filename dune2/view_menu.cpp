@@ -24,6 +24,13 @@ static bool menu_button(int index, const void* data, const char* text, unsigned 
 	return run;
 }
 
+static void rectf_shadow() {
+	pushfore push(colors::black);
+	auto push_alpha = alpha; alpha = 128;
+	rectf();
+	alpha = push_alpha;
+}
+
 long show_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc) {
 	const int additional_offset = 6;
 	const int padding = 2;
@@ -32,14 +39,18 @@ long show_menu(const char* header, int menu_width, const char* cancel, const cha
 	screenshoot push_screen;
 	point window_size(getwidth(), getheight());
 	auto menu_height = texth() + 4;
+	auto header_height = 0;
 	if(!additional_proc)
 		additional_proc = buttoncancel;
 	while(ismodal()) {
 		push_screen.restore();
+		rectf_shadow();
 		draw::width = menu_width + additional_offset * 2;
 		draw::height = (an.getcount() + 1) * (menu_height + padding) + additional_offset * 2 - padding;
-		if(header)
-			draw::height += texth() + padding * 2;
+		if(header) {
+			header_height = texth(header, width) + padding * 2;
+			draw::height += header_height;
+		}
 		caret.x = (getwidth() - draw::width) / 2;
 		caret.y = imax(24, (getheight() - draw::height) / 2);
 		form_frame(2);
@@ -47,9 +58,12 @@ long show_menu(const char* header, int menu_width, const char* cancel, const cha
 		draw::height = menu_height;
 		auto index = 0;
 		if(header) {
+			auto push_height = height;
 			pushfore push(form_button_dark);
+			height = header_height;
 			texta(header, AlignCenterCenter);
-			caret.y += texth() + padding * 2;
+			caret.y += header_height;
+			height = push_height;
 		}
 		for(auto& e : an) {
 			if(menu_button(index, e.value, e.text, e.key))
@@ -76,10 +90,12 @@ bool confirm(const char* header, const char* yes, const char* no) {
 	return show_menu(header, 200, no, yes, buttonok);
 }
 
-fnevent show_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc, const menui* elements) {
+void execute_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc, const menui* elements) {
 	pushanswer push;
 	auto index = 0;
 	for(auto p = elements; *p; p++)
 		an.addv(p->proc, getnm(p->id), 0, '1' + index);
-	return (fnevent)show_menu(header, menu_width, cancel, additional, additional_proc);
+	auto p = (fnevent)show_menu(header, menu_width, cancel, additional, additional_proc);
+	if(p)
+		p();
 }

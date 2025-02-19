@@ -9,4 +9,4 @@ struct menui {
 };
 bool confirm(const char* header, const char* yes, const char* no);
 long show_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc);
-fnevent show_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc, const menui* elements);
+void execute_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc, const menui* elements);
