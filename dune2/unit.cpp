@@ -78,7 +78,7 @@ bool unit::isenemy() const {
 }
 
 bool unit::ismoving() const {
-	return screen != m2sc(position);
+	return !isboard() && screen != m2sc(position);
 }
 
 short unsigned unit::getindex() const {
@@ -114,12 +114,14 @@ void unit::cleanup() {
 }
 
 void unit::scouting() {
+	if(position.x < 0)
+		return;
 	area.scouting(position, player, getlos());
 }
 
 void blockunits(const unit* exclude) {
 	for(auto& e : bsdata<unit>()) {
-		if(e && &e != exclude)
+		if(e && &e != exclude && e.position.x >= 0)
 			path_map[e.position.y][e.position.x] = BlockArea;
 	}
 }
@@ -137,6 +139,8 @@ int unit::getspeed() const {
 }
 
 direction unit::nextpath(point v) {
+	if(!area.isvalid(v))
+		return Center;
 	blockland();
 	if(path_map[v.y][v.x] == BlockArea)
 		return Center;
@@ -282,6 +286,21 @@ bool unit::istrallfull() const {
 bool unit::harvest() {
 	if(getpurpose() != Harvest)
 		return false;
+	if(isboard()) {
+		auto pb = find_board(this);
+		if(!pb || pb->type != Refinery)
+			return false;
+		if(attacks) {
+			attacks--;
+			pb->getplayer().add(Credits, 100);
+			wait(1000);
+		} else {
+			pb->unboard();
+			if(area.isvalid(order_attack))
+				apply(Move, order_attack);
+		}
+		return true;
+	}
 	if(!area.isvalid(order_attack))
 		return false;
 	if(istrallfull()) {
@@ -450,11 +469,10 @@ bool unit::returnbase() {
 			return false;
 		}
 		if(position == v) {
+			pb->board(this);
 			// Temporary fast reload tank
-			getplayer().add(Credits, attacks * 100);
-			attacks = 0;
-			if(area.isvalid(order_attack))
-				apply(Move, order_attack);
+			//getplayer().add(Credits, attacks * 100);
+			//attacks = 0;
 		} else
 			apply(Move, v);
 		return true;

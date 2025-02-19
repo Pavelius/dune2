@@ -49,6 +49,7 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	int				getshootrange() const { return 3; }
 	int				getspeed() const;
 	bool			isattacking() const;
+	bool			isboard() const { return position.x < 0; }
 	bool			isenemy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;

@@ -60,8 +60,8 @@ struct areai {
 	void			set(rect v, fnset proc, int value);
 	void			set(point v, unsigned char player, areaf t) { flags[player][v.y][v.x] |= (1 << t); }
 	void			setcamera(point v, bool center_view);
-	void			patch(point v, const tilepatch* tiles, size_t count);
-	void			patch(point v, point size, const tilepatch* tiles, size_t count);
+	void			patch(point v, const tilepatch* tiles, size_t count, bool apply);
+	void			patch(point v, point size, const tilepatch* tiles, size_t count, bool apply);
 	void			random(rect r, fnset proc, int value);
 	void			random(rect r, fnset proc, int value, int count);
 	void			remove(unsigned char player, areaf t);

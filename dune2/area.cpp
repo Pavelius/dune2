@@ -725,21 +725,30 @@ void areai::remove(unsigned char player, areaf f) {
 	}
 }
 
-void areai::patch(point v, const tilepatch* tiles, size_t count) {
+void areai::patch(point v, const tilepatch* tiles, size_t count, bool apply) {
 	if(!isvalid(v))
 		return;
 	auto t = frames[v.y][v.x];
-	for(size_t i = 0; i < count; i++) {
-		if(t == tiles[i].from) {
-			frames[v.y][v.x] = tiles[i].to;
-			return;
+	if(apply) {
+		for(size_t i = 0; i < count; i++) {
+			if(t == tiles[i].from) {
+				frames[v.y][v.x] = tiles[i].to;
+				return;
+			}
+		}
+	} else {
+		for(size_t i = 0; i < count; i++) {
+			if(t == tiles[i].to) {
+				frames[v.y][v.x] = tiles[i].from;
+				return;
+			}
 		}
 	}
 	return;
 }
 
-void areai::patch(point v, point size, const tilepatch* tiles, size_t count) {
+void areai::patch(point v, point size, const tilepatch* tiles, size_t count, bool apply) {
 	for(auto y = v.y; y < v.y + size.y; y++)
 		for(auto x = v.x; x < v.x + size.x; x++)
-			patch(point(x, y), tiles, count);
+			patch(point(x, y), tiles, count, apply);
 }

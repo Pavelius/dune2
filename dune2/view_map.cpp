@@ -533,7 +533,7 @@ static void paint_radar_units() {
 	auto player_index = player->getindex();
 	auto push_fore = fore; fore = get_color_by_index(player->color_index);
 	for(auto& e : bsdata<unit>()) {
-		if(!e || !area.is(e.position, player_index, Visible))
+		if(!e || e.position.x < 0 || !area.is(e.position, player_index, Visible))
 			continue;
 		pixel(caret.x + e.position.x, caret.y + e.position.y);
 	}

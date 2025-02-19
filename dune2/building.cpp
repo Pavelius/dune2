@@ -76,6 +76,7 @@ void add_building(point pt, buildingn id) {
 	last_building = bsdata<building>::addz();
 	last_building->position = pt;
 	last_building->type = id;
+	last_building->unit_board = 0xFFFF;
 	auto& e = last_building->geti();
 	last_building->hits = e.hits;
 	area.set(last_building->position, e.shape, e.frames);
@@ -109,7 +110,43 @@ building* find_building(point v) {
 	return 0;
 }
 
-void building::changetiles(int action) {
+building* find_board(const unit* p) {
+	if(!p || !p->isboard())
+		return 0;
+	auto v = p->getindex();
+	for(auto& e : bsdata<building>()) {
+		if(e && e.unit_board == v)
+			return &e;
+	}
+	return 0;
+}
+
+void building::board(unit* p) {
+	if(unit_board != 0xFFFF)
+		return;
+	unit_board = p->getindex();
+	set(BoardUnit, true);
+	p->position = {-100, -100};
+	p->order = p->position;
+	p->screen = m2sc(p->position);
+	p->wait(500);
+}
+
+void building::unboard() {
+	if(unit_board == 0xFFFF)
+		return;
+	auto v = area.nearest(position, isfreetrack, 8);
+	if(!area.isvalid(v))
+		return;
+	set(BoardUnit, false);
+	auto p = bsdata<unit>::elements + unit_board;
+	p->position = v;
+	p->order = p->position;
+	p->screen = m2sc(p->position);
+	unit_board = 0xFFFF;
+}
+
+void building::set(buildstaten action, bool apply) {
 	auto& ei = geti();
 	auto pb = ei.tilepatches.begin();
 	auto pe = ei.tilepatches.end();
@@ -119,7 +156,7 @@ void building::changetiles(int action) {
 	auto p2 = find_patch_ne(p1, pe, action);
 	if(!p2)
 		p2 = pe;
-	area.patch(position, getsize(), p1, p2 - p1);
+	area.patch(position, getsize(), p1, p2 - p1, apply);
 }
 
 void building::scouting() {
