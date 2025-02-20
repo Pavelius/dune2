@@ -30,6 +30,7 @@ SaveGame: Save this game
 HarvesterWork: %Unit is %UnitThrall percent full.
 HarvesterUnload: %Unit is unloading spice.
 HarvesterReturn: %Unit is return with %UnitThrall percent full.
+UnitDestroyed: %Unit is destroyed.
 
 Cancel: Cancel
 No: No

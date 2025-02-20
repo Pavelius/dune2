@@ -39,6 +39,7 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	void			apply(ordern type, point v);
 	void			clear();
 	void			damage(int value);
+	void			destroy();
 	int				get(statn v) const { return geti().stats[v]; }
 	unit*			getenemy() const;
 	int				getmaximum(statn v) const;

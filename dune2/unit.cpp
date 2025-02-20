@@ -24,10 +24,10 @@ BSDATA(uniti) = {
 	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 4, 4}},
 	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0, {4, 1, 2, 0}},
 	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0, {4, 1, 3, 1}},
-	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0, {5, 2, 10, 2}},
-	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0, {5, 2, 8, 3}},
-	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5, {6, 1, 5, 4}},
-	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15, {6, 2, 4, 5}},
+	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0, {5, 2, 10, 1}},
+	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0, {5, 2, 8, 2}},
+	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5, {6, 1, 5, 2}},
+	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15, {6, 2, 4, 3}},
 };
 assert_enum(uniti, AssaultTank)
 
@@ -55,21 +55,21 @@ static bool turn(direction& result, direction new_direction) {
 	return result == new_direction;
 }
 
-void unit::damage(int value) {
-	if(hits > value) {
-		hits -= value;
-		return;
-	}
+void unit::destroy() {
+	fixstate("UnitDestroyed");
 	cleanup();
 	switch(geti().move) {
-	case Wheeled:
-		add_effect(m2sc(position), FixBikeExplosion);
-		break;
-	case Tracked:
-		add_effect(m2sc(position), FixExplosion);
-		break;
+	case Wheeled: add_effect(m2sc(position), FixBikeExplosion); break;
+	case Tracked: add_effect(m2sc(position), FixExplosion); break;
 	}
 	clear();
+}
+
+void unit::damage(int value) {
+	if(hits > value)
+		hits -= value;
+	else
+		destroy();
 }
 
 bool unit::isready() const {

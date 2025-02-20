@@ -444,7 +444,10 @@
     <None Include="..\README.md">
       <Filter>doc</Filter>
     </None>
-    <None Include="..\doc\units.md">
+    <None Include="..\doc\extended_combat.md">
+      <Filter>doc</Filter>
+    </None>
+    <None Include="..\doc\extended_units.md">
       <Filter>doc</Filter>
     </None>
   </ItemGroup>
