@@ -42,9 +42,7 @@ static void update_player_time() {
 	// Remove all calculable ability
 	for(auto& e : bsdata<playeri>()) {
 		e.abilities[Energy] = 0;
-		e.abilities[EnergyCapacity] = 0;
-		e.abilities[SupplyCapacity] = 0;
-		e.abilities[SpiceCapacity] = 0;
+		memset(e.maximum, 0, sizeof(e.maximum));
 		memset(e.buildings, 0, sizeof(e.buildings));
 		memset(e.units, 0, sizeof(e.units));
 	}
@@ -71,7 +69,7 @@ static void update_building_time() {
 }
 
 static void update_scouting() {
-	for(auto i = 0; i < playeri::maximum; i++)
+	for(auto i = 0; i < player_maximum; i++)
 		area.remove(i, Visible);
 	for(auto& e : bsdata<building>()) {
 		if(!e)
@@ -204,6 +202,7 @@ static void load_game() {
 }
 
 static void save_game() {
+	save_game("autosave");
 }
 
 static void controls_game() {

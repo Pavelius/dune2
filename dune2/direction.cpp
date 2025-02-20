@@ -104,6 +104,15 @@ static const direction orientations_7b7[49] = {
 	LeftDown, LeftDown, Down, Down, Down, RightDown, RightDown,
 	LeftDown, LeftDown, Down, Down, Down, RightDown, RightDown,
 };
+static const char orientations_7b7_16[49] = {
+	14, 15, 15, 0, 1, 1, 2,
+	13, 14, 15, 0, 1, 2, 3,
+	13, 13, 14, 0, 2, 3, 3,
+	12, 12, 12, -1, 4, 4, 4,
+	11, 11, 10, 8, 6, 5, 5,
+	11, 10, 9, 8, 7, 6, 5,
+	10, 9, 9, 8, 7, 7, 6,
+};
 
 static direction getdirection(point s, point d, const direction* po) {
 	const int osize = 7;
@@ -123,6 +132,10 @@ direction to(point s, point d) {
 
 direction tos(point s, point d) {
 	return getdirection(s, d, orientations_7b7);
+}
+
+unsigned char toh(point s, point d) {
+	return (unsigned char)getdirection(s, d, (direction*)orientations_7b7_16);
 }
 
 point transform(point v, direction d) {

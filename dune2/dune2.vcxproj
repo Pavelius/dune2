@@ -133,6 +133,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="answers.cpp" />
+    <ClCompile Include="archive.cpp" />
     <ClCompile Include="area.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="building.cpp" />
@@ -148,6 +149,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
     <ClCompile Include="pointa.cpp" />
+    <ClCompile Include="serial.cpp" />
     <ClCompile Include="topicablea.cpp" />
     <ClCompile Include="view_build.cpp" />
     <ClCompile Include="view_menu.cpp" />
@@ -198,6 +200,7 @@
   <ItemGroup>
     <ClInclude Include="adat.h" />
     <ClInclude Include="answers.h" />
+    <ClInclude Include="archive.h" />
     <ClInclude Include="area.h" />
     <ClInclude Include="array.h" />
     <ClInclude Include="bsdata.h" />

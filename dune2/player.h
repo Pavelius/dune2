@@ -3,15 +3,17 @@
 #include "fraction.h"
 #include "nameable.h"
 
+const int player_maximum = 6; // 0 - neutral and 1-5 for player humans/ai.
+
 enum abilityn : unsigned char {
-	Credits, EnergyCapacity, Energy, Supply, SupplyCapacity, SpiceCapacity
+	Credits, Energy, Supply
 };
 struct abilityi : nameable {
 };
 struct playeri : fractionable {
-	constexpr static int maximum = 6; // 0 - neutral and 1-5 for player humans/ai.
 	unsigned char	color_index;
-	unsigned int	abilities[SpiceCapacity + 1];
+	unsigned int	abilities[Supply + 1];
+	unsigned int	maximum[Supply + 1];
 	unsigned short	buildings[32]; // Count of all buildings by type
 	unsigned short	units[32]; // Count of all units by type
 	void			add(abilityn v, int i) { abilities[v] += i; }

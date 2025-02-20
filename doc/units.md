@@ -1,10 +1,10 @@
 # Units
 
-All units is hardcoded. So there is only that predefined types os units in the game, that created by programmers.
+All units is hardcoded. So there is only predefined units in the game.
 
 ## Movement type
 
-All movement in the game divided in several group
+All movement in the game divided in several group.
 
 ### Foot
 

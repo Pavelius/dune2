@@ -207,6 +207,12 @@
     <ClCompile Include="answers.cpp">
       <Filter>support</Filter>
     </ClCompile>
+    <ClCompile Include="archive.cpp">
+      <Filter>support</Filter>
+    </ClCompile>
+    <ClCompile Include="serial.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -388,6 +394,9 @@
     </ClInclude>
     <ClInclude Include="view_menu.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="archive.h">
+      <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

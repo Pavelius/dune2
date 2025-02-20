@@ -1,7 +1,7 @@
 #include "bsdata.h"
 #include "player.h"
 
-BSDATAC(playeri, playeri::maximum)
+BSDATAC(playeri, player_maximum)
 
 playeri* player;
 

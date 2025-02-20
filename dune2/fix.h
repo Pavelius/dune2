@@ -1,12 +1,14 @@
 #pragma once
 
 #include "nameable.h"
+#include "point.h"
 
 enum drawprocn : unsigned char;
 enum resid : unsigned short;
 enum fixn : unsigned char {
 	NoEffect,
 	ShootHandGun, ShootHeavyGun, ShootBigGun,
+	FireRocket,
 	FixSmallHit, FixMediumHit, FixLargeHit,
 	FixExplosion, FixBigExplosion,
 	FixBikeExplosion, FixBikeExplosionEnd,
@@ -19,6 +21,7 @@ struct fixeffecti {
 	short unsigned	frame, count;
 	fnevent			apply;
 	fixn			next;
+	int				getframe(unsigned& flags, point from, point to) const;
 };
 
 void add_effect(point from, fixn i, short unsigned owner);

@@ -48,17 +48,8 @@ void unita::order(ordern type, point v, bool interactive) const {
 			break;
 		}
 	}
-	auto index = 0;
-	for(auto p : *this) {
-		//if(area.isvalid(v) && type == Move) {
-		//	auto vt = v + human_formation[index++];
-		//	vt = area.nearest(vt, isfreetrack, 4, false);
-		//	if(!vt)
-		//		continue;
-		//	p->apply(type, vt);
-		//} else
-			p->apply(type, v);
-	}
+	for(auto p : *this)
+		p->apply(type, v);
 	if(type == Move)
 		hilite_unit_orders();
 }

@@ -472,7 +472,8 @@ static void paint_effect_fix() {
 		delay = delay * p->from.range(p->to) / area_tile_width;
 	if(!delay)
 		delay = 60;
-	auto frame = pf->frame;
+	unsigned image_flags = 0;
+	auto frame = pf->getframe(image_flags, p->from, p->to);
 	auto duration = animate_time - p->start_time;
 	if(p->from == p->to) {
 		auto frame_offset = (short unsigned)(duration / delay);
@@ -491,6 +492,7 @@ static void paint_effect_fix() {
 		} else
 			frame += frame_offset;
 	} else {
+		pf->getframe(image_flags, p->from, p->to);
 		if(duration >= delay) {
 			caret = s2i(p->to);
 			p->screen = p->to;
@@ -513,7 +515,7 @@ static void paint_effect_fix() {
 			caret = s2i(p->screen);
 		}
 	}
-	image(gres(pf->rid), frame, 0);
+	image(gres(pf->rid), frame, image_flags);
 }
 
 static void paint_radar_rect() {

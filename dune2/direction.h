@@ -16,5 +16,6 @@ direction to(direction d, direction s);
 direction turnto(direction d, direction t);
 direction to(point s, point d);
 direction to(point s, point d);
+unsigned char toh(point s, point d);
 point transform(point v, direction d);
 bool isdiagonal(direction d);

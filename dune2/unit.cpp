@@ -5,6 +5,7 @@
 #include "game.h"
 #include "math.h"
 #include "movement.h"
+#include "print.h"
 #include "squad.h"
 #include "unit.h"
 #include "view.h"
@@ -19,8 +20,8 @@
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
 	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 0, 4, 4}},
-	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootHandGun, UNITS, 91, 0, {4, 2, 1, 3}},
-	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootHandGun, UNITS, 103, 0, {4, 3, 1, 2, 1}},
+	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootHandGun, UNITS, 91, 0, {4, 2, 1, 2}},
+	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootHandGun, UNITS, 103, 0, {4, 3, 1, 3, 1}},
 	{"Trike", TRIKE, 80, 100, Wheeled, ShootHandGun, UNITS, 5, 0, {6, 3, 2, 10, 2}},
 	{"Quad", QUAD, 74, 140, Wheeled, ShootHandGun, UNITS, 0, 0, {6, 4, 2, 8, 3}},
 	{"Tank", LTANK, 78, 200, Tracked, ShootHeavyGun, UNITS2, 0, 5, {8, 6, 1, 5, 3}},
@@ -332,7 +333,7 @@ bool unit::harvest() {
 		returnbase();
 		return true;
 	}
-	auto v = area.nearest(position, isspicefield, 4 + getlos(), true);
+	auto v = area.nearest(position, isspicefield, 4 + getlos());
 	if(!area.isvalid(v))
 		return false;
 	if(position == v) {
@@ -461,7 +462,7 @@ unit* find_unit(point v, const unit* exclude) {
 }
 
 void add_unit(point pt, unitn id, direction d) {
-	pt = area.nearest(pt, isfreetrack, 4, false);
+	pt = area.nearest(pt, isfreetrack, 4);
 	if(!area.isvalid(pt))
 		return;
 	last_unit = bsdata<unit>::addz();
@@ -487,7 +488,7 @@ void unit::clear() {
 
 void unit::cantdothis() {
 	start_time += game_rand(4, 8) * 1000;
-	// TODO: Fix error
+	print("%1 can't do nothing.", getname());
 }
 
 bool unit::returnbase() {

@@ -659,7 +659,7 @@ direction areai::moveto(point start, direction wanted_direction) const {
 	return current_direction;
 }
 
-point areai::nearest(point v, fntest proc, int radius, point to) const {
+point areai::nearest(point v, fntest proc, int radius) const {
 	if(proc(v))
 		return v;
 	for(auto i = 1; i < radius; i++) {
@@ -687,24 +687,24 @@ point areai::nearest(point v, fntest proc, int radius, point to) const {
 	return point(-10000, -10000);
 }
 
-point areai::nearest(point v, fntest proc, int radius, bool test_explored) const {
-	if(proc(v))
-		return v;
-	for(auto i = 1; i < radius; i++) {
-		auto n = game_chance(50) ? -i : i;
-		for(auto j = 0; j < 2; j++) {
-			auto y = n + v.y;
-			for(auto x = v.x - i; x <= v.x + i; x++) {
-				if(!isvalid(x, y))
-					continue;
-				if(proc(point(x, y)))
-					return point(x, y);
-			}
-			n = -n;
-		}
-	}
-	return point(-10000, -10000);
-}
+//point areai::nearest(point v, fntest proc, int radius, bool test_explored) const {
+//	if(proc(v))
+//		return v;
+//	for(auto i = 1; i < radius; i++) {
+//		auto n = game_chance(50) ? -i : i;
+//		for(auto j = 0; j < 2; j++) {
+//			auto y = n + v.y;
+//			for(auto x = v.x - i; x <= v.x + i; x++) {
+//				if(!isvalid(x, y))
+//					continue;
+//				if(proc(point(x, y)))
+//					return point(x, y);
+//			}
+//			n = -n;
+//		}
+//	}
+//	return point(-10000, -10000);
+//}
 
 point areai::getcorner(point v) const {
 	while(isvalid(v)) {
