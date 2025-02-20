@@ -128,7 +128,6 @@ void blockunits(const unit* exclude) {
 
 void unit::blockland() const {
 	area.blockland(geti().move);
-	blockunits(this);
 }
 
 int unit::getspeed() const {
@@ -141,11 +140,16 @@ int unit::getspeed() const {
 direction unit::nextpath(point v) {
 	if(!area.isvalid(v))
 		return Center;
+	auto need_block_units = v.range(position) < 3;
 	blockland();
+	if(need_block_units)
+		blockunits(this);
 	if(path_map[v.y][v.x] == BlockArea)
 		return Center;
 	else {
-		area.movewave(order, geti().move); // Consume time action
+		area.movewave(v, geti().move); // Consume time action
+		if(!need_block_units)
+			blockunits(this);
 		return area.moveto(position, move_direction);
 	}
 }
@@ -283,6 +287,26 @@ bool unit::istrallfull() const {
 	return getpurpose() == Harvest && attacks > 10;
 }
 
+bool unit::releasetile() {
+	auto p = find_unit(position, this);
+	if(!p)
+		return false;
+	for(auto d : all_directions) {
+		auto v = to(position, d);
+		if(!area.isvalid(v))
+			continue;
+		auto p = find_unit(v);
+		if(!p) {
+			move_direction = d;
+			startmove();
+			order = position;
+			return true;
+		}
+	}
+	start_time += 1000;
+	return true;
+}
+
 bool unit::harvest() {
 	if(getpurpose() != Harvest)
 		return false;
@@ -294,6 +318,7 @@ bool unit::harvest() {
 			attacks--;
 			pb->getplayer().add(Credits, 100);
 			wait(1000);
+			start_time = ready_time;
 		} else {
 			pb->unboard();
 			if(area.isvalid(order_attack))
@@ -307,7 +332,7 @@ bool unit::harvest() {
 		returnbase();
 		return true;
 	}
-	auto v = area.nearest(position, isspicefield, 4 + getlos());
+	auto v = area.nearest(position, isspicefield, 4 + getlos(), true);
 	if(!area.isvalid(v))
 		return false;
 	if(position == v) {
@@ -326,6 +351,11 @@ bool unit::harvest() {
 	} else
 		apply(Move, v);
 	return true;
+}
+
+void unit::startmove() {
+	position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
+	movescreen(); // Start moving to next tile.
 }
 
 void unit::update() {
@@ -358,17 +388,16 @@ void unit::update() {
 				start_time += game_rand(200, 300);
 		} else if(geti().move == Footed) {
 			move_direction = path_direction; // Footed units turn around momentary.
-			position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
-			movescreen(); // Start moving to next tile.
+			startmove();
 		} else {
 			if(!turn(move_direction, path_direction)) // More that one turn take time
 				start_time += game_rand(300, 400); // Turning pause
-			else {
-				position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
-				movescreen(); // Start moving to next tile.
-			}
+			else
+				startmove();
 		}
-	} else if(harvest())
+	} else if(releasetile())
+		return;
+	else if(harvest())
 		return;
 	else if(shoot())
 		return;
@@ -423,8 +452,16 @@ unit* find_unit(point v) {
 	return 0;
 }
 
+unit* find_unit(point v, const unit* exclude) {
+	for(auto& e : bsdata<unit>()) {
+		if(e && &e!=exclude && e.position == v)
+			return &e;
+	}
+	return 0;
+}
+
 void add_unit(point pt, unitn id, direction d) {
-	pt = area.nearest(pt, isfreetrack, 4);
+	pt = area.nearest(pt, isfreetrack, 4, false);
 	if(!area.isvalid(pt))
 		return;
 	last_unit = bsdata<unit>::addz();
@@ -462,18 +499,16 @@ bool unit::returnbase() {
 			return false; // Not any valid base present
 		}
 		blockland();
+		blockunits(this);
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong
 			return false;
 		}
-		if(position == v) {
+		if(position == v) 
 			pb->board(this);
-			// Temporary fast reload tank
-			//getplayer().add(Credits, attacks * 100);
-			//attacks = 0;
-		} else
+		else
 			apply(Move, v);
 		return true;
 	} else {
@@ -488,6 +523,7 @@ bool unit::returnbase() {
 			return false; // Not any valid base present
 		}
 		blockland();
+		blockunits(this);
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {
@@ -519,12 +555,19 @@ void unit::apply(ordern type, point v) {
 	case Harvest:
 		target = 0xFFFF;
 		order_attack = {-10000, -10000};
-		if(area.isvalid(v))
+		if(area.isvalid(v)) {
 			order_attack = v;
+			order = v;
+			start_time = game.time; // Can't wait command
+			if(ready_time > start_time)
+				start_time = ready_time;
+		}
 		break;
 	case Move:
-		if(opponent && opponent->isenemy())
+		if(opponent && opponent->isenemy() && getpurpose()==Attack)
 			apply(Attack, v);
+		else if(getpurpose() == Harvest && isspicefield(v))
+			apply(Harvest, v);
 		else if(area.isvalid(v)) {
 			order = v;
 			start_time = game.time; // Can't wait command

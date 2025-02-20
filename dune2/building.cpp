@@ -135,7 +135,7 @@ void building::board(unit* p) {
 void building::unboard() {
 	if(unit_board == 0xFFFF)
 		return;
-	auto v = area.nearest(position, isfreetrack, 8);
+	auto v = area.nearest(position, isfreetrack, 8, true);
 	if(!area.isvalid(v))
 		return;
 	set(BoardUnit, false);

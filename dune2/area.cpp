@@ -134,15 +134,21 @@ static void initialize_alternate() {
 		map_alternate[e.from] = e.to;
 }
 
+static void add_feature_frame(int i) {
+	if(map_features[i])
+		return;
+	map_features[i] = find_feature_by_frame(i);
+	if(map_features[i] && map_alternate[i])
+		map_features[map_alternate[i]] = map_features[i];
+}
+
 void area_initialization() {
 	initialize_alternate();
+	memset(map_terrain, 0, sizeof(map_terrain));
+	memset(map_features, 0, sizeof(map_features));
 	for(auto i = 0; i < area_frame_maximum; i++) {
 		map_terrain[i] = find_terrain_by_frame(i);
-		if(map_alternate[i])
-			map_terrain[map_alternate[i]] = map_terrain[i];
-		map_features[i] = find_feature_by_frame(i);
-		if(map_alternate[i])
-			map_features[map_alternate[i]] = map_features[i];
+		add_feature_frame(i);
 	}
 }
 
@@ -653,7 +659,35 @@ direction areai::moveto(point start, direction wanted_direction) const {
 	return current_direction;
 }
 
-point areai::nearest(point v, fntest proc, int radius) const {
+point areai::nearest(point v, fntest proc, int radius, point to) const {
+	if(proc(v))
+		return v;
+	for(auto i = 1; i < radius; i++) {
+		auto y = v.y - i;
+		for(auto j = 0; j < 2; j++) {
+			for(auto x = v.x - i; x <= v.x + i; x++) {
+				if(!isvalid(x, y))
+					continue;
+				if(proc(point(x, y)))
+					return point(x, y);
+			}
+			y = v.y + i;
+		}
+		auto x1 = v.x - i;
+		for(auto j = 0; j < 2; j++) {
+			for(auto y = v.y - i + 1; y <= v.y + i - 1; y++) {
+				if(!isvalid(x1, y))
+					continue;
+				if(proc(point(x1, y)))
+					return point(x1, y);
+			}
+			x1 = v.x + i;
+		}
+	}
+	return point(-10000, -10000);
+}
+
+point areai::nearest(point v, fntest proc, int radius, bool test_explored) const {
 	if(proc(v))
 		return v;
 	for(auto i = 1; i < radius; i++) {

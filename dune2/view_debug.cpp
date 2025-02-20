@@ -349,10 +349,6 @@ static void show_pallette(resid id, int dy) {
 
 static void change_debug() {
 	debug_toggle = !debug_toggle;
-	if(debug_toggle)
-		last_building->set(BoardUnit, true);
-	else
-		last_building->set(BoardUnit, false);
 	//area.blockcontrol();
 	//area.controlwave(area_spot, allowcontrol, 32);
 	//blockarea(isunitpossible);

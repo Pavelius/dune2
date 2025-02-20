@@ -73,9 +73,11 @@ private:
 	void			leavetrail();
 	void			movescreen();
 	direction		nextpath(point v);
+	bool			releasetile();
 	bool			returnbase();
 	void			tracking();
 	bool			shoot();
+	void			startmove();
 	void			stopattack();
 };
 extern unit *last_unit;
@@ -89,4 +91,5 @@ bool isspicefield(point v);
 bool isunitpossible(point v);
 
 unit* find_unit(point s);
+unit* find_unit(point v, const unit* exclude);
 point formation(int index);

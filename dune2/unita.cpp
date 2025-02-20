@@ -1,10 +1,8 @@
 #include "area.h"
-#include "pointa.h"
 #include "unita.h"
 #include "view.h"
 
 unita human_selected;
-static pointa human_formation;
 
 void unita::select(const playeri* player, const rect& screen_area) {
 	auto player_index = player->getindex();
@@ -38,15 +36,6 @@ static point choose_terrain() {
 	return show_scene(paint_main_map_choose_terrain, 0, 0);
 }
 
-void unita::formation() {
-	human_formation.clear();
-	if(!operator bool())
-		return;
-	auto start = operator[](0)->position;
-	for(auto p : *this)
-		human_formation.add(p->position - start);
-}
-
 void unita::order(ordern type, point v, bool interactive) const {
 	if(!operator bool())
 		return;
@@ -61,13 +50,13 @@ void unita::order(ordern type, point v, bool interactive) const {
 	}
 	auto index = 0;
 	for(auto p : *this) {
-		if(area.isvalid(v) && type == Move) {
-			auto vt = v + human_formation[index++];
-			vt = area.nearest(vt, isfreetrack, 4);
-			if(!vt)
-				continue;
-			p->apply(type, vt);
-		} else
+		//if(area.isvalid(v) && type == Move) {
+		//	auto vt = v + human_formation[index++];
+		//	vt = area.nearest(vt, isfreetrack, 4, false);
+		//	if(!vt)
+		//		continue;
+		//	p->apply(type, vt);
+		//} else
 			p->apply(type, v);
 	}
 	if(type == Move)

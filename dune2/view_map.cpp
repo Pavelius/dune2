@@ -663,15 +663,25 @@ static void rectb_alpha() {
 	alpha = push_alpha;
 }
 
+static void mouse_select() {
+	human_selected.clear();
+	if(!area.isvalid(area_spot))
+		return;
+	auto f = area.getfeature(area_spot);
+	if(f == BuildingHead || f == BuildingLeft || f == BuildingUp) {
+		last_building = find_building(area.getcorner(area_spot));
+		return;
+	}
+	auto p = find_unit(area_spot);
+	if(p)
+		human_selected.add(p);
+}
+
 static void selection_rect_dropped(const rect& rc) {
 	human_selected.clear();
 	if(!area.isvalid(area_spot))
 		return;
-	last_building = find_building(area.getcorner(area_spot));
-	if(last_building)
-		return;
 	human_selected.select(player, rc);
-	human_selected.formation();
 }
 
 static rect drag_finish_rect(point start, point finish, int minimal) {
@@ -725,9 +735,12 @@ static void input_game_map() {
 	}
 	auto mouse_finish = i2s(hot.mouse);
 	if(dragactive(input_game_map)) {
-		if(!dragactive()) // Drop dragged object
-			selection_rect_dropped(drag_finish_rect(mouse_start, mouse_finish, 8));
-		else if(same_point(mouse_start, 3) != same_point(mouse_finish, 3))
+		if(!dragactive()) {// Drop dragged object
+			if(same_point(mouse_start, 3) != same_point(mouse_finish, 3))
+				selection_rect_dropped(drag_finish_rect(mouse_start, mouse_finish, 8));
+			else
+				mouse_select();
+		} else if(same_point(mouse_start, 3) != same_point(mouse_finish, 3))
 			rectb_alpha_drag(mouse_start);
 	} else if(dragbegin(input_game_map))
 		mouse_start = mouse_finish;
