@@ -116,7 +116,7 @@ void update_game_time() {
 static void check_surrounded(point v, terrainn t, terrainn t1) {
 	for(auto d : all_strait_directions) {
 		auto n = v + getpoint(d);
-		if(area.isn(n, t))
+		if(area.is(n, t) || area.is(n, t1))
 			continue;
 		area.set(n, t1);
 	}
