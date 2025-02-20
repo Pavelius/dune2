@@ -36,7 +36,6 @@ unit *last_unit;
 
 const unsigned long shoot_duration = 1000 * 3;
 const unsigned long shoot_next_attack = 200;
-const unsigned long look_duration = 500;
 
 point formation(int index) {
 	static point formations[] = {
@@ -56,6 +55,12 @@ static bool turn(direction& result, direction new_direction) {
 	return result == new_direction;
 }
 
+void unit::fixstate(const char* id) const {
+	auto push = last_unit; last_unit = const_cast<unit*>(this);
+	actable::fixstate(id);
+	last_unit = push;
+}
+
 void unit::destroy() {
 	fixstate("UnitDestroyed");
 	cleanup();
@@ -71,10 +76,6 @@ void unit::damage(int value) {
 		hits -= value;
 	else
 		destroy();
-}
-
-bool unit::isenemy() const {
-	return player != ::player->getindex();
 }
 
 bool unit::ismoving() const {
@@ -298,14 +299,6 @@ bool unit::releasetile() {
 	return true;
 }
 
-void unit::fixstate(const char* id) const {
-	if(!area.is(position, ::player->getindex(), Visible))
-		return;
-	auto push = last_unit; last_unit = const_cast<unit*>(this);
-	print(getnm(id));
-	last_unit = push;
-}
-
 bool unit::harvest() {
 	if(getpurpose() != Harvest)
 		return false;
@@ -353,10 +346,6 @@ bool unit::harvest() {
 	return true;
 }
 
-const char* unit::getfractionname() const {
-	return getplayer().getfraction().getname();
-}
-
 void unit::startmove() {
 	position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
 	movescreen(); // Start moving to next tile.
@@ -399,17 +388,19 @@ void unit::update() {
 			else
 				startmove();
 		}
-		if(!isturret()) {
+		if(!isturret())
 			action_direction = move_direction;
-			synchronize();
-		}
 	} else if(releasetile())
 		return;
 	else if(harvest())
 		return;
 	else if(shoot()) {
-		if(!isturret())
-			move_direction = action_direction;
+		if(!isturret()) {
+			if(move_direction != action_direction) {
+				move_direction = action_direction;
+				synchronize();
+			}
+		}
 		return;
 	} else if(isturret()) { // Turret random look around
 		auto turn_direction = turnto(action_direction, move_direction);
@@ -430,12 +421,6 @@ void unit::synchronize() {
 	if(action_time > start_time)
 		start_time = action_time;
 }
-
-//void unit::wait(unsigned long n) {
-//	if(action_time < game.time)
-//		action_time = game.time;
-//	action_time += n;
-//}
 
 bool isnonblocked(point v) {
 	return path_map[v.y][v.x] != BlockArea;
@@ -580,7 +565,7 @@ void unit::apply(ordern type, point v) {
 		}
 		break;
 	case Move:
-		if(opponent && opponent->isenemy() && getpurpose() == Attack)
+		if(opponent && opponent->isenemy(player) && getpurpose() == Attack)
 			apply(Attack, v);
 		else if(getpurpose() == Harvest && isspicefield(v))
 			apply(Harvest, v);
@@ -598,10 +583,4 @@ void unit::apply(ordern type, point v) {
 		stop();
 		break;
 	}
-}
-
-unit* unit::getenemy() const {
-	if(target == 0xFFFF)
-		return 0;
-	return bsdata<unit>::elements + target;
 }

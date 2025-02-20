@@ -235,6 +235,17 @@ static void quit_game() {
 		return;
 }
 
+static point choose_terrain() {
+	return show_scene(paint_main_map_choose_terrain, 0, 0);
+}
+
+void human_order_building() {
+	auto v = choose_terrain();
+	if(!area.isvalid(v))
+		return;
+	last_building->setaction(v, true);
+}
+
 void open_options() {
 	static menui elements[] = {
 		{"LoadGame", load_game},
@@ -261,14 +272,15 @@ void main_menu() {
 	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
 	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
 	area.set({5, 2, 9, 8}, set_terrain, Rock);
+	add_building({5, 3}, Turret);
 	add_building({6, 3}, ConstructionYard);
 	add_building({8, 3}, LightVehicleFactory);
 	add_building({5, 5}, Windtrap);
 	add_building({7, 5}, Refinery);
-	add_unit({5, 7}, Trike, Down);
-	add_unit({6, 7}, Harvester, Down);
+//	add_unit({5, 7}, Trike, Down);
+//	add_unit({6, 7}, Harvester, Down);
 	add_unit({7, 7}, AssaultTank, Down);
-	add_unit({8, 7}, Trike, Down);
+//	add_unit({8, 7}, Trike, Down);
 	show_scene(paint_main_map, 0, 0);
 }
 

@@ -57,6 +57,7 @@ struct areai {
 	void			set(point v, featuren t, int param = 0);
 	void			set(point v, shapen t, const short unsigned* frame_list);
 	void			set(point v, shapen t, featuren f);
+	void			set(point v, direction d, short unsigned frame);
 	void			set(rect v, fnset proc, int value);
 	void			set(point v, unsigned char player, areaf t) { flags[player][v.y][v.x] |= (1 << t); }
 	void			setcamera(point v, bool center_view);

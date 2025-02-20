@@ -12,6 +12,7 @@ unsigned int game_rand();
 inline bool game_chance(unsigned int value) { return (game_rand() % 100) < value; }
 inline unsigned int game_rand(int from, int to) { return from + game_rand() % (to - from + 1); }
 
+void human_order_building();
 void update_game_time();
 void open_options();
 void save_game(const char* id);

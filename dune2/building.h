@@ -50,6 +50,7 @@ struct building : actable, typeable<buildingi, buildingn> {
 	void			unboard();
 private:
 	bool			autoproduct();
+	void			patchdirection();
 };
 extern building* last_building;
 

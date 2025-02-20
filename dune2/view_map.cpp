@@ -567,7 +567,7 @@ static void paint_radar_buildings() {
 static void mouse_unit_move() {
 	auto v = (point)draw::hot.param;
 	auto p = find_unit(v);
-	if(p && p->isenemy())
+	if(p && p->isenemy(player->getindex()))
 		human_selected.order(Attack, v, false);
 	else
 		human_selected.order(Move, v, false);
@@ -1106,11 +1106,25 @@ static void paint_building_info() {
 	}
 }
 
+static void paint_turret_info() {
+	pushrect push;
+	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
+	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
+	setoffset(-1, 0);
+	height = 12;
+	button(bsdata<orderi>::elements[Attack].getname(), 'A', AlignCenter, human_order_building, Attack);
+}
+
 static void paint_unit_info() {
 	pushrect push;
 	if(!human_selected) {
-		if(last_building)
-			paint_building_info();
+		if(last_building) {
+			auto t = last_building->type;
+			if(t == RocketTurret || t == Turret)
+				paint_turret_info();
+			else
+				paint_building_info();
+		}
 	} else if(human_selected.count == 1) {
 		auto push_unit = last_unit;
 		last_unit = human_selected[0];

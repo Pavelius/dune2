@@ -8,6 +8,8 @@ enum fixn : unsigned char;
 
 struct unit;
 
+const unsigned long look_duration = 500;
+
 struct actable : playerable {
 	point			position;
 	unsigned char	action; // Sequence action in a row
@@ -20,9 +22,11 @@ struct actable : playerable {
 	bool			canshoot(int maximum_range) const;
 	unit*			getenemy() const;
 	const char*		getfractionname() const;
+	bool			isenemy(unsigned char player_index) const;
 	bool			isready() const;
 	void			fixstate(const char* id) const;
 	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
+	void			setaction(point v, bool hostile);
 	bool			shoot(point screen, fixn weapon, int attacks, int maximum_range);
 	void			stop();
 	void			tracking();

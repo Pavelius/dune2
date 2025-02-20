@@ -34,19 +34,16 @@ struct unit : drawable, actable, typeable<uniti, unitn> {
 	void			clear();
 	void			damage(int value);
 	void			destroy();
+	void			fixstate(const char* id) const;
 	int				get(statn v) const { return geti().stats[v]; }
-	unit*			getenemy() const;
 	int				getmaximum(statn v) const;
 	short unsigned	getindex() const;
 	int				getlos() const { return 2; }
 	const char*		getname() const { return geti().getname(); }
-	const char*		getfractionname() const;
 	ordern			getpurpose() const;
 	int				getshootrange() const { return 3; }
 	int				getspeed() const;
-	void			fixstate(const char* id) const;
 	bool			isboard() const { return position.x < 0; }
-	bool			isenemy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }

@@ -471,6 +471,14 @@ void areai::set(point v, shapen t, featuren f) {
 	}
 }
 
+void areai::set(point v, direction d, short unsigned f) {
+	if(!isvalid(v))
+		return;
+	if(d == Center)
+		return;
+	frames[v.y][v.x] = f + (d - 1);
+}
+
 void areai::set(point v, shapen t, const short unsigned* frame_list) {
 	if(!frame_list)
 		return;

@@ -10,7 +10,6 @@
 
 const unsigned long action_next_time = 200;
 const unsigned long action_duration = 3 * 1000;
-const unsigned long action_turn_time = 500;
 
 bool turn(direction& result, direction new_direction) {
 	if(new_direction == Center)
@@ -79,13 +78,12 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 			}
 		}
 		return true;
-	}
-	if(!canshoot(maximum_range))
+	} else if(!canshoot(maximum_range))
 		stop();
 	else {
 		auto d = to(position, target_position);
 		if(!turn(action_direction, d)) {
-			wait(action_turn_time);
+			wait(look_duration);
 			return true;
 		}
 		fixshoot(screen, m2sc(target_position), weapon, 0);
@@ -112,4 +110,17 @@ void actable::wait(int duration) {
 
 bool actable::isready() const {
 	return action_time <= game.time;
+}
+
+bool actable::isenemy(unsigned char player_index) const {
+	return player != player_index;
+}
+
+void actable::setaction(point v, bool hostile) {
+	auto p = find_unit(v);
+	if(p && p->isenemy(player) == hostile)
+		target = p->getindex();
+	else
+		target = 0xFFFF;
+	target_position = v;
 }

@@ -66,6 +66,10 @@ buildingn buildingi::getindex() const {
 	return (buildingn)(this - bsdata<buildingi>::elements);
 }
 
+void building::patchdirection() {
+	auto f = area.getframe(position);
+}
+
 void add_building(point pt, buildingn id) {
 	last_building = bsdata<building>::addz();
 	last_building->position = pt;
@@ -75,6 +79,7 @@ void add_building(point pt, buildingn id) {
 	last_building->hits = e.hits;
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
+	last_building->action_direction = Down;
 	area.set(last_building->getrect(), setnofeature, 0);
 }
 
@@ -249,7 +254,13 @@ void building::update() {
 				build_count--;
 			}
 		}
+	} else if(shoot(m2sc(position), Shoot20mm, 2, 8)) {
+		// After shoot.
+	} else {
+		// Do nothing
 	}
+	if(type == Turret || type == RocketTurret)
+		area.set(position, action_direction, geti().frames[0]);
 }
 
 int	building::getprogress() const {
