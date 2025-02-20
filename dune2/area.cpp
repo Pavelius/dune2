@@ -142,6 +142,15 @@ static void add_feature_frame(int i) {
 		map_features[map_alternate[i]] = map_features[i];
 }
 
+static void update_building_feature_frames() {
+	for(auto& e : bsdata<buildingi>()) {
+		for(auto& tp : e.tiles) {
+			if(map_features[tp.from])
+				map_features[tp.to] = map_features[tp.from];
+		}
+	}
+}
+
 void area_initialization() {
 	initialize_alternate();
 	memset(map_terrain, 0, sizeof(map_terrain));
@@ -150,6 +159,7 @@ void area_initialization() {
 		map_terrain[i] = find_terrain_by_frame(i);
 		add_feature_frame(i);
 	}
+	update_building_feature_frames();
 }
 
 void areai::clear() {

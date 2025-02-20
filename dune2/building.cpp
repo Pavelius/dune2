@@ -146,8 +146,8 @@ void building::unboard() {
 
 void building::set(buildstaten action, bool apply) {
 	auto& ei = geti();
-	auto pb = ei.tilepatches.begin();
-	auto pe = ei.tilepatches.end();
+	auto pb = ei.tiles.begin();
+	auto pe = ei.tiles.end();
 	auto p1 = find_patch(pb, pe, action);
 	if(!p1)
 		return;

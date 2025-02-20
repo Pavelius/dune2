@@ -23,7 +23,7 @@ struct buildingi : topicable {
 	short unsigned	frames[16], ruined[16];
 	slice<topicable*> build;
 	unsigned		cost[Supply + 1], surplus[Supply + 1];
-	slice<tilepatch> tilepatches;
+	slice<tilepatch> tiles;
 	buildingn		getindex() const;
 };
 struct building : playerable, typeable<buildingi, buildingn> {
