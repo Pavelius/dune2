@@ -10,6 +10,7 @@
 #include "stringbuilder.h"
 #include "squad.h"
 #include "unit.h"
+#include "unita.h"
 #include "view.h"
 
 ///////////////////////////////////////////////////////////
@@ -108,6 +109,9 @@ void unit::cleanup() {
 		if(e.target == i)
 			e.stopattack();
 	}
+	if(last_unit == this)
+		last_unit = 0;
+	human_selected.remove(this);
 }
 
 void unit::scouting() {

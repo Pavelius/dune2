@@ -1070,6 +1070,28 @@ static void paint_build_button() {
 	height = push_height;
 }
 
+static void paint_field(const char* title, int value) {
+	text(str("%1: %2i", title, value));
+	caret.y += texth();
+}
+
+static void paint_bold(const char* title) {
+	auto push_stroke = fore_stroke; fore_stroke = fore;
+	pushfore fore(colors::white);
+	text(title, -1, TextBold); caret.y += texth();
+	fore_stroke = push_stroke;
+}
+
+static void paint_stats_info(const char* title, abilityn n) {
+	pushrect push;
+	caret.y += 2;
+	if(!title)
+		title = bsdata<abilityi>::elements[n].getname();
+	paint_bold(title);
+	paint_field("Used", player->abilities[n]);
+	paint_field("Max", player->maximum[n]);
+}
+
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	if(last_building->canbuild()) {
@@ -1077,6 +1099,10 @@ static void paint_building_info() {
 		paint_build_button();
 	} else {
 		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
+		switch(last_building->type) {
+		case SpiceSilo: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
+		case Windtrap: paint_stats_info(0, Energy); break;
+		}		
 	}
 }
 

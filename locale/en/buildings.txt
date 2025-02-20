@@ -18,3 +18,5 @@ Starport: Starport
 Turret: Turret
 WOR: WOR
 Windtrap: Wind Trap
+
+Energy: Energy

@@ -40,26 +40,30 @@ static void update_unit_time() {
 	}
 }
 
+static void add_abilities(unsigned int* v1, const unsigned int* v2) {
+	for(auto i = Credits; i <= Supply; i = (abilityn)(i + 1))
+		v1[i] += v2[i];
+}
+
 static void update_player_time() {
 	// Remove all calculable ability
 	for(auto& e : bsdata<playeri>()) {
-		e.abilities[Energy] = 0;
-		memset(e.maximum, 0, sizeof(e.maximum));
 		memset(e.buildings, 0, sizeof(e.buildings));
 		memset(e.units, 0, sizeof(e.units));
 	}
 	// Calculate building count
 	for(auto& e : bsdata<building>()) {
-		if(!e)
-			continue;
-		e.getplayer().buildings[e.type]++;
+		if(e)
+			e.getplayer().buildings[e.type]++;
 	}
 	// Calculate units count
 	for(auto& e : bsdata<unit>()) {
-		if(!e)
-			continue;
-		e.getplayer().units[e.type]++;
+		if(e)
+			e.getplayer().units[e.type]++;
 	}
+	// Finally update player values
+	for(auto& e : bsdata<playeri>())
+		e.update();
 }
 
 static void update_building_time() {
@@ -238,7 +242,7 @@ void main_menu() {
 	// music_disabled = true;
 	// show_introdution();
 	auto size = sizeof(unit);
-	player = bsdata<playeri>::elements;
+	player = bsdata<playeri>::add();
 	player->add(Credits, 3000);
 	player->color_index = 2;
 	player->fraction = Atreides;

@@ -1,6 +1,2 @@
 ﻿Error in file `UnknownNames.txt`:
- Define translation for `GameControls`
- Define translation for `LoadGame`
- Define translation for `PickAnotherHouse`
- Define translation for `RestartScenario`
- Define translation for `SaveGame`
+ Define translation for `Energy`

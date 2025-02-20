@@ -19,6 +19,7 @@ struct playeri : fractionable {
 	void			add(abilityn v, int i) { abilities[v] += i; }
 	unsigned int	get(abilityn v) const { return abilities[v]; }
 	unsigned char	getindex() const;
+	void			update();
 };
 struct playerable {
 	unsigned char	player;

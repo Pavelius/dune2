@@ -22,7 +22,7 @@ struct buildingi : topicable {
 	shapen			shape;
 	short unsigned	frames[16], ruined[16];
 	slice<topicable*> build;
-	short unsigned	cost[Supply + 1], surplus[Supply + 1];
+	unsigned		cost[Supply + 1], surplus[Supply + 1];
 	slice<tilepatch> tilepatches;
 	buildingn		getindex() const;
 };

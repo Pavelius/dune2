@@ -31,18 +31,18 @@ static tilepatch refinery_tiles[] = {
 };
 
 BSDATA(buildingi) = {
-	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce, {0, 0}},
+	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, {}, base_produce, {}, {}},
 	{"SpiceSilo", STORAGE, 69, 100, 500, Shape2x2, {372, 373, 375, 376}, {}, {}, {0}, {1000}},
 	{"Starport", STARPORT, 57},
 	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}, {}, {}, {}, {0, 1000}},
-	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 200}, {1000}, refinery_tiles},
+	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {}, {0, 1000}, {1000}, refinery_tiles},
 	{"RadarOutpost", HEADQRTS, 70, 500, 1000, Shape2x2, {379, 380, 386, 387}},
 	{"RepairFacility", REPAIR},
 	{"HouseOfIX"},
 	{"Palace", PALACE, 54},
-	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {299, 300, 301, 302}, {}, barrac_produce},
-	{"WOR", WOR, 59, 500, 1500, Shape2x2, {285, 286, 288, 289}, {}, wor_produce},
-	{"LightVehicleFactory", LITEFTRY, 55, 1000, 2000, Shape2x2, {241, 242, 248, 249}, {}, lftr_produce},
+	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {299, 300, 301, 302}, {}, barrac_produce, {0, 200}},
+	{"WOR", WOR, 59, 500, 1500, Shape2x2, {285, 286, 288, 289}, {}, wor_produce, {0, 300}},
+	{"LightVehicleFactory", LITEFTRY, 55, 1000, 2000, Shape2x2, {241, 242, 248, 249}, {}, lftr_produce, {0, 500}},
 	{"HeavyVehicleFactory", HVYFTRY, 56, 2000, 2000},
 	{"HighTechFacility"},
 	{"Slab", SLAB, 53, 2, 0, Shape1x1, {126}},
