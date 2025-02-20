@@ -10,6 +10,7 @@
 
 const unsigned long action_next_time = 200;
 const unsigned long action_duration = 3 * 1000;
+const unsigned long action_turn_time = 500;
 
 bool turn(direction& result, direction new_direction) {
 	if(new_direction == Center)
@@ -66,6 +67,8 @@ bool actable::canshoot(int maximum_range) const {
 }
 
 bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
+	if(!weapon)
+		return false;
 	if(action_time > game.time) {
 		if(action) {// Allow multi-attacks
 			if((action_time - game.time) >= (action * action_next_time)) {
@@ -82,7 +85,7 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 	else {
 		auto d = to(position, target_position);
 		if(!turn(action_direction, d)) {
-			wait(action_duration);
+			wait(action_turn_time);
 			return true;
 		}
 		fixshoot(screen, m2sc(target_position), weapon, 0);
@@ -102,5 +105,11 @@ void actable::stop() {
 }
 
 void actable::wait(int duration) {
+	if(action_time < game.time)
+		action_time = game.time;
 	action_time += duration;
+}
+
+bool actable::isready() const {
+	return action_time <= game.time;
 }

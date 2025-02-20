@@ -16,9 +16,11 @@ struct actable : playerable {
 	point			target_position;
 	short unsigned	target; // Enemy unit target
 	short			hits;
+	explicit operator bool() const { return hits > 0; }
 	bool			canshoot(int maximum_range) const;
 	unit*			getenemy() const;
 	const char*		getfractionname() const;
+	bool			isready() const;
 	void			fixstate(const char* id) const;
 	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
 	bool			shoot(point screen, fixn weapon, int attacks, int maximum_range);

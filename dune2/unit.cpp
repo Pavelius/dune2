@@ -73,10 +73,6 @@ void unit::damage(int value) {
 		destroy();
 }
 
-bool unit::isready() const {
-	return ready_time <= game.time;
-}
-
 bool unit::isenemy() const {
 	return player != ::player->getindex();
 }
@@ -107,7 +103,7 @@ void unit::cleanup() {
 		if(!e)
 			continue;
 		if(e.target == i)
-			e.stopattack();
+			e.actable::stop();
 	}
 	if(last_unit == this)
 		last_unit = 0;
@@ -180,9 +176,9 @@ static int get_trail_param(direction d) {
 	}
 }
 
-bool unit::isattacking() const {
-	return area.isvalid(order_attack);
-}
+//bool unit::isattacking() const {
+//	return area.isvalid(order_attack);
+//}
 
 void unit::leavetrail() {
 	auto previous_position = s2m(screen);
@@ -197,25 +193,19 @@ void unit::leavetrail() {
 	}
 }
 
-void unit::tracking() {
-	auto enemy = getenemy();
-	if(enemy)
-		order_attack = enemy->position;
-}
-
-void unit::stopattack() {
-	target = 0xFFFF;
-	order_attack = {-10000, -10000};
-}
-
-bool unit::canshoot() const {
-	if(!area.isvalid(order_attack))
-		return false;
-	if(!area.is(order_attack, player, Visible))
-		return false;
-	auto range = position.range(order_attack);
-	return range <= getshootrange();
-}
+//void unit::stopattack() {
+//	target = 0xFFFF;
+//	order_attack = {-10000, -10000};
+//}
+//
+//bool unit::canshoot() const {
+//	if(!area.isvalid(order_attack))
+//		return false;
+//	if(!area.is(order_attack, player, Visible))
+//		return false;
+//	auto range = position.range(order_attack);
+//	return range <= getshootrange();
+//}
 
 ordern unit::getpurpose() const {
 	switch(type) {
@@ -228,60 +218,60 @@ static point random_near(point v) {
 	return to(v, all_directions[game_rand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
 }
 
-void unit::fixshoot(int chance_miss) {
-	auto weapon = geti().weapon;
-	if(chance_miss && game_chance(chance_miss)) {
-		auto miss = random_near(order_attack);
-		auto current = s2m(screen);
-		if(miss == current)
-			return; // Hit itself?
-		add_effect(screen, m2sc(miss), weapon);
-	} else
-		add_effect(screen, m2sc(order_attack), weapon);
-}
+//void unit::fixshoot(int chance_miss) {
+//	auto weapon = geti().weapon;
+//	if(chance_miss && game_chance(chance_miss)) {
+//		auto miss = random_near(order_attack);
+//		auto current = s2m(screen);
+//		if(miss == current)
+//			return; // Hit itself?
+//		add_effect(screen, m2sc(miss), weapon);
+//	} else
+//		add_effect(screen, m2sc(order_attack), weapon);
+//}
 
-bool unit::shoot() {
-	if(isnoweapon())
-		return false;
-	if(ready_time > game.time) {
-		if(action) {// Allow multi-attacks
-			if((ready_time - game.time) >= (action * shoot_next_attack)) {
-				fixshoot(40); // Can make next attack on same target, but can miss
-				action++;
-				if(action >= geti().stats[Attacks])
-					action = 0;
-			}
-		}
-		return true;
-	}
-	if(!canshoot())
-		stopattack();
-	else {
-		auto d = to(position, order_attack);
-		if(isturret()) {
-			if(!turn(shoot_direction, d)) {
-				wait(look_duration);
-				return true;
-			}
-		} else {
-			if(!turn(move_direction, d)) {
-				wait(look_duration);
-				return true;
-			}
-		}
-		fixshoot(0);
-		wait(shoot_duration);
-		if(get(Attacks) > 1)
-			action = 1;
-		else
-			action = 0;
-		return true;
-	}
-	return false;
-}
+//bool unit::shoot() {
+//	if(isnoweapon())
+//		return false;
+//	if(ready_time > game.time) {
+//		if(action) {// Allow multi-attacks
+//			if((ready_time - game.time) >= (action * shoot_next_attack)) {
+//				fixshoot(40); // Can make next attack on same target, but can miss
+//				action++;
+//				if(action >= geti().stats[Attacks])
+//					action = 0;
+//			}
+//		}
+//		return true;
+//	}
+//	if(!canshoot())
+//		stopattack();
+//	else {
+//		auto d = to(position, order_attack);
+//		if(isturret()) {
+//			if(!turn(shoot_direction, d)) {
+//				wait(look_duration);
+//				return true;
+//			}
+//		} else {
+//			if(!turn(move_direction, d)) {
+//				wait(look_duration);
+//				return true;
+//			}
+//		}
+//		fixshoot(0);
+//		wait(shoot_duration);
+//		if(get(Attacks) > 1)
+//			action = 1;
+//		else
+//			action = 0;
+//		return true;
+//	}
+//	return false;
+//}
 
 bool unit::isharvest() const {
-	return getpurpose() == Harvest && ready_time > game.time;
+	return getpurpose() == Harvest && !isready();
 }
 
 bool unit::istrallfull() const {
@@ -327,15 +317,15 @@ bool unit::harvest() {
 			action--;
 			pb->getplayer().add(Credits, 100);
 			wait(1000);
-			start_time = ready_time;
+			start_time = action_time;
 		} else {
 			pb->unboard();
-			if(area.isvalid(order_attack))
-				apply(Move, order_attack);
+			if(area.isvalid(target_position))
+				apply(Move, target_position);
 		}
 		return true;
 	}
-	if(!area.isvalid(order_attack))
+	if(!area.isvalid(target_position))
 		return false;
 	if(istrallfull()) {
 		returnbase();
@@ -347,7 +337,7 @@ bool unit::harvest() {
 	if(position == v) {
 		action++;
 		start_time += 1000 * 4;
-		ready_time = start_time;
+		action_time = start_time;
 		switch(area.get(position)) {
 		case Spice:
 			area.set(position, Sand);
@@ -381,8 +371,8 @@ void unit::update() {
 			if(shoot()) { // Turret vehicle can shoot on moving
 				// After shoot do nothing
 			} else if(isready()) { // If not busy we can make some actions while moving
-				if(shoot_direction != move_direction) {
-					shoot_direction = to(shoot_direction, turnto(shoot_direction, move_direction));
+				if(action_direction != move_direction) {
+					action_direction = to(action_direction, turnto(action_direction, move_direction));
 					wait(look_duration);
 				}
 			}
@@ -409,32 +399,43 @@ void unit::update() {
 			else
 				startmove();
 		}
+		if(!isturret()) {
+			action_direction = move_direction;
+			synchronize();
+		}
 	} else if(releasetile())
 		return;
 	else if(harvest())
 		return;
-	else if(shoot())
+	else if(shoot()) {
+		if(!isturret())
+			move_direction = action_direction;
 		return;
-	else if(isturret()) { // Turret random look around
-		auto turn_direction = turnto(shoot_direction, move_direction);
+	} else if(isturret()) { // Turret random look around
+		auto turn_direction = turnto(action_direction, move_direction);
 		if(turn_direction != Center && game_chance(50))
-			shoot_direction = to(shoot_direction, turn_direction);
+			action_direction = to(action_direction, turn_direction);
 		else if(game_chance(30))
-			shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
+			action_direction = to(action_direction, (game_rand() % 2) ? Left : Right);
 	}
 }
 
 void unit::stop() {
 	path_direction = Center;
 	order = position;
-	stopattack();
+	actable::stop();
 }
 
-void unit::wait(unsigned long n) {
-	if(ready_time < game.time)
-		ready_time = game.time;
-	ready_time += n;
+void unit::synchronize() {
+	if(action_time > start_time)
+		start_time = action_time;
 }
+
+//void unit::wait(unsigned long n) {
+//	if(action_time < game.time)
+//		action_time = game.time;
+//	action_time += n;
+//}
 
 bool isnonblocked(point v) {
 	return path_map[v.y][v.x] != BlockArea;
@@ -483,14 +484,14 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->screen = m2sc(pt);
 	last_unit->position = pt;
 	last_unit->order = pt;
-	last_unit->order_attack = {-10000, -10000};
 	last_unit->type = id;
 	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;
-	last_unit->shoot_direction = d;
+	last_unit->action_direction = d;
 	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->target = 0xFFFF;
+	last_unit->target_position = {-10000, -10000};
 	last_unit->setplayer(player);
 	last_unit->scouting();
 }
@@ -559,25 +560,23 @@ void unit::apply(ordern type, point v) {
 	auto opponent = find_unit(v);
 	switch(type) {
 	case Attack:
-		target = 0xFFFF;
-		order_attack = {-10000, -10000};
+		actable::stop();
 		if(opponent == this)
 			break; // Big mistake
 		if(opponent) {
 			target = opponent->getindex();
-			order_attack = opponent->position;
+			target_position = opponent->position;
 		} else if(area.isvalid(v))
-			order_attack = v;
+			target_position = v;
 		break;
 	case Harvest:
-		target = 0xFFFF;
-		order_attack = {-10000, -10000};
+		actable::stop();
 		if(area.isvalid(v)) {
-			order_attack = v;
+			target_position = v;
 			order = v;
 			start_time = game.time; // Can't wait command
-			if(ready_time > start_time)
-				start_time = ready_time;
+			if(action_time > start_time)
+				start_time = action_time;
 		}
 		break;
 	case Move:
@@ -588,8 +587,8 @@ void unit::apply(ordern type, point v) {
 		else if(area.isvalid(v)) {
 			order = v;
 			start_time = game.time; // Can't wait command
-			if(ready_time > start_time)
-				start_time = ready_time;
+			if(action_time > start_time)
+				start_time = action_time;
 		}
 		break;
 	case Retreat:

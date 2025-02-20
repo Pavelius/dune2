@@ -1,10 +1,9 @@
 #pragma once
 
-#include "direction.h"
+#include "actable.h"
 #include "drawable.h"
 #include "fix.h"
 #include "flagable.h"
-#include "player.h"
 #include "order.h"
 #include "resid.h"
 #include "topicable.h"
@@ -27,15 +26,10 @@ struct uniti : topicable {
 	unsigned char	frame, frame_shoot;
 	unsigned char	stats[Armor + 1];
 };
-struct unit : drawable, playerable, typeable<uniti, unitn> {
-	unsigned long	ready_time; // Start action
-	short unsigned	target; // Enemy target
-	unsigned char	action;
-	point			position, order, guard, order_attack;
+struct unit : drawable, actable, typeable<uniti, unitn> {
+	point			order, guard;
 	squadn			squad;
-	direction		move_direction, shoot_direction, path_direction;
-	short unsigned	hits;
-	explicit operator bool() const { return hits > 0; }
+	direction		move_direction, path_direction;
 	void			apply(ordern type, point v);
 	void			clear();
 	void			damage(int value);
@@ -51,26 +45,20 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	int				getshootrange() const { return 3; }
 	int				getspeed() const;
 	void			fixstate(const char* id) const;
-	bool			isattacking() const;
 	bool			isboard() const { return position.x < 0; }
 	bool			isenemy() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
-	bool			isnoweapon() const { return geti().stats[Attacks] == 0; }
-	bool			isready() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }
 	bool			isharvest() const;
 	void			scouting();
 	void			set(point v);
 	void			stop();
 	void			update();
-	void			wait(unsigned long n);
 private:
 	void			blockland() const;
-	bool			canshoot() const;
 	void			cantdothis();
 	void			cleanup();
-	void			fixshoot(int chance_miss);
 	bool			harvest();
 	bool			istrallfull() const;
 	void			leavetrail();
@@ -78,10 +66,9 @@ private:
 	direction		nextpath(point v);
 	bool			releasetile();
 	bool			returnbase();
-	void			tracking();
-	bool			shoot();
+	bool			shoot() { return actable::shoot(screen, geti().weapon, geti().stats[Attacks], getshootrange()); }
 	void			startmove();
-	void			stopattack();
+	void			synchronize();
 };
 extern unit *last_unit;
 

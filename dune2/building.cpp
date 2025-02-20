@@ -60,10 +60,6 @@ static tilepatch refinery_unload[] = {
 	{339, 344}, {344, 339},
 };
 
-building::operator bool() const {
-	return area.isvalid(position);
-}
-
 buildingn buildingi::getindex() const {
 	if(!this)
 		return Slab;

@@ -455,7 +455,7 @@ static void paint_unit() {
 	if(p->isharvest())
 		paint_unit_harvest(p->geti(), p->move_direction, p->getplayer().color_index);
 	else {
-		paint_unit(p->geti(), p->move_direction, p->shoot_direction,
+		paint_unit(p->geti(), p->move_direction, p->action_direction,
 			p->getplayer().color_index,
 			get_animation_frame(p->screen, m2sc(p->position)) % 4);
 	}

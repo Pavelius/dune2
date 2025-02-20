@@ -1,6 +1,6 @@
 #pragma once
 
-#include "player.h"
+#include "actable.h"
 #include "rect.h"
 #include "slice.h"
 #include "shape.h"
@@ -26,13 +26,10 @@ struct buildingi : topicable {
 	slice<tilepatch> tiles;
 	buildingn		getindex() const;
 };
-struct building : playerable, typeable<buildingi, buildingn> {
-	point			position;
+struct building : actable, typeable<buildingi, buildingn> {
 	unsigned char	build_index, build_count;
 	unsigned short	build_spend;
 	unsigned short	unit_board;
-	short			hits;
-	explicit operator bool() const;
 	void			board(unit* p);
 	void			buildlist() const;
 	bool			canbuild() const { return geti().build.operator bool(); }
