@@ -19,7 +19,7 @@ struct drawable {
 };
 struct draweffect : drawable {
 	point			from, to;
-	unsigned short	owner;
+	unsigned short	effect;
 	explicit operator bool() const { return start_time != 0; }
 };
 struct drawrenderi {

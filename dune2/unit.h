@@ -14,7 +14,7 @@ enum unitn : unsigned char {
 	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank
 };
 enum statn : unsigned char {
-	Hits, Damage, Attacks, Speed, Armor,
+	Hits, Attacks, Speed, Armor,
 };
 enum squadn : unsigned char;
 enum movementn : unsigned char;

@@ -18,24 +18,25 @@ static void add_explosion_tile() {
 static void apply_damage() {
 	auto p = (draweffect*)last_object;
 	auto v = s2m(last_object->screen);
-	if(p->owner == 0xFFFF)
-		return;
-	auto pa = bsdata<unit>::elements + p->owner;
 	auto pe = find_unit(v);
 	if(!pe)
 		return;
-	auto damage = pa->get(Damage) - pe->get(Armor);
+	auto damage = p->effect - pe->get(Armor);
+	if(damage <= 0) {
+		if(game_chance(50))
+			damage = 1;
+	}
 	if(damage <= 0)
-		damage = 1;
+		return;
 	pe->damage(damage);
 }
 
-void add_effect(point v, fixn i, short unsigned owner) {
-	add_effect(v, i, animate_time, owner);
+void add_effect(point v, fixn i) {
+	add_effect(v, i, animate_time, bsdata<fixeffecti>::elements[i].effect);
 }
 
-void add_effect(point from, point to, fixn i, short unsigned owner) {
-	add_effect(from, to, i, animate_time, owner);
+void add_effect(point from, point to, fixn i) {
+	add_effect(from, to, i, animate_time, bsdata<fixeffecti>::elements[i].effect);
 }
 
 int fixeffecti::getframe(unsigned& flags, point from, point to) const {
@@ -60,17 +61,20 @@ int fixeffecti::getframe(unsigned& flags, point from, point to) const {
 
 BSDATA(fixeffecti) = {
 	{"NoEffect"},
-	{"ShootHandGun", 80, UNITS1, 23, 1, apply_damage, FixSmallHit},
-	{"ShootHeavyGun", 100, UNITS1, 24, 1, apply_damage, FixMediumHit},
-	{"ShootBigGun", 100, UNITS1, 25, 1, apply_damage, FixLargeHit},
-	{"FireRocket", 100, UNITS, 20, 5, 0, FixExplosion},
-	{"FixSmallHit", 0, UNITS1, 2, 1, add_explosion_tile},
-	{"FixMediumHit", 0, UNITS1, 3, 1, add_explosion_tile},
-	{"FixLargeHit", 0, UNITS1, 4, 1, add_explosion_tile},
-	{"FixExplosion", 0, UNITS1, 32, 5, add_explosion_tile},
-	{"FixBigExplosion", 0, UNITS1, 37, 5, add_explosion_tile},
-	{"FixBikeExplosion", 100, UNITS1, 32, 2, 0, FixBikeExplosionEnd},
-	{"FixBikeExplosionEnd", 100, UNITS1, 0, 2, add_explosion_tile},
-	{"FixHitSand", 200, UNITS1, 5, 3, add_explosion_tile},
+	{"ShootAssaultRifle", 70, UNITS1, 23, 1, 2, apply_damage, FixSmallHit},
+	{"ShootRotaryCannon", 80, UNITS1, 23, 1, 3, apply_damage, FixSmallHit},
+	{"Shoot20mm", 80, UNITS1, 23, 1, 4, apply_damage, FixSmallHit},
+	{"Shoot30mm", 100, UNITS1, 23, 1, 5, apply_damage, FixSmallHit},
+	{"Shoot155mm", 110, UNITS1, 24, 1, 7, apply_damage, FixMediumHit},
+	{"ShootBigGun", 100, UNITS1, 25, 1, 8, apply_damage, FixLargeHit},
+	{"FireRocket", 100, UNITS, 20, 5, 0, 0, FixExplosion},
+	{"FixSmallHit", 0, UNITS1, 2, 1, 0, add_explosion_tile},
+	{"FixMediumHit", 0, UNITS1, 3, 1, 0, add_explosion_tile},
+	{"FixLargeHit", 0, UNITS1, 4, 1, 0, add_explosion_tile},
+	{"FixExplosion", 0, UNITS1, 32, 5, 0, add_explosion_tile},
+	{"FixBigExplosion", 0, UNITS1, 37, 5, 0, add_explosion_tile},
+	{"FixBikeExplosion", 100, UNITS1, 32, 2, 0, 0, FixBikeExplosionEnd},
+	{"FixBikeExplosionEnd", 100, UNITS1, 0, 2, 0, add_explosion_tile},
+	{"FixHitSand", 200, UNITS1, 5, 3, 0, add_explosion_tile},
 };
 assert_enum(fixeffecti, FixHitSand)

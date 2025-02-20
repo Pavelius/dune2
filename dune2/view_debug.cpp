@@ -302,11 +302,11 @@ static void random_explosion() {
 	static fixn source[] = {FixBikeExplosion, FixExplosion, FixBigExplosion};
 	auto n = source[rand() % sizeof(source) / sizeof(source[0])];
 	// auto n = FixHitSand;
-	add_effect(m2sc(area_spot), n, 0xFFFF);
+	add_effect(m2sc(area_spot), n);
 }
 
 static void rocket_effect(fixn n) {
-	add_effect(m2sc(last_building->position), m2sc(area_spot), n, 0xFFFF);
+	add_effect(m2sc(last_building->position), m2sc(area_spot), n);
 }
 
 static void show_pallette(resid id, int dy) {

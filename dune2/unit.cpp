@@ -19,13 +19,13 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 0, 4, 4}},
-	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootHandGun, UNITS, 91, 0, {4, 2, 1, 2}},
-	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootHandGun, UNITS, 103, 0, {4, 3, 1, 3, 1}},
-	{"Trike", TRIKE, 80, 100, Wheeled, ShootHandGun, UNITS, 5, 0, {6, 3, 2, 10, 2}},
-	{"Quad", QUAD, 74, 140, Wheeled, ShootHandGun, UNITS, 0, 0, {6, 4, 2, 8, 3}},
-	{"Tank", LTANK, 78, 200, Tracked, ShootHeavyGun, UNITS2, 0, 5, {8, 6, 1, 5, 3}},
-	{"AssaultTank", HTANK, 72, 350, Tracked, ShootHeavyGun, UNITS2, 10, 15, {9, 6, 2, 4, 4}},
+	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 4, 4}},
+	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0, {4, 1, 2, 0}},
+	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0, {4, 1, 3, 1}},
+	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0, {5, 2, 10, 2}},
+	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0, {5, 2, 8, 3}},
+	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5, {6, 1, 5, 4}},
+	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15, {6, 2, 4, 5}},
 };
 assert_enum(uniti, AssaultTank)
 
@@ -61,10 +61,10 @@ void unit::damage(int value) {
 	cleanup();
 	switch(geti().move) {
 	case Wheeled:
-		add_effect(m2sc(position), FixBikeExplosion, 0xFFFF);
+		add_effect(m2sc(position), FixBikeExplosion);
 		break;
 	case Tracked:
-		add_effect(m2sc(position), FixExplosion, 0xFFFF);
+		add_effect(m2sc(position), FixExplosion);
 		break;
 	}
 	clear();
@@ -105,12 +105,6 @@ void unit::cleanup() {
 			continue;
 		if(e.target == i)
 			e.stopattack();
-	}
-	for(auto& e : bsdata<draweffect>()) {
-		if(!e)
-			continue;
-		if(e.owner == i)
-			e.owner = 0xFFFF;
 	}
 }
 
@@ -235,9 +229,9 @@ void unit::fixshoot(int chance_miss) {
 		auto current = s2m(screen);
 		if(miss == current)
 			return; // Hit itself?
-		add_effect(screen, m2sc(miss), weapon, getindex());
+		add_effect(screen, m2sc(miss), weapon);
 	} else
-		add_effect(screen, m2sc(order_attack), weapon, getindex());
+		add_effect(screen, m2sc(order_attack), weapon);
 }
 
 bool unit::shoot() {
@@ -248,7 +242,7 @@ bool unit::shoot() {
 			if((ready_time - game.time) >= (attacks * shoot_next_attack)) {
 				fixshoot(40); // Can make next attack on same target, but can miss
 				attacks++;
-				if(attacks >= geti().stats[Attack])
+				if(attacks >= geti().stats[Attacks])
 					attacks = 0;
 			}
 		}

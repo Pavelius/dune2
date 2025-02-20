@@ -7,7 +7,8 @@ enum drawprocn : unsigned char;
 enum resid : unsigned short;
 enum fixn : unsigned char {
 	NoEffect,
-	ShootHandGun, ShootHeavyGun, ShootBigGun,
+	ShootAssaultRifle, ShootRotaryCannon, Shoot20mm, Shoot30mm, Shoot155mm,
+	ShootBigGun,
 	FireRocket,
 	FixSmallHit, FixMediumHit, FixLargeHit,
 	FixExplosion, FixBigExplosion,
@@ -19,10 +20,11 @@ struct fixeffecti {
 	short unsigned	milliseconds;
 	resid			rid;
 	short unsigned	frame, count;
+	short unsigned	effect;
 	fnevent			apply;
 	fixn			next;
 	int				getframe(unsigned& flags, point from, point to) const;
 };
 
-void add_effect(point from, fixn i, short unsigned owner);
-void add_effect(point from, point to, fixn i, short unsigned owner);
+void add_effect(point from, fixn i);
+void add_effect(point from, point to, fixn i);
