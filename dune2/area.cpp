@@ -151,6 +151,12 @@ static void update_building_feature_frames() {
 	}
 }
 
+static void update_building_special(buildingn n, size_t count) {
+	auto& ei = bsdata<buildingi>::elements[n];
+	for(size_t i = 0; i < count; i++)
+		map_features[ei.frames[0] + i] = BuildingHead;
+}
+
 void area_initialization() {
 	initialize_alternate();
 	memset(map_terrain, 0, sizeof(map_terrain));
@@ -160,6 +166,8 @@ void area_initialization() {
 		add_feature_frame(i);
 	}
 	update_building_feature_frames();
+	update_building_special(Turret, 8);
+	update_building_special(RocketTurret, 8);
 }
 
 void areai::clear() {

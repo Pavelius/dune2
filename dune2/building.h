@@ -20,7 +20,7 @@ struct tilepatch;
 struct buildingi : topicable {
 	short			hits;
 	shapen			shape;
-	short unsigned	frames[16], ruined[16];
+	short unsigned	frames[16];
 	slice<topicable*> build;
 	unsigned		cost[Supply + 1], surplus[Supply + 1];
 	slice<tilepatch> tiles;

@@ -278,7 +278,7 @@ static void unit_name(stringbuilder& sb) {
 }
 
 static void unit_thrall_loading(stringbuilder& sb) {
-	sb.add("%1i", last_unit->attacks * 10);
+	sb.add("%1i", last_unit->action * 10);
 }
 
 BSDATA(textscript) = {

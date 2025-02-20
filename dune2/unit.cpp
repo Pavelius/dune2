@@ -244,12 +244,12 @@ bool unit::shoot() {
 	if(isnoweapon())
 		return false;
 	if(ready_time > game.time) {
-		if(attacks) {// Allow multi-attacks
-			if((ready_time - game.time) >= (attacks * shoot_next_attack)) {
+		if(action) {// Allow multi-attacks
+			if((ready_time - game.time) >= (action * shoot_next_attack)) {
 				fixshoot(40); // Can make next attack on same target, but can miss
-				attacks++;
-				if(attacks >= geti().stats[Attacks])
-					attacks = 0;
+				action++;
+				if(action >= geti().stats[Attacks])
+					action = 0;
 			}
 		}
 		return true;
@@ -272,9 +272,9 @@ bool unit::shoot() {
 		fixshoot(0);
 		wait(shoot_duration);
 		if(get(Attacks) > 1)
-			attacks = 1;
+			action = 1;
 		else
-			attacks = 0;
+			action = 0;
 		return true;
 	}
 	return false;
@@ -285,7 +285,7 @@ bool unit::isharvest() const {
 }
 
 bool unit::istrallfull() const {
-	return getpurpose() == Harvest && attacks >= 10;
+	return getpurpose() == Harvest && action >= 10;
 }
 
 bool unit::releasetile() {
@@ -323,8 +323,8 @@ bool unit::harvest() {
 		auto pb = find_board(this);
 		if(!pb || pb->type != Refinery)
 			return false;
-		if(attacks) {
-			attacks--;
+		if(action) {
+			action--;
 			pb->getplayer().add(Credits, 100);
 			wait(1000);
 			start_time = ready_time;
@@ -345,7 +345,7 @@ bool unit::harvest() {
 	if(!area.isvalid(v))
 		return false;
 	if(position == v) {
-		attacks++;
+		action++;
 		start_time += 1000 * 4;
 		ready_time = start_time;
 		switch(area.get(position)) {
@@ -354,7 +354,7 @@ bool unit::harvest() {
 			break;
 		case SpiceRich:
 			area.set(position, Spice);
-			attacks++;
+			action++;
 			break;
 		}
 		fixstate("HarvesterWork");

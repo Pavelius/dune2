@@ -219,6 +219,9 @@
     <ClCompile Include="textscript.cpp">
       <Filter>support</Filter>
     </ClCompile>
+    <ClCompile Include="actable.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -406,6 +409,9 @@
     </ClInclude>
     <ClInclude Include="textscript.h">
       <Filter>support</Filter>
+    </ClInclude>
+    <ClInclude Include="actable.h">
+      <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

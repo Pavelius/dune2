@@ -29,11 +29,11 @@ struct uniti : topicable {
 };
 struct unit : drawable, playerable, typeable<uniti, unitn> {
 	unsigned long	ready_time; // Start action
+	short unsigned	target; // Enemy target
+	unsigned char	action;
 	point			position, order, guard, order_attack;
 	squadn			squad;
 	direction		move_direction, shoot_direction, path_direction;
-	unsigned char	attacks;
-	short unsigned	target; // Enemy target
 	short unsigned	hits;
 	explicit operator bool() const { return hits > 0; }
 	void			apply(ordern type, point v);
