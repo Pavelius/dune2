@@ -13,7 +13,7 @@ const int area_frame_maximum = 389;
 const unsigned short BlockArea = 0xFFFF;
 
 enum areaf : unsigned char {
-	Explored, Visible,
+	Explored, Visible, Control,
 };
 struct tilepatch {
 	short unsigned	from;

@@ -179,6 +179,18 @@ topicable* building::getbuild() const {
 	return ei.build[build_index];
 }
 
+static void set_control(point v, shapen shape, unsigned char player) {
+	auto& ei = bsdata<shapei>::elements[shape];
+	for(auto y = 0; y < ei.size.y; y++) {
+		for(auto x = 0; x < ei.size.x; x++) {
+			auto n = point(x, y) + v;
+			if(!area.isvalid(n))
+				continue;
+			area.set(n, player, Control);
+		}
+	}
+}
+
 void building::construct(point v) {
 	if(!area.isvalid(v))
 		return;
@@ -189,9 +201,12 @@ void building::construct(point v) {
 		if(t == Slab || t == Slab4) {
 			auto size = bsdata<shapei>::elements[pb->shape].size;
 			area.set(v, pb->shape, SlabFeature);
+			set_control(v, pb->shape, player);
 			area.scouting(v, size, player, getlos());
-		} else
+		} else {
 			add_building(v, t);
+			set_control(v, pb->shape, player);
+		}
 	}
 	build_spend = 0;
 }

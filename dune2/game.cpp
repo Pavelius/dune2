@@ -75,8 +75,16 @@ static void update_building_time() {
 }
 
 static void update_scouting() {
-	for(auto i = 0; i < player_maximum; i++)
+	for(auto i = 0; i < player_maximum; i++) {
 		area.remove(i, Visible);
+		// Update visibility on control area (for slabs)
+		for(auto y = 0; y < area.maximum.y; y++) {
+			for(auto x = 0; x < area.maximum.x; x++) {
+				if(area.is(point(x, y), i, Control))
+					area.set(point(x, y), i, Visible);
+			}
+		}
+	}
 	for(auto& e : bsdata<building>()) {
 		if(!e)
 			continue;
@@ -114,7 +122,7 @@ void update_game_time() {
 }
 
 static void check_surrounded(point v, terrainn t, terrainn t1) {
-	for(auto d : all_strait_directions) {
+	for(auto d : all_directions) {
 		auto n = v + getpoint(d);
 		if(area.is(n, t) || area.is(n, t1))
 			continue;
