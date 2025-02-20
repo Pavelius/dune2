@@ -3,6 +3,7 @@
 #include "log.h"
 #include "rand.h"
 #include "stringbuilder.h"
+#include "textscript.h"
 #include "timer.h"
 #include "view.h"
 #include "view_theme.h"
@@ -26,6 +27,7 @@ int main() {
 #ifdef _DEBUG
 	util_main();
 #endif // _DEBUG
+	initialize_strings();
 	pushtheme push(ButtonLight);
 	initialize_view("Dune 2 (Remake)", main_menu);
 }

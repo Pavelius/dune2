@@ -6,6 +6,8 @@
 #include "math.h"
 #include "movement.h"
 #include "print.h"
+#include "player.h"
+#include "stringbuilder.h"
 #include "squad.h"
 #include "unit.h"
 #include "view.h"
@@ -279,7 +281,7 @@ bool unit::isharvest() const {
 }
 
 bool unit::istrallfull() const {
-	return getpurpose() == Harvest && attacks > 10;
+	return getpurpose() == Harvest && attacks >= 10;
 }
 
 bool unit::releasetile() {
@@ -300,6 +302,14 @@ bool unit::releasetile() {
 	}
 	start_time += 1000;
 	return true;
+}
+
+void unit::fixstate(const char* id) const {
+	if(!area.is(position, ::player->getindex(), Visible))
+		return;
+	auto push = last_unit; last_unit = const_cast<unit*>(this);
+	print(getnm(id));
+	last_unit = push;
 }
 
 bool unit::harvest() {
@@ -343,9 +353,14 @@ bool unit::harvest() {
 			attacks++;
 			break;
 		}
+		fixstate("HarvesterWork");
 	} else
 		apply(Move, v);
 	return true;
+}
+
+const char* unit::getfractionname() const {
+	return getplayer().getfraction().getname();
 }
 
 void unit::startmove() {
@@ -449,7 +464,7 @@ unit* find_unit(point v) {
 
 unit* find_unit(point v, const unit* exclude) {
 	for(auto& e : bsdata<unit>()) {
-		if(e && &e!=exclude && e.position == v)
+		if(e && &e != exclude && e.position == v)
 			return &e;
 	}
 	return 0;
@@ -501,10 +516,13 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong
 			return false;
 		}
-		if(position == v) 
+		if(position == v) {
+			fixstate("HarvesterUnload");
 			pb->board(this);
-		else
+		} else {
+			fixstate("HarvesterReturn");
 			apply(Move, v);
+		}
 		return true;
 	} else {
 		auto pb = find_base(ConstructionYard, player);
@@ -559,7 +577,7 @@ void unit::apply(ordern type, point v) {
 		}
 		break;
 	case Move:
-		if(opponent && opponent->isenemy() && getpurpose()==Attack)
+		if(opponent && opponent->isenemy() && getpurpose() == Attack)
 			apply(Attack, v);
 		else if(getpurpose() == Harvest && isspicefield(v))
 			apply(Harvest, v);

@@ -5,8 +5,10 @@
 #include "game.h"
 #include "math.h"
 #include "music.h"
+#include "print.h"
 #include "player.h"
 #include "rand.h"
+#include "textscript.h"
 #include "unit.h"
 #include "view.h"
 #include "view_theme.h"
@@ -257,3 +259,18 @@ void main_menu() {
 	add_unit({8, 7}, Trike, Down);
 	show_scene(paint_main_map, 0, 0);
 }
+
+static void unit_name(stringbuilder& sb) {
+	sb.add(last_unit->getfractionname());
+	sb.adds(last_unit->getname());
+}
+
+static void unit_thrall_loading(stringbuilder& sb) {
+	sb.add("%1i", last_unit->attacks * 10);
+}
+
+BSDATA(textscript) = {
+	{"Unit", unit_name},
+	{"UnitThrall", unit_thrall_loading},
+};
+BSDATAF(textscript)

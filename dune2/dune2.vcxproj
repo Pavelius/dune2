@@ -150,8 +150,10 @@
     <ClCompile Include="iff.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
+    <ClCompile Include="textscript.cpp" />
     <ClCompile Include="topicablea.cpp" />
     <ClCompile Include="view_build.cpp" />
+    <ClCompile Include="view_console.cpp" />
     <ClCompile Include="view_menu.cpp" />
     <ClCompile Include="view_theme.cpp" />
     <ClCompile Include="topic.cpp" />
@@ -216,6 +218,7 @@
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="pointa.h" />
+    <ClInclude Include="textscript.h" />
     <ClInclude Include="topicablea.h" />
     <ClInclude Include="view_menu.h" />
     <ClInclude Include="view_theme.h" />

@@ -27,6 +27,10 @@ Repeat: Repeat
 RestartScenario: Restart scenario
 SaveGame: Save this game
 
+HarvesterWork: %Unit is %UnitThrall percent full.
+HarvesterUnload: %Unit is unloading spice.
+HarvesterReturn: %Unit is return with %UnitThrall percent full.
+
 Cancel: Cancel
 No: No
 Yes: Yes

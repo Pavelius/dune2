@@ -1753,6 +1753,7 @@ void draw::image(int x, int y, const sprite* e, int id, int flags) {
 			case sprite::RAW8: s += (clipping.y1 - y) * f.sx; break;
 			case sprite::RLE8: s = skip_v3(s, clipping.y1 - y); break;
 			case sprite::RLE: s = skip_rle32(s, clipping.y1 - y); break;
+			case sprite::RAA4: s += (clipping.y1 - y) * ((f.sx * 4 + 7) / 8); break;
 			default: break;
 			}
 		}
@@ -1766,6 +1767,7 @@ void draw::image(int x, int y, const sprite* e, int id, int flags) {
 			case sprite::RAW8: s += (y2 - clipping.y2) * f.sx; break;
 			case sprite::RLE8: s = skip_v3(s, y2 - clipping.y2); break;
 			case sprite::RLE: s = skip_rle32(s, y2 - clipping.y2); break;
+			case sprite::RAA4: s += (clipping.y1 - y) * ((f.sx * 4 + 7) / 8); break;
 			default: break;
 			}
 		}
@@ -1868,9 +1870,9 @@ void draw::image(int x, int y, const sprite* e, int id, int flags) {
 		break;
 	case sprite::RAA4:
 		if(flags & ImagePallette)
-			raa432p(x, y, s, f.sx, f.sy);
+			raa432p(x, y, s, f.sx, y2 - y);
 		else
-			raa432(x, y, s, f.sx, f.sy, flags);
+			raa432(x, y, s, f.sx, y2 - y, flags);
 		break;
 	default:
 		break;

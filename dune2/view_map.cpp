@@ -13,6 +13,7 @@
 #include "music.h"
 #include "order.h"
 #include "pushvalue.h"
+#include "print.h"
 #include "rand.h"
 #include "resid.h"
 #include "screenshoot.h"
@@ -32,6 +33,8 @@ using namespace draw;
 static indicator spice;
 
 color pallette[256], pallette_original[256];
+
+void paint_console();
 
 const char* form_header;
 static unsigned long form_opening_tick, next_game_time, time_move_order;
@@ -1112,6 +1115,7 @@ void paint_main_map() {
 	update_pallette_colors();
 	input_game_menu();
 	paint_spice();
+	paint_console();
 	paint_game_map();
 	paint_map_info(paint_unit_info);
 	input_game_map();
@@ -1132,6 +1136,7 @@ void paint_main_map_choose_terrain() {
 	paint_background(SCREEN);
 	update_pallette_colors();
 	paint_spice();
+	paint_console();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain);
 	paint_radar();
@@ -1145,6 +1150,7 @@ void paint_main_map_choose_placement() {
 	paint_background(SCREEN);
 	update_pallette_colors();
 	paint_spice();
+	paint_console();
 	paint_game_map();
 	paint_map_info(paint_choose_terrain_placement);
 	paint_radar();
@@ -1265,6 +1271,8 @@ static void make_pallette() {
 	palt = pallette;
 }
 
+void print_console_proc(const char* string);
+
 void initialize_view(const char* title, fnevent main_scene) {
 	draw::create(-1, -1, 320, 200, 0, 32, false);
 	draw::setcaption(title);
@@ -1272,6 +1280,7 @@ void initialize_view(const char* title, fnevent main_scene) {
 	draw::pbeforemodal = main_beforemodal;
 	font = gres(FONT6);
 	fore = colors::white;
+	print_proc = print_console_proc;
 	make_pallette();
 	set_next_scene(main_scene);
 	run_next_scene();

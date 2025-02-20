@@ -45,9 +45,11 @@ struct unit : drawable, playerable, typeable<uniti, unitn> {
 	short unsigned	getindex() const;
 	int				getlos() const { return 2; }
 	const char*		getname() const { return geti().getname(); }
+	const char*		getfractionname() const;
 	ordern			getpurpose() const;
 	int				getshootrange() const { return 3; }
 	int				getspeed() const;
+	void			fixstate(const char* id) const;
 	bool			isattacking() const;
 	bool			isboard() const { return position.x < 0; }
 	bool			isenemy() const;

@@ -213,6 +213,12 @@
     <ClCompile Include="serial.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="view_console.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="textscript.cpp">
+      <Filter>support</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -396,6 +402,9 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="archive.h">
+      <Filter>support</Filter>
+    </ClInclude>
+    <ClInclude Include="textscript.h">
       <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
