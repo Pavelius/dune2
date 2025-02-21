@@ -222,6 +222,9 @@
     <ClCompile Include="actable.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="moveable.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -411,6 +414,9 @@
       <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="actable.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="moveable.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

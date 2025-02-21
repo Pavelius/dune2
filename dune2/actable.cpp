@@ -82,16 +82,15 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 		stop();
 	else {
 		auto d = to(position, target_position);
-		if(!turn(action_direction, d)) {
+		if(turn(action_direction, d)) {
+			fixshoot(screen, m2sc(target_position), weapon, 0);
+			if(attacks > 1)
+				action = 1;
+			else
+				action = 0;
+			wait(action_duration);
+		} else
 			wait(look_duration);
-			return true;
-		}
-		fixshoot(screen, m2sc(target_position), weapon, 0);
-		wait(action_duration);
-		if(attacks > 1)
-			action = 1;
-		else
-			action = 0;
 		return true;
 	}
 	return false;
@@ -103,9 +102,7 @@ void actable::stop() {
 }
 
 void actable::wait(int duration) {
-	if(action_time < game.time)
-		action_time = game.time;
-	action_time += duration;
+	action_time += game.time + duration;
 }
 
 bool actable::isready() const {

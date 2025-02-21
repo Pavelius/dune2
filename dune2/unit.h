@@ -63,6 +63,7 @@ private:
 	direction		nextpath(point v);
 	bool			releasetile();
 	bool			returnbase();
+	bool			seeking();
 	bool			shoot() { return actable::shoot(screen, geti().weapon, geti().stats[Attacks], getshootrange()); }
 	void			startmove();
 	void			synchronize();
