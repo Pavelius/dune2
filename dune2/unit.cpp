@@ -213,19 +213,21 @@ bool unit::harvest() {
 	return true;
 }
 
-bool unit::seeking() {
-	if(isturret()) { // Turret random look around
-		auto turn_direction = turnto(action_direction, move_direction);
-		if(turn_direction != Center && game_chance(50))
-			action_direction = to(action_direction, turn_direction);
-		else if(game_chance(30))
-			action_direction = to(action_direction, (game_rand() % 2) ? Left : Right);
-	}
-	return false;
-}
-
 bool unit::shoot() {
 	return actable::shoot(screen, geti().weapon, get(Attacks), getshootrange());
+}
+
+bool unit::seeking() {
+	if(game_chance(30)) {
+		if(isturret()) { // Turret random look around
+			auto turn_direction = turnto(action_direction, move_direction);
+			if(turn_direction != Center && game_chance(50))
+				action_direction = to(action_direction, turn_direction);
+			else if(game_chance(30))
+				action_direction = to(action_direction, (game_rand() % 2) ? Left : Right);
+		}
+	}
+	return false;
 }
 
 void unit::acting() {
@@ -243,10 +245,16 @@ void unit::update() {
 	if(moving(geti().move, getspeed(), getlos())) {
 		if(!isturret())
 			action_direction = move_direction;
+		else if(!area.isvalid(target_position)) {
+			turn(action_direction, move_direction);
+			animate_time = game.time + look_duration / 2;
+		}
 		return;
 	} else if(releasetile())
 		return;
 	else if(harvest())
+		return;
+	else if(seeking())
 		return;
 }
 
