@@ -247,7 +247,7 @@ static void show_mentat_subject(const char* id, resid rid) {
 	pushvalue push_id(form_id, id);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject);
-	auto pi = getnme(ids(id, player->getfraction().id, "Info"));
+	auto pi = getnme(ids(id, mainplayer().getfraction().id, "Info"));
 	if(!pi)
 		pi = getnme(ids(id, "Info"));
 	reset_form_animation();
@@ -265,14 +265,14 @@ static void show_mentat_subject(const char* id, resid rid) {
 }
 
 void show_scenario_prompt(const char* id, resid rid, int level) {
-	pushvalue push_fraction(last_fraction, player->fraction);
+	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	pushvalue push_header(form_header);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject_ni);
-	auto pi = getnme(str("%1%2%3.2i", player->getfraction().id, id, level));
+	auto pi = getnme(str("%1%2%3.2i", mainplayer().getfraction().id, id, level));
 	if(!pi)
 		return;
-	song_play(str("mentat%1", player->getfractionsuffix()));
+	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
 	reset_form_animation();
 	string sb;
 	while(true) {
@@ -292,8 +292,8 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 }
 
 void open_mentat() {
-	pushvalue push_fraction(last_fraction, player->fraction);
-	song_play(str("mentat%1", player->getfractionsuffix()));
+	pushvalue push_fraction(last_fraction, mainplayer().fraction);
+	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
 	while(true) {
 		auto line = (tree::element*)choose_mentat_topic();
 		if(!line || !line->data)

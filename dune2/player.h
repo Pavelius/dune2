@@ -26,4 +26,6 @@ struct playerable {
 	playeri&		getplayer() const;
 	void			setplayer(const playeri* v);
 };
-extern playeri* player;
+extern unsigned char player_index;
+
+playeri& mainplayer();

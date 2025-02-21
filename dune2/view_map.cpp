@@ -348,7 +348,7 @@ static void update_pallette_by_player(int index) {
 }
 
 static void update_pallette_by_player() {
-	update_pallette_by_player(player->color_index);
+	update_pallette_by_player(mainplayer().color_index);
 }
 
 static void update_pallette_colors() {
@@ -369,7 +369,6 @@ static void paint_map_tiles() {
 }
 
 static void paint_map_features() {
-	auto player_index = player->getindex();
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
@@ -534,30 +533,32 @@ static color get_color_by_index(int index) {
 	return pallette_original[128 + index * 16 + 2];
 }
 
+static void radar_pixel(int x, int y) {
+	pixel(caret.x + x, caret.y + y);
+}
+
 static void paint_radar_units() {
-	auto player_index = player->getindex();
-	auto push_fore = fore; fore = get_color_by_index(player->color_index);
+	auto push_fore = fore; fore = get_color_by_index(mainplayer().color_index);
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.position.x < 0 || !area.is(e.position, player_index, Visible))
 			continue;
-		pixel(caret.x + e.position.x, caret.y + e.position.y);
+		radar_pixel(e.position.x, e.position.y);
 	}
 	fore = push_fore;
 }
 
 static void paint_radar_buildings() {
-	auto player_index = player->getindex();
-	auto push_fore = fore; fore = get_color_by_index(player->color_index);
+	auto push_fore = fore; fore = get_color_by_index(mainplayer().color_index);
 	for(auto& e : bsdata<building>()) {
 		if(!e || e.player != player_index)
 			continue;
 		auto size = e.getsize();
-		auto pt = caret + e.position;
+		auto pt = e.position;
 		for(auto y1 = 0; y1 < size.y; y1++) {
 			for(auto x1 = 0; x1 < size.x; x1++) {
 				if(!area.is(e.position, player_index, Visible))
 					continue;
-				pixel(pt.x + x1, pt.y + y1);
+				radar_pixel(pt.x + x1, pt.y + y1);
 			}
 		}
 	}
@@ -587,7 +588,6 @@ static void input_radar() {
 
 static void paint_radar_land() {
 	auto push_fore = fore;
-	auto player_index = player->getindex();
 	for(auto y = 0; y < area.maximum.y; y++) {
 		for(auto x = 0; x < area.maximum.x; x++) {
 			auto v = point(x, y);
@@ -596,13 +596,13 @@ static void paint_radar_land() {
 				continue;
 			if(!area.is(v, player_index, Explored)) {
 				fore = colors::black;
-				pixel(caret.x + x, caret.y + y);
+				radar_pixel(x, y);
 				continue;
 			}
 			fore = bsdata<terraini>::elements[t].minimap;
 			if(!area.is(v, player_index, Visible))
 				fore = fore.mix(colors::black, 256 - 32);
-			pixel(caret.x + x, caret.y + y);
+			radar_pixel(x, y);
 		}
 	}
 	fore = push_fore;
@@ -610,7 +610,6 @@ static void paint_radar_land() {
 
 static void paint_radar_off() {
 	rectf(colors::black);
-	// paint_radar_units();
 	paint_radar_buildings();
 	input_radar();
 }
@@ -627,7 +626,7 @@ static void paint_radar() {
 	width = 64; height = 64;
 	caret.x = getwidth() - width;
 	caret.y = getheight() - height;
-	if(player->buildings[RadarOutpost])
+	if(mainplayer().buildings[RadarOutpost])
 		paint_radar_on();
 	else
 		paint_radar_off();
@@ -682,7 +681,7 @@ static void selection_rect_dropped(const rect& rc) {
 	human_selected.clear();
 	if(!area.isvalid(area_spot))
 		return;
-	human_selected.select(player, rc);
+	human_selected.select(player_index, rc);
 }
 
 static rect drag_finish_rect(point start, point finish, int minimal) {
@@ -760,7 +759,6 @@ static void rectb_last_building() {
 static void paint_fow() {
 	pushrect push;
 	pushfore push_fore(colors::black);
-	auto player_index = player->getindex();
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
@@ -787,7 +785,6 @@ static void paint_visibility() {
 	pushrect push;
 	pushfore push_fore(colors::black);
 	auto push_alpha = alpha; alpha = 32;
-	auto player_index = player->getindex();
 	auto ps = gres(ICONS);
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
@@ -947,7 +944,7 @@ void paint_spice() {
 	auto push_caret = caret;
 	caret.x = getwidth() - 62;
 	caret.y = 3;
-	spice.next = player->get(Credits);
+	spice.next = mainplayer().get(Credits);
 	spice.paint();
 	caret = push_caret;
 }
@@ -1084,8 +1081,8 @@ static void paint_stats_info(const char* title, abilityn n) {
 	if(!title)
 		title = bsdata<abilityi>::elements[n].getname();
 	paint_bold(title);
-	paint_field("Used", player->abilities[n]);
-	paint_field("Max", player->maximum[n]);
+	paint_field("Used", mainplayer().abilities[n]);
+	paint_field("Max", mainplayer().maximum[n]);
 }
 
 static void paint_building_info() {

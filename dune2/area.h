@@ -15,6 +15,9 @@ const unsigned short BlockArea = 0xFFFF;
 enum areaf : unsigned char {
 	Explored, Visible, Control,
 };
+enum areasizen : unsigned char {
+	SmallMap, MediumMap, LargeMap,
+};
 struct tilepatch {
 	short unsigned	from;
 	short unsigned	to;
@@ -25,11 +28,14 @@ struct areai {
 	typedef bool(*fntest)(point v);
 	static constexpr int mx = 64;
 	static constexpr int my = 64;
+	static constexpr int reg_max = 16;
+	rect			regions[reg_max];
 	point			maximum;
+	areasizen		sizetype;
 	void			blockcontrol() const;
 	void			blockland(movementn mv) const;
 	void			changealternate();
-	void			clear();
+	void			clear(areasizen v);
 	point			correct(point v) const;
 	void			controlwave(point start, fntest proc, int range) const;
 	void			decoy(point v);

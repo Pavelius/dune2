@@ -25,7 +25,7 @@ const char* actable::getfractionname() const {
 }
 
 void actable::fixstate(const char* id) const {
-	if(!area.is(position, ::player->getindex(), Visible))
+	if(!area.is(position, player_index, Visible))
 		return;
 	print(getnm(id));
 }

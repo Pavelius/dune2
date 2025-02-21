@@ -15,7 +15,7 @@ int build_current;
 static void paint_background() {
 	const int right_panel = 212;
 	image(0, 0, gres(CHOAM), 0, ImagePallette);
-	auto herb = player->fraction - 1;
+	auto herb = bsdata<playeri>::elements[player_index].fraction - 1;
 	if(herb >= 0 && herb <= 2) {
 		static point heraldic[3] = {{0, 152}, {0, 8}, {128, 48}};
 		auto pt = heraldic[herb];

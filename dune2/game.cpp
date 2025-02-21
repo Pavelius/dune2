@@ -260,30 +260,47 @@ void open_options() {
 	execute_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), quit_game, elements);
 }
 
+static void generate_base(point v, point spice) {
+	area.set({v.x - 3, v.y - 3, v.x + 3, v.y + 3}, set_terrain, Rock);
+	rect rc = {v.x - 6, v.y - 6, v.x + 6, v.y + 6};
+	area.random(rc, set_terrain_big_circle, Rock, 12);
+	area.random(rc, set_terrain_circle, Mountain, 4);
+	rect r1 = {spice.x - 5, spice.y - 5, spice.x + 5, spice.y + 5};
+	area.random(r1, set_terrain_circle, Spice, 20);
+	area.random(r1, set_terrain_small_circle, SpiceRich, 5);
+	add_building(v, ConstructionYard);
+}
+
 void main_menu() {
 	// music_disabled = true;
 	// show_introdution();
 	auto size = sizeof(unit);
-	player = bsdata<playeri>::add();
+	auto player = bsdata<playeri>::add();
 	player->add(Credits, 3000);
 	player->color_index = 2;
 	player->fraction = Atreides;
 	// show_scenario_prompt("Brief", HARVEST, 1);
-	area.clear();
-	area.random({3, 3, 13, 13}, set_terrain_big_circle, Rock, 12);
-	area.random({3, 3, 13, 13}, set_terrain_circle, Mountain, 4);
-	area.random({10, 10, 20, 20}, set_terrain_circle, Spice, 20);
-	area.random({10, 10, 20, 20}, set_terrain_small_circle, SpiceRich, 5);
-	area.set({5, 2, 9, 8}, set_terrain, Rock);
-	add_building({5, 3}, Turret);
-	add_building({6, 3}, ConstructionYard);
-	add_building({8, 3}, LightVehicleFactory);
-	add_building({5, 5}, Windtrap);
-	add_building({7, 5}, Refinery);
-	add_unit({5, 7}, Trike, Down);
-	add_unit({6, 7}, Harvester, Down);
-	add_unit({7, 7}, AssaultTank, Down);
-	add_unit({8, 7}, Quad, Down);
+	area.clear(LargeMap);
+	point p1 = {10, 10};
+	player_index = 0;
+	generate_base({10, 10}, {20, 20});
+	add_unit(p1, Trike, Down);
+	add_unit(p1, Harvester, Down);
+	add_unit(p1, AssaultTank, Down);
+	add_unit(p1, Quad, Down);
+	player = bsdata<playeri>::add();
+	player->add(Credits, 3000);
+	player->color_index = 3;
+	player->fraction = Harkonens;
+	point p2 = {40, 10};
+	player_index = 1;
+	generate_base(p2, p2 + point(-20, +10));
+	add_unit(p2, Trike, Down);
+	add_unit(p2, Harvester, Down);
+	add_unit(p2, AssaultTank, Down);
+	add_unit(p2, Quad, Down);
+	player_index = 1;
+	area.setcamera(p2, true);
 	show_scene(paint_main_map, 0, 0);
 }
 

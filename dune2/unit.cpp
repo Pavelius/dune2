@@ -217,15 +217,37 @@ bool unit::shoot() {
 	return actable::shoot(screen, geti().weapon, get(Attacks), getshootrange());
 }
 
-bool unit::seeking() {
-	if(game_chance(30)) {
-		if(isturret()) { // Turret random look around
+unit* find_enemy(point v, unsigned char player, int line_of_sight) {
+	const auto range_multiplier = 10;
+	unit* result = 0;
+	int result_priority = 1000 * range_multiplier;
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.isboard() || e.player == player)
+			continue;
+		auto priority = v.range(e.position) * range_multiplier;
+		if(!result || priority < result_priority) {
+			result = &e;
+			result_priority = priority;
+		}
+	}
+	return result;
+}
+
+bool unit::seeking() {	
+	if(game_chance(30)) { // 30% chance do nothing
+		if(isturret()) { // Rotate turret
 			auto turn_direction = turnto(action_direction, move_direction);
 			if(turn_direction != Center && game_chance(50))
 				action_direction = to(action_direction, turn_direction);
 			else if(game_chance(30))
 				action_direction = to(action_direction, (game_rand() % 2) ? Left : Right);
 		}
+		return false;
+	}
+	auto p = find_enemy(position, player, getlos());
+	if(p) {
+		setaction(p->position, true);
+		return true;
 	}
 	return false;
 }
@@ -319,7 +341,7 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->target = 0xFFFF;
 	last_unit->target_position = {-10000, -10000};
-	last_unit->setplayer(player);
+	last_unit->player = player_index;
 	last_unit->scouting();
 }
 

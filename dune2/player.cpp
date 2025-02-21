@@ -11,7 +11,11 @@ BSDATAF(abilityi)
 
 BSDATAC(playeri, player_maximum)
 
-playeri* player;
+unsigned char player_index;
+
+playeri& mainplayer() {
+	return bsdata<playeri>::elements[player_index];
+}
 
 unsigned char playeri::getindex() const {
 	if(!this)

@@ -80,6 +80,7 @@ void add_building(point pt, buildingn id) {
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
 	last_building->action_direction = Down;
+	last_building->player = player_index;
 	area.set(last_building->getrect(), setnofeature, 0);
 }
 

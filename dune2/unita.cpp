@@ -4,8 +4,7 @@
 
 unita human_selected;
 
-void unita::select(const playeri* player, const rect& screen_area) {
-	auto player_index = player->getindex();
+void unita::select(unsigned char player_index, const rect& screen_area) {
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.player != player_index)
 			continue;

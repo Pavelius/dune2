@@ -8,7 +8,7 @@
 
 areai area;
 point area_origin, area_spot;
-rect area_screen;
+rect area_screen = {0, 40, 240, 200};
 
 static terrainn map_terrain[area_frame_maximum];
 static featuren map_features[area_frame_maximum];
@@ -170,15 +170,29 @@ void area_initialization() {
 	update_building_special(RocketTurret, 8);
 }
 
-void areai::clear() {
+static void initilize_regions(rect* r, int sx, int sy, int mx, int my) {
+	auto i = 0;
+	for(auto y = 0; y < sy; y++) {
+		for(auto x = 0; x < sx; x++) {
+			r[i].x1 = x * (mx / sx);
+			r[i].y1 = y * (my / sy);
+			r[i].x2 = r[i].x1 + sx;
+			r[i].y2 = r[i].y1 + sy;
+		}
+	}
+}
+
+void areai::clear(areasizen v) {
+	static point border[] = {{32, 32}, {32, 64}, {64, 64}};
 	memset(this, 0, sizeof(*this));
-	maximum.x = mx;
-	maximum.y = my;
+	maximum = border[v];
 	// Fill all field by sand
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++)
 			frames[y][x] = 127;
 	}
+	// Set ai regions
+	initilize_regions(regions, 4, 4, maximum.x, maximum.y);
 }
 
 static unsigned short get_decoy_frame(terrainn t, int b, int i, int s) {
