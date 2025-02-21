@@ -65,18 +65,21 @@ bool actable::canshoot(int maximum_range) const {
 bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 	if(!weapon)
 		return false;
-	if(action_time > game.time) {
+	if(action_time > game.time) { // Shoot active
 		if(action) {// Allow multi-attacks
 			auto next_time = (action_time - action_duration) + action * look_duration;
-			if(action_time >= next_time) {
+			if(game.time >= next_time) {
 				fixshoot(screen, m2sc(target_position), weapon, 40); // Can make next attack on same target, but can miss
 				action++;
 				if(action >= attacks)
 					action = 0;
 			}
 		}
+		if(action_time <= game.time)
+			action_time = 0;
 		return true;
-	} else if(!canshoot(maximum_range))
+	}
+	if(!canshoot(maximum_range))
 		stop();
 	else {
 		auto d = to(position, target_position);
@@ -102,10 +105,6 @@ void actable::stop() {
 
 void actable::wait(int duration) {
 	action_time = game.time + duration;
-}
-
-bool actable::isready() const {
-	return !action_time;
 }
 
 bool actable::isenemy(unsigned char player_index) const {

@@ -566,11 +566,7 @@ static void paint_radar_buildings() {
 
 static void mouse_unit_move() {
 	auto v = (point)draw::hot.param;
-	auto p = find_unit(v);
-	if(p && p->isenemy(player->getindex()))
-		human_selected.order(Attack, v, false);
-	else
-		human_selected.order(Move, v, false);
+	human_selected.order(SmartMove, v, false);
 }
 
 static void input_radar() {

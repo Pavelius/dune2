@@ -9,9 +9,9 @@ struct moveable : drawable, actable {
 	direction		move_direction, path_direction;
 	bool			isboard() const { return position.x < 0; }
 	bool			ismoveorder() const { return position != order; }
-	bool			moving(movementn movement, int move_speed, int line_of_sight, bool auto_shoot, fixn weapon, int attack, int shoot_range);
+	bool			moving(movementn movement, int move_speed, int line_of_sight);
 	void			startmove(int move_speed);
-	void			synchronize();
+	void			unblock() const;
 private:
 	bool			ismoving() const;
 	void			leavetrail(bool heavy_trail);

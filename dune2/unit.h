@@ -27,6 +27,7 @@ struct uniti : topicable {
 };
 struct unit : moveable, typeable<uniti, unitn> {
 	squadn			squad;
+	void			acting();
 	void			apply(ordern type, point v);
 	void			clear();
 	void			damage(int value);
@@ -57,7 +58,7 @@ private:
 	bool			releasetile();
 	bool			returnbase();
 	bool			seeking();
-	bool			shoot() { return actable::shoot(screen, geti().weapon, geti().stats[Attacks], getshootrange()); }
+	bool			shoot();
 };
 extern unit *last_unit;
 

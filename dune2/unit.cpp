@@ -136,7 +136,7 @@ static point random_near(point v) {
 }
 
 bool unit::isharvest() const {
-	return getpurpose() == Harvest && !isready();
+	return getpurpose() == Harvest && iswork();
 }
 
 bool unit::istrallfull() const {
@@ -173,24 +173,25 @@ bool unit::harvest() {
 		if(action) {
 			action--;
 			pb->getplayer().add(Credits, 100);
-			wait(1000);
-			start_time = action_time;
+			start_time += 1000;
 		} else {
 			pb->unboard();
+			action_time = 0;
 			if(area.isvalid(target_position))
 				apply(Move, target_position);
 		}
 		return true;
-	}
-	if(!area.isvalid(target_position))
+	} else if(!area.isvalid(target_position))
 		return false;
 	if(istrallfull()) {
 		returnbase();
 		return true;
 	}
 	auto v = area.nearest(position, isspicefield, 4 + getlos());
-	if(!area.isvalid(v))
+	if(!area.isvalid(v)) {
+		stop();
 		return false;
+	}
 	if(position == v) {
 		action++;
 		start_time += 1000 * 4;
@@ -205,8 +206,10 @@ bool unit::harvest() {
 			break;
 		}
 		fixstate("HarvesterWork");
-	} else
+	} else {
+		action_time = 0;
 		apply(Move, v);
+	}
 	return true;
 }
 
@@ -221,23 +224,29 @@ bool unit::seeking() {
 	return false;
 }
 
-void unit::update() {
-	auto& ei = geti();
-	if(moving(ei.move, getspeed(), getlos(), isturret(), ei.weapon, ei.stats[Attacks], getlos() + 1))
+bool unit::shoot() {
+	return actable::shoot(screen, geti().weapon, get(Attacks), getshootrange());
+}
+
+void unit::acting() {
+	if(ismoving()) {
+		if(isturret())
+			shoot();
+	} else if(shoot()) {
+		if(!isturret())
+			move_direction = action_direction;
 		return;
-	else if(releasetile())
+	}
+}
+
+void unit::update() {
+	if(moving(geti().move, getspeed(), getlos())) {
+		if(!isturret())
+			action_direction = move_direction;
+		return;
+	} else if(releasetile())
 		return;
 	else if(harvest())
-		return;
-	else if(shoot()) {
-		if(!isturret()) {
-			if(move_direction != action_direction) {
-				move_direction = action_direction;
-				synchronize();
-			}
-		}
-		return;
-	} else if(seeking())
 		return;
 }
 
@@ -318,6 +327,7 @@ void unit::cantdothis() {
 bool unit::returnbase() {
 	auto kind = getpurpose();
 	if(kind == Harvest) {
+		action_time = 0;
 		auto pb = find_base(Refinery, player);
 		if(!pb) {
 			cantdothis(); // Something wrong
@@ -325,6 +335,7 @@ bool unit::returnbase() {
 		}
 		blockland(geti().move);
 		blockunits();
+		unblock();
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {
@@ -352,6 +363,7 @@ bool unit::returnbase() {
 		}
 		blockland(geti().move);
 		blockunits();
+		unblock();
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {
@@ -367,29 +379,21 @@ bool unit::returnbase() {
 }
 
 void unit::apply(ordern type, point v) {
-	auto opponent = find_unit(v);
+	unit* opponent;
 	switch(type) {
-	case Attack:
-		setaction(v, true);
-		break;
-	case Harvest:
-		setaction(v, false);
-		break;
-	case Move:
+	case Attack: setaction(v, true); break;
+	case Harvest: setaction(v, false); break;
+	case Move: order = v; start_time = game.time; break;
+	case SmartMove:
+		opponent = find_unit(v);
 		if(opponent && opponent->isenemy(player) && getpurpose() == Attack)
 			apply(Attack, v);
 		else if(getpurpose() == Harvest && isspicefield(v))
 			apply(Harvest, v);
-		else if(area.isvalid(v)) {
-			order = v;
-			start_time = game.time; // Can't wait command
-		}
+		else if(area.isvalid(v))
+			apply(Move, v);
 		break;
-	case Retreat:
-		returnbase();
-		break;
-	default:
-		stop();
-		break;
+	case Retreat: returnbase(); break;
+	default: stop(); break;
 	}
 }

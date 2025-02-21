@@ -50,6 +50,6 @@ void unita::order(ordern type, point v, bool interactive) const {
 	}
 	for(auto p : *this)
 		p->apply(type, v);
-	if(type == Move)
+	if(type == Move || type == SmartMove)
 		hilite_unit_orders();
 }

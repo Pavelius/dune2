@@ -60,9 +60,14 @@ bool moveable::ismoving() const {
 	return !isboard() && screen != m2sc(position);
 }
 
-void moveable::synchronize() {
-	if(start_time > action_time)
-		start_time = action_time;
+//void moveable::synchronize() {
+//	if(start_time > action_time)
+//		start_time = action_time;
+//}
+
+void moveable::unblock() const {
+	if(area.isvalid(position))
+		path_map[position.y][position.x] = 0;
 }
 
 direction moveable::nextpath(point v, movementn movement) {
@@ -70,33 +75,27 @@ direction moveable::nextpath(point v, movementn movement) {
 		return Center;
 	auto need_block_units = v.range(position) < 3;
 	blockland(movement);
-	if(need_block_units)
+	if(need_block_units) {
 		blockunits();
+		unblock();
+	}
 	if(path_map[v.y][v.x] == BlockArea)
 		return Center;
 	else {
 		area.movewave(v, movement); // Consume time action
-		if(!need_block_units)
+		if(!need_block_units) {
 			blockunits();
+			unblock();
+		}
 		return area.moveto(position, move_direction);
 	}
 }
 
-bool moveable::moving(movementn movement, int move_speed, int line_of_sight, bool turret, fixn weapon, int attacks, int shoot_range) {
+bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 	tracking();
 	if(ismoving()) {// Unit just moving to neightboar tile. MUST FINISH!!!
 		movescreen(move_speed);
 		leavetrail(movement == Tracked);
-		if(turret) {
-			if(shoot(screen, weapon, attacks, shoot_range)) { // Turret vehicle can shoot on moving
-				// Nothing
-			} else if(isready()) { // If not busy we can make some actions while moving
-				if(action_direction != move_direction) {
-					action_direction = to(action_direction, turnto(action_direction, move_direction));
-					wait(look_duration);
-				}
-			}
-		}
 		if(!ismoving()) {
 			scouting(line_of_sight);
 			path_direction = Center; // Arrive to next tile, we need new path direction.
@@ -107,7 +106,7 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight, boo
 			path_direction = nextpath(order, movement);
 		if(path_direction == Center) {
 			if(game_chance(20)) // Something in the way. Wait or cancel order?
-				stop();
+				order = position;
 			else
 				start_time += game_rand(look_duration / 2, look_duration);
 		} else if(movement == Footed) {
@@ -118,10 +117,6 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight, boo
 				start_time += look_duration / 2; // Turning pause
 			else
 				startmove(move_speed);
-		}
-		if(!turret) {
-			if(move_direction != Center)
-				action_direction = move_direction;
 		}
 	} else
 		return false;

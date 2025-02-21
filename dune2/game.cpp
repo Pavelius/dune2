@@ -29,14 +29,17 @@ static void update_area_decoy() {
 
 static void update_unit_time() {
 	for(auto& e : bsdata<unit>()) {
+		if(!e)
+			continue;
 		if(!e.start_time)
 			e.start_time = game.time;
 		while(e.start_time < game.time) {
 			auto n = e.start_time;
 			e.update();
 			if(n == e.start_time)
-				e.start_time += 500; // Pause to think
+				e.start_time += look_duration; // Pause to think
 		}
+		e.acting();
 	}
 }
 
