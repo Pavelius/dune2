@@ -1,7 +1,6 @@
 #pragma once
 
-#include "actable.h"
-#include "drawable.h"
+#include "moveable.h"
 #include "fix.h"
 #include "flagable.h"
 #include "order.h"
@@ -26,10 +25,8 @@ struct uniti : topicable {
 	unsigned char	frame, frame_shoot;
 	unsigned char	stats[Armor + 1];
 };
-struct unit : drawable, actable, typeable<uniti, unitn> {
-	point			order, guard;
+struct unit : moveable, typeable<uniti, unitn> {
 	squadn			squad;
-	direction		move_direction, path_direction;
 	void			apply(ordern type, point v);
 	void			clear();
 	void			damage(int value);
@@ -53,20 +50,14 @@ struct unit : drawable, actable, typeable<uniti, unitn> {
 	void			stop();
 	void			update();
 private:
-	void			blockland() const;
 	void			cantdothis();
 	void			cleanup();
 	bool			harvest();
 	bool			istrallfull() const;
-	void			leavetrail();
-	void			movescreen();
-	direction		nextpath(point v);
 	bool			releasetile();
 	bool			returnbase();
 	bool			seeking();
 	bool			shoot() { return actable::shoot(screen, geti().weapon, geti().stats[Attacks], getshootrange()); }
-	void			startmove();
-	void			synchronize();
 };
 extern unit *last_unit;
 

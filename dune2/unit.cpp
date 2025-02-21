@@ -13,13 +13,6 @@
 #include "unita.h"
 #include "view.h"
 
-///////////////////////////////////////////////////////////
-// SOME DESCRIPTION
-///////////////////////////////////////////////////////////
-// Units with turret have advantage. They can move and shoot.
-// Bikes can move, but must stop and turn to shoot directions.
-// Damage mechanic is next. Each unit have Damage rating. Value between 3-10.
-
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
 	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 4, 4}},
@@ -117,15 +110,11 @@ void unit::scouting() {
 	area.scouting(position, player, getlos());
 }
 
-void blockunits(const unit* exclude) {
+void blockunits() {
 	for(auto& e : bsdata<unit>()) {
-		if(e && &e != exclude && e.position.x >= 0)
+		if(e && !e.isboard())
 			path_map[e.position.y][e.position.x] = BlockArea;
 	}
-}
-
-void unit::blockland() const {
-	area.blockland(geti().move);
 }
 
 int unit::getspeed() const {
@@ -133,61 +122,6 @@ int unit::getspeed() const {
 	if(!n)
 		return 64 * 4 * 2;
 	return 64 * 4 / n;
-}
-
-direction unit::nextpath(point v) {
-	if(!area.isvalid(v))
-		return Center;
-	auto need_block_units = v.range(position) < 3;
-	blockland();
-	if(need_block_units)
-		blockunits(this);
-	if(path_map[v.y][v.x] == BlockArea)
-		return Center;
-	else {
-		area.movewave(v, geti().move); // Consume time action
-		if(!need_block_units)
-			blockunits(this);
-		return area.moveto(position, move_direction);
-	}
-}
-
-static point next_screen(point v, direction d) {
-	// Center, Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp,
-	static point movesteps[LeftUp + 1] = {
-		{0, 0}, {0, -1}, {1, -1}, {1, 0}, {1, 1}, {0, 1}, {-1, 1}, {-1, 0}, {-1, -1},
-	};
-	return v + movesteps[d];
-}
-
-void unit::movescreen() {
-	screen = next_screen(screen, move_direction);
-	auto move_speed = getspeed();
-	start_time += move_speed;
-	if(isdiagonal(move_direction))
-		start_time += move_speed / 3;
-}
-
-static int get_trail_param(direction d) {
-	switch(d) {
-	case RightUp: case LeftDown: return 1;
-	case Left: case Right: return 2;
-	case LeftUp: case RightDown: return 3;
-	default: return 0;
-	}
-}
-
-void unit::leavetrail() {
-	auto previous_position = s2m(screen);
-	if(previous_position != position) {
-		previous_position = to(position, to(move_direction, Down));
-		if(area.issand(previous_position)) {
-			if(isturret())
-				area.set(previous_position, Trail, get_trail_param(move_direction));
-			else
-				area.set(previous_position, Trail, 4 + get_trail_param(move_direction));
-		}
-	}
 }
 
 ordern unit::getpurpose() const {
@@ -220,7 +154,7 @@ bool unit::releasetile() {
 		auto p = find_unit(v);
 		if(!p) {
 			move_direction = d;
-			startmove();
+			startmove(getspeed());
 			order = position;
 			return true;
 		}
@@ -276,11 +210,6 @@ bool unit::harvest() {
 	return true;
 }
 
-void unit::startmove() {
-	position = to(position, move_direction); // Mark of next tile as busy. It's impotant.
-	movescreen(); // Start moving to next tile.
-}
-
 bool unit::seeking() {
 	if(isturret()) { // Turret random look around
 		auto turn_direction = turnto(action_direction, move_direction);
@@ -293,47 +222,10 @@ bool unit::seeking() {
 }
 
 void unit::update() {
-	tracking();
-	if(ismoving()) {// Unit just moving to neightboar tile. MUST FINISH!!!
-		movescreen();
-		leavetrail();
-		if(isturret()) {
-			if(shoot()) { // Turret vehicle can shoot on moving
-				// After shoot do nothing
-			} else if(isready()) { // If not busy we can make some actions while moving
-				if(action_direction != move_direction) {
-					action_direction = to(action_direction, turnto(action_direction, move_direction));
-					wait(look_duration / 2);
-				}
-			}
-		}
-		if(!ismoving()) {
-			scouting();
-			path_direction = Center; // Arrive to next tile, we need new path direction.
-		}
-	} else if(ismoveorder()) {
-		// We ready to start movement to next tile.
-		if(path_direction == Center)
-			path_direction = nextpath(order);
-		if(path_direction == Center) {
-			if(game_chance(30)) // Something in the way. Wait or cancel order?
-				stop();
-			else
-				start_time += game_rand(look_duration / 2, look_duration);
-		} else if(geti().move == Footed) {
-			move_direction = path_direction; // Footed units turn around momentary.
-			startmove();
-		} else {
-			if(!turn(move_direction, path_direction)) // More that one turn take time
-				start_time += look_duration / 2; // Turning pause
-			else
-				startmove();
-		}
-		if(move_direction != Center) {
-			if(!isturret())
-				action_direction = move_direction;
-		}
-	} else if(releasetile())
+	auto& ei = geti();
+	if(moving(ei.move, getspeed(), getlos(), isturret(), ei.weapon, ei.stats[Attacks], getlos() + 1))
+		return;
+	else if(releasetile())
 		return;
 	else if(harvest())
 		return;
@@ -353,11 +245,6 @@ void unit::stop() {
 	path_direction = Center;
 	order = position;
 	actable::stop();
-}
-
-void unit::synchronize() {
-	if(action_time > start_time)
-		start_time = action_time;
 }
 
 bool isnonblocked(point v) {
@@ -436,8 +323,8 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong
 			return false; // Not any valid base present
 		}
-		blockland();
-		blockunits(this);
+		blockland(geti().move);
+		blockunits();
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {
@@ -463,8 +350,8 @@ bool unit::returnbase() {
 			stop();
 			return false; // Not any valid base present
 		}
-		blockland();
-		blockunits(this);
+		blockland(geti().move);
+		blockunits();
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {

@@ -225,7 +225,7 @@ static point get_unit_place_point(point start, int range) {
 	area.blockcontrol();
 	area.controlwave(start, allowcontrol, range);
 	blockarea(isunitpossible);
-	blockunits(0);
+	blockunits();
 	points.selectfree();
 	return points.random();
 }

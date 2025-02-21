@@ -8,9 +8,6 @@
 #include "stringbuilder.h"
 #include "unit.h"
 
-const unsigned long action_next_time = 200;
-const unsigned long action_duration = 3 * 1000;
-
 bool turn(direction& result, direction new_direction) {
 	if(new_direction == Center)
 		return false;
@@ -70,7 +67,8 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 		return false;
 	if(action_time > game.time) {
 		if(action) {// Allow multi-attacks
-			if((action_time - game.time) >= (action * action_next_time)) {
+			auto next_time = (action_time - action_duration) + action * look_duration;
+			if(action_time >= next_time) {
 				fixshoot(screen, m2sc(target_position), weapon, 40); // Can make next attack on same target, but can miss
 				action++;
 				if(action >= attacks)
@@ -99,14 +97,15 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 void actable::stop() {
 	target = 0xFFFF;
 	target_position = {-10000, -10000};
+	action_time = 0;
 }
 
 void actable::wait(int duration) {
-	action_time += game.time + duration;
+	action_time = game.time + duration;
 }
 
 bool actable::isready() const {
-	return action_time <= game.time;
+	return !action_time;
 }
 
 bool actable::isenemy(unsigned char player_index) const {

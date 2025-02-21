@@ -8,7 +8,8 @@ enum fixn : unsigned char;
 
 struct unit;
 
-const unsigned long look_duration = 500;
+const unsigned long look_duration = 400;
+const unsigned long action_duration = 3 * 1000;
 
 struct actable : playerable {
 	point			position;

@@ -3,7 +3,6 @@
 #include "direction.h"
 #include "game.h"
 #include "moveable.h"
-#include "unit.h"
 
 static point next_screen(point v, direction d) {
 	// Center, Up, RightUp, Right, RightDown, Down, LeftDown, Left, LeftUp,
@@ -22,11 +21,8 @@ static int get_trail_param(direction d) {
 	}
 }
 
-static void blockunits(const moveable* exclude) {
-	for(auto& e : bsdata<unit>()) {
-		if(e /*&& static_cast<moveable*>(&e) != exclude*/ && e.position.x >= 0)
-			path_map[e.position.y][e.position.x] = BlockArea;
-	}
+void blockland(movementn movement) {
+	area.blockland(movement);
 }
 
 void moveable::startmove(int move_speed) {
@@ -64,8 +60,9 @@ bool moveable::ismoving() const {
 	return !isboard() && screen != m2sc(position);
 }
 
-void moveable::blockland(movementn movement) const {
-	area.blockland(movement);
+void moveable::synchronize() {
+	if(start_time > action_time)
+		start_time = action_time;
 }
 
 direction moveable::nextpath(point v, movementn movement) {
@@ -74,13 +71,13 @@ direction moveable::nextpath(point v, movementn movement) {
 	auto need_block_units = v.range(position) < 3;
 	blockland(movement);
 	if(need_block_units)
-		blockunits(this);
+		blockunits();
 	if(path_map[v.y][v.x] == BlockArea)
 		return Center;
 	else {
 		area.movewave(v, movement); // Consume time action
 		if(!need_block_units)
-			blockunits(this);
+			blockunits();
 		return area.moveto(position, move_direction);
 	}
 }
@@ -92,7 +89,7 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight, boo
 		leavetrail(movement == Tracked);
 		if(turret) {
 			if(shoot(screen, weapon, attacks, shoot_range)) { // Turret vehicle can shoot on moving
-				// After shoot do nothing
+				// Nothing
 			} else if(isready()) { // If not busy we can make some actions while moving
 				if(action_direction != move_direction) {
 					action_direction = to(action_direction, turnto(action_direction, move_direction));

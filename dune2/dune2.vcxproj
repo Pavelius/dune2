@@ -149,9 +149,7 @@
     <ClCompile Include="fraction.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
-    <ClCompile Include="moveable.cpp">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClCompile>
+    <ClCompile Include="moveable.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
     <ClCompile Include="textscript.cpp" />
@@ -222,9 +220,7 @@
     <ClInclude Include="flagable.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
-    <ClInclude Include="moveable.h">
-      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">true</ExcludedFromBuild>
-    </ClInclude>
+    <ClInclude Include="moveable.h" />
     <ClInclude Include="pointa.h" />
     <ClInclude Include="textscript.h" />
     <ClInclude Include="topicablea.h" />

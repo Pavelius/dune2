@@ -277,10 +277,10 @@ void main_menu() {
 	add_building({8, 3}, LightVehicleFactory);
 	add_building({5, 5}, Windtrap);
 	add_building({7, 5}, Refinery);
-//	add_unit({5, 7}, Trike, Down);
-//	add_unit({6, 7}, Harvester, Down);
+	add_unit({5, 7}, Trike, Down);
+	add_unit({6, 7}, Harvester, Down);
 	add_unit({7, 7}, AssaultTank, Down);
-//	add_unit({8, 7}, Trike, Down);
+	add_unit({8, 7}, Quad, Down);
 	show_scene(paint_main_map, 0, 0);
 }
 
