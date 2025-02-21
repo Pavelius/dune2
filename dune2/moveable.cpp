@@ -33,7 +33,7 @@ void moveable::startmove(int move_speed) {
 void moveable::movescreen(int move_speed) {
 	screen = next_screen(screen, move_direction);
 	start_time += move_speed;
-	if(isdiagonal(move_direction))
+	if(move_speed < 85 && isdiagonal(move_direction))
 		start_time += move_speed / 3;
 }
 
@@ -59,11 +59,6 @@ void moveable::scouting(int line_of_sight) {
 bool moveable::ismoving() const {
 	return !isboard() && screen != m2sc(position);
 }
-
-//void moveable::synchronize() {
-//	if(start_time > action_time)
-//		start_time = action_time;
-//}
 
 void moveable::unblock() const {
 	if(area.isvalid(position))
