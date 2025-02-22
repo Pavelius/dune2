@@ -60,13 +60,22 @@ void unit::destroy() {
 	switch(geti().move) {
 	case Wheeled: add_effect(m2sc(position), FixBikeExplosion); break;
 	case Tracked: add_effect(m2sc(position), FixExplosion); break;
+	default: break;
 	}
 	clear();
 }
 
 void unit::damage(int value) {
-	if(hits > value)
+	if(hits > value) {
 		hits -= value;
+		switch(geti().move) {
+		case Tracked:
+		case Wheeled:
+			if(hits < getmaximum(Hits) / 2)
+				add(Smoke);
+			break;
+		}
+	}
 	else
 		destroy();
 }
@@ -136,7 +145,7 @@ static point random_near(point v) {
 }
 
 bool unit::isharvest() const {
-	return getpurpose() == Harvest && action > 0 && start_time > game.time;
+	return getpurpose() == Harvest && action > 0;
 }
 
 bool unit::istrallfull() const {
@@ -416,4 +425,11 @@ void unit::setorder(point v) {
 		setorder(Harvest, v);
 	else if(area.isvalid(v))
 		setorder(Move, v);
+}
+
+void unit::recovery() {
+	for(auto i = Smoke; i <= BurningFire; i = (fixn)(i + 1)) {
+		if(is(i) && game_chance(20))
+			remove(i);
+	}
 }

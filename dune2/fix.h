@@ -7,6 +7,7 @@ enum drawprocn : unsigned char;
 enum resid : unsigned short;
 enum fixn : unsigned char {
 	NoEffect,
+	Smoke, BurningFire,
 	ShootAssaultRifle, ShootRotaryCannon, Shoot20mm, Shoot30mm, Shoot155mm, Shoot200mm,
 	FireRocket,
 	FixSmallHit, FixMediumHit, FixLargeHit,

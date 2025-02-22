@@ -61,6 +61,8 @@ int fixeffecti::getframe(unsigned& flags, point from, point to) const {
 
 BSDATA(fixeffecti) = {
 	{"NoEffect"},
+	{"Smoke", 100, UNITS1, 29, 3},
+	{"BurningFire", 160, UNITS1, 17, 3},
 	{"ShootAssaultRifle", 70, UNITS1, 23, 1, 2, apply_damage, FixSmallHit},
 	{"ShootRotaryCannon", 80, UNITS1, 23, 1, 3, apply_damage, FixSmallHit},
 	{"Shoot20mm", 80, UNITS1, 23, 1, 4, apply_damage, FixSmallHit},

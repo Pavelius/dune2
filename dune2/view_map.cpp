@@ -449,6 +449,18 @@ static int get_animation_frame(point n1, point n2) {
 	return imax(i, j);
 }
 
+static void paint_unit_effect(unit* p) {
+	for(auto i = Smoke; i <= BurningFire; i = (fixn)(i + 1)) {
+		if(!p->is(i))
+			continue;
+		auto& ei = bsdata<fixeffecti>::elements[i];
+		if(!ei.count)
+			continue;
+		auto ps = gres(ei.rid);
+		image(ps, ei.frame + get_frame(ei.milliseconds) % ei.count, 0);
+	}
+}
+
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	if(!p->operator bool())
@@ -460,6 +472,7 @@ static void paint_unit() {
 			p->getplayer().color_index,
 			get_animation_frame(p->screen, m2sc(p->position)) % 4);
 	}
+	paint_unit_effect(p);
 }
 
 static int calculate(int v1, int v2, int n, int m) {

@@ -105,6 +105,13 @@ static void update_animated_tiles() {
 	area.changealternate();
 }
 
+static void update_unit_recovery() {
+	for(auto& e : bsdata<unit>()) {
+		if(e)
+			e.recovery();
+	}
+}
+
 static void update_game_turn() {
 	while(game.start_turn < game.time) {
 		game.start_turn += 500;
@@ -116,6 +123,7 @@ static void update_game_turn() {
 		case 0: update_area_decoy(); break;
 		case 1: update_player_time(); break;
 		case 2: update_scouting(); break;
+		case 3: update_unit_recovery(); break;
 		}
 	}
 }
