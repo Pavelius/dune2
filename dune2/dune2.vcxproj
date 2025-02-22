@@ -223,6 +223,7 @@
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="moveable.h" />
+    <ClInclude Include="objective.h" />
     <ClInclude Include="pointa.h" />
     <ClInclude Include="textscript.h" />
     <ClInclude Include="topicablea.h" />

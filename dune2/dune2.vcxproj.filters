@@ -425,6 +425,9 @@
     <ClInclude Include="moveable.h">
       <Filter>logic</Filter>
     </ClInclude>
+    <ClInclude Include="objective.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">

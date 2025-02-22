@@ -135,8 +135,13 @@ void blockunits() {
 
 int unit::getspeed() const {
 	auto n = get(Speed);
-	if(!n)
-		return 64 * 4 * 2;
+	if(geti().move == Wheeled) {
+		auto t = area.get(position);
+		if(t == Rock)
+			n -= 3;
+	}
+	if(n <= 0)
+		return 64 * 4;
 	return 64 * 4 / n;
 }
 
@@ -260,7 +265,7 @@ bool unit::relax() {
 	return false;
 }
 
-bool unit::seeking() {	
+bool unit::seeking() {
 	auto enemy = getenemy();
 	if(!enemy) {
 		enemy = find_enemy(position, player, getlos());
@@ -298,8 +303,7 @@ void unit::update() {
 		if(!isturret())
 			move_direction = shoot_direction;
 		return;
-	}
-	else if(harvest())
+	} else if(harvest())
 		return;
 	else if(seeking())
 		return;
