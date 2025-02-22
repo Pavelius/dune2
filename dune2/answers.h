@@ -41,7 +41,7 @@ struct answers {
 	const element*	end() const { return elements.end(); }
 	size_t			findvalue(const void* pv) const;
 	bool			have(const void* pv) const { return elements.have(pv); }
-	size_t			getcount() const { return elements.getcount(); }
+	size_t			getcount() const { return elements.size(); }
 	const char*		getname(void* v);
 	int				indexof(const void* v) const { return elements.indexof(v); }
 	void*			random() const;

@@ -26,7 +26,7 @@ void collectiona::add(const collectiona& source) {
 }
 
 void collectiona::insert(int index, void* object) {
-	if(count >= getmaximum())
+	if(count >= capacity())
 		return;
 	memmove(data + index + 1, data + index, (count - index - 1) * sizeof(data[0]));
 	data[index] = object;
