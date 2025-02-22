@@ -88,7 +88,7 @@ static void player_base(rect rc) {
 	add_building(v, ConstructionYard);
 	add_unit(v, Trike, Down);
 	add_unit(v, Harvester, Down);
-	add_unit(v, LightInfantry, Down);
+	add_unit(v, AssaultTank, Down);
 	add_unit(v, LightInfantry, Down);
 }
 

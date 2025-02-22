@@ -2,7 +2,6 @@
 
 #include "moveable.h"
 #include "fix.h"
-// #include "flagable.h"
 #include "order.h"
 #include "resid.h"
 #include "topicable.h"
@@ -25,7 +24,7 @@ struct uniti : topicable {
 	unsigned char	frame, frame_shoot;
 	unsigned char	stats[Armor + 1];
 };
-struct unit : moveable, typeable<uniti, unitn> {
+struct unit : moveable, fixable, typeable<uniti, unitn> {
 	squadn			squad;
 	unsigned char	effect;
 	void			clear();
@@ -41,17 +40,15 @@ struct unit : moveable, typeable<uniti, unitn> {
 	ordern			getpurpose() const;
 	int				getshootrange() const { return 3; }
 	int				getspeed() const;
-	void			remove(fixn i) { if(i < sizeof(effect) * 8) effect &= ~(1 << i); }
-	bool			is(fixn i) const { return (i < sizeof(effect) * 8) ? (effect & (1 << i)) != 0 : false; }
 	bool			isboard() const { return position.x < 0; }
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }
 	bool			isharvest() const;
 	void			recovery();
+	bool			relax();
 	void			scouting();
-	void			set(fixn i) { if(i < sizeof(effect) * 8) effect |= (1 << i); }
-	void			set(point v);
+	void			setposition(point v);
 	void			setorder(point v);
 	void			setorder(ordern type, point v);
 	void			update();

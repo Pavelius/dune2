@@ -118,12 +118,12 @@ static void paint_elements() {
 
 static void paint_main() {
 	pushtheme push_theme(ButtonYellow);
-	auto subject = (topicable*)subjects.data[build_current];
 	paint_background();
 	paint_spice();
+	paint_elements();
+	auto subject = (topicable*)subjects.data[build_current];
 	paint_building_subject(subject);
 	paint_buttons(subject);
-	paint_elements();
 }
 
 static bool choose_build() {

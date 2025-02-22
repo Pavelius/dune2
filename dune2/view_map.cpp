@@ -465,6 +465,8 @@ static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
 	if(!p->operator bool())
 		return;
+	if(!area.is(p->position, player_index, Visible))
+		return;
 	if(p->isharvest())
 		paint_unit_harvest(p->geti(), p->move_direction, p->getplayer().color_index);
 	else {
@@ -497,10 +499,13 @@ static void paint_effect_fix() {
 		if(frame_offset >= pf->count) {
 			if(pf->apply)
 				pf->apply();
-			if(pf->next) {
-				p->param = pf->next;
+			auto next = pf->next;
+			if(pf->next_proc)
+				next = pf->next_proc();
+			if(next) {
+				p->param = next;
 				p->start_time = animate_time;
-				pf = bsdata<fixeffecti>::elements + pf->next;
+				pf = bsdata<fixeffecti>::elements + next;
 				frame = pf->frame;
 			} else {
 				p->clearobject();
@@ -1137,10 +1142,10 @@ static void paint_stats_info(const char* title, abilityn n) {
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	if(last_building->canbuild()) {
-		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, open_building, (long)last_building);
+		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->gethitsmax(), open_building, (long)last_building);
 		paint_build_button();
 	} else {
-		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
+		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->gethitsmax(), 0, 0);
 		switch(last_building->type) {
 		case SpiceSilo: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
 		case Windtrap: paint_stats_info(0, Energy); break;
@@ -1151,7 +1156,7 @@ static void paint_building_info() {
 static void paint_turret_info() {
 	pushrect push;
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->geti().hits, 0, 0);
+	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->gethitsmax(), 0, 0);
 	setoffset(-1, 0);
 	height = 12;
 	button(bsdata<orderi>::elements[Attack].getname(), 'A', AlignCenter, human_order_building, Attack);

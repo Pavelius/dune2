@@ -18,7 +18,6 @@ enum buildstaten : unsigned char {
 };
 struct tilepatch;
 struct buildingi : topicable {
-	short			hits;
 	shapen			shape;
 	short unsigned	frames[16];
 	slice<topicable*> build;
@@ -35,12 +34,16 @@ struct building : actable, typeable<buildingi, buildingn> {
 	void			buildlist() const;
 	bool			canbuild() const { return geti().build.operator bool(); }
 	void			cancel();
+	void			cleanup();
+	void			clear();
 	void			construct(point v);
+	void			damage(int value);
 	void			destroy();
 	int				getlos() const;
 	int				getprogress() const;
 	topicable*		getbuild() const;
 	point			getbuildsize() const;
+	int				gethitsmax() const;
 	rect			getrect() const;
 	point			getsize() const;
 	bool			isnear(point v) const;

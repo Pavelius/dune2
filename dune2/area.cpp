@@ -265,6 +265,15 @@ void areai::setcamera(point v, bool center_view) {
 	area_origin.y = (char)y;
 }
 
+void areai::set(point v, point s, fnset proc, int value) {
+	for(auto y = v.y; y < v.y + s.y; y++) {
+		for(auto x = v.x; x < v.x + s.x; x++) {
+			if(isvalid(x, y))
+				proc(point(x, y), value);
+		}
+	}
+}
+
 void areai::set(rect r, fnset proc, int value) {
 	for(auto y = r.y1; y < r.y2; y++) {
 		for(auto x = r.x1; x < r.x2; x++) {

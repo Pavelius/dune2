@@ -66,18 +66,25 @@ void unit::destroy() {
 }
 
 void unit::damage(int value) {
-	if(hits > value) {
-		hits -= value;
-		switch(geti().move) {
-		case Tracked:
-		case Wheeled:
-			if(hits < getmaximum(Hits) / 2)
-				set(Smoke);
-			break;
-		}
+	value -= get(Armor);
+	if(value <= 0) {
+		if(game_chance(50))
+			value = 1;
 	}
-	else
+	if(value <= 0)
+		return;
+	if(value >= hits) {
 		destroy();
+		return;
+	}
+	hits -= value;
+	switch(geti().move) {
+	case Tracked:
+	case Wheeled:
+		if(hits <= getmaximum(Hits) / 2)
+			set(Smoke);
+		break;
+	}
 }
 
 bool unit::ismoving() const {
@@ -95,7 +102,7 @@ int	unit::getmaximum(statn v) const {
 	}
 }
 
-void unit::set(point v) {
+void unit::setposition(point v) {
 	position = v;
 	screen = m2sc(v);
 }
@@ -239,7 +246,7 @@ unit* find_enemy(point v, unsigned char player, int line_of_sight) {
 	return result;
 }
 
-bool unit::seeking() {	
+bool unit::relax() {
 	if(game_chance(30)) { // 30% chance do nothing
 		if(isturret()) { // Rotate turret
 			auto turn_direction = turnto(shoot_direction, move_direction);
@@ -247,13 +254,19 @@ bool unit::seeking() {
 				shoot_direction = to(shoot_direction, turn_direction);
 			else if(game_chance(30))
 				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
+			return true;
 		}
-		return false;
 	}
-	if(target == 0xFFFF) {
-		auto p = find_enemy(position, player, getlos());
-		if(p) {
-			setaction(p->position, true);
+	return false;
+}
+
+bool unit::seeking() {	
+	auto enemy = getenemy();
+	if(!enemy) {
+		enemy = find_enemy(position, player, getlos());
+		if(enemy) {
+			target = enemy->getindex();
+			target_position = enemy->position;
 			return true;
 		}
 	}
@@ -268,6 +281,8 @@ bool unit::closing() {
 
 void unit::update() {
 	if(moving(geti().move, getspeed(), getlos())) {
+		//if(position != order && !ismoving()) { // When ready to go next tile
+		//}
 		if(!isturret())
 			shoot_direction = move_direction;
 		else if(shoot())
@@ -355,7 +370,7 @@ void unit::clear() {
 
 void unit::cantdothis() {
 	start_time += game_rand(4, 8) * 1000;
-	print("%1 can't do nothing.", getname());
+	fixstate("UnitCantDoThis");
 }
 
 static building* get_main_base(unsigned char player) {

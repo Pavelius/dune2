@@ -9,10 +9,22 @@ using namespace draw;
 int list_hilite;
 
 void correct_list(int& origin, int maximum, int per_page) {
-	if(origin + per_page >= maximum)
-		origin = maximum - per_page;
+	if(origin + per_page > maximum + 1)
+		origin = maximum + 1 - per_page;
 	if(origin < 0)
 		origin = 0;
+}
+
+void correct_list_minimal(int& current, int maximum) {
+	if(current >= maximum)
+		current = maximum - 1;
+	if(current < 0)
+		current = 0;
+}
+
+void correct_list(int& origin, int& current, int maximum, int per_page) {
+	correct_list_minimal(current, maximum);
+	correct_list(origin, maximum, per_page);
 }
 
 static void mouse_input_list(int& origin, int maximum, int row_height) {
@@ -37,6 +49,23 @@ static void mouse_input_list(int& origin, int maximum, point size) {
 	switch(hot.key) {
 	case MouseWheelUp: execute(cbsetint, origin - per_row, 0, &origin); break;
 	case MouseWheelDown: execute(cbsetint, origin + per_row, 0, &origin); break;
+	default: break;
+	}
+}
+
+static void cbsetintev() {
+	auto p = (int*)hot.object;
+	*p = hot.param;
+}
+
+static void input_list(int& origin, int& current, int maximum, point size) {
+	auto per_row = imax(1, width / size.x);
+	auto per_page = (height / size.y) * per_row;
+	switch(hot.key) {
+	case KeyLeft: execute(cbsetintev, current - 1, (long)&origin, &current); break;
+	case KeyRight: execute(cbsetintev, current + 1, (long)&origin, &current); break;
+	case KeyUp: execute(cbsetintev, current - per_row, (long)&origin, &current); break;
+	case KeyDown: execute(cbsetintev, current + per_row, (long)&origin, &current); break;
 	default: break;
 	}
 }
@@ -168,8 +197,9 @@ void paint_list(int& origin, int& current, int maximum, void* elements, size_t e
 	auto push_clip = clipping; setcliparea();
 	auto per_row = imax(1, width / size.x);
 	auto per_page = ((height + size.y - 1) / size.y) * per_row;
-	correct_list(origin, maximum, per_page);
+	correct_list(origin, current, maximum, per_page);
 	mouse_input_list(origin, maximum, size);
+	input_list(origin, current, maximum, size);
 	list_hilite = -1;
 	height = size.y;
 	width = size.x;

@@ -10,4 +10,5 @@ struct shapei : nameable {
 	int			count;
 	point		size;
 	point		points[16];
+	int			hits;
 };

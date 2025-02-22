@@ -1,5 +1,6 @@
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
 #include "draw.h"
 #include "drawable.h"
 #include "fix.h"
@@ -10,6 +11,14 @@
 
 using namespace draw;
 
+static fixn lasting_effect() {
+	if(game_chance(30))
+		return NoEffect;
+	auto p = (draweffect*)last_object;
+	auto pf = bsdata<fixeffecti>::elements + p->param;
+	return pf->next;
+}
+
 static void add_explosion_tile() {
 	if(game_chance(30))
 		area.set(s2m(last_object->screen), Explosion);
@@ -19,16 +28,11 @@ static void apply_damage() {
 	auto p = (draweffect*)last_object;
 	auto v = s2m(last_object->screen);
 	auto pe = find_unit(v);
-	if(!pe)
-		return;
-	auto damage = p->effect - pe->get(Armor);
-	if(damage <= 0) {
-		if(game_chance(50))
-			damage = 1;
-	}
-	if(damage <= 0)
-		return;
-	pe->damage(damage);
+	if(pe)
+		pe->damage(p->effect);
+	auto pb = find_building(area.getcorner(v));
+	if(pb)
+		pb->damage(p->effect);
 }
 
 void add_effect(point v, fixn i) {
@@ -61,8 +65,8 @@ int fixeffecti::getframe(unsigned& flags, point from, point to) const {
 
 BSDATA(fixeffecti) = {
 	{"NoEffect"},
-	{"Smoke", 100, UNITS1, 29, 3},
-	{"BurningFire", 160, UNITS1, 17, 3},
+	{"Smoke", 100, UNITS1, 29, 3, 0, 0, Smoke, lasting_effect},
+	{"BurningFire", 160, UNITS1, 17, 3, 0, 0, BurningFire, lasting_effect},
 	{"ShootAssaultRifle", 70, UNITS1, 23, 1, 2, apply_damage, FixSmallHit},
 	{"ShootRotaryCannon", 80, UNITS1, 23, 1, 3, apply_damage, FixSmallHit},
 	{"Shoot20mm", 80, UNITS1, 23, 1, 4, apply_damage, FixSmallHit},

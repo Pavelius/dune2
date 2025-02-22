@@ -1,6 +1,7 @@
 #include "area.h"
 #include "bsdata.h"
 #include "building.h"
+#include "fix.h"
 #include "game.h"
 #include "pointa.h"
 #include "resid.h"
@@ -31,34 +32,33 @@ static tilepatch refinery_tiles[] = {
 };
 
 BSDATA(buildingi) = {
-	{"ConstructionYard", CONSTRUC, 60, 0, 1000, Shape2x2, {292, 293, 295, 296}, base_produce, {}, {}},
-	{"SpiceSilo", STORAGE, 69, 100, 500, Shape2x2, {372, 373, 375, 376}, {}, {0}, {1000}},
+	{"ConstructionYard", CONSTRUC, 60, 0, Shape2x2, {292, 293, 295, 296}, base_produce, {}, {}},
+	{"SpiceSilo", STORAGE, 69, 100, Shape2x2, {372, 373, 375, 376}, {}, {0}, {1000}},
 	{"Starport", STARPORT, 57},
-	{"Windtrap", WINDTRAP, 61, 100, 500, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 1000}},
-	{"Refinery", REFINERY, 64, 500, 1500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {0, 1000}, {1000}, refinery_tiles},
-	{"RadarOutpost", HEADQRTS, 70, 500, 1000, Shape2x2, {379, 380, 386, 387}},
+	{"Windtrap", WINDTRAP, 61, 100, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 1000}},
+	{"Refinery", REFINERY, 64, 500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {0, 1000}, {1000}, refinery_tiles},
+	{"RadarOutpost", HEADQRTS, 70, 500, Shape2x2, {379, 380, 386, 387}},
 	{"RepairFacility", REPAIR},
 	{"HouseOfIX"},
 	{"Palace", PALACE, 54},
-	{"Barracks", BARRAC, 62, 300, 1500, Shape2x2, {299, 300, 301, 302}, barrac_produce, {0, 200}},
-	{"WOR", WOR, 59, 500, 1500, Shape2x2, {285, 286, 288, 289}, wor_produce, {0, 300}},
-	{"LightVehicleFactory", LITEFTRY, 55, 1000, 2000, Shape2x2, {241, 242, 248, 249}, lftr_produce, {0, 500}},
-	{"HeavyVehicleFactory", HVYFTRY, 56, 2000, 2000},
+	{"Barracks", BARRAC, 62, 300, Shape2x2, {299, 300, 301, 302}, barrac_produce, {0, 200}},
+	{"WOR", WOR, 59, 500, Shape2x2, {285, 286, 288, 289}, wor_produce, {0, 300}},
+	{"LightVehicleFactory", LITEFTRY, 55, 1000, Shape2x2, {241, 242, 248, 249}, lftr_produce, {0, 500}},
+	{"HeavyVehicleFactory", HVYFTRY, 56, 2000},
 	{"HighTechFacility"},
-	{"Slab", SLAB, 53, 2, 0, Shape1x1, {126}},
-	{"Slab4", SLAB4, 71, 5, 0, Shape2x2},
-	{"Turret", TURRET, 67, 300, 500, Shape1x1, {356}},
-	{"RocketTurret", RTURRET, 68, 500, 500, Shape1x1, {364}}
+	{"Slab", SLAB, 53, 2, Shape1x1, {126}},
+	{"Slab4", SLAB4, 71, 5, Shape2x2},
+	{"Turret", TURRET, 67, 300, Shape1x1, {356}},
+	{"RocketTurret", RTURRET, 68, 500, Shape1x1, {364}}
 };
 assert_enum(buildingi, RocketTurret)
 
 BSDATAC(building, 512)
 building* last_building;
 
-static tilepatch refinery_unload[] = {
-	{334, 342}, {342, 334},
-	{339, 344}, {344, 339},
-};
+void building::clear() {
+	memset(this, 0, sizeof(*this));
+}
 
 buildingn buildingi::getindex() const {
 	if(!this)
@@ -76,7 +76,7 @@ void add_building(point pt, buildingn id) {
 	last_building->type = id;
 	last_building->unit_board = 0xFFFF;
 	auto& e = last_building->geti();
-	last_building->hits = e.hits;
+	last_building->hits = bsdata<shapei>::elements[e.shape].hits;
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
 	last_building->shoot_direction = Down;
@@ -162,7 +162,69 @@ void building::scouting() {
 	area.scouting(position, getsize(), player, getlos());
 }
 
+void building::cleanup() {
+	if(last_building == this)
+		last_building = 0;
+}
+
+static short unsigned* destroyed_shape(shapen v) {
+	static short unsigned d1x1[] = {355};
+	static short unsigned d2x2[] = {213, 214, 232, 233};
+	static short unsigned d3x2[] = {213, 214, 215, 232, 233, 234};
+	static short unsigned d3x3[] = {213, 214, 215, 232, 233, 234, 223, 224, 225};
+	switch(v) {
+	case Shape1x1: return d1x1;
+	case Shape2x2: return d2x2;
+	case Shape3x2: return d3x2;
+	default: return 0;
+	}
+}
+
+static void set_terrain(point v, int value) {
+	area.set(v, (terrainn)value);
+}
+
+static void set_explosion(point v, int value) {
+	if(game_chance(20))
+		add_effect(m2sc(v), FixBigExplosion);
+	else
+		add_effect(m2sc(v), FixExplosion);
+}
+
+static void apply_destroyed_structures(point position, shapen v) {
+	auto p = destroyed_shape(v);
+	if(p)
+		area.set(position, v, p);
+	else
+		area.set(position, bsdata<shapei>::elements[v].size, set_terrain, Rock);
+	area.set(position, bsdata<shapei>::elements[v].size, set_explosion, 0);
+}
+
 void building::destroy() {
+	cleanup();
+	apply_destroyed_structures(position, geti().shape);
+	clear();
+}
+
+static point random_point(const building* p) {
+	auto m = p->getsize();
+	m.x = p->position.x + xrand(0, m.x - 1);
+	m.y = p->position.y + xrand(0, m.y - 1);
+	return m2sc(m);
+}
+
+void building::damage(int value) {
+	if(value >= hits) {
+		destroy();
+		return;
+	}
+	hits -= value;
+	if(hits <= gethitsmax() / 2) {
+		if(game_chance(30))
+			add_effect(random_point(this), BurningFire);
+	}
+	if(game_chance(20))
+		add_effect(random_point(this), Smoke);
 }
 
 int	building::getlos() const {
@@ -274,6 +336,10 @@ int	building::getprogress() const {
 	if(build_spend >= build_cost)
 		return 100;
 	return build_spend * 100 / build_cost;
+}
+
+int	building::gethitsmax() const {
+	return bsdata<shapei>::elements[geti().shape].hits;
 }
 
 point building::getbuildsize() const {

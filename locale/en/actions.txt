@@ -31,6 +31,7 @@ HarvesterWork: %Unit is %UnitThrall percent full.
 HarvesterUnload: %Unit is unloading spice.
 HarvesterReturn: %Unit is return with %UnitThrall percent full.
 UnitDestroyed: %Unit is destroyed.
+UnitCantDoThis: %Unit can't execute order.
 
 Cancel: Cancel
 No: No
