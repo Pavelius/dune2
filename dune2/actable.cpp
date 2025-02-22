@@ -112,3 +112,8 @@ void actable::setaction(point v, bool hostile) {
 		target = 0xFFFF;
 	target_position = v;
 }
+
+void actable::unblock() const {
+	if(area.isvalid(position))
+		path_map[position.y][position.x] = 0;
+}

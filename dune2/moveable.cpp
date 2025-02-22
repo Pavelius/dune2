@@ -60,11 +60,6 @@ bool moveable::ismoving() const {
 	return !isboard() && screen != m2sc(position);
 }
 
-void moveable::unblock() const {
-	if(area.isvalid(position))
-		path_map[position.y][position.x] = 0;
-}
-
 direction moveable::nextpath(point v, movementn movement) {
 	if(!area.isvalid(v))
 		return Center;
@@ -102,8 +97,12 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 		if(!ismoving()) {
 			scouting(line_of_sight);
 			path_direction = Center; // Arrive to next tile, we need new path direction.
+			if(order == position) // Stop when we arrive to final place
+				order = {-10000, -10000};
 		}
-	} else if(ismoveorder()) {
+	} else if(!area.isvalid(order))
+		return false;
+	else if(ismoveorder()) {
 		if(path_direction == Center)
 			path_direction = nextpath(order, movement);
 		if(path_direction == Center) {

@@ -330,3 +330,15 @@ building* find_base(buildingn type, unsigned char player) {
 	}
 	return 0;
 }
+
+void building::unblock() const {
+	auto size = getsize();
+	auto x2 = position.x + size.x;
+	auto y2 = position.y + size.y;
+	for(auto y = position.y; y < y2; y++) {
+		for(auto x = position.x; x < x2; x++) {
+			if(area.isvalid(x, y))
+				path_map[y][x] = 0;
+		}
+	}
+}

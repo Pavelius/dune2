@@ -29,6 +29,7 @@ struct actable : playerable {
 	void			shooting(point screen, fixn weapon, int attacks);
 	void			stop();
 	void			tracking();
+	void			unblock() const;
 private:
 	bool			canshoot(int maximum_range) const;
 };

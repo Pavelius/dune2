@@ -13,7 +13,6 @@ struct moveable : drawable, actable {
 	bool			moving(movementn movement, int move_speed, int line_of_sight);
 	void			startmove(int move_speed);
 	void			stop();
-	void			unblock() const;
 private:
 	bool			ismoving() const;
 	void			leavetrail(bool heavy_trail);

@@ -553,7 +553,7 @@ direction areai::moveto(point start, direction wanted_direction) const {
 	direction current_direction = Center;
 	for(auto d : all_directions) {
 		auto v = to(start, d);
-		if(!isvalid(start))
+		if(!isvalid(v))
 			continue;
 		auto cost = path_map[v.y][v.x];
 		if(cost == BlockArea)

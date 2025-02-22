@@ -47,6 +47,7 @@ struct building : actable, typeable<buildingi, buildingn> {
 	void			scouting();
 	void			set(buildstaten action, bool apply);
 	void			update();
+	void			unblock() const;
 	void			unboard();
 private:
 	bool			autoproduct();

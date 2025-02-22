@@ -28,8 +28,8 @@ struct uniti : topicable {
 struct unit : moveable, typeable<uniti, unitn> {
 	squadn			squad;
 	unsigned char	effect;
-	void			add(fixn i) { if(i < sizeof(effect) * 8) effect |= (1 << i); }
 	void			clear();
+	bool			closing();
 	void			damage(int value);
 	void			destroy();
 	void			fixstate(const char* id) const;
@@ -50,6 +50,7 @@ struct unit : moveable, typeable<uniti, unitn> {
 	bool			isharvest() const;
 	void			recovery();
 	void			scouting();
+	void			set(fixn i) { if(i < sizeof(effect) * 8) effect |= (1 << i); }
 	void			set(point v);
 	void			setorder(point v);
 	void			setorder(ordern type, point v);

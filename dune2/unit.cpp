@@ -72,7 +72,7 @@ void unit::damage(int value) {
 		case Tracked:
 		case Wheeled:
 			if(hits < getmaximum(Hits) / 2)
-				add(Smoke);
+				set(Smoke);
 			break;
 		}
 	}
@@ -145,7 +145,7 @@ static point random_near(point v) {
 }
 
 bool unit::isharvest() const {
-	return getpurpose() == Harvest && action > 0;
+	return getpurpose() == Harvest && action > 0 && is(NoEffect);
 }
 
 bool unit::istrallfull() const {
@@ -175,6 +175,7 @@ bool unit::releasetile() {
 bool unit::harvest() {
 	if(getpurpose() != Harvest)
 		return false;
+	remove(NoEffect);
 	if(isboard()) {
 		auto pb = find_board(this);
 		if(!pb || pb->type != Refinery)
@@ -189,32 +190,30 @@ bool unit::harvest() {
 				setorder(Move, target_position);
 		}
 		return true;
-	} else if(!area.isvalid(target_position))
-		return false;
+	}
 	if(istrallfull()) {
 		returnbase();
 		return true;
 	}
+	if(!area.isvalid(target_position))
+		return false;
 	auto v = area.nearest(position, isspicefield, getlos() + 2);
 	if(!area.isvalid(v)) {
 		stop();
 		return false;
 	}
-	if(position == v) {
+	if(position != v)
+		setorder(Move, v);
+	else {
+		set(NoEffect);
 		action++;
 		start_time += 1000 * 4;
 		switch(area.get(position)) {
-		case Spice:
-			area.set(position, Sand);
-			break;
-		case SpiceRich:
-			area.set(position, Spice);
-			action++;
-			break;
+		case Spice: area.set(position, Sand); break;
+		case SpiceRich: area.set(position, Spice); action++; break;
 		}
 		fixstate("HarvesterWork");
-	} else
-		setorder(Move, v);
+	}
 	return true;
 }
 
@@ -261,6 +260,12 @@ bool unit::seeking() {
 	return false;
 }
 
+bool unit::closing() {
+	if(getpurpose() != Attack)
+		return false;
+	return moveable::closing(getshootrange());
+}
+
 void unit::update() {
 	if(moving(geti().move, getspeed(), getlos())) {
 		if(!isturret())
@@ -272,7 +277,7 @@ void unit::update() {
 		return;
 	} else if(releasetile())
 		return;
-	else if(closing(getshootrange()))
+	else if(closing())
 		return;
 	else if(shoot()) {
 		if(!isturret())
@@ -364,6 +369,7 @@ bool unit::returnbase() {
 		blockland(geti().move);
 		blockunits();
 		unblock();
+		pb->unblock();
 		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
 		auto v = find_smallest_position();
 		if(!area.isvalid(v)) {
