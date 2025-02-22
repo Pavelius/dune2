@@ -7,10 +7,12 @@
 struct moveable : drawable, actable {
 	point			order, guard;
 	direction		move_direction, path_direction;
+	bool			closing(int action_range);
 	bool			isboard() const { return position.x < 0; }
 	bool			ismoveorder() const { return position != order; }
 	bool			moving(movementn movement, int move_speed, int line_of_sight);
 	void			startmove(int move_speed);
+	void			stop();
 	void			unblock() const;
 private:
 	bool			ismoving() const;

@@ -79,7 +79,7 @@ void add_building(point pt, buildingn id) {
 	last_building->hits = e.hits;
 	area.set(last_building->position, e.shape, e.frames);
 	last_building->scouting();
-	last_building->action_direction = Down;
+	last_building->shoot_direction = Down;
 	last_building->player = player_index;
 	area.set(last_building->getrect(), setnofeature, 0);
 }
@@ -129,7 +129,6 @@ void building::board(unit* p) {
 	p->position = {-100, -100};
 	p->order = p->position;
 	p->screen = m2sc(p->position);
-	p->wait(500);
 }
 
 void building::unboard() {
@@ -164,7 +163,6 @@ void building::scouting() {
 }
 
 void building::destroy() {
-
 }
 
 int	building::getlos() const {
@@ -261,7 +259,7 @@ void building::update() {
 		// Do nothing
 	}
 	if(type == Turret || type == RocketTurret)
-		area.set(position, action_direction, geti().frames[0]);
+		area.set(position, shoot_direction, geti().frames[0]);
 }
 
 int	building::getprogress() const {

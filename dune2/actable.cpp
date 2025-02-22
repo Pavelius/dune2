@@ -62,36 +62,34 @@ bool actable::canshoot(int maximum_range) const {
 	return range <= maximum_range;
 }
 
+void actable::shooting(point screen, fixn weapon, int attacks) {
+	if(!weapon)
+		return;
+	if(shoot_time + action_duration <= game.time) {
+		shoot_time = 0;
+		return;
+	} else if(!action || action >= attacks)
+		return;
+	if(shoot_time + action * 300 <= game.time) {
+		fixshoot(screen, m2sc(target_position), weapon, 40); // Can make next attack on same target, but can miss
+		action++;
+	}
+}
+
 bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 	if(!weapon)
 		return false;
-	if(action_time > game.time) { // Shoot active
-		if(action) {// Allow multi-attacks
-			auto next_time = (action_time - action_duration) + action * look_duration;
-			if(game.time >= next_time) {
-				fixshoot(screen, m2sc(target_position), weapon, 40); // Can make next attack on same target, but can miss
-				action++;
-				if(action >= attacks)
-					action = 0;
-			}
-		}
-		if(action_time <= game.time)
-			action_time = 0;
+	if(shoot_time) // Already shooting
 		return true;
-	}
 	if(!canshoot(maximum_range))
 		stop();
 	else {
 		auto d = to(position, target_position);
-		if(turn(action_direction, d)) {
+		if(turn(shoot_direction, d)) {
 			fixshoot(screen, m2sc(target_position), weapon, 0);
-			if(attacks > 1)
-				action = 1;
-			else
-				action = 0;
-			wait(action_duration);
-		} else
-			wait(look_duration);
+			action = 1;
+			shoot_time = game.time;
+		}
 		return true;
 	}
 	return false;
@@ -100,11 +98,6 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 void actable::stop() {
 	target = 0xFFFF;
 	target_position = {-10000, -10000};
-	action_time = 0;
-}
-
-void actable::wait(int duration) {
-	action_time = game.time + duration;
 }
 
 bool actable::isenemy(unsigned char player_index) const {
@@ -112,10 +105,10 @@ bool actable::isenemy(unsigned char player_index) const {
 }
 
 void actable::setaction(point v, bool hostile) {
-	auto p = find_unit(v);
-	if(p && p->isenemy(player) == hostile)
-		target = p->getindex();
-	else
+	if(hostile) {
+		auto p = find_unit(v);
+		target = p ? p->getindex() : 0xFFFF;
+	} else
 		target = 0xFFFF;
 	target_position = v;
 }

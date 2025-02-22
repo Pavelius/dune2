@@ -451,10 +451,12 @@ static int get_animation_frame(point n1, point n2) {
 
 static void paint_unit() {
 	auto p = static_cast<unit*>(last_object);
+	if(!p->operator bool())
+		return;
 	if(p->isharvest())
 		paint_unit_harvest(p->geti(), p->move_direction, p->getplayer().color_index);
 	else {
-		paint_unit(p->geti(), p->move_direction, p->action_direction,
+		paint_unit(p->geti(), p->move_direction, p->shoot_direction,
 			p->getplayer().color_index,
 			get_animation_frame(p->screen, m2sc(p->position)) % 4);
 	}
@@ -522,10 +524,20 @@ static void paint_effect_fix() {
 
 static void paint_radar_rect() {
 	pushrect push;
-	caret.x = getwidth() - 64 + area_origin.x;
-	caret.y = getheight() - 64 + area_origin.y;
-	width = area_screen.width() / area_tile_width;
-	height = area_screen.height() / area_tile_height;
+	switch(area.sizetype) {
+	case SmallMap:
+		caret.x = getwidth() - 64 + area_origin.x * 2;
+		caret.y = getheight() - 64 + area_origin.y * 2;
+		width = 2 * area_screen.width() / area_tile_width;
+		height = 2 * area_screen.height() / area_tile_height;
+		break;
+	default:
+		caret.x = getwidth() - 64 + area_origin.x;
+		caret.y = getheight() - 64 + area_origin.y;
+		width = area_screen.width() / area_tile_width;
+		height = area_screen.height() / area_tile_height;
+		break;
+	}
 	rectb();
 }
 
@@ -534,7 +546,20 @@ static color get_color_by_index(int index) {
 }
 
 static void radar_pixel(int x, int y) {
-	pixel(caret.x + x, caret.y + y);
+	switch(area.sizetype) {
+	case SmallMap:
+		x = x * 2 + caret.x;
+		y = y * 2 + caret.y;
+		pixel(x, y);
+		pixel(x + 1, y);
+		pixel(x, y + 1);
+		pixel(x + 1, y + 1);
+		break;
+	case LargeMap:
+		pixel(caret.x + x, caret.y + y);
+		break;
+	}
+
 }
 
 static void paint_radar_units() {
@@ -567,12 +592,16 @@ static void paint_radar_buildings() {
 
 static void mouse_unit_move() {
 	auto v = (point)draw::hot.param;
-	human_selected.order(SmartMove, v, false);
+	human_selected.order(v);
 }
 
 static void input_radar() {
 	point hot_mouse = hot.mouse - caret;
 	if((hot_mouse.x < width && hot_mouse.x > 0) && (hot_mouse.y < height && hot_mouse.y > 0)) {
+		switch(area.sizetype) {
+		case SmallMap: hot_mouse.x /= 2; hot_mouse.y /= 2; break;
+		default: break;
+		}
 		switch(hot.key) {
 		case MouseLeft:
 			if(hot.pressed)
@@ -822,7 +851,12 @@ static void paint_move_order() {
 	for(auto p : human_selected) {
 		if(!p->operator bool() || !area.isvalid(p->order))
 			continue;
-		auto v = s2i(m2sc(p->order));
+		auto order = p->target_position;
+		if(!area.isvalid(order))
+			order = p->order;
+		if(!area.isvalid(order))
+			continue;
+		auto v = s2i(m2sc(order));
 		image(v.x, v.y, ps, 5, 0);
 	}
 	alpha = push_alpha;
@@ -950,6 +984,8 @@ void paint_spice() {
 }
 
 static void paint_unit_orders() {
+	if(!last_unit)
+		return;
 	pushrect push;
 	setoffset(-1, 0);
 	height = 12;
@@ -1095,7 +1131,7 @@ static void paint_building_info() {
 		switch(last_building->type) {
 		case SpiceSilo: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
 		case Windtrap: paint_stats_info(0, Energy); break;
-		}		
+		}
 	}
 }
 

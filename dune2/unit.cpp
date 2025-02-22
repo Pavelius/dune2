@@ -136,7 +136,7 @@ static point random_near(point v) {
 }
 
 bool unit::isharvest() const {
-	return getpurpose() == Harvest && iswork();
+	return getpurpose() == Harvest && action > 0 && start_time > game.time;
 }
 
 bool unit::istrallfull() const {
@@ -176,9 +176,8 @@ bool unit::harvest() {
 			start_time += 1000;
 		} else {
 			pb->unboard();
-			action_time = 0;
 			if(area.isvalid(target_position))
-				apply(Move, target_position);
+				setorder(Move, target_position);
 		}
 		return true;
 	} else if(!area.isvalid(target_position))
@@ -187,7 +186,7 @@ bool unit::harvest() {
 		returnbase();
 		return true;
 	}
-	auto v = area.nearest(position, isspicefield, 4 + getlos());
+	auto v = area.nearest(position, isspicefield, getlos() + 2);
 	if(!area.isvalid(v)) {
 		stop();
 		return false;
@@ -195,7 +194,6 @@ bool unit::harvest() {
 	if(position == v) {
 		action++;
 		start_time += 1000 * 4;
-		action_time = start_time;
 		switch(area.get(position)) {
 		case Spice:
 			area.set(position, Sand);
@@ -206,10 +204,8 @@ bool unit::harvest() {
 			break;
 		}
 		fixstate("HarvesterWork");
-	} else {
-		action_time = 0;
-		apply(Move, v);
-	}
+	} else
+		setorder(Move, v);
 	return true;
 }
 
@@ -224,6 +220,8 @@ unit* find_enemy(point v, unsigned char player, int line_of_sight) {
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.isboard() || e.player == player)
 			continue;
+		if(e.position.range(v) > line_of_sight || !area.is(e.position, player, Visible))
+			continue;
 		auto priority = v.range(e.position) * range_multiplier;
 		if(!result || priority < result_priority) {
 			result = &e;
@@ -236,54 +234,46 @@ unit* find_enemy(point v, unsigned char player, int line_of_sight) {
 bool unit::seeking() {	
 	if(game_chance(30)) { // 30% chance do nothing
 		if(isturret()) { // Rotate turret
-			auto turn_direction = turnto(action_direction, move_direction);
+			auto turn_direction = turnto(shoot_direction, move_direction);
 			if(turn_direction != Center && game_chance(50))
-				action_direction = to(action_direction, turn_direction);
+				shoot_direction = to(shoot_direction, turn_direction);
 			else if(game_chance(30))
-				action_direction = to(action_direction, (game_rand() % 2) ? Left : Right);
+				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
 		}
 		return false;
 	}
-	auto p = find_enemy(position, player, getlos());
-	if(p) {
-		setaction(p->position, true);
-		return true;
+	if(target == 0xFFFF) {
+		auto p = find_enemy(position, player, getlos());
+		if(p) {
+			setaction(p->position, true);
+			return true;
+		}
 	}
 	return false;
-}
-
-void unit::acting() {
-	if(ismoving()) {
-		if(isturret())
-			shoot();
-	} else if(shoot()) {
-		if(!isturret())
-			move_direction = action_direction;
-		return;
-	}
 }
 
 void unit::update() {
 	if(moving(geti().move, getspeed(), getlos())) {
 		if(!isturret())
-			action_direction = move_direction;
-		else if(!area.isvalid(target_position)) {
-			turn(action_direction, move_direction);
-			animate_time = game.time + look_duration / 2;
-		}
+			shoot_direction = move_direction;
+		else if(shoot())
+			return;
+		else if(!area.isvalid(target_position))
+			turn(shoot_direction, move_direction);
 		return;
 	} else if(releasetile())
 		return;
+	else if(closing(getshootrange()))
+		return;
+	else if(shoot()) {
+		if(!isturret())
+			move_direction = shoot_direction;
+		return;
+	}
 	else if(harvest())
 		return;
 	else if(seeking())
 		return;
-}
-
-void unit::stop() {
-	path_direction = Center;
-	order = position;
-	actable::stop();
 }
 
 bool isnonblocked(point v) {
@@ -336,7 +326,7 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->type = id;
 	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;
-	last_unit->action_direction = d;
+	last_unit->shoot_direction = d;
 	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
 	last_unit->target = 0xFFFF;
@@ -357,7 +347,6 @@ void unit::cantdothis() {
 bool unit::returnbase() {
 	auto kind = getpurpose();
 	if(kind == Harvest) {
-		action_time = 0;
 		auto pb = find_base(Refinery, player);
 		if(!pb) {
 			cantdothis(); // Something wrong
@@ -377,7 +366,7 @@ bool unit::returnbase() {
 			pb->board(this);
 		} else {
 			fixstate("HarvesterReturn");
-			apply(Move, v);
+			setorder(Move, v);
 		}
 		return true;
 	} else {
@@ -403,27 +392,28 @@ bool unit::returnbase() {
 		if(position == v)
 			stop(); // Just arrived to final place
 		else
-			apply(Move, v);
+			setorder(Move, v);
 	}
 	return false;
 }
 
-void unit::apply(ordern type, point v) {
-	unit* opponent;
+void unit::setorder(ordern type, point v) {
 	switch(type) {
 	case Attack: setaction(v, true); break;
-	case Harvest: setaction(v, false); break;
+	case Harvest: setaction(v, false); order = v; break;
 	case Move: order = v; start_time = game.time; break;
-	case SmartMove:
-		opponent = find_unit(v);
-		if(opponent && opponent->isenemy(player) && getpurpose() == Attack)
-			apply(Attack, v);
-		else if(getpurpose() == Harvest && isspicefield(v))
-			apply(Harvest, v);
-		else if(area.isvalid(v))
-			apply(Move, v);
-		break;
 	case Retreat: returnbase(); break;
 	default: stop(); break;
 	}
+}
+
+void unit::setorder(point v) {
+	auto opponent = find_unit(v);
+	auto purpose = getpurpose();
+	if(opponent && opponent->isenemy(player) && getpurpose() == Attack)
+		setorder(Attack, v);
+	else if(getpurpose() == Harvest && isspicefield(v))
+		setorder(Harvest, v);
+	else if(area.isvalid(v))
+		setorder(Move, v);
 }

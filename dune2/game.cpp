@@ -33,13 +33,14 @@ static void update_unit_time() {
 			continue;
 		if(!e.start_time)
 			e.start_time = game.time;
+		if(e.shoot_time)
+			e.shooting(e.screen, e.geti().weapon, e.get(Attacks));
 		while(e.start_time < game.time) {
 			auto n = e.start_time;
 			e.update();
-			if(n == e.start_time)
+			if(n == e.start_time && e.start_time <= game.time)
 				e.start_time += look_duration; // Pause to think
 		}
-		e.acting();
 	}
 }
 
@@ -260,15 +261,21 @@ void open_options() {
 	execute_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), quit_game, elements);
 }
 
-static void generate_base(point v, point spice) {
+static void generate_base(int br, int sr) {
+	auto v = area.getregion(br);
 	area.set({v.x - 3, v.y - 3, v.x + 3, v.y + 3}, set_terrain, Rock);
 	rect rc = {v.x - 6, v.y - 6, v.x + 6, v.y + 6};
 	area.random(rc, set_terrain_big_circle, Rock, 12);
 	area.random(rc, set_terrain_circle, Mountain, 4);
+	auto spice = area.getregion(sr);
 	rect r1 = {spice.x - 5, spice.y - 5, spice.x + 5, spice.y + 5};
 	area.random(r1, set_terrain_circle, Spice, 20);
 	area.random(r1, set_terrain_small_circle, SpiceRich, 5);
 	add_building(v, ConstructionYard);
+	add_unit(v, Trike, Down);
+	add_unit(v, Harvester, Down);
+	add_unit(v, AssaultTank, Down);
+	add_unit(v, Quad, Down);
 }
 
 void main_menu() {
@@ -280,27 +287,16 @@ void main_menu() {
 	player->color_index = 2;
 	player->fraction = Atreides;
 	// show_scenario_prompt("Brief", HARVEST, 1);
-	area.clear(LargeMap);
-	point p1 = {10, 10};
+	area.clear(SmallMap);
 	player_index = 0;
-	generate_base({10, 10}, {20, 20});
-	add_unit(p1, Trike, Down);
-	add_unit(p1, Harvester, Down);
-	add_unit(p1, AssaultTank, Down);
-	add_unit(p1, Quad, Down);
+	generate_base(0, 1);
 	player = bsdata<playeri>::add();
 	player->add(Credits, 3000);
-	player->color_index = 3;
+	player->color_index = 1;
 	player->fraction = Harkonens;
-	point p2 = {40, 10};
 	player_index = 1;
-	generate_base(p2, p2 + point(-20, +10));
-	add_unit(p2, Trike, Down);
-	add_unit(p2, Harvester, Down);
-	add_unit(p2, AssaultTank, Down);
-	add_unit(p2, Quad, Down);
-	player_index = 1;
-	area.setcamera(p2, true);
+	generate_base(3, 2);
+	area.setcamera(area.getregion(3), true);
 	show_scene(paint_main_map, 0, 0);
 }
 

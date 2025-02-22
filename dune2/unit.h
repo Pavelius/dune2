@@ -27,8 +27,6 @@ struct uniti : topicable {
 };
 struct unit : moveable, typeable<uniti, unitn> {
 	squadn			squad;
-	void			acting();
-	void			apply(ordern type, point v);
 	void			clear();
 	void			damage(int value);
 	void			destroy();
@@ -48,7 +46,8 @@ struct unit : moveable, typeable<uniti, unitn> {
 	bool			isharvest() const;
 	void			scouting();
 	void			set(point v);
-	void			stop();
+	void			setorder(point v);
+	void			setorder(ordern type, point v);
 	void			update();
 private:
 	void			cantdothis();
@@ -63,7 +62,6 @@ private:
 extern unit *last_unit;
 
 void add_unit(point pt, unitn id, direction d);
-void blockunits(const unit* exclude);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);

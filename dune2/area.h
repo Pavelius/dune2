@@ -46,6 +46,7 @@ struct areai {
 	unsigned		getframeside(point v, terrainn t) const;
 	unsigned		getframefow(point v, unsigned player, areaf t) const;
 	unsigned short	getframefeature(point v) const { return frames_overlay[v.y][v.x]; }
+	point			getregion(int n) const { return center(regions[n]); }
 	bool			isrock(point v) const { return get(v) >= Rock; }
 	bool			issand(point v) const { return get(v) < Rock; }
 	bool			isvalid(int x, int y) const { return x >= 0 && x < maximum.x && y >= 0 && y < maximum.y; }

@@ -5,7 +5,7 @@
 #include "point.h"
 
 enum ordern : unsigned char {
-	Stop, Move, Attack, Retreat, Harvest, SmartMove,
+	Stop, Move, Attack, Retreat, Harvest,
 };
 
 struct unit;

@@ -7,6 +7,5 @@ BSDATA(orderi) = {
 	{"Attack"},
 	{"Retreat"},
 	{"Harvest"},
-	{"SmartMove"},
 };
-assert_enum(orderi, SmartMove)
+assert_enum(orderi, Harvest)

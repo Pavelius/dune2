@@ -48,7 +48,14 @@ void unita::order(ordern type, point v, bool interactive) const {
 		}
 	}
 	for(auto p : *this)
-		p->apply(type, v);
-	if(type == Move || type == SmartMove)
-		hilite_unit_orders();
+		p->setorder(type, v);
+	hilite_unit_orders();
+}
+
+void unita::order(point v) const {
+	if(!operator bool())
+		return;
+	for(auto p : *this)
+		p->setorder(v);
+	hilite_unit_orders();
 }

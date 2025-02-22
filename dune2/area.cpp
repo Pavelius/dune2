@@ -172,12 +172,15 @@ void area_initialization() {
 
 static void initilize_regions(rect* r, int sx, int sy, int mx, int my) {
 	auto i = 0;
+	auto dx = (mx / sx);
+	auto dy = (my / sy);
 	for(auto y = 0; y < sy; y++) {
 		for(auto x = 0; x < sx; x++) {
-			r[i].x1 = x * (mx / sx);
-			r[i].y1 = y * (my / sy);
-			r[i].x2 = r[i].x1 + sx;
-			r[i].y2 = r[i].y1 + sy;
+			r[i].x1 = x * dx;
+			r[i].y1 = y * dy;
+			r[i].x2 = r[i].x1 + dx;
+			r[i].y2 = r[i].y1 + dy;
+			i++;
 		}
 	}
 }

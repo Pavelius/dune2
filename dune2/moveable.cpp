@@ -86,6 +86,14 @@ direction moveable::nextpath(point v, movementn movement) {
 	}
 }
 
+bool moveable::closing(int action_range) {
+	if(area.isvalid(target_position) && target_position.range(position) > action_range) {
+		order = target_position;
+		return true;
+	}
+	return false;
+}
+
 bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 	tracking();
 	if(ismoving()) {// Unit just moving to neightboar tile. MUST FINISH!!!
@@ -96,7 +104,6 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 			path_direction = Center; // Arrive to next tile, we need new path direction.
 		}
 	} else if(ismoveorder()) {
-		// We ready to start movement to next tile.
 		if(path_direction == Center)
 			path_direction = nextpath(order, movement);
 		if(path_direction == Center) {
@@ -116,4 +123,10 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 	} else
 		return false;
 	return true;
+}
+
+void moveable::stop() {
+	path_direction = Center;
+	order = position;
+	actable::stop();
 }

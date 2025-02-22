@@ -2,7 +2,6 @@
 #include "movement.h"
 
 // Sand, Dune, Spice, SpiceRich, SpiceBlow, Rock, Mountain,
-
 BSDATA(movementi) = {
 	{"Footed", {4, 5, 4, 4, 5, 4, 10}},
 	{"Wheeled", {4, 4, 4, 4, 5, 6, 0xFF}},
