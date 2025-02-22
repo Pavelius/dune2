@@ -138,7 +138,7 @@ int unit::getspeed() const {
 	if(geti().move == Wheeled) {
 		auto t = area.get(position);
 		if(t == Rock)
-			n -= 3;
+			n /= 2;
 	}
 	if(n <= 0)
 		return 64 * 4;

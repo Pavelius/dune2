@@ -21,16 +21,23 @@ static void check_surrounded(point v, terrainn t, terrainn t1) {
 	}
 }
 
+static void check_surrounded(terrainn t, terrainn t1) {
+	for(auto y = 0; y < area.maximum.y; y++) {
+		for(auto x = 0; x < area.maximum.x; x++) {
+			auto v = point(x, y);
+			auto n = area.get(v);
+			if(n == t)
+				check_surrounded(v, t, t1);
+		}
+	}
+}
+
 static void set_terrain(point v, int value) {
 	auto t = area.get(v);
 	auto& e = bsdata<terraini>::elements[value];
 	if(e.terrain && !e.terrain.is(t))
 		return;
 	area.set(v, (terrainn)value);
-	switch(value) {
-	case Mountain: check_surrounded(v, Mountain, Rock); break;
-	case SpiceRich: check_surrounded(v, SpiceRich, Spice); break;
-	}
 }
 
 static void set_terrain_circle(point v, int value, int d) {
@@ -40,8 +47,8 @@ static void set_terrain_circle(point v, int value, int d) {
 		rect rc;
 		rc.x1 = v.x - d / 2;
 		rc.y1 = v.y - d / 2;
-		rc.x2 = rc.x1 + d;
-		rc.y2 = rc.y1 + d;
+		rc.x2 = rc.x1 + d + 1;
+		rc.y2 = rc.y1 + d + 1;
 		area.set(rc, set_terrain, value);
 	}
 }
@@ -64,6 +71,7 @@ static void rock_region(rect rc) {
 }
 
 static void dune_region(rect rc) {
+	area.random(rc, set_terrain_circle, Dune, 10);
 }
 
 static void spice_region(rect rc) {
@@ -157,4 +165,6 @@ void area_generate(areasizen n, int number_of_players) {
 	add_players(regions, number_of_players);
 	add_region(regions, dune_region);
 	generate_lands(regions);
+	check_surrounded(SpiceRich, Spice);
+	check_surrounded(Mountain, Rock);
 }
