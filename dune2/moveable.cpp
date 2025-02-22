@@ -102,14 +102,14 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 		}
 	} else if(!area.isvalid(order))
 		return false;
-	else if(ismoveorder()) {
+	else if(position != order) { // Moving to the target
 		if(path_direction == Center)
 			path_direction = nextpath(order, movement);
 		if(path_direction == Center) {
 			if(game_chance(20)) // Something in the way. Wait or cancel order?
-				order = position;
+				order = {-10000, -10000};
 			else
-				start_time += game_rand(look_duration / 2, look_duration);
+				start_time += game_rand(look_duration, look_duration * 2);
 		} else if(movement == Footed) {
 			move_direction = path_direction; // Footed units turn around momentary.
 			startmove(move_speed);

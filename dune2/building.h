@@ -31,6 +31,7 @@ struct building : actable, typeable<buildingi, buildingn> {
 	unsigned short	build_spend;
 	unsigned short	unit_board;
 	void			board(unit* p);
+	void			block() const { setblock(0xFFFF); }
 	void			buildlist() const;
 	bool			canbuild() const { return geti().build.operator bool(); }
 	void			cancel();
@@ -42,16 +43,19 @@ struct building : actable, typeable<buildingi, buildingn> {
 	point			getbuildsize() const;
 	rect			getrect() const;
 	point			getsize() const;
+	bool			isnear(point v) const;
 	bool			isworking() const { return build_spend != 0; }
+	point			nearestboard(point v, movementn move) const;
 	bool			progress();
 	void			scouting();
 	void			set(buildstaten action, bool apply);
 	void			update();
-	void			unblock() const;
+	void			unblock() const { setblock(0); }
 	void			unboard();
 private:
 	bool			autoproduct();
 	void			patchdirection();
+	void			setblock(short unsigned n) const;
 };
 extern building* last_building;
 

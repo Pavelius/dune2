@@ -289,6 +289,12 @@ point building::getsize() const {
 	return bsdata<shapei>::elements[geti().shape].size;
 }
 
+bool building::isnear(point v) const {
+	auto size = getsize();
+	return v.x >= position.x - 1 && v.x <= position.x + size.x
+		&& v.y >= position.y - 1 && v.y <= position.y + size.y;
+}
+
 bool building::progress() {
 	auto pe = getbuild();
 	if(pe) {
@@ -331,14 +337,28 @@ building* find_base(buildingn type, unsigned char player) {
 	return 0;
 }
 
-void building::unblock() const {
+void building::setblock(short unsigned n) const {
 	auto size = getsize();
 	auto x2 = position.x + size.x;
 	auto y2 = position.y + size.y;
 	for(auto y = position.y; y < y2; y++) {
 		for(auto x = position.x; x < x2; x++) {
 			if(area.isvalid(x, y))
-				path_map[y][x] = 0;
+				path_map[y][x] = n;
 		}
 	}
+}
+
+point building::nearestboard(point v, movementn move) const {
+	if(!area.isvalid(v))
+		return {-10000, -10000};
+	blockland(move);
+	blockunits();
+	path_map[v.y][v.x] = 0;
+	unblock();
+	area.movewave(position, move); // Consume time action
+	if(path_map[position.y][position.x] == BlockArea)
+		return {-10000, -10000};
+	block();
+	return find_smallest_position();
 }

@@ -358,20 +358,28 @@ void unit::cantdothis() {
 	print("%1 can't do nothing.", getname());
 }
 
+static building* get_main_base(unsigned char player) {
+	auto pb = find_base(ConstructionYard, player);
+	if(!pb)
+		pb = find_base(HeavyVehicleFactory, player);
+	if(!pb)
+		pb = find_base(RadarOutpost, player);
+	return pb;
+}
+
+static building* get_refinery(unsigned char player) {
+	return find_base(Refinery, player);
+}
+
 bool unit::returnbase() {
 	auto kind = getpurpose();
 	if(kind == Harvest) {
-		auto pb = find_base(Refinery, player);
+		auto pb = get_refinery(player);
 		if(!pb) {
 			cantdothis(); // Something wrong
 			return false; // Not any valid base present
 		}
-		blockland(geti().move);
-		blockunits();
-		unblock();
-		pb->unblock();
-		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
-		auto v = find_smallest_position();
+		auto v = pb->nearestboard(position, geti().move);
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong
 			return false;
@@ -385,21 +393,13 @@ bool unit::returnbase() {
 		}
 		return true;
 	} else {
-		auto pb = find_base(ConstructionYard, player);
-		if(!pb)
-			pb = find_base(HeavyVehicleFactory, player);
-		if(!pb)
-			pb = find_base(RadarOutpost, player);
+		auto pb = get_main_base(player);
 		if(!pb) {
 			cantdothis(); // Something wrong
 			stop();
 			return false; // Not any valid base present
 		}
-		blockland(geti().move);
-		blockunits();
-		unblock();
-		area.movewave(pb->position, geti().move, pb->getsize()); // Consume time action
-		auto v = find_smallest_position();
+		auto v = pb->nearestboard(position, geti().move);
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong - path is blocking
 			return false;

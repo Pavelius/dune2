@@ -417,7 +417,7 @@ point find_smallest_position() {
 	for(auto y = 0; y < area.maximum.y; y++) {
 		for(auto x = 0; x < area.maximum.x; x++) {
 			auto i = path_map[y][x];
-			if(i == BlockArea || i==1)
+			if(i == BlockArea || i == 1)
 				continue; // Blocked or started area don't count
 			if(i < n) {
 				r = point(x, y);
@@ -428,17 +428,12 @@ point find_smallest_position() {
 	return r;
 }
 
-void areai::movewave(point start, movementn mv, point size) const {
+void areai::movewave(point start, movementn mv) const {
+	clear_stack();
 	if(!isvalid(start))
 		return;
-	for(auto y = start.y; y < start.y + size.y; y++) {
-		for(auto x = start.x; x < start.x + size.x; x++) {
-			if(!isvalid(x, y))
-				continue;
-			path_map[y][x] = 1;
-			push_value(point(x, y));
-		}
-	}
+	path_map[start.y][start.x] = 1;
+	push_value(start);
 	auto cost_map = bsdata<movementi>::elements[mv].cost;
 	while(stack_valid()) {
 		auto vc = pop_value();
@@ -469,15 +464,6 @@ void areai::movewave(point start, movementn mv, point size) const {
 			}
 		}
 	}
-}
-
-void areai::movewave(point start, movementn mv) const {
-	if(!isvalid(start))
-		return;
-	clear_stack();
-	if(path_map[start.y][start.x] == BlockArea)
-		return;
-	movewave(start, mv, {1, 1});
 }
 
 bool allowcontrol(point v) {
@@ -630,6 +616,27 @@ point areai::getcorner(point v) const {
 			break;
 	}
 	return v;
+}
+
+void areai::unblockbuilding(point v) {
+	v = getcorner(v);
+	if(!isvalid(v))
+		return;
+	if(map_features[frames[v.y][v.x]] != BuildingHead)
+		return;
+	auto x2 = v.x;
+	auto v1 = point(v.x + 1, v.y);
+	while(isvalid(v1) && map_features[frames[v1.y][v1.x]] == BuildingLeft) {
+		path_map[v1.y][v1.x++] = 0;
+		x2++;
+	}
+	v1 = point(v.x, v.y + 1);
+	while(isvalid(v1) && map_features[frames[v1.y][v1.x]] == BuildingUp) {
+		v1.x = v.x;
+		while(isvalid(v1) && v1.x <= x2 && map_features[frames[v1.y][v1.x]] == BuildingUp)
+			path_map[v1.y][v1.x++] = 0;
+		v1.y++;
+	}
 }
 
 void areai::scouting(point v, unsigned char player, int radius) {

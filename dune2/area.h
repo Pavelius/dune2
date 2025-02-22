@@ -56,7 +56,6 @@ struct areai {
 	bool			isbuilding(point v) const;
 	bool			isn(point v, terrainn t) const;
 	bool			isn(point v, unsigned char player, areaf t) const;
-	void			movewave(point v, movementn mv, point size) const;
 	void			movewave(point v, movementn mv) const;
 	direction		moveto(point start, direction wanted_direction = Center) const;
 	point			nearest(point v, fntest proc, int radius) const;
@@ -75,12 +74,14 @@ struct areai {
 	void			remove(unsigned char player, areaf t);
 	void			scouting(point v, unsigned char player, int radius);
 	void			scouting(point v, point size, unsigned char player, int radius);
+	void			unblockbuilding(point v);
 private:
 	unsigned char	flags[6][my][mx]; // Flags for each player (0 - neutral and 1-6)
 	short unsigned	frames[my][mx];
 	short unsigned	frames_overlay[my][mx];
 	void			setnu(point v, terrainn t);
 	void			update(point v);
+	void			unblockfeature(point v, featuren f);
 };
 extern areai area;
 extern point area_origin;
