@@ -17,6 +17,7 @@ struct playeri : fractionable {
 	unsigned short	buildings[32]; // Count of all buildings by type
 	unsigned short	units[32]; // Count of all units by type
 	void			add(abilityn v, int i) { abilities[v] += i; }
+	void			clear();
 	unsigned int	get(abilityn v) const { return abilities[v]; }
 	unsigned char	getindex() const;
 	void			update();

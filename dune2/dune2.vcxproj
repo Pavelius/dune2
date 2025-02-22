@@ -136,6 +136,8 @@
     <ClCompile Include="answers.cpp" />
     <ClCompile Include="archive.cpp" />
     <ClCompile Include="area.cpp" />
+    <ClCompile Include="area_generate.cpp" />
+    <ClCompile Include="area_initialization.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="building.cpp" />
     <ClCompile Include="collection.cpp" />

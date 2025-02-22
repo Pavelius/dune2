@@ -271,8 +271,8 @@ void open_options() {
 
 static void generate_base(int br, int sr) {
 	auto v = area.getregion(br);
-	area.set({v.x - 3, v.y - 3, v.x + 3, v.y + 3}, set_terrain, Rock);
-	rect rc = {v.x - 6, v.y - 6, v.x + 6, v.y + 6};
+	area.set({v.x - 2, v.y - 2, v.x + 4, v.y + 4}, set_terrain, Rock);
+	rect rc = {v.x - 4, v.y - 4, v.x + 6, v.y + 6};
 	area.random(rc, set_terrain_big_circle, Rock, 12);
 	area.random(rc, set_terrain_circle, Mountain, 4);
 	auto spice = area.getregion(sr);
@@ -281,30 +281,23 @@ static void generate_base(int br, int sr) {
 	area.random(r1, set_terrain_small_circle, SpiceRich, 5);
 	add_building(v, ConstructionYard);
 	add_unit(v, Trike, Down);
-	add_unit(v, Harvester, Down);
 	add_unit(v, AssaultTank, Down);
 	add_unit(v, Quad, Down);
+}
+
+void camera_to_base() {
+	auto pb = find_base(ConstructionYard, player_index);
+	if(pb)
+		area.setcamera(pb->position, true);
 }
 
 void main_menu() {
 	// music_disabled = true;
 	// show_introdution();
-	auto size = sizeof(unit);
-	auto player = bsdata<playeri>::add();
-	player->add(Credits, 3000);
-	player->color_index = 2;
-	player->fraction = Atreides;
 	// show_scenario_prompt("Brief", HARVEST, 1);
-	area.clear(SmallMap);
-	player_index = 0;
-	generate_base(0, 1);
-	player = bsdata<playeri>::add();
-	player->add(Credits, 3000);
-	player->color_index = 1;
-	player->fraction = Harkonens;
-	player_index = 1;
-	generate_base(3, 2);
-	area.setcamera(area.getregion(3), true);
+	game.starting_credits = 1000;
+	area_generate(SmallMap, 2);
+	camera_to_base();
 	show_scene(paint_main_map, 0, 0);
 }
 

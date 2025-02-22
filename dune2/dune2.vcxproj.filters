@@ -225,6 +225,12 @@
     <ClCompile Include="moveable.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="area_generate.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="area_initialization.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

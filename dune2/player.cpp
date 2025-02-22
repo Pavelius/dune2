@@ -17,6 +17,10 @@ playeri& mainplayer() {
 	return bsdata<playeri>::elements[player_index];
 }
 
+void playeri::clear() {
+	memset(this, 0, sizeof(*this));
+}
+
 unsigned char playeri::getindex() const {
 	if(!this)
 		return 0xFF;

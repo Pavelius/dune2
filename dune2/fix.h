@@ -3,8 +3,11 @@
 #include "nameable.h"
 #include "point.h"
 
+typedef void(*fnevent)();
+
 enum drawprocn : unsigned char;
 enum resid : unsigned short;
+
 enum fixn : unsigned char {
 	NoEffect,
 	Smoke, BurningFire,

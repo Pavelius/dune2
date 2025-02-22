@@ -28,8 +28,8 @@ struct areai {
 	typedef bool(*fntest)(point v);
 	static constexpr int mx = 64;
 	static constexpr int my = 64;
-	static constexpr int reg_max = 16;
-	rect			regions[reg_max];
+	static constexpr int region_maximum = 16;
+	rect			regions[region_maximum];
 	point			maximum;
 	areasizen		sizetype;
 	void			blockcontrol() const;
@@ -86,9 +86,13 @@ extern areai area;
 extern point area_origin;
 extern point area_spot;
 extern rect area_screen;
+extern terrainn map_terrain[area_frame_maximum];
+extern featuren map_features[area_frame_maximum];
+extern unsigned short map_alternate[area_frame_maximum];
 extern unsigned short path_map[areai::my][areai::mx];
 
 void area_initialization();
+void area_generate(areasizen n, int number_of_players);
 bool allowcontrol(point v);
 bool allowbuild(point v);
 void blockarea(areai::fntest proc);
