@@ -231,6 +231,9 @@
     <ClCompile Include="area_initialization.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="objective.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

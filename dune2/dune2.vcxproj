@@ -152,6 +152,7 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
     <ClCompile Include="moveable.cpp" />
+    <ClCompile Include="objective.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
     <ClCompile Include="textscript.cpp" />

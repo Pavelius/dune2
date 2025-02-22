@@ -15,13 +15,13 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 4, 4}},
-	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0, {4, 1, 2, 0}},
-	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0, {4, 1, 3, 1}},
-	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0, {5, 2, 10, 1}},
-	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0, {5, 2, 8, 2}},
-	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5, {6, 1, 5, 2}},
-	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15, {6, 2, 4, 3}},
+	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 4, 4, 2, 0}},
+	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0, {4, 1, 2, 0, 2, 2}},
+	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0, {4, 1, 3, 1, 2, 2}},
+	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0, {5, 2, 10, 1, 3, 3}},
+	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0, {5, 2, 8, 2, 2, 3}},
+	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5, {6, 1, 5, 2, 2, 4}},
+	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15, {6, 2, 4, 3, 2, 4}},
 };
 assert_enum(uniti, AssaultTank)
 
@@ -456,12 +456,5 @@ void unit::recovery() {
 	for(auto i = Smoke; i <= BurningFire; i = (fixn)(i + 1)) {
 		if(is(i) && game_chance(20))
 			remove(i);
-	}
-}
-
-int unit::getlos() const {
-	switch(type) {
-	case Trike: return 3;
-	default: return 2;
 	}
 }

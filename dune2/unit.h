@@ -11,7 +11,7 @@ enum unitn : unsigned char {
 	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank
 };
 enum statn : unsigned char {
-	Hits, Attacks, Speed, Armor,
+	Hits, Attacks, Speed, Armor, LoS, Range,
 };
 enum squadn : unsigned char;
 enum movementn : unsigned char;
@@ -22,7 +22,7 @@ struct uniti : topicable {
 	fixn			weapon;
 	resid			res;
 	unsigned char	frame, frame_shoot;
-	unsigned char	stats[Armor + 1];
+	unsigned char	stats[Range + 1];
 };
 struct unit : moveable, fixable, typeable<uniti, unitn> {
 	squadn			squad;
@@ -34,10 +34,10 @@ struct unit : moveable, fixable, typeable<uniti, unitn> {
 	int				get(statn v) const { return geti().stats[v]; }
 	int				getmaximum(statn v) const;
 	short unsigned	getindex() const;
-	int				getlos() const;
+	int				getlos() const { return get(LoS); }
 	const char*		getname() const { return geti().getname(); }
 	ordern			getpurpose() const;
-	int				getshootrange() const { return 3; }
+	int				getshootrange() const { return get(Range); }
 	int				getspeed() const;
 	bool			isboard() const { return position.x < 0; }
 	bool			ismoveorder() const { return position != order; }
