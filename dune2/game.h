@@ -15,6 +15,7 @@ inline unsigned int game_rand(int from, int to) { return from + game_rand() % (t
 
 void camera_to_base();
 void human_order_building();
+void load_game(const char* id);
 void open_options();
 void save_game(const char* id);
 void show_scenario_prompt(const char* id, resid rid, int level);

@@ -454,3 +454,10 @@ void unit::recovery() {
 			remove(i);
 	}
 }
+
+int unit::getlos() const {
+	switch(type) {
+	case Trike: return 3;
+	default: return 2;
+	}
+}

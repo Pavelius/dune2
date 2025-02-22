@@ -26,7 +26,6 @@ struct uniti : topicable {
 };
 struct unit : moveable, fixable, typeable<uniti, unitn> {
 	squadn			squad;
-	unsigned char	effect;
 	void			clear();
 	bool			closing();
 	void			damage(int value);
@@ -35,7 +34,7 @@ struct unit : moveable, fixable, typeable<uniti, unitn> {
 	int				get(statn v) const { return geti().stats[v]; }
 	int				getmaximum(statn v) const;
 	short unsigned	getindex() const;
-	int				getlos() const { return 2; }
+	int				getlos() const;
 	const char*		getname() const { return geti().getname(); }
 	ordern			getpurpose() const;
 	int				getshootrange() const { return 3; }

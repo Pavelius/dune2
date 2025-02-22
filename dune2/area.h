@@ -82,7 +82,6 @@ private:
 	short unsigned	frames_overlay[my][mx];
 	void			setnu(point v, terrainn t);
 	void			update(point v);
-	void			unblockfeature(point v, featuren f);
 };
 extern areai area;
 extern point area_origin;

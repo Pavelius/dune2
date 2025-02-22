@@ -857,6 +857,19 @@ static void paint_visibility() {
 	alpha = push_alpha;
 }
 
+static void paint_selected_units() {
+	if(!human_selected)
+		return;
+	auto push_alpha = alpha;
+	alpha = 64;
+	auto ps = gres(MOUSE);
+	for(auto p : human_selected) {
+		auto v = s2i(p->screen);
+		image(v.x - 8, v.y - 8, ps, 6, 0);
+	}
+	alpha = push_alpha;
+}
+
 static void paint_move_order() {
 	if(!time_move_order)
 		return;
@@ -890,6 +903,7 @@ static void paint_game_map() {
 		area_spot = 0xFFFF;
 	paint_map_tiles();
 	paint_map_features();
+	paint_selected_units();
 	paint_objects();
 	rectb_last_building();
 	paint_visibility();

@@ -1,5 +1,6 @@
 #include "archive.h"
 #include "area.h"
+#include "draw.h"
 #include "game.h"
 #include "building.h"
 #include "stringbuilder.h"
@@ -14,9 +15,11 @@ static bool serial_game_url(const char* url, bool writemode) {
 		return false;
 	e.set(game);
 	e.set(area);
+	e.set(draw::camera);
 	e.set(bsdata<playeri>::source);
 	e.set(bsdata<unit>::source);
 	e.set(bsdata<building>::source);
+	e.set(bsdata<draweffect>::source);
 	return true;
 }
 
@@ -27,4 +30,8 @@ static bool serial_game(const char* id, bool writemode) {
 
 void save_game(const char* id) {
 	serial_game(id, true);
+}
+
+void load_game(const char* id) {
+	serial_game(id, false);
 }

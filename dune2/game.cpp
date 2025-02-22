@@ -224,7 +224,8 @@ static void show_introdution() {
 }
 
 static void load_game() {
-	confirm("Do you really want to load game?", "Yes", "No");
+	if(confirm("Do you really want to load game?", "Yes", "No"))
+		load_game("autosave");
 }
 
 static void save_game() {
