@@ -112,11 +112,10 @@ static void update_unit_recovery() {
 
 static void update_game_turn() {
 	while(game.start_turn < game.time) {
-		game.start_turn += 500;
+		game.start_turn += look_duration;
 		game.turn++;
 		update_building_time();
 		update_animated_tiles();
-		// Some visual effect
 		switch(game.turn % 6) {
 		case 0: update_area_decoy(); break;
 		case 1: update_player_time(); break;

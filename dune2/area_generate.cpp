@@ -88,16 +88,26 @@ static void create_player() {
 	player->color_index = player->getfraction().default_color;
 }
 
+static void add_unit(point v, unitn u) {
+	area.blockland(Tracked);
+	blockunits();
+	auto v1 = area.nearest(v, isfreetrack, 5);
+	add_unit(v1, u, Down);
+}
+
 static void player_base(rect rc) {
 	create_player();
 	auto v = center(rc);
 	area.set({v.x - 2, v.y - 2, v.x + 4, v.y + 4}, set_terrain, Rock);
 	rock_region(rc);
 	add_building(v, ConstructionYard);
-	add_unit(v, Trike, Down);
-	add_unit(v, Harvester, Down);
-	add_unit(v, AssaultTank, Down);
-	add_unit(v, LightInfantry, Down);
+	add_unit(v, Harvester);
+	add_unit(v, LightInfantry);
+	add_unit(v, HeavyInfantry);
+	add_unit(v, Trike);
+	add_unit(v, Quad);
+	add_unit(v, AssaultTank);
+	add_unit(v, RocketTank);
 }
 
 static void add_region(fngenerate* regions, int index, fngenerate value) {

@@ -73,7 +73,7 @@ BSDATA(fixeffecti) = {
 	{"Shoot30mm", 100, UNITS1, 23, 1, 5, apply_damage, FixSmallHit},
 	{"Shoot155mm", 110, UNITS1, 24, 1, 7, apply_damage, FixMediumHit},
 	{"Shoot200mm", 110, UNITS1, 25, 1, 8, apply_damage, FixLargeHit},
-	{"FireRocket", 100, UNITS, 20, 5, 0, 0, FixExplosion},
+	{"FireRocket", 100, UNITS, 20, 5, 12, apply_damage, FixExplosion},
 	{"FixSmallHit", 0, UNITS1, 2, 1, 0, add_explosion_tile},
 	{"FixMediumHit", 0, UNITS1, 3, 1, 0, add_explosion_tile},
 	{"FixLargeHit", 0, UNITS1, 4, 1, 0, add_explosion_tile},

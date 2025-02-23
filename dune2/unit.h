@@ -8,7 +8,7 @@
 #include "typeable.h"
 
 enum unitn : unsigned char {
-	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank
+	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank, RocketTank
 };
 enum statn : unsigned char {
 	Hits, Attacks, Speed, Armor, LoS, Range,

@@ -8,5 +8,6 @@ Harvester: Harvester
 HeavyInfantry: Heavy Infantry
 LightInfantry: Light Infantry
 Quad: Quad
+RocketTank: Rocket
 Tank: Tank
 Trike: Trike

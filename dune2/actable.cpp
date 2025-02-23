@@ -65,9 +65,24 @@ bool actable::canshoot(int maximum_range) const {
 	return range <= maximum_range;
 }
 
+static unsigned get_duration(fixn weapon) {
+	switch(weapon) {
+	case FireRocket: return action_duration + action_duration / 2;
+	default: return action_duration;
+	}
+}
+
+static unsigned get_miss_chance(fixn weapon) {
+	switch(weapon) {
+	case FireRocket: return 40;
+	default: return 0;
+	}
+}
+
 void actable::shooting(point screen, fixn weapon, int attacks) {
 	if(!weapon)
 		return;
+	auto duration = shoot_time + get_duration(weapon);
 	if(shoot_time + action_duration <= game.time) {
 		shoot_time = 0;
 		return;
@@ -85,7 +100,7 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 	if(canshoot(maximum_range)) {
 		auto d = to(position, target_position);
 		if(turn(shoot_direction, d)) {
-			fixshoot(screen, m2sc(target_position), weapon, 0);
+			fixshoot(screen, m2sc(target_position), weapon, get_miss_chance(weapon));
 			action = 1;
 			shoot_time = game.time;
 		}

@@ -282,13 +282,15 @@ void building::cancel() {
 }
 
 static point get_unit_place_point(point start, int range) {
-	pointa points;
-	area.blockcontrol();
-	area.controlwave(start, allowcontrol, range);
-	blockarea(isunitpossible);
+	//pointa points;
+	area.blockland(Tracked);
 	blockunits();
-	points.selectfree();
-	return points.random();
+	//area.controlwave(start, allowcontrol, range);
+	//blockarea(isunitpossible);
+	//blockunits();
+	//points.selectfree();
+	//return points.random();
+	return area.nearest(start, isnonblocked, range);
 }
 
 bool building::autoproduct() {
@@ -316,9 +318,6 @@ void building::update() {
 			}
 		}
 	} else if(shoot(m2sc(position), Shoot20mm, 2, 8)) {
-		// After shoot.
-	} else {
-		// Do nothing
 	}
 	if(type == Turret || type == RocketTurret)
 		area.set(position, shoot_direction, geti().frames[0]);
