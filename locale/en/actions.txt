@@ -32,6 +32,7 @@ HarvesterUnload: %Unit is unloading spice.
 HarvesterReturn: %Unit is return with %UnitThrall percent full.
 UnitDestroyed: %Unit is destroyed.
 UnitCantDoThis: %Unit can't execute order.
+ReachSpiceMaximum: There is no room for spice - build more Spice Silos.
 
 Cancel: Cancel
 No: No

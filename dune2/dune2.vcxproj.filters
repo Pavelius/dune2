@@ -431,6 +431,9 @@
     <ClInclude Include="objective.h">
       <Filter>logic</Filter>
     </ClInclude>
+    <ClInclude Include="ability.h">
+      <Filter>logic</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <Text Include="..\doc\music_dump.txt">

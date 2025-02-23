@@ -39,7 +39,6 @@ struct unit : moveable, fixable, typeable<uniti, unitn> {
 	ordern			getpurpose() const;
 	int				getshootrange() const { return get(Range); }
 	int				getspeed() const;
-	bool			isboard() const { return position.x < 0; }
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
 	bool			isturret() const { return geti().frame_shoot != 0; }

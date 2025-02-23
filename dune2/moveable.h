@@ -10,6 +10,7 @@ struct moveable : drawable, actable {
 	bool			closing(int action_range);
 	bool			isboard() const { return position.x < 0; }
 	bool			moving(movementn movement, int move_speed, int line_of_sight);
+	bool			nextmoving(movementn movement, int move_speed, int line_of_sight);
 	void			startmove(int move_speed);
 	void			stop();
 private:
@@ -22,3 +23,4 @@ private:
 
 void blockland(movementn movement);
 void blockunits();
+void blockunits_no_foot_enemy(unsigned char player);

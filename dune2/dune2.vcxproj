@@ -205,6 +205,7 @@
     <ClCompile Include="win_time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="ability.h" />
     <ClInclude Include="actable.h" />
     <ClInclude Include="adat.h" />
     <ClInclude Include="answers.h" />

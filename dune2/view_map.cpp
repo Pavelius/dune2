@@ -861,7 +861,7 @@ static void paint_selected_units() {
 	if(!human_selected)
 		return;
 	auto push_alpha = alpha;
-	alpha = 64;
+	alpha = imin(128, get_alpha(512, 600));
 	auto ps = gres(MOUSE);
 	for(auto p : human_selected) {
 		auto v = s2i(p->screen);
@@ -903,9 +903,9 @@ static void paint_game_map() {
 		area_spot = 0xFFFF;
 	paint_map_tiles();
 	paint_map_features();
-	paint_selected_units();
 	paint_objects();
 	rectb_last_building();
+	paint_selected_units();
 	paint_visibility();
 	paint_fow();
 	paint_move_order();

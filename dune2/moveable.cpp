@@ -66,7 +66,10 @@ direction moveable::nextpath(point v, movementn movement) {
 	auto need_block_units = v.range(position) < 3;
 	blockland(movement);
 	if(need_block_units) {
-		blockunits();
+		if(movement == Tracked)
+			blockunits_no_foot_enemy(player);
+		else
+			blockunits();
 		unblock();
 	}
 	if(path_map[v.y][v.x] == BlockArea)
@@ -74,7 +77,10 @@ direction moveable::nextpath(point v, movementn movement) {
 	else {
 		area.movewave(v, movement); // Consume time action
 		if(!need_block_units) {
-			blockunits();
+			if(movement == Tracked)
+				blockunits_no_foot_enemy(player);
+			else
+				blockunits();
 			unblock();
 		}
 		return area.moveto(position, move_direction);
@@ -84,6 +90,27 @@ direction moveable::nextpath(point v, movementn movement) {
 bool moveable::closing(int action_range) {
 	if(area.isvalid(target_position) && target_position.range(position) > action_range) {
 		order = target_position;
+		return true;
+	}
+	return false;
+}
+
+bool moveable::nextmoving(movementn movement, int move_speed, int line_of_sight) {
+	if(area.isvalid(order) && position != order) { // Moving to next tile to the target
+		if(path_direction == Center)
+			path_direction = nextpath(order, movement);
+		if(path_direction == Center) {
+			order = {-10000, -10000}; // Something in the way. Stop move.
+			start_time += look_duration / 2; // Turning pause
+		} else if(movement == Footed) {
+			move_direction = path_direction; // Footed units turn around momentary.
+			startmove(move_speed);
+		} else {
+			if(!turn(move_direction, path_direction)) // More that one turn take time
+				start_time += look_duration / 2; // Turning pause
+			else
+				startmove(move_speed);
+		}
 		return true;
 	}
 	return false;
@@ -100,28 +127,9 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 			if(order == position) // Stop when we arrive to final place
 				order = {-10000, -10000};
 		}
-	} else if(!area.isvalid(order))
-		return false;
-	else if(position != order) { // Moving to the target
-		if(path_direction == Center)
-			path_direction = nextpath(order, movement);
-		if(path_direction == Center) {
-			if(game_chance(20)) // Something in the way. Wait or cancel order?
-				order = {-10000, -10000};
-			else
-				start_time += game_rand(look_duration, look_duration * 2);
-		} else if(movement == Footed) {
-			move_direction = path_direction; // Footed units turn around momentary.
-			startmove(move_speed);
-		} else {
-			if(!turn(move_direction, path_direction)) // More that one turn take time
-				start_time += look_duration / 2; // Turning pause
-			else
-				startmove(move_speed);
-		}
-	} else
-		return false;
-	return true;
+		return true;
+	}
+	return false;
 }
 
 void moveable::stop() {

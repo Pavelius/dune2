@@ -126,6 +126,16 @@ void unit::scouting() {
 	area.scouting(position, player, getlos());
 }
 
+void blockunits_no_foot_enemy(unsigned char player) {
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.isboard())
+			continue;
+		if(e.player != player && e.geti().move == Footed)
+			continue;
+		path_map[e.position.y][e.position.x] = BlockArea;
+	}
+}
+
 void blockunits() {
 	for(auto& e : bsdata<unit>()) {
 		if(e && !e.isboard())
@@ -193,6 +203,11 @@ bool unit::harvest() {
 		if(!pb || pb->type != Refinery)
 			return false;
 		if(action) {
+			if(!pb->getplayer().canafford(Credits, 100)) {
+				fixstate("ReachSpiceMaximum");
+				start_time += 5 * 1000;
+				return true;
+			}
 			action--;
 			pb->getplayer().add(Credits, 100);
 			start_time += 1000;
@@ -286,8 +301,6 @@ bool unit::closing() {
 
 void unit::update() {
 	if(moving(geti().move, getspeed(), getlos())) {
-		//if(position != order && !ismoving()) { // When ready to go next tile
-		//}
 		if(!isturret())
 			shoot_direction = move_direction;
 		else if(shoot())
@@ -295,17 +308,21 @@ void unit::update() {
 		else if(!area.isvalid(target_position))
 			turn(shoot_direction, move_direction);
 		return;
-	} else if(releasetile())
+	}
+	else if(nextmoving(geti().move, getspeed(), getlos()))
 		return;
-	else if(closing())
+	else if(releasetile())
 		return;
 	else if(shoot()) {
 		if(!isturret())
 			move_direction = shoot_direction;
 		return;
-	} else if(harvest())
+	}
+	else if(harvest())
 		return;
 	else if(seeking())
+		return;
+	else if(closing())
 		return;
 }
 

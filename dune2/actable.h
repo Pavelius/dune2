@@ -21,6 +21,7 @@ struct actable : playerable {
 	explicit operator bool() const { return hits > 0; }
 	unit*			getenemy() const;
 	const char*		getfractionname() const;
+	bool			isboard() const { return position.x < 0; }
 	bool			isenemy(unsigned char player_index) const;
 	void			fixstate(const char* id) const;
 	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
