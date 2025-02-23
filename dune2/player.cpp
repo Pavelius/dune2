@@ -2,6 +2,8 @@
 #include "building.h"
 #include "player.h"
 
+BSDATAC(playeri, player_maximum)
+
 unsigned char player_index;
 
 playeri& mainplayer() {

@@ -7,5 +7,3 @@ BSDATA(abilityi) = {
 	{"Supply"},
 };
 BSDATAF(abilityi)
-
-BSDATAC(playeri, player_maximum)
