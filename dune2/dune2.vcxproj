@@ -223,6 +223,7 @@
     <ClInclude Include="feature.h" />
     <ClInclude Include="fix.h" />
     <ClInclude Include="flagable.h" />
+    <ClInclude Include="flagset.h" />
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="moveable.h" />

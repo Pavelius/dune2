@@ -130,13 +130,25 @@ static bool choose_build() {
 	return show_scene(paint_main, 0, 0) != 0;
 }
 
+static int find_index(const void* pv) {
+	auto index = 0;
+	for(auto p : subjects) {
+		if(p == pv)
+			return index;
+		index++;
+	}
+	return -1;
+}
+
 void open_building() {
 	auto push = subjects;
 	last_building = (building*)hot.param;
 	last_building->buildlist();
-	build_current = last_building->build_index;
+	build_current = find_index(last_building->getbuild());
+	if(!build_current)
+		build_current = 0;
 	if(choose_build()) {
-		last_building->build_index = build_current;
+		last_building->setbuild(subjects[build_current]);
 		last_building->progress();
 	}
 }

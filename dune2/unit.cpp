@@ -264,7 +264,7 @@ bool unit::harvest() {
 	return true;
 }
 
-static unit* find_enemy(point v, unsigned char player, int range) {
+unit* find_enemy(point v, unsigned char player, int range) {
 	const auto range_multiplier = 10;
 	unit* result = 0;
 	int result_priority = 1000 * range_multiplier;
@@ -282,7 +282,7 @@ static unit* find_enemy(point v, unsigned char player, int range) {
 	return result;
 }
 
-static unit* find_enemy(point v, unsigned char player, int range, movementn move) {
+unit* find_enemy(point v, unsigned char player, int range, movementn move) {
 	const auto range_multiplier = 10;
 	unit* result = 0;
 	int result_priority = 1000 * range_multiplier;
@@ -462,19 +462,6 @@ bool unit::relax() {
 	return false;
 }
 
-bool unit::seeking() {
-	auto enemy = getenemy();
-	if(!enemy) {
-		enemy = find_enemy(position, player, getshootrange());
-		if(enemy) {
-			target = enemy->getindex();
-			target_position = enemy->position;
-			return true;
-		}
-	}
-	return false;
-}
-
 bool unit::usecrushing() {
 	if(geti().move != Tracked)
 		return false;
@@ -516,7 +503,7 @@ void unit::update() {
 		return;
 	else if(harvest())
 		return;
-	else if(seeking())
+	else if(seeking(getshootrange()))
 		return;
 	else if(closing())
 		return;

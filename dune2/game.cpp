@@ -2,6 +2,7 @@
 #include "answers.h"
 #include "bsdata.h"
 #include "building.h"
+#include "draw.h"
 #include "game.h"
 #include "math.h"
 #include "music.h"
@@ -72,6 +73,8 @@ static void update_building_time() {
 	for(auto& e : bsdata<building>()) {
 		if(!e)
 			continue;
+		if(e.shoot_time)
+			e.shooting(m2sc(e.position), e.getweapon(), 2);
 		e.update();
 	}
 }
@@ -247,13 +250,6 @@ static void quit_game() {
 
 static point choose_terrain() {
 	return show_scene(paint_main_map_choose_terrain, 0, 0);
-}
-
-void human_order_building() {
-	auto v = choose_terrain();
-	if(!area.isvalid(v))
-		return;
-	last_building->setaction(Attack, v, true);
 }
 
 void open_options() {

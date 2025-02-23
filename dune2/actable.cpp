@@ -80,7 +80,7 @@ static unsigned get_miss_chance(fixn weapon) {
 }
 
 void actable::shooting(point screen, fixn weapon, int attacks) {
-	if(!weapon)
+	if(!weapon || !area.isvalid(target_position))
 		return;
 	auto duration = shoot_time + get_duration(weapon);
 	if(shoot_time + action_duration <= game.time) {
@@ -105,6 +105,19 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 			shoot_time = game.time;
 		}
 		return true;
+	}
+	return false;
+}
+
+bool actable::seeking(int range) {
+	auto enemy = getenemy();
+	if(!enemy) {
+		enemy = find_enemy(position, player, range);
+		if(enemy) {
+			target = enemy->getindex();
+			target_position = enemy->position;
+			return true;
+		}
 	}
 	return false;
 }

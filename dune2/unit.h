@@ -59,7 +59,6 @@ private:
 	bool			istrallfull() const;
 	bool			releasetile();
 	bool			returnbase();
-	bool			seeking();
 	bool			shoot();
 };
 extern unit *last_unit;
@@ -73,4 +72,5 @@ bool isunitpossible(point v);
 
 unit* find_unit(point s);
 unit* find_unit(point v, const unit* exclude);
-point formation(int index);
+unit* find_enemy(point v, unsigned char player, int range);
+unit* find_enemy(point v, unsigned char player, int range, movementn move);

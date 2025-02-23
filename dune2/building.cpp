@@ -37,19 +37,19 @@ BSDATA(buildingi) = {
 	{"Starport", STARPORT, 57},
 	{"Windtrap", WINDTRAP, 61, 100, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 1000}},
 	{"Refinery", REFINERY, 64, 500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {0, 1000}, {1000}, refinery_tiles},
-	{"RadarOutpost", HEADQRTS, 70, 500, Shape2x2, {379, 380, 386, 387}},
+	{"RadarOutpost", HEADQRTS, 70, 500, Shape2x2, {379, 380, 386, 387}, {}, {}, {}, {}, Refinery},
 	{"RepairFacility", REPAIR},
 	{"HouseOfIX"},
 	{"Palace", PALACE, 54},
 	{"Barracks", BARRAC, 62, 300, Shape2x2, {299, 300, 301, 302}, barrac_produce, {0, 200}},
-	{"WOR", WOR, 59, 500, Shape2x2, {285, 286, 288, 289}, wor_produce, {0, 300}},
-	{"LightVehicleFactory", LITEFTRY, 55, 1000, Shape2x2, {241, 242, 248, 249}, lftr_produce, {0, 500}},
+	{"WOR", WOR, 59, 500, Shape2x2, {285, 286, 288, 289}, wor_produce, {0, 300}, {}, {}, Barracks},
+	{"LightVehicleFactory", LITEFTRY, 55, 1000, Shape2x2, {241, 242, 248, 249}, lftr_produce, {0, 500}, {}, {}, RadarOutpost},
 	{"HeavyVehicleFactory", HVYFTRY, 56, 2000},
 	{"HighTechFacility"},
 	{"Slab", SLAB, 53, 2, Shape1x1, {126}},
 	{"Slab4", SLAB4, 71, 5, Shape2x2},
-	{"Turret", TURRET, 67, 300, Shape1x1, {356}},
-	{"RocketTurret", RTURRET, 68, 500, Shape1x1, {364}}
+	{"Turret", TURRET, 67, 300, Shape1x1, {356}, {}, {}, {}, {}, RadarOutpost},
+	{"RocketTurret", RTURRET, 68, 500, Shape1x1, {364}, {}, {}, {}, {}, RadarOutpost}
 };
 assert_enum(buildingi, RocketTurret)
 
@@ -66,8 +66,9 @@ buildingn buildingi::getindex() const {
 	return (buildingn)(this - bsdata<buildingi>::elements);
 }
 
-void building::patchdirection() {
-	auto f = area.getframe(position);
+void building::updateturrets() {
+	if(type == Turret || type == RocketTurret)
+		area.set(position, shoot_direction, geti().frames[0]);
 }
 
 void add_building(point pt, buildingn id) {
@@ -81,6 +82,7 @@ void add_building(point pt, buildingn id) {
 	last_building->scouting();
 	last_building->shoot_direction = Down;
 	last_building->player = player_index;
+	last_building->stop();
 	area.set(last_building->getrect(), setnofeature, 0);
 }
 
@@ -234,6 +236,17 @@ int	building::getlos() const {
 	}
 }
 
+void building::setbuild(const topicable* v) {
+	auto index = 0;
+	for(auto p : geti().build) {
+		if(p == v) {
+			build_index = index;
+			return;
+		}
+		index++;
+	}
+}
+
 topicable* building::getbuild() const {
 	auto& ei = geti();
 	if(!ei.build)
@@ -309,6 +322,8 @@ bool building::autoproduct() {
 }
 
 void building::update() {
+	const auto shoot_range = 8;
+	tracking();
 	if(isworking()) {
 		progress();
 		if(autoproduct()) {
@@ -317,10 +332,22 @@ void building::update() {
 				build_count--;
 			}
 		}
-	} else if(shoot(m2sc(position), Shoot20mm, 2, 8)) {
+	} else if(shoot(m2sc(position), Shoot20mm, 2, shoot_range)) {
+		// Nothing to do
+	} else if(area.isvalid(target_position) && !canshoot(shoot_range)) {
+		stop();
+	} else if(seeking(shoot_range)) {
+		// Nothing to do
 	}
-	if(type == Turret || type == RocketTurret)
-		area.set(position, shoot_direction, geti().frames[0]);
+	updateturrets();
+}
+
+fixn building::getweapon() const {
+	switch(type) {
+	case Turret: return Shoot30mm;
+	case RocketTurret: return FireRocket;
+	default: return NoEffect;
+	}
 }
 
 int	building::getprogress() const {
@@ -383,8 +410,14 @@ bool building::progress() {
 
 void building::buildlist() const {
 	subjects.clear();
-	for(auto p : geti().build)
+	for(auto p : geti().build) {
+		if(bsdata<buildingi>::have(p)) {
+			auto pb = static_cast<buildingi*>(p);
+			if(pb->required && !getplayer().buildings[pb->required])
+				continue;
+		}
 		subjects.add(p);
+	}
 }
 
 rect building::getrect() const {

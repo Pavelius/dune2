@@ -1167,6 +1167,25 @@ static void paint_building_info() {
 	}
 }
 
+static point choose_terrain() {
+	return show_scene(paint_main_map_choose_terrain, 0, 0);
+}
+
+static void human_order_building() {
+	point v;
+	auto o = (ordern)draw::hot.param;
+	switch(o) {
+	case Stop:
+		last_building->stop();
+		break;
+	default:
+		auto v = choose_terrain();
+		if(area.isvalid(v))
+			last_building->setaction(o, v, true);
+		break;
+	}
+}
+
 static void paint_turret_info() {
 	pushrect push;
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
@@ -1174,6 +1193,7 @@ static void paint_turret_info() {
 	setoffset(-1, 0);
 	height = 12;
 	button(bsdata<orderi>::elements[Attack].getname(), 'A', AlignCenter, human_order_building, Attack);
+	button(bsdata<orderi>::elements[Stop].getname(), 'Stop', AlignCenter, human_order_building, Stop);
 }
 
 static void paint_unit_info() {

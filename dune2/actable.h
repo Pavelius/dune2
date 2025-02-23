@@ -27,6 +27,7 @@ struct actable : playerable {
 	bool			isenemy(unsigned char player_index) const;
 	void			fixstate(const char* id) const;
 	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
+	bool			seeking(int range);
 	void			setaction(ordern type, point v, bool lock_unit);
 	bool			shoot(point screen, fixn weapon, int attacks, int maximum_range);
 	void			shooting(point screen, fixn weapon, int attacks);
@@ -35,5 +36,6 @@ struct actable : playerable {
 	void			unblock() const;
 };
 
+unsigned short find_enemy_index(point v, unsigned char player, int range);
 point random_near(point v);
 bool turn(direction& result, direction new_direction);

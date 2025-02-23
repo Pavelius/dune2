@@ -1,8 +1,8 @@
 #pragma once
 
 #include "collection.h"
-#include "topicablea.h"
+#include "topicable.h"
 
-struct topicablea : collection<topicablea> {
+struct topicablea : collection<topicable> {
 };
 extern topicablea subjects;

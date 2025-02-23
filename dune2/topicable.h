@@ -1,6 +1,7 @@
 #pragma once
 
 #include "nameable.h"
+#include "slice.h"
 
 enum resid : unsigned short;
 
