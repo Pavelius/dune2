@@ -88,21 +88,22 @@ direction moveable::nextpath(point v, movementn movement) {
 }
 
 bool moveable::closing(int action_range) {
-	if(order_type == Move)
+	if(!area.isvalid(target_position) || !action_range)
 		return false;
-	if(area.isvalid(target_position) && target_position != order && target_position.range(position) > action_range) {
+	if(target_position.range(position) > action_range) {
 		order = target_position;
 		return true;
-	}
+	} else
+		stopmove();
 	return false;
 }
 
-bool moveable::nextmoving(movementn movement, int move_speed, int line_of_sight) {
-	if(area.isvalid(order) && position != order) { // Moving to next tile to the target
+bool moveable::nextmoving(movementn movement, int move_speed) {
+	if(area.isvalid(order)) { // Moving to next tile to the target
 		if(path_direction == Center)
 			path_direction = nextpath(order, movement);
 		if(path_direction == Center) {
-			order = {-10000, -10000}; // Something in the way. Stop move.
+			stopmove(); // Something in the way. Stop move.
 			start_time += look_duration / 2; // Turning pause
 		} else if(movement == Footed) {
 			move_direction = path_direction; // Footed units turn around momentary.
@@ -126,8 +127,8 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 		if(!ismoving()) {
 			scouting(line_of_sight);
 			path_direction = Center; // Arrive to next tile, we need new path direction.
-			if(order == position) // Stop when we arrive to final place
-				order = {-10000, -10000};
+			if(order == position)
+				stopmove(); // Stop when we arrive to final place
 		}
 		return true;
 	}
@@ -135,7 +136,11 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 }
 
 void moveable::stop() {
-	path_direction = Center;
-	order = position;
+	stopmove();
 	actable::stop();
+}
+
+void moveable::stopmove() {
+	path_direction = Center;
+	order = {-10000, -10000};
 }

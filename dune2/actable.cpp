@@ -80,13 +80,9 @@ void actable::shooting(point screen, fixn weapon, int attacks) {
 }
 
 bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
-	if(!weapon)
+	if(!weapon || shoot_time)
 		return false;
-	if(shoot_time) // Already shooting
-		return true;
-	if(!canshoot(maximum_range))
-		stop();
-	else {
+	if(canshoot(maximum_range)) {
 		auto d = to(position, target_position);
 		if(turn(shoot_direction, d)) {
 			fixshoot(screen, m2sc(target_position), weapon, 0);
@@ -99,7 +95,6 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 }
 
 void actable::stop() {
-	order_type = Stop;
 	target = 0xFFFF;
 	target_position = {-10000, -10000};
 }
@@ -115,7 +110,6 @@ void actable::setaction(ordern type, point v, bool lock_unit) {
 	} else
 		target = 0xFFFF;
 	target_position = v;
-	order_type = type;
 }
 
 void actable::unblock() const {

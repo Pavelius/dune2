@@ -18,9 +18,9 @@ struct actable : playerable {
 	short unsigned	hits;
 	unsigned char	action; // Sequence action in a row
 	direction		shoot_direction;
-	ordern			order_type; // Type of main order
 	unsigned long	shoot_time; // Start shoot game time
 	explicit operator bool() const { return hits > 0; }
+	bool			canshoot(int maximum_range) const;
 	unit*			getenemy() const;
 	const char*		getfractionname() const;
 	bool			isboard() const { return position.x < 0; }
@@ -33,8 +33,6 @@ struct actable : playerable {
 	void			stop();
 	void			tracking();
 	void			unblock() const;
-private:
-	bool			canshoot(int maximum_range) const;
 };
 
 point random_near(point v);

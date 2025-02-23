@@ -31,8 +31,6 @@ static void update_unit_time() {
 	for(auto& e : bsdata<unit>()) {
 		if(!e)
 			continue;
-		//if(!e.start_time)
-		//	e.start_time = game.time;
 		if(e.shoot_time)
 			e.shooting(e.screen, e.geti().weapon, e.get(Attacks));
 		while(e.start_time < game.time) {
@@ -296,7 +294,7 @@ void main_menu() {
 	// music_disabled = true;
 	// show_introdution();
 	// show_scenario_prompt("Brief", HARVEST, 1);
-	auto unit_size = sizeof(unit);
+	// auto unit_size = sizeof(unit);
 	game.starting_credits = 1000;
 	area_generate(SmallMap, 2);
 	camera_to_base();

@@ -140,8 +140,8 @@ void building::unboard() {
 	set(BoardUnit, false);
 	auto p = bsdata<unit>::elements + unit_board;
 	p->position = v;
-	p->order = p->position;
 	p->screen = m2sc(p->position);
+	p->stopmove();
 	unit_board = 0xFFFF;
 }
 

@@ -11,9 +11,10 @@ struct moveable : drawable, actable {
 	bool			closing(int action_range);
 	bool			isboard() const { return position.x < 0; }
 	bool			moving(movementn movement, int move_speed, int line_of_sight);
-	bool			nextmoving(movementn movement, int move_speed, int line_of_sight);
+	bool			nextmoving(movementn movement, int move_speed);
 	void			startmove(int move_speed);
 	void			stop();
+	void			stopmove();
 private:
 	bool			ismoving() const;
 	void			leavetrail(bool heavy_trail);

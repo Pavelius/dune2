@@ -186,7 +186,7 @@ static bool test_crushing(unit* p) {
 bool unit::crushing() {
 	auto move = geti().move;
 	if(move == Tracked)
-		return test_crushing(find_unit(position));
+		return test_crushing(find_unit(position, this));
 	return false;
 }
 
@@ -249,7 +249,7 @@ bool unit::harvest() {
 		return false;
 	}
 	if(position != v)
-		setorder(Move, v);
+		order = v;
 	else {
 		set(NoEffect);
 		action++;
@@ -263,18 +263,14 @@ bool unit::harvest() {
 	return true;
 }
 
-bool unit::shoot() {
-	return actable::shoot(screen, geti().weapon, get(Attacks), getshootrange());
-}
-
-unit* find_enemy(point v, unsigned char player, int line_of_sight) {
+static unit* find_enemy(point v, unsigned char player, int range) {
 	const auto range_multiplier = 10;
 	unit* result = 0;
 	int result_priority = 1000 * range_multiplier;
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.isboard() || e.player == player)
 			continue;
-		if(e.position.range(v) > line_of_sight || !area.is(e.position, player, Visible))
+		if(e.position.range(v) > range || !area.is(e.position, player, Visible))
 			continue;
 		auto priority = v.range(e.position) * range_multiplier + e.hits / 10;
 		if(!result || priority < result_priority) {
@@ -285,14 +281,14 @@ unit* find_enemy(point v, unsigned char player, int line_of_sight) {
 	return result;
 }
 
-unit* find_enemy(point v, unsigned char player, movementn move, int line_of_sight) {
+static unit* find_enemy(point v, unsigned char player, int range, movementn move) {
 	const auto range_multiplier = 10;
 	unit* result = 0;
 	int result_priority = 1000 * range_multiplier;
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.isboard() || e.player == player || e.geti().move != move)
 			continue;
-		if(e.position.range(v) > line_of_sight || !area.is(e.position, player, Visible))
+		if(e.position.range(v) > range || !area.is(e.position, player, Visible))
 			continue;
 		auto priority = v.range(e.position) * range_multiplier + (10 - e.hits / 10);
 		if(!result || priority < result_priority) {
@@ -301,75 +297,6 @@ unit* find_enemy(point v, unsigned char player, movementn move, int line_of_sigh
 		}
 	}
 	return result;
-}
-
-bool unit::relax() {
-	if(game_chance(30)) { // 30% chance do nothing
-		if(isturret()) { // Rotate turret
-			auto turn_direction = turnto(shoot_direction, move_direction);
-			if(turn_direction != Center && game_chance(50))
-				shoot_direction = to(shoot_direction, turn_direction);
-			else if(game_chance(30))
-				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
-			return true;
-		}
-	}
-	return false;
-}
-
-bool unit::seeking() {
-	auto enemy = getenemy();
-	if(!enemy) {
-		enemy = find_enemy(position, player, getlos());
-		if(enemy) {
-			target = enemy->getindex();
-			target_position = enemy->position;
-			return true;
-		}
-	}
-	return false;
-}
-
-bool unit::usecrushing() {
-	if(order_type == Move || area.isvalid(order))
-		return false;
-	if(geti().move != Tracked)
-		return false;
-	auto p = find_enemy(position, player, Footed, getlos());
-	if(p) {
-		order = p->position;
-		return true;
-	}
-	return false;
-}
-
-void unit::update() {
-	if(moving(geti().move, getspeed(), getlos())) {
-		if(!isturret())
-			shoot_direction = move_direction;
-		else if(shoot())
-			return;
-		else if(!area.isvalid(target_position))
-			turn(shoot_direction, move_direction);
-		return;
-	} else if(usecrushing())
-		return; 
-	else if(closing())
-		return;
-	else if(nextmoving(geti().move, getspeed(), getlos())) {
-		if(crushing())
-			return;
-		return;
-	} else if(releasetile())
-		return;
-	else if(shoot()) {
-		if(!isturret())
-			move_direction = shoot_direction;
-		return;
-	} else if(harvest())
-		return;
-	else if(seeking())
-		return;
 }
 
 bool isnonblocked(point v) {
@@ -418,17 +345,14 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->render = last_unit->renderindex();
 	last_unit->screen = m2sc(pt);
 	last_unit->position = pt;
-	last_unit->order = pt;
 	last_unit->type = id;
 	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;
 	last_unit->shoot_direction = d;
-	last_unit->path_direction = Center;
 	last_unit->hits = last_unit->getmaximum(Hits);
-	last_unit->target = 0xFFFF;
-	last_unit->target_position = {-10000, -10000};
 	last_unit->player = player_index;
 	last_unit->start_time = game.time;
+	last_unit->stop();
 	last_unit->scouting();
 }
 
@@ -467,13 +391,12 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong
 			return false;
 		}
-		order_type = Retreat;
 		if(position == v) {
 			fixstate("HarvesterUnload");
 			pb->board(this);
 		} else {
 			fixstate("HarvesterReturn");
-			setorder(Move, v);
+			order = v;
 		}
 		return true;
 	} else {
@@ -488,11 +411,10 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong - path is blocking
 			return false;
 		}
-		order_type = Retreat;
 		if(position == v)
 			stop(); // Just arrived to final place
 		else
-			setorder(Move, v);
+			order = v;
 	}
 	return false;
 }
@@ -501,7 +423,7 @@ void unit::setorder(ordern type, point v) {
 	switch(type) {
 	case Attack: setaction(type, v, true); break;
 	case Harvest: setaction(type, v, false); order = v; break;
-	case Move: order = v; start_time = game.time; break;
+	case Move: stop(); order = v; start_time = game.time; break;
 	case Retreat: returnbase(); break;
 	default: stop(); break;
 	}
@@ -523,4 +445,78 @@ void unit::recovery() {
 		if(is(i) && game_chance(20))
 			remove(i);
 	}
+}
+
+bool unit::relax() {
+	if(game_chance(30)) { // 30% chance do nothing
+		if(isturret()) { // Rotate turret
+			auto turn_direction = turnto(shoot_direction, move_direction);
+			if(turn_direction != Center && game_chance(50))
+				shoot_direction = to(shoot_direction, turn_direction);
+			else if(game_chance(30))
+				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
+			return true;
+		}
+	}
+	return false;
+}
+
+bool unit::seeking() {
+	auto enemy = getenemy();
+	if(!enemy) {
+		enemy = find_enemy(position, player, getshootrange());
+		if(enemy) {
+			target = enemy->getindex();
+			target_position = enemy->position;
+			return true;
+		}
+	}
+	return false;
+}
+
+bool unit::usecrushing() {
+	if(geti().move != Tracked)
+		return false;
+	auto p = find_enemy(position, player, getlos(), Footed);
+	if(p && !area.isblocked(p->position, Tracked)) {
+		order = p->position;
+		return true;
+	}
+	return false;
+}
+
+bool unit::shoot() {
+	return actable::shoot(screen, geti().weapon, get(Attacks), getshootrange());
+}
+
+void unit::update() {
+	auto move = geti().move;
+	auto speed = getspeed();
+	if(moving(move, speed, getlos())) {
+		if(!isturret())
+			shoot_direction = move_direction;
+		else if(shoot())
+			return;
+		else if(!area.isvalid(target_position))
+			turn(shoot_direction, move_direction);
+		return;
+	} else if(shoot()) {
+		if(!isturret())
+			move_direction = shoot_direction;
+		stopmove();
+		return;
+	} else if(nextmoving(move, speed)) {
+		if(crushing())
+			return;
+		return;
+	} else if(usecrushing())
+		return;
+	else if(releasetile())
+		return;
+	else if(harvest())
+		return;
+	else if(seeking())
+		return;
+	else if(closing())
+		return;
 }
