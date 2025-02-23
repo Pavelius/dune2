@@ -2,15 +2,6 @@
 #include "building.h"
 #include "player.h"
 
-BSDATA(abilityi) = {
-	{"Credits"},
-	{"Energy"},
-	{"Supply"},
-};
-BSDATAF(abilityi)
-
-BSDATAC(playeri, player_maximum)
-
 unsigned char player_index;
 
 playeri& mainplayer() {
