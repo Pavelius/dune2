@@ -1,6 +1,7 @@
 #pragma once
 
 #include "player.h"
+#include "order.h"
 #include "point.h"
 
 enum direction : unsigned char;
@@ -17,6 +18,7 @@ struct actable : playerable {
 	short unsigned	hits;
 	unsigned char	action; // Sequence action in a row
 	direction		shoot_direction;
+	ordern			order_type; // Type of main order
 	unsigned long	shoot_time; // Start shoot game time
 	explicit operator bool() const { return hits > 0; }
 	unit*			getenemy() const;
@@ -25,7 +27,7 @@ struct actable : playerable {
 	bool			isenemy(unsigned char player_index) const;
 	void			fixstate(const char* id) const;
 	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
-	void			setaction(point v, bool hostile);
+	void			setaction(ordern type, point v, bool lock_unit);
 	bool			shoot(point screen, fixn weapon, int attacks, int maximum_range);
 	void			shooting(point screen, fixn weapon, int attacks);
 	void			stop();

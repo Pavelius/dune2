@@ -4,6 +4,7 @@
 BSDATA(orderi) = {
 	{"Stop"},
 	{"Move"},
+	{"Seek"},
 	{"Attack"},
 	{"Retreat"},
 	{"Harvest"},

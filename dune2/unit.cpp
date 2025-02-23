@@ -276,7 +276,25 @@ unit* find_enemy(point v, unsigned char player, int line_of_sight) {
 			continue;
 		if(e.position.range(v) > line_of_sight || !area.is(e.position, player, Visible))
 			continue;
-		auto priority = v.range(e.position) * range_multiplier;
+		auto priority = v.range(e.position) * range_multiplier + e.hits / 10;
+		if(!result || priority < result_priority) {
+			result = &e;
+			result_priority = priority;
+		}
+	}
+	return result;
+}
+
+unit* find_enemy(point v, unsigned char player, movementn move, int line_of_sight) {
+	const auto range_multiplier = 10;
+	unit* result = 0;
+	int result_priority = 1000 * range_multiplier;
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.isboard() || e.player == player || e.geti().move != move)
+			continue;
+		if(e.position.range(v) > line_of_sight || !area.is(e.position, player, Visible))
+			continue;
+		auto priority = v.range(e.position) * range_multiplier + (10 - e.hits / 10);
 		if(!result || priority < result_priority) {
 			result = &e;
 			result_priority = priority;
@@ -312,10 +330,17 @@ bool unit::seeking() {
 	return false;
 }
 
-bool unit::closing() {
-	if(getpurpose() != Attack)
+bool unit::usecrushing() {
+	if(order_type == Move || area.isvalid(order))
 		return false;
-	return moveable::closing(getshootrange());
+	if(geti().move != Tracked)
+		return false;
+	auto p = find_enemy(position, player, Footed, getlos());
+	if(p) {
+		order = p->position;
+		return true;
+	}
+	return false;
 }
 
 void unit::update() {
@@ -327,7 +352,11 @@ void unit::update() {
 		else if(!area.isvalid(target_position))
 			turn(shoot_direction, move_direction);
 		return;
-	} else if(nextmoving(geti().move, getspeed(), getlos())) {
+	} else if(usecrushing())
+		return; 
+	else if(closing())
+		return;
+	else if(nextmoving(geti().move, getspeed(), getlos())) {
 		if(crushing())
 			return;
 		return;
@@ -337,12 +366,9 @@ void unit::update() {
 		if(!isturret())
 			move_direction = shoot_direction;
 		return;
-	}
-	else if(harvest())
+	} else if(harvest())
 		return;
 	else if(seeking())
-		return;
-	else if(closing())
 		return;
 }
 
@@ -402,6 +428,7 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->target = 0xFFFF;
 	last_unit->target_position = {-10000, -10000};
 	last_unit->player = player_index;
+	last_unit->start_time = game.time;
 	last_unit->scouting();
 }
 
@@ -440,6 +467,7 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong
 			return false;
 		}
+		order_type = Retreat;
 		if(position == v) {
 			fixstate("HarvesterUnload");
 			pb->board(this);
@@ -460,6 +488,7 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong - path is blocking
 			return false;
 		}
+		order_type = Retreat;
 		if(position == v)
 			stop(); // Just arrived to final place
 		else
@@ -470,8 +499,8 @@ bool unit::returnbase() {
 
 void unit::setorder(ordern type, point v) {
 	switch(type) {
-	case Attack: setaction(v, true); break;
-	case Harvest: setaction(v, false); order = v; break;
+	case Attack: setaction(type, v, true); break;
+	case Harvest: setaction(type, v, false); order = v; break;
 	case Move: order = v; start_time = game.time; break;
 	case Retreat: returnbase(); break;
 	default: stop(); break;
@@ -481,9 +510,9 @@ void unit::setorder(ordern type, point v) {
 void unit::setorder(point v) {
 	auto opponent = find_unit(v);
 	auto purpose = getpurpose();
-	if(opponent && opponent->isenemy(player) && getpurpose() == Attack)
+	if(purpose == Attack && opponent && opponent->isenemy(player))
 		setorder(Attack, v);
-	else if(getpurpose() == Harvest && isspicefield(v))
+	else if(purpose == Harvest && isspicefield(v))
 		setorder(Harvest, v);
 	else if(area.isvalid(v))
 		setorder(Move, v);

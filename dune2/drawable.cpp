@@ -39,6 +39,8 @@ static void add_objects(drawablea& objects, drawrenderi& e, const rect& rc) {
 	for(auto p = e.element; (unsigned char*)p < pe; p = (drawable*)((char*)p + sz)) {
 		if(!p->screen.in(rc))
 			continue;
+		if(!p->operator bool())
+			continue;
 		objects.add(p);
 	}
 }

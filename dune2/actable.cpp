@@ -99,6 +99,7 @@ bool actable::shoot(point screen, fixn weapon, int attacks, int maximum_range) {
 }
 
 void actable::stop() {
+	order_type = Stop;
 	target = 0xFFFF;
 	target_position = {-10000, -10000};
 }
@@ -107,13 +108,14 @@ bool actable::isenemy(unsigned char player_index) const {
 	return player != player_index;
 }
 
-void actable::setaction(point v, bool hostile) {
-	if(hostile) {
+void actable::setaction(ordern type, point v, bool lock_unit) {
+	if(lock_unit) {
 		auto p = find_unit(v);
 		target = p ? p->getindex() : 0xFFFF;
 	} else
 		target = 0xFFFF;
 	target_position = v;
+	order_type = type;
 }
 
 void actable::unblock() const {

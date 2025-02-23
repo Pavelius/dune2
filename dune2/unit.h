@@ -27,7 +27,7 @@ struct uniti : topicable {
 struct unit : moveable, fixable, typeable<uniti, unitn> {
 	squadn			squad;
 	void			clear();
-	bool			closing();
+	bool			closing() { return moveable::closing(getshootrange()); }
 	bool			crushing();
 	void			damage(int value);
 	void			destroy();
@@ -51,6 +51,7 @@ struct unit : moveable, fixable, typeable<uniti, unitn> {
 	void			setorder(point v);
 	void			setorder(ordern type, point v);
 	void			update();
+	bool			usecrushing();
 private:
 	void			cantdothis();
 	void			cleanup();

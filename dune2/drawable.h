@@ -12,6 +12,7 @@ struct drawable {
 	unsigned char	render; // Drawing render index
 	unsigned short	param; // Painting frame and other parameters (2 byte)
 	unsigned long	start_time; // Start animation
+	explicit operator bool() const { return start_time != 0; }
 	void			clearobject(); // Unsafe, but work on non-virtual classes if you define `clear` proc.
 	const drawrenderi& getrender() const;
 	unsigned char	renderindex() const; // Calculate render index
@@ -20,7 +21,6 @@ struct drawable {
 struct draweffect : drawable {
 	point			from, to;
 	unsigned short	effect;
-	explicit operator bool() const { return start_time != 0; }
 };
 struct drawrenderi {
 	const char*		id; // Object name

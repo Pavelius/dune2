@@ -88,7 +88,9 @@ direction moveable::nextpath(point v, movementn movement) {
 }
 
 bool moveable::closing(int action_range) {
-	if(area.isvalid(target_position) && target_position.range(position) > action_range) {
+	if(order_type == Move)
+		return false;
+	if(area.isvalid(target_position) && target_position != order && target_position.range(position) > action_range) {
 		order = target_position;
 		return true;
 	}
