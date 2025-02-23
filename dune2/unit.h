@@ -28,6 +28,7 @@ struct unit : moveable, fixable, typeable<uniti, unitn> {
 	squadn			squad;
 	void			clear();
 	bool			closing();
+	bool			crushing();
 	void			damage(int value);
 	void			destroy();
 	void			fixstate(const char* id) const;

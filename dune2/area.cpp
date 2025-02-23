@@ -391,6 +391,19 @@ void areai::set(point v, shapen t, const short unsigned* frame_list) {
 	}
 }
 
+bool areai::isblocked(point v, movementn move) const {
+	if(!area.isvalid(v))
+		return true;
+	auto md = bsdata<movementi>::elements[move].cost;
+	auto t = get(v);
+	auto f = map_features[frames[v.y][v.x]];
+	if(f == BuildingHead || f == BuildingLeft || f == BuildingUp)
+		return true;
+	else if(md[t] == 0xFF)
+		return true;
+	return false;
+}
+
 void areai::blockland(movementn mv) const {
 	auto md = bsdata<movementi>::elements[mv].cost;
 	for(auto y = 0; y < maximum.y; y++) {

@@ -174,13 +174,32 @@ bool unit::istrallfull() const {
 	return getpurpose() == Harvest && action >= 10;
 }
 
+static bool test_crushing(unit* p) {
+	if(p && p->geti().move == Footed) {
+		area.set(p->position, Blood);
+		p->destroy();
+		return true;
+	}
+	return false;
+}
+
+bool unit::crushing() {
+	auto move = geti().move;
+	if(move == Tracked)
+		return test_crushing(find_unit(position));
+	return false;
+}
+
 bool unit::releasetile() {
 	auto p = find_unit(position, this);
 	if(!p)
 		return false;
+	//if(geti().move == Tracked && test_crushing(p))
+	//	return false;
+	auto move = geti().move;
 	for(auto d : all_directions) {
 		auto v = to(position, d);
-		if(!area.isvalid(v))
+		if(area.isblocked(v, move))
 			continue;
 		auto p = find_unit(v);
 		if(!p) {
@@ -308,10 +327,11 @@ void unit::update() {
 		else if(!area.isvalid(target_position))
 			turn(shoot_direction, move_direction);
 		return;
-	}
-	else if(nextmoving(geti().move, getspeed(), getlos()))
+	} else if(nextmoving(geti().move, getspeed(), getlos())) {
+		if(crushing())
+			return;
 		return;
-	else if(releasetile())
+	} else if(releasetile())
 		return;
 	else if(shoot()) {
 		if(!isturret())
