@@ -1014,7 +1014,7 @@ static void paint_choose_terrain() {
 
 static void paint_choose_terrain_placement() {
 	paint_choose_panel("ChoosePlacement", 17, (long)point(-1000, -1000));
-	auto disabled = path_map[area_spot.y][area_spot.x] == BlockArea;
+	auto disabled = path_map_copy[area_spot.y][area_spot.x] == BlockArea;
 	paint_cursor(placement_size, !disabled, disabled);
 }
 
@@ -1099,11 +1099,8 @@ static void human_build() {
 		auto push = placement_size;
 		auto build = (buildingn)((buildingi*)p->getbuild())->getindex();
 		placement_size = p->getbuildsize();
-		if(build == Slab || build == Slab4)
-			blockarea(isbuildslabplace, placement_size);
-		else
-			blockarea(isbuildplace, placement_size);
-		// area.controlwave(p->position, allowcontrol, 32);
+		markbuildarea(p->position, p->getbuildsize(), build);
+		copypath();
 		p->construct(choose_placement());
 		placement_size = push;
 	} else if(bsdata<uniti>::have(p->getbuild())) {

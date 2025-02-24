@@ -503,3 +503,20 @@ bool isbuildslabplace(point v) {
 		return false;
 	return true;
 }
+
+static bool iscopycontrol(point v) {
+	auto cost = path_map_copy[v.y][v.x];
+	return cost != 0 && cost != BlockArea;
+}
+
+void markbuildarea(point base, point placement_size, buildingn build) {
+	area.blockcontrol();
+	area.controlwave(base, allowcontrol, 32);
+	memcpy(path_map_copy, path_map, sizeof(path_map));
+	clearpath();
+	if(build == Slab || build == Slab4)
+		blockarea(isbuildslabplace, placement_size);
+	else
+		blockarea(isbuildplace, placement_size);
+	blockareaor(iscopycontrol, placement_size);
+}

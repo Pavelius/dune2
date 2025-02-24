@@ -76,3 +76,4 @@ building* find_board(const unit* p);
 
 bool isbuildplace(point v);
 bool isbuildslabplace(point v);
+void markbuildarea(point base, point placement_size, buildingn build);

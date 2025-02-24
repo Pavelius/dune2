@@ -102,7 +102,9 @@ bool allowcontrol(point v);
 bool allowbuild(point v);
 void blockarea(areai::fntest proc);
 void blockarea(areai::fntest proc, point size);
-void copy_path(unsigned short* d, const unsigned short* s);
+void blockareaor(areai::fntest proc, point size);
+void clearpath();
+void copypath();
 void setareascout(point v, int player_index);
 void setnofeature(point v, int param);
 

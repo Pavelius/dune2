@@ -522,6 +522,14 @@ bool allowbuild(point v) {
 	return true;
 }
 
+void clearpath() {
+	memset(path_map, 0, sizeof(path_map));
+}
+
+void copypath() {
+	memcpy(path_map_copy, path_map, sizeof(path_map));
+}
+
 void blockarea(areai::fntest proc) {
 	for(auto y = 0; y < area.maximum.y; y++) {
 		for(auto x = 0; x < area.maximum.x; x++) {
@@ -544,10 +552,34 @@ static bool allow(point v, point size, areai::fntest proc) {
 	return true;
 }
 
+static bool allowor(point v, point size, areai::fntest proc) {
+	for(auto y = 0; y < size.y; y++) {
+		for(auto x = 0; x < size.x; x++) {
+			auto v1 = v + point(x, y);
+			if(!area.isvalid(v1))
+				return false;
+			if(proc(v1))
+				return true;
+		}
+	}
+	return false;
+}
+
 void blockarea(areai::fntest proc, point size) {
 	for(auto y = 0; y < area.maximum.y; y++) {
-		for(auto x = 0; x < area.maximum.x; x++)
-			path_map[y][x] = allow(point(x, y), size, proc) ? 0 : BlockArea;
+		for(auto x = 0; x < area.maximum.x; x++) {
+			if(!allow(point(x, y), size, proc))
+				path_map[y][x] = BlockArea;
+		}
+	}
+}
+
+void blockareaor(areai::fntest proc, point size) {
+	for(auto y = 0; y < area.maximum.y; y++) {
+		for(auto x = 0; x < area.maximum.x; x++) {
+			if(!allowor(point(x, y), size, proc))
+				path_map[y][x] = BlockArea;
+		}
 	}
 }
 
@@ -758,8 +790,4 @@ void areai::patch(point v, point size, const tilepatch* tiles, size_t count, boo
 	for(auto y = v.y; y < v.y + size.y; y++)
 		for(auto x = v.x; x < v.x + size.x; x++)
 			patch(point(x, y), tiles, count, apply);
-}
-
-void copy_path(unsigned short* d, const unsigned short* s) {
-	memcpy(d, s, sizeof(path_map));
 }
