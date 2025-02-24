@@ -73,3 +73,6 @@ void add_building(point pt, buildingn id);
 building* find_base(buildingn type, unsigned char player);
 building* find_building(point v);
 building* find_board(const unit* p);
+
+bool isbuildplace(point v);
+bool isbuildslabplace(point v);

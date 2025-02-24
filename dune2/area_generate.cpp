@@ -106,8 +106,8 @@ static void add_unit(point v, unitn u) {
 static void player_base(rect rc) {
 	create_player();
 	auto v = center(rc);
-	area.set({v.x - 2, v.y - 2, v.x + 4, v.y + 4}, set_terrain, Rock);
-	rock_region(rc);
+	area.set({v.x - 3, v.y - 3, v.x + 6, v.y + 6}, set_terrain, Rock);
+	add_random(rc, set_terrain_big_circle, Rock, 6);
 	add_building(v, ConstructionYard);
 	add_unit(v, Harvester);
 	add_unit(v, LightInfantry);

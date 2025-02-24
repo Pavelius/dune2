@@ -487,3 +487,29 @@ template<> int statable<buildingi, buildingn>::get(statn i) const {
 		return 0;
 	}
 }
+
+bool isbuildplace(point v) {
+	auto size = last_building->getsize();
+	for(auto x = 0; x < size.x; x++) {
+		for(auto y = 0; y < size.y; y++) {
+			auto f = area.getfeature(v);
+			if(f != SlabFeature)
+				return false;
+		}
+	}
+	return true;
+}
+
+bool isbuildslabplace(point v) {
+	auto size = last_building->getsize();
+	for(auto x = 0; x < size.x; x++) {
+		for(auto y = 0; y < size.y; y++) {
+			if(area.get(v) != Rock)
+				return false;
+			auto f = area.getfeature(v);
+			if(f >= BuildingHead)
+				return false;
+		}
+	}
+	return true;
+}
