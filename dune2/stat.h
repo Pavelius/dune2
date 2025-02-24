@@ -13,5 +13,4 @@ template<typename T> int getstat(T i, statn v);
 template<typename T, typename V>
 struct statable : typeable<T, V> {
 	int get(statn i) const { return getstat<V>(typeable<T, V>::type, i); }
-	int getmaximum(statn i) const;
 };

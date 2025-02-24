@@ -952,10 +952,10 @@ static void paint_bar(int value, int value_maximum) {
 		return;
 	auto push_fore = fore;
 	width = width * value / value_maximum;
-	if(value <= value_maximum / 2)
-		fore = colors::yellow;
-	else if(value <= value_maximum / 5)
+	if(value <= value_maximum / 4)
 		fore = colors::red;
+	else if(value <= value_maximum / 2)
+		fore = colors::yellow;
 	else
 		fore = colors::green;
 	rectf();
@@ -1241,7 +1241,7 @@ static void paint_unit_info() {
 		auto push_unit = last_unit;
 		last_unit = human_selected[0];
 		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->getmaximum(Hits), 0, 0);
+		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->gethitsmax(), 0, 0);
 		paint_unit_orders();
 		last_unit = push_unit;
 	} else {

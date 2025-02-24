@@ -26,6 +26,7 @@ struct unit : moveable, fixable, statable<uniti, unitn> {
 	void			damage(int value);
 	void			destroy();
 	void			fixstate(const char* id) const;
+	short unsigned	gethitsmax() const { return get(Hits) * 10; }
 	short unsigned	getindex() const;
 	int				getlos() const { return get(LoS); }
 	ordern			getpurpose() const;

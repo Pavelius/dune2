@@ -82,7 +82,7 @@ void unit::damage(int value) {
 	switch(geti().move) {
 	case Tracked:
 	case Wheeled:
-		if(hits <= getmaximum(Hits) / 2)
+		if(hits <= gethitsmax() / 2)
 			set(Smoke);
 		break;
 	}
@@ -226,8 +226,11 @@ bool unit::harvest() {
 			start_time += 1000;
 		} else {
 			pb->unboard();
-			if(area.isvalid(target_position))
-				setorder(Move, target_position);
+			if(area.isvalid(target_position)) {
+				// Return to work
+				order = target_position;
+				start_time = game.time;
+			}
 		}
 		return true;
 	}
@@ -343,7 +346,7 @@ void add_unit(point pt, unitn id, direction d) {
 	last_unit->squad = NoSquad;
 	last_unit->move_direction = d;
 	last_unit->shoot_direction = d;
-	last_unit->hits = last_unit->getmaximum(Hits);
+	last_unit->hits = last_unit->gethitsmax();
 	last_unit->player = player_index;
 	last_unit->start_time = game.time;
 	last_unit->stop();
@@ -514,7 +517,7 @@ template<> int getstat<unitn>(unitn type, statn i) {
 	case Armor:
 		switch(type) {
 		case HeavyInfantry: case Trike: case RocketTank: return 1;
-		case Quad: case Tank: return 2;
+		case Quad: case Tank: case Harvester: return 2;
 		case AssaultTank: return 3;
 		default: return 0;
 		}
@@ -548,12 +551,5 @@ template<> int getstat<unitn>(unitn type, statn i) {
 		}
 	default:
 		return 0;
-	}
-}
-
-template<> int statable<uniti, unitn>::getmaximum(statn i) const {
-	switch(i) {
-	case Hits: return get(i) * 10;
-	default: return 0;
 	}
 }
