@@ -460,7 +460,7 @@ point building::nearestboard(point v, movementn move) const {
 	return find_smallest_position();
 }
 
-template<> int statable<buildingi, buildingn>::get(statn i) const {
+template<> int getstat<buildingn>(buildingn type, statn i) {
 	switch(i) {
 	case Hits:
 		return 20;
@@ -489,27 +489,17 @@ template<> int statable<buildingi, buildingn>::get(statn i) const {
 }
 
 bool isbuildplace(point v) {
-	auto size = last_building->getsize();
-	for(auto x = 0; x < size.x; x++) {
-		for(auto y = 0; y < size.y; y++) {
-			auto f = area.getfeature(v);
-			if(f != SlabFeature)
-				return false;
-		}
-	}
+	auto f = area.getfeature(v);
+	if(f != SlabFeature)
+		return false;
 	return true;
 }
 
 bool isbuildslabplace(point v) {
-	auto size = last_building->getsize();
-	for(auto x = 0; x < size.x; x++) {
-		for(auto y = 0; y < size.y; y++) {
-			if(area.get(v) != Rock)
-				return false;
-			auto f = area.getfeature(v);
-			if(f >= BuildingHead)
-				return false;
-		}
-	}
+	if(area.get(v) != Rock)
+		return false;
+	auto f = area.getfeature(v);
+	if(f >= BuildingHead)
+		return false;
 	return true;
 }

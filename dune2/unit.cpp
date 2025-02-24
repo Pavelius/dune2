@@ -502,7 +502,7 @@ void unit::update() {
 		return;
 }
 
-template<> int statable<uniti, unitn>::get(statn i) const {
+template<> int getstat<unitn>(unitn type, statn i) {
 	switch(i) {
 	case Hits:
 		switch(type) {

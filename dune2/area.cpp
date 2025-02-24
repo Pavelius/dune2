@@ -12,6 +12,7 @@ rect area_screen = {0, 40, 240, 200};
 
 static unsigned char map_count[area_frame_maximum];
 unsigned short path_map[areai::my][areai::mx];
+unsigned short path_map_copy[areai::my][areai::mx];
 
 static point stack[256 * 16];
 static size_t push_stack, pop_stack;
@@ -530,6 +531,26 @@ void blockarea(areai::fntest proc) {
 	}
 }
 
+static bool allow(point v, point size, areai::fntest proc) {
+	for(auto y = 0; y < size.y; y++) {
+		for(auto x = 0; x < size.x; x++) {
+			auto v1 = v + point(x, y);
+			if(!area.isvalid(v1))
+				return false;
+			if(!proc(v1))
+				return false;
+		}
+	}
+	return true;
+}
+
+void blockarea(areai::fntest proc, point size) {
+	for(auto y = 0; y < area.maximum.y; y++) {
+		for(auto x = 0; x < area.maximum.x; x++)
+			path_map[y][x] = allow(point(x, y), size, proc) ? 0 : BlockArea;
+	}
+}
+
 void setareascout(point v, int player_index) {
 	area.set(v, player_index, Explored);
 	area.set(v, player_index, Visible);
@@ -737,4 +758,8 @@ void areai::patch(point v, point size, const tilepatch* tiles, size_t count, boo
 	for(auto y = v.y; y < v.y + size.y; y++)
 		for(auto x = v.x; x < v.x + size.x; x++)
 			patch(point(x, y), tiles, count, apply);
+}
+
+void copy_path(unsigned short* d, const unsigned short* s) {
+	memcpy(d, s, sizeof(path_map));
 }

@@ -353,10 +353,12 @@ static void show_pallette(resid id, int dy) {
 
 static void change_debug() {
 	debug_toggle = !debug_toggle;
-	//area.blockcontrol();
-	//area.controlwave(area_spot, allowcontrol, 32);
-	//blockarea(isunitpossible);
-	//blockunits(0);
+	//if(debug_toggle) {
+	//	area.blockcontrol();
+	//	area.controlwave(area_spot, allowcontrol, 32);
+	//}
+	// blockarea(isunitpossible);
+	// blockunits(0);
 }
 
 void view_debug_input() {

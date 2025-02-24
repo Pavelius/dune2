@@ -94,12 +94,15 @@ extern terrainn map_terrain[area_frame_maximum];
 extern featuren map_features[area_frame_maximum];
 extern unsigned short map_alternate[area_frame_maximum];
 extern unsigned short path_map[areai::my][areai::mx];
+extern unsigned short path_map_copy[areai::my][areai::mx];
 
 void area_initialization();
 void area_generate(areasizen n, int number_of_players);
 bool allowcontrol(point v);
 bool allowbuild(point v);
 void blockarea(areai::fntest proc);
+void blockarea(areai::fntest proc, point size);
+void copy_path(unsigned short* d, const unsigned short* s);
 void setareascout(point v, int player_index);
 void setnofeature(point v, int param);
 

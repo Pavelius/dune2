@@ -1,6 +1,7 @@
 ChoosePlacement: Placement
 ChoosePlacementInfo: Place buidling on rock
 
+Dune: Dune
 Mountain: Mountain
 Rock: Rock
 Sand: Sand

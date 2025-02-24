@@ -57,7 +57,7 @@ static void debug_control() {
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
-			if(path_map[v.y][v.x] == 0 || path_map[v.y][v.x] >= 0xFF00)
+			if(path_map[v.y][v.x] >= 0xFF00)
 				continue;
 			caret.x = x * area_tile_width + push.caret.x + 1;
 			caret.y = y * area_tile_height + push.caret.y + 1;
@@ -79,6 +79,11 @@ static void debug_map_message() {
 		sb.adds(pb->getname());
 	text(sb.text, -1, TextStroke); caret.y += texth();
 	sb.clear(); sb.add("Frame %1i", area.getframe(area_spot));
+	auto cost = path_map[area_spot.y][area_spot.x];
+	if(cost == BlockArea)
+		sb.adds("Blocked");
+	else
+		sb.adds("Path %1i", cost);
 	text(sb.text, -1, TextStroke); caret.y += texth();
 	sb.clear(); sb.add("Mouse %1i, %2i", hot.mouse.x, hot.mouse.y);
 	text(sb.text, -1, TextStroke); caret.y += texth();
@@ -310,6 +315,21 @@ static void rectb_hilite() {
 	fore = push;
 }
 
+static void rectb_hilite(bool crossed) {
+	auto push = fore;
+	auto push_caret = caret;
+	fore = get_flash(colors::gray, colors::white, 512, 256);
+	rectb();
+	if(crossed) {
+		line(caret.x + width - 1, caret.y + height - 1);
+		caret = push_caret;
+		caret.y += height - 1;
+		line(caret.x + width - 1, push_caret.y);
+	}
+	caret = push_caret;
+	fore = push;
+}
+
 static void paint_cursor(int avatar, point offset, bool choose_mode) {
 	auto v = area_spot - area_origin;
 	if(!area.isvalid(v))
@@ -320,7 +340,7 @@ static void paint_cursor(int avatar, point offset, bool choose_mode) {
 		execute(buttonparam, (long)area_spot);
 }
 
-static void paint_cursor(point size, bool choose_mode) {
+static void paint_cursor(point size, bool choose_mode, bool disabled) {
 	auto v = area_spot - area_origin;
 	if(!area.isvalid(v))
 		return;
@@ -328,7 +348,7 @@ static void paint_cursor(point size, bool choose_mode) {
 	width = 16 * size.x;
 	height = 16 * size.y;
 	caret = map_to_screen(v);
-	rectb_hilite();
+	rectb_hilite(disabled);
 	if(choose_mode && hot.key == MouseLeft && hot.pressed)
 		execute(buttonparam, (long)area_spot);
 }
@@ -336,7 +356,7 @@ static void paint_cursor(point size, bool choose_mode) {
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
-	// debug_control();
+	debug_control();
 	paint_cursor(5, {8, 8}, false);
 	debug_map_message();
 }
@@ -994,7 +1014,8 @@ static void paint_choose_terrain() {
 
 static void paint_choose_terrain_placement() {
 	paint_choose_panel("ChoosePlacement", 17, (long)point(-1000, -1000));
-	paint_cursor(placement_size, true);
+	auto disabled = path_map[area_spot.y][area_spot.x] == BlockArea;
+	paint_cursor(placement_size, !disabled, disabled);
 }
 
 static void human_order() {
@@ -1037,7 +1058,7 @@ static void paint_unit_orders() {
 static void paint_unit_icon(const uniti& ei) {
 	pushrect push; width = 30; height = 16;
 	auto push_clip = clipping; setcliparea();
-	image(caret.x-1, caret.y-1, gres(SHAPES), ei.frame_avatar, ImageNoOffset);
+	image(caret.x - 1, caret.y - 1, gres(SHAPES), ei.frame_avatar, ImageNoOffset);
 	clipping = push_clip;
 }
 
@@ -1076,7 +1097,13 @@ static void human_build() {
 		p->progress();
 	else if(p->getprogress() == 100) {
 		auto push = placement_size;
+		auto build = (buildingn)((buildingi*)p->getbuild())->getindex();
 		placement_size = p->getbuildsize();
+		if(build == Slab || build == Slab4)
+			blockarea(isbuildslabplace, placement_size);
+		else
+			blockarea(isbuildplace, placement_size);
+		// area.controlwave(p->position, allowcontrol, 32);
 		p->construct(choose_placement());
 		placement_size = push;
 	} else if(bsdata<uniti>::have(p->getbuild())) {
