@@ -58,24 +58,32 @@ static void set_terrain_small_circle(point v, int value) {
 }
 
 static void set_terrain_circle(point v, int value) {
-	set_terrain_circle(v, value, xrand(0, 5) - 2);
+	set_terrain_circle(v, value, xrand(1, 5) - 2);
 }
 
 static void set_terrain_big_circle(point v, int value) {
-	set_terrain_circle(v, value, xrand(0, 8) - 2);
+	set_terrain_circle(v, value, xrand(2, 6));
+}
+
+static void add_random(const rect& rc, areai::fnset proc, int value, int count) {
+	auto v = center(rc);
+	area.random(v, rc.width() / 4, rc.width() / 4, proc, value, count);
 }
 
 static void rock_region(rect rc) {
-	area.random(rc, set_terrain_big_circle, Rock, 12);
-	area.random(rc, set_terrain_circle, Mountain, 4);
+	set_terrain_big_circle(center(rc), Rock);
+	add_random(rc, set_terrain_big_circle, Rock, 5);
+	add_random(rc, set_terrain_circle, Mountain, 3);
 }
 
 static void dune_region(rect rc) {
-	area.random(rc, set_terrain_circle, Dune, 10);
+	set_terrain_circle(center(rc), Dune);
+	add_random(rc, set_terrain_circle, Dune, 5);
 }
 
 static void spice_region(rect rc) {
-	area.random(rc, set_terrain_circle, Spice, 20);
+	set_terrain_circle(center(rc), Spice);
+	area.random(rc, set_terrain_circle, Spice, 7);
 	area.random(rc, set_terrain_small_circle, SpiceRich, 5);
 }
 

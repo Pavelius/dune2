@@ -73,6 +73,8 @@ struct areai {
 	void			patch(point v, point size, const tilepatch* tiles, size_t count, bool apply);
 	void			random(rect r, fnset proc, int value);
 	void			random(rect r, fnset proc, int value, int count);
+	void			random(point v, int s, int r, fnset proc, int value);
+	void			random(point v, int s, int r, fnset proc, int value, size_t count);
 	void			remove(unsigned char player, areaf t);
 	void			scouting(point v, unsigned char player, int radius);
 	void			scouting(point v, point size, unsigned char player, int radius);

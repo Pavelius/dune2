@@ -302,6 +302,20 @@ void areai::random(rect r, fnset proc, int value, int count) {
 		random(r, proc, value);
 }
 
+void areai::random(point v, int s, int r, fnset proc, int value) {
+	point m;
+	m.x = game_chance(50) ? v.x - s : v.x + s;
+	m.y = game_chance(50) ? v.y - s : v.y + s;
+	m.x += game_rand(-r, r);
+	m.y += game_rand(-r, r);
+	proc(m, value);
+}
+
+void areai::random(point v, int s, int r, fnset proc, int value, size_t count) {
+	for(size_t i = 0; i < count; i++)
+		random(v, s, r, proc, value);
+}
+
 terrainn areai::get(point v) const {
 	if(!isvalid(v))
 		return Sand;
