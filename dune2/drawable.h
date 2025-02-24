@@ -20,7 +20,6 @@ struct drawable {
 };
 struct draweffect : drawable {
 	point			from, to;
-	unsigned short	effect;
 };
 struct drawrenderi {
 	const char*		id; // Object name
@@ -32,6 +31,6 @@ struct drawrenderi {
 extern drawable* last_object;
 extern int object_padding;
 
-void add_effect(point screen, short unsigned param, unsigned long time, short unsigned owner);
-void add_effect(point from, point to, short unsigned param, unsigned long start_time, short unsigned owner);
+void add_effect(point screen, short unsigned param, unsigned long start_time);
+void add_effect(point from, point to, short unsigned param, unsigned long start_time);
 void paint_objects();

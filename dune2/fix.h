@@ -26,7 +26,6 @@ struct fixeffecti {
 	short unsigned	milliseconds;
 	resid			rid;
 	short unsigned	frame, count;
-	short unsigned	effect;
 	fnevent			apply;
 	fixn			next;
 	fnnext			next_proc;
