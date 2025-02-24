@@ -28,11 +28,12 @@ static void apply_damage() {
 	auto p = (draweffect*)last_object;
 	auto v = s2m(last_object->screen);
 	auto pe = find_unit(v);
+	auto value = p->effect;
 	if(pe)
-		pe->damage(p->effect);
+		pe->damage(value);
 	auto pb = find_building(area.getcorner(v));
 	if(pb)
-		pb->damage(p->effect);
+		pb->damage(value);
 }
 
 void add_effect(point v, fixn i) {

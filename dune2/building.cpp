@@ -12,7 +12,8 @@ BSLINK(unitn, uniti)
 
 static topicable* base_produce[] = {
 	BS(Slab), BS(Slab4),
-	BS(RadarOutpost), BS(Barracks), BS(Wor), BS(LightVehicleFactory), BS(Turret), BS(RocketTurret),
+	BS(RadarOutpost), BS(Barracks), BS(Wor), BS(LightVehicleFactory), BS(HeavyVehicleFactory),
+	BS(Turret), BS(RocketTurret),
 	BS(Refinery), BS(SpiceSilo),
 	BS(Windtrap),
 };
@@ -25,6 +26,11 @@ static topicable* wor_produce[] = {
 static topicable* lftr_produce[] = {
 	BS(Trike),
 	BS(Quad),
+};
+static topicable* hftr_produce[] = {
+	BS(Tank),
+	BS(AssaultTank),
+	BS(RocketTank),
 };
 static tilepatch refinery_tiles[] = {
 	{334, 342, BoardUnit},
@@ -44,7 +50,7 @@ BSDATA(buildingi) = {
 	{"Barracks", BARRAC, 62, 300, Shape2x2, {299, 300, 301, 302}, barrac_produce, {0, 200}},
 	{"WOR", WOR, 59, 500, Shape2x2, {285, 286, 288, 289}, wor_produce, {0, 300}, {}, {}, Barracks},
 	{"LightVehicleFactory", LITEFTRY, 55, 1000, Shape2x2, {241, 242, 248, 249}, lftr_produce, {0, 500}, {}, {}, RadarOutpost},
-	{"HeavyVehicleFactory", HVYFTRY, 56, 2000},
+	{"HeavyVehicleFactory", HVYFTRY, 56, 2000, Shape3x2, {254, 255, 256, 261, 262, 263}, hftr_produce, {}, {}, {}},
 	{"HighTechFacility"},
 	{"Slab", SLAB, 53, 2, Shape1x1, {126}},
 	{"Slab4", SLAB4, 71, 5, Shape2x2},
@@ -227,13 +233,6 @@ void building::damage(int value) {
 	}
 	if(game_chance(20))
 		add_effect(random_point(this), Smoke);
-}
-
-int	building::getlos() const {
-	switch(type) {
-	case RadarOutpost: return 8;
-	default: return 2;
-	}
 }
 
 void building::setbuild(const topicable* v) {
@@ -459,4 +458,32 @@ point building::nearestboard(point v, movementn move) const {
 		return {-10000, -10000};
 	block();
 	return find_smallest_position();
+}
+
+template<> int statable<buildingi, buildingn>::get(statn i) const {
+	switch(i) {
+	case Hits:
+		return 20;
+	case Armor:
+		return 1;
+	case Attacks:
+		switch(type) {
+		case Turret: return 1;
+		case RocketTurret: return 2;
+		default: return 0;
+		}
+	case LoS:
+		switch(type) {
+		case RadarOutpost: return 8;
+		default: return 2;
+		}
+	case Range:
+		switch(type) {
+		case Turret: return 5;
+		case RocketTurret: return 6;
+		default: return 0;
+		}
+	default:
+		return 0;
+	}
 }

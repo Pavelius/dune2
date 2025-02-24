@@ -156,6 +156,7 @@
     <ClCompile Include="objective.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
+    <ClCompile Include="stat.cpp" />
     <ClCompile Include="textscript.cpp" />
     <ClCompile Include="topicablea.cpp" />
     <ClCompile Include="view_build.cpp" />
@@ -229,6 +230,7 @@
     <ClInclude Include="moveable.h" />
     <ClInclude Include="objective.h" />
     <ClInclude Include="pointa.h" />
+    <ClInclude Include="stat.h" />
     <ClInclude Include="textscript.h" />
     <ClInclude Include="topicablea.h" />
     <ClInclude Include="view_menu.h" />

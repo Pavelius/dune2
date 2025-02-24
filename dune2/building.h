@@ -4,8 +4,6 @@
 #include "rect.h"
 #include "slice.h"
 #include "shape.h"
-#include "topicable.h"
-#include "typeable.h"
 #include "unit.h"
 
 enum fixn : unsigned char;
@@ -32,7 +30,7 @@ struct buildingi : topicable {
 	buildingn		getindex() const;
 };
 
-struct building : actable, typeable<buildingi, buildingn> {
+struct building : actable, statable<buildingi, buildingn> {
 	unsigned char	build_index, build_count;
 	unsigned short	build_spend;
 	unsigned short	unit_board;
@@ -46,7 +44,7 @@ struct building : actable, typeable<buildingi, buildingn> {
 	void			construct(point v);
 	void			damage(int value);
 	void			destroy();
-	int				getlos() const;
+	int				getlos() const { return get(LoS); }
 	int				getprogress() const;
 	topicable*		getbuild() const;
 	point			getbuildsize() const;

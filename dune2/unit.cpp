@@ -15,14 +15,14 @@
 
 BSDATAC(unit, 2048)
 BSDATA(uniti) = {
-	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0, {10, 0, 4, 4, 2, 0}},
-	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0, {4, 2, 2, 0, 2, 2}},
-	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0, {4, 2, 3, 1, 2, 2}},
-	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0, {5, 2, 10, 1, 3, 3}},
-	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0, {5, 2, 8, 2, 2, 3}},
-	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5, {6, 1, 5, 2, 2, 4}},
-	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15, {6, 2, 4, 3, 2, 4}},
-	{"RocketTank", RTANK, 73, 250, Tracked, FireRocket, UNITS2, 0, 35, {4, 2, 5, 1, 3, 8}},
+	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0},
+	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0},
+	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0},
+	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0},
+	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0},
+	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5},
+	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15},
+	{"RocketTank", RTANK, 73, 250, Tracked, FireRocket, UNITS2, 0, 35},
 };
 assert_enum(uniti, RocketTank)
 
@@ -94,13 +94,6 @@ bool unit::ismoving() const {
 
 short unsigned unit::getindex() const {
 	return this - bsdata<unit>::elements;
-}
-
-int	unit::getmaximum(statn v) const {
-	switch(v) {
-	case Hits: case Supply: return get(v) * 10;
-	default: return 0;
-	}
 }
 
 void unit::setposition(point v) {
@@ -507,4 +500,60 @@ void unit::update() {
 		return;
 	else if(closing())
 		return;
+}
+
+template<> int statable<uniti, unitn>::get(statn i) const {
+	switch(i) {
+	case Hits:
+		switch(type) {
+		case LightInfantry: case HeavyInfantry: return 4;
+		case Trike: case Quad: case RocketTank: return 5;
+		case Tank: case AssaultTank: return 6;
+		default: return 8;
+		}
+	case Armor:
+		switch(type) {
+		case HeavyInfantry: case Trike: case RocketTank: return 1;
+		case Quad: case Tank: return 2;
+		case AssaultTank: return 3;
+		default: return 0;
+		}
+	case Attacks:
+		switch(type) {
+		case Harvester: return 0;
+		case Tank: return 1;
+		default: return 2;
+		}
+	case LoS:
+		switch(type) {
+		case Trike: case RocketTank: return 3;
+		default: return 2;
+		}
+	case Range:
+		switch(type) {
+		case RocketTank: return 6;
+		case AssaultTank: return 4;
+		case Tank: return 3;
+		default: return 2;
+		}
+	case Speed:
+		switch(type) {
+		case Trike: return 10;
+		case Quad: return 8;
+		case RocketTank: case Tank: return 5;
+		case AssaultTank: return 4;
+		case HeavyInfantry: return 3;
+		case LightInfantry: return 2;
+		default: return 4;
+		}
+	default:
+		return 0;
+	}
+}
+
+template<> int statable<uniti, unitn>::getmaximum(statn i) const {
+	switch(i) {
+	case Hits: return get(i) * 10;
+	default: return 0;
+	}
 }

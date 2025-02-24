@@ -237,6 +237,9 @@
     <ClCompile Include="ability.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="stat.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -435,6 +438,12 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="ability.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="flagset.h">
+      <Filter>support</Filter>
+    </ClInclude>
+    <ClInclude Include="stat.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

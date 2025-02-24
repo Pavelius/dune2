@@ -5,26 +5,20 @@
 #include "order.h"
 #include "resid.h"
 #include "topicable.h"
-#include "typeable.h"
+#include "stat.h"
 
 enum unitn : unsigned char {
 	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank, RocketTank
 };
-enum statn : unsigned char {
-	Hits, Attacks, Speed, Armor, LoS, Range,
-};
 enum squadn : unsigned char;
 enum movementn : unsigned char;
-struct stati : nameable {
-};
 struct uniti : topicable {
 	movementn		move;
 	fixn			weapon;
 	resid			res;
 	unsigned char	frame, frame_shoot;
-	unsigned char	stats[Range + 1];
 };
-struct unit : moveable, fixable, typeable<uniti, unitn> {
+struct unit : moveable, fixable, statable<uniti, unitn> {
 	squadn			squad;
 	void			clear();
 	bool			closing() { return moveable::closing(getshootrange()); }
@@ -32,11 +26,8 @@ struct unit : moveable, fixable, typeable<uniti, unitn> {
 	void			damage(int value);
 	void			destroy();
 	void			fixstate(const char* id) const;
-	int				get(statn v) const { return geti().stats[v]; }
-	int				getmaximum(statn v) const;
 	short unsigned	getindex() const;
 	int				getlos() const { return get(LoS); }
-	const char*		getname() const { return geti().getname(); }
 	ordern			getpurpose() const;
 	int				getshootrange() const { return get(Range); }
 	int				getspeed() const;

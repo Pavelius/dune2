@@ -1034,6 +1034,13 @@ static void paint_unit_orders() {
 	button(Stop, 'G');
 }
 
+static void paint_unit_icon(const uniti& ei) {
+	pushrect push; width = 30; height = 16;
+	auto push_clip = clipping; setcliparea();
+	image(caret.x-1, caret.y-1, gres(SHAPES), ei.frame_avatar, ImageNoOffset);
+	clipping = push_clip;
+}
+
 static void paint_unit_list() {
 	auto push_caret = caret;
 	caret = push_caret + point(6, 8);
