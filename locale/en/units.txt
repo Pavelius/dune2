@@ -4,9 +4,12 @@ ChooseTargetInfo: Choose move target
 Units: Units
 
 AssaultTank: Assault Tank
+Carrier: Carrier
+Fregate: Fregate
 Harvester: Harvester
 HeavyInfantry: Heavy Infantry
 LightInfantry: Light Infantry
+Ornitopter: Ornitopter
 Quad: Quad
 RocketTank: Rocket
 Tank: Tank

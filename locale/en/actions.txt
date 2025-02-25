@@ -13,6 +13,7 @@ Ordos: Ordos
 
 BuildIt: Build It
 Cost: Cost
+CompleteProgress: Done %1i%%
 ChooseSubject: Select Subject
 GameTitle: Dune II: Building dinasty
 GameControls: Game controls

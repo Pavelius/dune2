@@ -70,7 +70,7 @@ static featuren find_feature_by_frame(int frame) {
 		if(frame >= e.frame && frame < e.frame + e.count)
 			return (featuren)(&e - bsdata<featurei>::elements);
 	}
-	for(auto n = ConstructionYard; n <= RocketTurret; n = (objectn)(n+1)) {
+	for(auto n = ConstructionYard; n <= RocketTurret; n = (objectn)(n + 1)) {
 		auto& s = bsdata<shapei>::elements[getshape(n)];
 		auto i = find_frame(getframes(n), s.count, frame);
 		if(i != -1) {
@@ -83,6 +83,7 @@ static featuren find_feature_by_frame(int frame) {
 		}
 	}
 	switch(frame) {
+	case 382: case 383: return BuildingLeft;
 	case 213: case 214: case 215:
 	case 223: case 224: case 225:
 	case 232: case 233: case 234:
@@ -99,10 +100,8 @@ static featuren find_feature_by_frame(int frame) {
 
 static void initialize_alternate() {
 	memset(map_alternate, 0, sizeof(map_alternate));
-	for(auto& e : tiles_animation) {
-		if(!map_alternate[e.from])
-			map_alternate[e.from] = e.to;
-	}
+	for(auto& e : tiles_animation)
+		map_alternate[e.from] = e.to;
 }
 
 static void add_feature_frame(int i) {
@@ -133,6 +132,7 @@ void area_initialization() {
 		map_terrain[i] = find_terrain_by_frame(i);
 		add_feature_frame(i);
 	}
+	add_feature_frame(382);
 	update_building_feature_frames();
 	update_building_special(Turret, 8);
 	update_building_special(RocketTurret, 8);

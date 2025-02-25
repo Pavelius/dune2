@@ -18,6 +18,8 @@ static const char* form_id;
 static unsigned long eye_clapping, eye_show_cursor, first_action;
 static fnevent paint_mentat_proc;
 
+void paint_build_shape(int x, int y, shapen shape);
+
 static void paint_eyes() {
 	auto rid = getres(last_fraction);
 	auto frame = 0;

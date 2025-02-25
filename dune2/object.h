@@ -13,6 +13,7 @@ enum objectn : unsigned char {
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
 	Slab, Slab4, Turret, RocketTurret,
 	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank, RocketTank,
+	Carrier, Fregate, Ornitopter,
 	LastObject,
 };
 

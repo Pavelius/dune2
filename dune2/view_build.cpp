@@ -49,21 +49,12 @@ static void paint_name_and_info(objectn subject) {
 	paint_field("Cost", getcreditscost(subject));
 }
 
-static void paint_build_shape(int x, int y, shapen shape) {
-	auto ps = gres(SHAPES);
-	image(x, y, ps, 52, 0);
-	auto& ei = bsdata<shapei>::elements[shape];
-	x++; y++;
-	for(auto i = 0; i < ei.count; i++)
-		image(x + 6 * ei.points[i].x, y + 6 * ei.points[i].y, ps, 12, 0);
-}
-
 static void paint_building_subject(objectn subject) {
 	auto ps = gres(getavatar(subject));
 	if(ps && ps->count)
 		image(width - 192, caret.y + 48, ps, get_frame(400) % ps->count, 0);
 	if(getparent(subject)==Building)
-		paint_build_shape(width - 32, caret.y + 136, getshape(subject));
+		paint_build_shape(width - 32, caret.y + 136, subject);
 	paint_name_and_info(subject);
 }
 

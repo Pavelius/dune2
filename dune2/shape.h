@@ -4,7 +4,7 @@
 #include "point.h"
 
 enum shapen : unsigned char {
-	Shape1x1, Shape2x2, Shape3x2, NoShape
+	Shape1x1, Shape2x2, Shape3x2, Shape3x3
 };
 struct shapei : nameable {
 	int			count;

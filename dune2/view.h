@@ -6,6 +6,7 @@
 typedef void(*fnevent)();
 
 enum resid : short unsigned;
+enum objectn : unsigned char;
 
 extern unsigned long animate_time, animate_delay, animate_stop;
 extern resid animate_id;
@@ -25,6 +26,7 @@ void initialize_view(const char* title, fnevent main_scene);
 void open_mentat();
 void open_building();
 void paint_background(color v);
+void paint_build_shape(int x, int y, objectn build);
 void paint_main_map();
 void paint_main_map_choose_terrain();
 void paint_main_map_choose_placement();

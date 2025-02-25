@@ -883,7 +883,7 @@ static void paint_selected_units() {
 	if(!human_selected)
 		return;
 	auto push_alpha = alpha;
-	alpha = imin(128, get_alpha(512, 600));
+	alpha = imin(128, get_alpha(128, 300));
 	auto ps = gres(MOUSE);
 	for(auto p : human_selected) {
 		auto v = s2i(p->screen);
@@ -1058,26 +1058,37 @@ static void paint_unit_orders() {
 }
 
 static void paint_unit_icon(objectn type) {
-	pushrect push; width = 30; height = 16;
+	pushfore push_fore;
+	pushrect push; width = 29; height = 15;
 	auto push_clip = clipping; setcliparea();
-	image(caret.x - 1, caret.y - 1, gres(SHAPES), geticonavatar(type), ImageNoOffset);
+	image(caret.x - 2, caret.y - 1, gres(SHAPES), geticonavatar(type), ImageNoOffset);
 	clipping = push_clip;
+	fore = form_button_light;
+	// rectb();
+	form_frame(form_button_light, form_button_dark);
 }
 
 static void paint_unit_list() {
-	auto push_caret = caret;
-	caret = push_caret + point(6, 8);
-	auto caret_origin = caret;
+	const int element_width = 30;
+	auto push_caret = caret; caret.y += 1;
+	// caret = push_caret + point(6, 8);
+	// caret = push_caret + point(-1, 0);
+	// auto caret_origin = caret;
 	for(auto p : human_selected) {
-		paint_unit(p->type, RightDown, RightDown, p->getplayer().color_index, 0);
-		caret.x += 16;
-		if(caret.x >= clipping.x2) {
-			caret.x = caret_origin.x;
+		// paint_unit(p->type, RightDown, RightDown, p->getplayer().color_index, 0);
+		paint_unit_icon(p->type);
+		caret.x += element_width + 1;
+		if(caret.x + element_width >= clipping.x2) {
+			caret.x = push_caret.x;
 			if(p != *human_selected.end() - 1)
 				caret.y += 16;
 		}
 	}
-	caret = push_caret;
+	if(caret.x != push_caret.x) {
+		caret.x = push_caret.x;
+		caret.y += 16;
+	}
+
 }
 
 static void paint_build_shape(int x, int y, shapen shape) {
@@ -1087,6 +1098,12 @@ static void paint_build_shape(int x, int y, shapen shape) {
 	x++; y++;
 	for(auto i = 0; i < ei.count; i++)
 		image(x + 6 * ei.points[i].x, y + 6 * ei.points[i].y, ps, 12, 0);
+}
+
+void paint_build_shape(int x, int y, objectn type) {
+	if(getparent(type) != Building)
+		return;
+	paint_build_shape(x, y, getshape(type));
 }
 
 static point choose_placement() {
@@ -1105,7 +1122,7 @@ static void human_build() {
 		copypath();
 		p->construct(choose_placement());
 		placement_size = push;
-	} else if(getparent(p->build)==Unit) {
+	} else if(getparent(p->build) == Unit) {
 		if(p->build_count < 199)
 			p->build_count++;
 	}
@@ -1116,7 +1133,7 @@ static void human_cancel() {
 	p->cancel();
 }
 
-static void paint_build_button(const char* format, int avatar, shapen shape, unsigned key, int count) {
+static void paint_build_button(const char* format, int avatar, objectn type, unsigned key, int count) {
 	bool pressed;
 	auto push_fore = fore;
 	if(true) {
@@ -1129,8 +1146,7 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 		form_frame(1);
 		setoffset(2, 2);
 		image(gres(SHAPES), avatar, 0);
-		if(shape != NoShape)
-			paint_build_shape(caret.x + 35, caret.y + 2, shape);
+		paint_build_shape(caret.x + 35, caret.y + 2, type);
 		if(count >= 2) {
 			pushrect push;
 			char temp[32]; stringbuilder sb(temp); sb.add("x%1i", count);
@@ -1149,18 +1165,17 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 }
 
 static void paint_build_button() {
+	auto build = last_building->build;
+	if(!build)
+		return;
 	auto push_height = height; height = 36;
 	setoffset(-1, 0);
-	auto build = last_building->build;
-	shapen shape = NoShape;
-	if(getparent(build)==Building)
-		shape = getshape(build);
 	const char* format = 0;
 	if(last_building->isworking())
-		format = str("%1i%%", last_building->getprogress());
+		format = str(getnm("CompleteProgress"), last_building->getprogress());
 	else
 		format = getnm("BuildIt");
-	paint_build_button(format, geticonavatar(build), shape, 'B', last_building->build_count + 1);
+	paint_build_button(format, geticonavatar(build), build, 'B', last_building->build_count + 1);
 	height = push_height;
 }
 
@@ -1246,11 +1261,8 @@ static void paint_unit_info() {
 		paint_unit_panel(geticonavatar(last_unit->type), last_unit->hits, last_unit->gethitsmax(), 0, 0);
 		paint_unit_orders();
 		last_unit = push_unit;
-	} else {
+	} else
 		paint_unit_list();
-		caret.y += 16 * 2;
-		paint_unit_orders();
-	}
 }
 
 static void paint_map_info(fnevent proc) {
