@@ -136,7 +136,7 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	mouse_input_scroll(origin, maximum, per_page, slide_height, bar_position, bar_height);
 	caret.y += bar_position;
 	height = bar_height;
-	button(0, 0, 0);
+	form_frame(1);
 }
 
 static void rectf_hilite() {
