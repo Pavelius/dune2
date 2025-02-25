@@ -1,3 +1,5 @@
+NoObject: No Object
+
 Buildings: Buildings
 
 Barracks: Barracks

@@ -134,6 +134,7 @@ void open_building() {
 	auto push = subjects;
 	last_building = (building*)hot.param;
 	last_building->buildlist();
+	subjects.sort();
 	build_current = subjects.find(last_building->build);
 	if(build_current == -1)
 		build_current = 0;

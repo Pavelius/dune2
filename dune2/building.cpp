@@ -13,36 +13,6 @@ BSDATA(tilepatch) = {
 };
 BSDATAF(tilepatch)
 
-//static topicable* base_produce[] = {
-//	BS(Slab), BS(Slab4),
-//	BS(RadarOutpost), BS(Barracks), BS(Wor), BS(LightVehicleFactory), BS(HeavyVehicleFactory),
-//	BS(Turret), BS(RocketTurret),
-//	BS(Refinery), BS(SpiceSilo),
-//	BS(Windtrap),
-//};
-
-//BSDATA(buildingi) = {
-//	{"ConstructionYard", CONSTRUC, 60, 0, Shape2x2, {292, 293, 295, 296}, base_produce, {}, {}},
-//	{"SpiceSilo", STORAGE, 69, 100, Shape2x2, {372, 373, 375, 376}, {}, {0}, {1000}},
-//	{"Starport", STARPORT, 57},
-//	{"Windtrap", WINDTRAP, 61, 100, Shape2x2, {304, 305, 306, 307}, {}, {}, {0, 1000}},
-//	{"Refinery", REFINERY, 64, 500, Shape3x2, {332, 333, 334, 337, 338, 339}, {}, {0, 1000}, {1000}, refinery_tiles},
-//	{"RadarOutpost", HEADQRTS, 70, 500, Shape2x2, {379, 380, 386, 387}, {}, {}, {}, {}, Refinery},
-//	{"RepairFacility", REPAIR},
-//	{"HouseOfIX"},
-//	{"Palace", PALACE, 54},
-//	{"Barracks", BARRAC, 62, 300, Shape2x2, {299, 300, 301, 302}, barrac_produce, {0, 200}},
-//	{"WOR", WOR, 59, 500, Shape2x2, {285, 286, 288, 289}, wor_produce, {0, 300}, {}, {}, Barracks},
-//	{"LightVehicleFactory", LITEFTRY, 55, 1000, Shape2x2, {241, 242, 248, 249}, lftr_produce, {0, 500}, {}, {}, RadarOutpost},
-//	{"HeavyVehicleFactory", HVYFTRY, 56, 2000, Shape3x2, {254, 255, 256, 261, 262, 263}, hftr_produce, {}, {}, {}},
-//	{"HighTechFacility"},
-//	{"Slab", SLAB, 53, 2, Shape1x1, {126}},
-//	{"Slab4", SLAB4, 71, 5, Shape2x2},
-//	{"Turret", TURRET, 67, 300, Shape1x1, {356}, {}, {}, {}, {}, RadarOutpost},
-//	{"RocketTurret", RTURRET, 68, 500, Shape1x1, {364}, {}, {}, {}, {}, RadarOutpost}
-//};
-//assert_enum(buildingi, RocketTurret)
-
 BSDATAC(building, 512)
 building* last_building;
 
@@ -55,16 +25,25 @@ void building::updateturrets() {
 		area.set(position, shoot_direction, getframes(type)[0]);
 }
 
-void add_building(point pt, objectn id) {
+objectn get_first_build(objectn type) {
+	for(auto i = ConstructionYard; i <= RocketTank; i = (objectn)(i + 1)) {
+		if(getbuild(i) == type)
+			return i;
+	}
+	return NoObject;
+}
+
+void add_building(point pt, objectn type) {
 	last_building = bsdata<building>::addz();
 	last_building->position = pt;
-	last_building->type = id;
+	last_building->type = type;
 	last_building->unit_board = 0xFFFF;
-	auto shape = getshape(id);
+	last_building->build = get_first_build(type);
+	auto shape = getshape(type);
 	last_building->hits = bsdata<shapei>::elements[shape].hits;
-	area.set(last_building->position, shape, getframes(id));
+	area.set(last_building->position, shape, getframes(type));
 	last_building->scouting();
-	last_building->shoot_direction = Down;
+	last_building->shoot_direction = Up;
 	last_building->player = player_index;
 	last_building->stop();
 	area.set(last_building->getrect(), setnofeature, 0);

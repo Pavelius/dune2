@@ -4,6 +4,7 @@
 #include "player.h"
 #include "pushvalue.h"
 #include "resid.h"
+#include "object.h"
 #include "objecta.h"
 #include "timer.h"
 #include "music.h"

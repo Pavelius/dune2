@@ -9,8 +9,8 @@ using namespace draw;
 int list_hilite;
 
 void correct_list(int& origin, int maximum, int per_page) {
-	if(origin + per_page > maximum + 1)
-		origin = maximum + 1 - per_page;
+	if(origin + per_page > maximum)
+		origin = maximum - per_page + 1;
 	if(origin < 0)
 		origin = 0;
 }
@@ -30,8 +30,7 @@ void correct_list(int& origin, int& current, int maximum, int per_page) {
 static void mouse_input_list(int& origin, int maximum, int row_height) {
 	if(!ishilite())
 		return;
-	auto per_row = width / row_height;
-	auto per_page = height / row_height;
+	auto per_page = (height + row_height - 1) / row_height;
 	switch(hot.key) {
 	case MouseWheelUp: execute(cbsetint, origin - 1, 0, &origin); break;
 	case MouseWheelDown: execute(cbsetint, origin + 1, 0, &origin); break;
@@ -45,7 +44,7 @@ static void mouse_input_list(int& origin, int maximum, point size) {
 	if(!ishilite())
 		return;
 	auto per_row = imax(1, width / size.x);
-	auto per_page = (height / size.y) * per_row;
+	auto per_page = ((height + size.y - 1) / size.y) * per_row;
 	switch(hot.key) {
 	case MouseWheelUp: execute(cbsetint, origin - per_row, 0, &origin); break;
 	case MouseWheelDown: execute(cbsetint, origin + per_row, 0, &origin); break;
@@ -60,7 +59,7 @@ static void cbsetintev() {
 
 static void input_list(int& origin, int& current, int maximum, point size) {
 	auto per_row = imax(1, width / size.x);
-	auto per_page = (height / size.y) * per_row;
+	auto per_page = ((height + size.y - 1) / size.y) * per_row;
 	switch(hot.key) {
 	case KeyLeft: execute(cbsetintev, current - 1, (long)&origin, &current); break;
 	case KeyRight: execute(cbsetintev, current + 1, (long)&origin, &current); break;
@@ -112,17 +111,17 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 		return;
 	mouse_input_list(origin, maximum, row_height);
 	pushrect push;
-	auto per_page = height / row_height;
+	auto per_page = (height + row_height - 1) / row_height;
 	auto dy = width; height = dy;
 	if(per_page >= maximum)
 		return;
 	auto slide_height = push.height - height * 2;
 	// Paint scroll up button
-	if(button("^", 0, AlignCenterCenter))
+	if(button(0, 0, AlignCenterCenter))
 		execute(cbsetint, origin - 1, 0, &origin);
 	// Paint scroll down button
 	caret.y = push.caret.y + push.height - height;
-	if(button("^", 0, AlignCenterCenter))
+	if(button(0, 0, AlignCenterCenter))
 		execute(cbsetint, origin + 1, 0, &origin);
 	// Paint slider zone
 	caret.y = push.caret.y + dy;
@@ -131,8 +130,8 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 	rectf();
 	alpha = push_alpha;
 	// Paint slider
-	auto bar_position = slide_height * origin / maximum;
-	auto bar_height = slide_height * per_page / maximum + 1;
+	auto bar_position = slide_height * origin / (maximum + 1);
+	auto bar_height = slide_height * per_page / (maximum + 1) + 1;
 	caret.y = push.caret.y + dy;
 	mouse_input_scroll(origin, maximum, per_page, slide_height, bar_position, bar_height);
 	caret.y += bar_position;
@@ -153,7 +152,7 @@ void paint_list(int& origin, int maximum, void* elements, size_t element_size, i
 		return;
 	pushrect push;
 	auto push_clip = clipping; setcliparea();
-	auto per_page = height / row_height;
+	auto per_page = (height + row_height - 1) / row_height;
 	correct_list(origin, maximum, per_page);
 	mouse_input_list(origin, maximum, row_height);
 	if(!ishilite())

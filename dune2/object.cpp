@@ -2,8 +2,9 @@
 #include "fix.h"
 #include "resid.h"
 #include "movement.h"
-#include "stat.h"
 #include "shape.h"
+#include "stat.h"
+#include "stringbuilder.h"
 #include "object.h"
 
 struct objecti : nameable {
@@ -24,18 +25,18 @@ BSDATA(objecti) = {
 	{"Ordos", House, FORDOS, 2, MENSHPO},
 	{"ConstructionYard", Building, CONSTRUC, 60, ICONS, {292, 293, 295, 296}},
 	{"SpiceSilo", Building, STORAGE, 69, ICONS, {372, 373, 375, 376}},
-	{"Starport", Building, STARPORT, 57},
+	{"Starport", Building, STARPORT, 63},
 	{"Windtrap", Building, WINDTRAP, 61, ICONS, {304, 305, 306, 307}},
 	{"Refinery", Building, REFINERY, 64, ICONS, {332, 333, 334, 337, 338, 339}},
 	{"RadarOutpost", Building, HEADQRTS, 70, ICONS, {379, 380, 386, 387}},
-	{"RepairFacility", Building, REPAIR},
-	{"HouseOfIX", Building},
+	{"RepairFacility", Building, REPAIR, 65},
+	{"HouseOfIX", Building, IX, 58},
 	{"Palace", Building, PALACE, 54},
 	{"Barracks", Building, BARRAC, 62, ICONS, {299, 300, 301, 302}},
 	{"WOR", Building, WOR, 59, ICONS, {285, 286, 288, 289}},
 	{"LightVehicleFactory", Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}},
 	{"HeavyVehicleFactory", Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}},
-	{"HighTechFacility", Building},
+	{"HighTechFacility", Building, HITCFTRY, 57},
 	{"Slab", Building, SLAB, 53, ICONS, {126}},
 	{"Slab4", Building, SLAB4, 71, ICONS},
 	{"Turret", Building, TURRET, 67, ICONS, {356}},
@@ -215,15 +216,23 @@ objectn getbuild(objectn type) {
 
 objectn getrequired(objectn type) {
 	switch(type) {
+	case LightVehicleFactory: return RadarOutpost;
 	case HeavyVehicleFactory: return LightVehicleFactory;
-	case Palace: return HeavyVehicleFactory;
+	case HighTechFacility: return HeavyVehicleFactory;
+	case RepairFacility: return LightVehicleFactory;
+	case Palace: return HouseOfIX;
+	case RadarOutpost: return Refinery;
 	case Turret: case RocketTurret: return RadarOutpost;
+	case Starport: return HighTechFacility;
+	case HouseOfIX: return Starport;
+	case Wor: return Barracks;
+	case SpiceSilo: return Refinery;
 	default: return NoObject;
 	}
 }
 
 const char* getnmo(objectn type) {
-	return bsdata<objecti>::elements[type].getname();
+	return getnm(bsdata<objecti>::elements[type].id);
 }
 
 const char* getido(objectn type) {

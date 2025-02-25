@@ -1,3 +1,2 @@
 ﻿Error in file `UnknownNames.txt`:
- Define translation for `Building`
- Define translation for `Unit`
+ Define translation for `NoObject`

@@ -10,39 +10,39 @@
 enum squadn : unsigned char;
 enum movementn : unsigned char;
 struct unit : moveable, fixable, objectable {
-	squadn			squad;
-	void			clear();
-	bool			closing() { return moveable::closing(getshootrange()); }
-	bool			crushing();
-	void			damage(int value);
-	void			destroy();
-	void			fixstate(const char* id) const;
-	short unsigned	gethitsmax() const { return get(Hits) * 10; }
-	short unsigned	getindex() const;
-	int				getlos() const { return get(LoS); }
-	ordern			getpurpose() const;
-	int				getshootrange() const { return get(Range); }
-	int				getspeed() const;
-	bool			ismoveorder() const { return position != order; }
-	bool			ismoving() const;
-	bool			isturret() const { return getframes(type)[1] != 0; }
-	bool			isharvest() const;
-	void			recovery();
-	bool			relax();
-	void			scouting();
-	void			setposition(point v);
-	void			setorder(point v);
-	void			setorder(ordern type, point v);
-	void			update();
-	bool			usecrushing();
+	squadn squad;
+	void clear();
+	bool closing() { return moveable::closing(getshootrange()); }
+	bool crushing();
+	void damage(int value);
+	void destroy();
+	void fixstate(const char* id) const;
+	short unsigned gethitsmax() const { return get(Hits) * 10; }
+	short unsigned getindex() const;
+	int getlos() const { return get(LoS); }
+	ordern getpurpose() const;
+	int getshootrange() const { return get(Range); }
+	int	getspeed() const;
+	bool ismoveorder() const { return position != order; }
+	bool ismoving() const;
+	bool isturret() const { return getframes(type)[1] != 0; }
+	bool isharvest() const;
+	void recovery();
+	bool relax();
+	void scouting();
+	void setposition(point v);
+	void setorder(point v);
+	void setorder(ordern type, point v);
+	void update();
+	bool usecrushing();
 private:
-	void			cantdothis();
-	void			cleanup();
-	bool			harvest();
-	bool			istrallfull() const;
-	bool			releasetile();
-	bool			returnbase();
-	bool			shoot();
+	void cantdothis();
+	void cleanup();
+	bool harvest();
+	bool istrallfull() const;
+	bool releasetile();
+	bool returnbase();
+	bool shoot();
 };
 extern unit *last_unit;
 

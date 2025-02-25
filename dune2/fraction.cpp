@@ -1,4 +1,5 @@
 #include "fraction.h"
+#include "object.h"
 
 objectn last_fraction;
 

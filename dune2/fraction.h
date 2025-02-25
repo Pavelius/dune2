@@ -1,6 +1,6 @@
 #pragma once
 
-#include "object.h"
+enum objectn : unsigned char;
 
 struct fractionable {
 	objectn		fraction;
