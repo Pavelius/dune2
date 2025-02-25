@@ -356,7 +356,7 @@ static void paint_cursor(point size, bool choose_mode, bool disabled) {
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
-	debug_control();
+	// debug_control();
 	paint_cursor(5, {8, 8}, false);
 	debug_map_message();
 }

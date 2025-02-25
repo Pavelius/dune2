@@ -65,6 +65,8 @@ int getcreditscost(objectn type) {
 	case SpiceSilo: return 100;
 	case Turret: return 300;
 	case Wor: return 500;
+	case LightInfantry: return 40;
+	case HeavyInfantry: return 70;
 	default: return 0;
 	}
 }
@@ -200,6 +202,8 @@ objectn getparent(objectn type) {
 
 objectn getbuild(objectn type) {
 	switch(type) {
+	case LightInfantry: return Barracks;
+	case HeavyInfantry: return Wor;
 	case Trike: case Quad:
 		return LightVehicleFactory;
 	case Tank: case RocketTank: case AssaultTank: case Harvester:

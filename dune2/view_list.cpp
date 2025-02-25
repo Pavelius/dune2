@@ -117,11 +117,11 @@ static void paint_scroll(int& origin, int maximum, int row_height) {
 		return;
 	auto slide_height = push.height - height * 2;
 	// Paint scroll up button
-	if(button(0, 0, AlignCenterCenter))
+	if(button("#U", 0, AlignCenterCenter))
 		execute(cbsetint, origin - 1, 0, &origin);
 	// Paint scroll down button
 	caret.y = push.caret.y + push.height - height;
-	if(button(0, 0, AlignCenterCenter))
+	if(button("#D", 0, AlignCenterCenter))
 		execute(cbsetint, origin + 1, 0, &origin);
 	// Paint slider zone
 	caret.y = push.caret.y + dy;

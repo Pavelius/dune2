@@ -25,9 +25,9 @@ void building::updateturrets() {
 		area.set(position, shoot_direction, getframes(type)[0]);
 }
 
-objectn get_first_build(objectn type) {
+objectn get_first_build() {
 	for(auto i = ConstructionYard; i <= RocketTank; i = (objectn)(i + 1)) {
-		if(getbuild(i) == type)
+		if(last_building->canbuild(i))
 			return i;
 	}
 	return NoObject;
@@ -38,9 +38,12 @@ void add_building(point pt, objectn type) {
 	last_building->position = pt;
 	last_building->type = type;
 	last_building->unit_board = 0xFFFF;
-	last_building->build = get_first_build(type);
 	auto shape = getshape(type);
 	last_building->hits = bsdata<shapei>::elements[shape].hits;
+	if(last_building->canbuild(Slab))
+		last_building->build = Slab;
+	else
+		last_building->build = get_first_build();
 	area.set(last_building->position, shape, getframes(type));
 	last_building->scouting();
 	last_building->shoot_direction = Up;
@@ -227,6 +230,18 @@ void building::cancel() {
 	}
 }
 
+bool building::canbuild(objectn build) const {
+	if(getbuild(build) != type)
+		return false;
+	auto parent = getparent(build);
+	if(parent == Building) {
+		auto required = getrequired(build);
+		if(required && !getplayer().objects[required])
+			return false;
+	}
+	return true;
+}
+
 bool building::canbuild() const {
 	switch(type) {
 	case ConstructionYard:
@@ -350,18 +365,9 @@ bool building::progress() {
 
 void building::buildlist() const {
 	subjects.clear();
-	for(auto i = NoObject; i < LastObject; i = (objectn)(i+1)) {
-		auto parent = getparent(type);
-		if(parent != Unit && parent != Building)
-			continue;
-		if(getbuild(i) != type)
-			continue;
-		if(parent == Building) {
-			auto required = getrequired(i);
-			if(required && !getplayer().objects[required])
-				continue;
-		}
-		subjects.add(i);
+	for(auto i = ConstructionYard; i < LastObject; i = (objectn)(i+1)) {
+		if(canbuild(i))
+			subjects.add(i);
 	}
 }
 

@@ -99,8 +99,10 @@ static featuren find_feature_by_frame(int frame) {
 
 static void initialize_alternate() {
 	memset(map_alternate, 0, sizeof(map_alternate));
-	for(auto& e : tiles_animation)
-		map_alternate[e.from] = e.to;
+	for(auto& e : tiles_animation) {
+		if(!map_alternate[e.from])
+			map_alternate[e.from] = e.to;
+	}
 }
 
 static void add_feature_frame(int i) {
@@ -113,10 +115,8 @@ static void add_feature_frame(int i) {
 
 static void update_building_feature_frames() {
 	for(auto& e : bsdata<tilepatch>()) {
-		//for(auto& tp : e.tiles) {
-		//	if(map_features[tp.from])
-		//		map_features[tp.to] = map_features[tp.from];
-		//}
+		if(map_features[e.from])
+			map_features[e.to] = map_features[e.from];
 	}
 }
 

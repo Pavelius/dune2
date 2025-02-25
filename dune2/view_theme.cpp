@@ -162,6 +162,32 @@ void form_shadow_effect() {
 	alpha = push_alpha;
 }
 
+static void clipart(char type) {
+	pushrect push;
+	pushfore push_fore;
+	auto origin = caret;
+	origin.x += width / 2;
+	origin.y += height / 2;
+	switch(type) {
+	case 'U':
+		fore = form_button_dark;
+		caret = origin + point(-3, 0);
+		line(caret.x + 4, caret.y);
+		caret = origin + point(-2, -1);
+		line(caret.x + 2, caret.y);
+		pixel(origin.x - 1, origin.y - 2);
+		break;
+	case 'D':
+		fore = form_button_dark;
+		caret = origin + point(-3, -1);
+		line(caret.x + 4, caret.y);
+		caret = origin + point(-2, 0);
+		line(caret.x + 2, caret.y);
+		pixel(origin.x - 1, origin.y + 1);
+		break;
+	}
+}
+
 bool button(const char* title, unsigned key, unsigned flags, bool paint_rect_black, int button_height, fnevent press_effect) {
 	pushrect push;
 	draw::height = button_height;
@@ -177,7 +203,10 @@ bool button(const char* title, unsigned key, unsigned flags, bool paint_rect_bla
 	if(current_focus == button_focus)
 		fore = colors::active;
 	setoffset(1, 2);
-	texta(title, flags);
+	if(title[0] == '#')
+		clipart(title[1]);
+	else
+		texta(title, flags);
 	fore = push_fore;
 	if(pressed) {
 		setoffset(-1, -2);

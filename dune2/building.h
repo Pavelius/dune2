@@ -21,6 +21,7 @@ struct building : actable, objectable {
 	void			block() const { setblock(0xFFFF); }
 	void			buildlist() const;
 	bool			canbuild() const;
+	bool			canbuild(objectn build) const;
 	void			cancel();
 	void			cleanup();
 	void			clear();
