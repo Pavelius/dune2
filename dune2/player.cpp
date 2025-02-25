@@ -30,15 +30,16 @@ void playerable::setplayer(const playeri* v) {
 }
 
 static void add_abilities(unsigned int* v1, const unsigned int* v2, int multiplier) {
-	for(auto i = Credits; i <= Supply; i = (abilityn)(i + 1))
+	for(auto i = Credits; i <= Supply; i = (statn)(i + 1))
 		v1[i] += v2[i] * multiplier;
 }
 
 void playeri::update() {
 	abilities[Energy] = 0;
 	memset(maximum, 0, sizeof(maximum));
-	for(size_t i = 0; i < sizeof(buildings) / sizeof(buildings[0]); i++) {
-		add_abilities(abilities, bsdata<buildingi>::elements[i].cost, buildings[i]);
-		add_abilities(maximum, bsdata<buildingi>::elements[i].surplus, buildings[i]);
+	for(auto i = ConstructionYard; i <= RocketTank; i = (objectn)(i+1)) {
+		abilities[Energy] += getenergycost(i) * objects[i];
+		maximum[Energy] += getenergyprofit(i) * objects[i];
+		maximum[Credits] += getspicecap(i) * objects[i];
 	}
 }

@@ -1,2 +1,3 @@
 ﻿Error in file `UnknownNames.txt`:
- Define translation for `Dune`
+ Define translation for `Building`
+ Define translation for `Unit`

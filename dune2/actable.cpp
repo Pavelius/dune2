@@ -21,7 +21,7 @@ point random_near(point v) {
 }
 
 const char* actable::getfractionname() const {
-	return getplayer().getfraction().getname();
+	return getnmo(getplayer().fraction);
 }
 
 void actable::fixstate(const char* id) const {

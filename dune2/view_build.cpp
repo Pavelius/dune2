@@ -2,15 +2,15 @@
 #include "building.h"
 #include "draw.h"
 #include "resid.h"
+#include "objecta.h"
 #include "shape.h"
-#include "topicablea.h"
 #include "view.h"
 #include "view_list.h"
 #include "view_theme.h"
 
 using namespace draw;
 
-int build_current;
+static int build_current;
 
 static void paint_background() {
 	const int right_panel = 212;
@@ -41,12 +41,12 @@ static void paint_field(const char* id, int value) {
 	texta(str("%1i", value), AlignRight);
 }
 
-static void paint_name_and_info(const topicable* subject) {
+static void paint_name_and_info(objectn subject) {
 	pushrect push;
 	caret.x = width - 190; caret.y += 24; width = 180;
-	text(subject->getname());
+	text(getnmo(subject));
 	caret.x += 120; width -= 120;
-	paint_field("Cost", subject->cost);
+	paint_field("Cost", getcreditscost(subject));
 }
 
 static void paint_build_shape(int x, int y, shapen shape) {
@@ -58,12 +58,12 @@ static void paint_build_shape(int x, int y, shapen shape) {
 		image(x + 6 * ei.points[i].x, y + 6 * ei.points[i].y, ps, 12, 0);
 }
 
-static void paint_building_subject(const topicable* subject) {
-	auto ps = gres(subject->mentat_avatar);
+static void paint_building_subject(objectn subject) {
+	auto ps = gres(getavatar(subject));
 	if(ps && ps->count)
 		image(width - 192, caret.y + 48, ps, get_frame(400) % ps->count, 0);
-	if(bsdata<buildingi>::have(subject))
-		paint_build_shape(width - 32, caret.y + 136, ((buildingi*)subject)->shape);
+	if(getparent(subject)==Building)
+		paint_build_shape(width - 32, caret.y + 136, getshape(subject));
 	paint_name_and_info(subject);
 }
 
@@ -81,7 +81,7 @@ static void paint_shadow_border() {
 	caret = push_caret;
 }
 
-static void paint_buttons(const topicable* subject) {
+static void paint_buttons(objectn subject) {
 	auto push_font = font;
 	pushrect push;
 	font = gres(FONT8);
@@ -90,7 +90,7 @@ static void paint_buttons(const topicable* subject) {
 	width = 119;
 	height = (getheight() - caret.y) / 2;
 	if(button(getnm("BuildIt"), KeyEnter, AlignCenterCenter, true, height - 1, form_press_button_effect))
-		execute(buttonok, (long)subject);
+		execute(buttonok);
 	paint_shadow_border();
 	caret.y += height;
 	//if(caret.y + height != getheight())
@@ -101,8 +101,8 @@ static void paint_buttons(const topicable* subject) {
 }
 
 static void paint_subject(int index, void* data) {
-	auto pd = *((topicable**)data);
-	image(gres(SHAPES), pd->frame_avatar, 0);
+	auto type = *((objectn*)data);
+	image(gres(SHAPES), geticonavatar(type), 0);
 }
 
 static void paint_elements() {
@@ -121,7 +121,7 @@ static void paint_main() {
 	paint_background();
 	paint_spice();
 	paint_elements();
-	auto subject = (topicable*)subjects.data[build_current];
+	auto subject = subjects.data[build_current];
 	paint_building_subject(subject);
 	paint_buttons(subject);
 }
@@ -130,25 +130,16 @@ static bool choose_build() {
 	return show_scene(paint_main, 0, 0) != 0;
 }
 
-static int find_index(const void* pv) {
-	auto index = 0;
-	for(auto p : subjects) {
-		if(p == pv)
-			return index;
-		index++;
-	}
-	return -1;
-}
-
 void open_building() {
 	auto push = subjects;
 	last_building = (building*)hot.param;
 	last_building->buildlist();
-	build_current = find_index(last_building->getbuild());
-	if(!build_current)
+	build_current = subjects.find(last_building->build);
+	if(build_current == -1)
 		build_current = 0;
 	if(choose_build()) {
-		last_building->setbuild(subjects[build_current]);
+		last_building->build = subjects[build_current];
 		last_building->progress();
 	}
+	subjects = push;
 }

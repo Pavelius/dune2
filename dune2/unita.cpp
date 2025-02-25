@@ -1,4 +1,5 @@
 #include "area.h"
+#include "bsdata.h"
 #include "unita.h"
 #include "view.h"
 

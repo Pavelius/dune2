@@ -3,8 +3,9 @@
 
 // Sand, Dune, Spice, SpiceRich, SpiceBlow, Rock, Mountain,
 BSDATA(movementi) = {
-	{"Footed", {4, 5, 4, 4, 5, 4, 10}},
+	{"NoMovement"},
+	{"Footed", {4, 5, 4, 4, 5, 4, 6}},
 	{"Wheeled", {4, 4, 4, 4, 5, 8, 0xFF}},
 	{"Tracked", {5, 5, 5, 5, 5, 4, 0xFF}},
-	{"Flying", {1, 1, 1, 1, 1, 1, 1}},
+	{"Flying", {4, 4, 4, 4, 4, 4, 4}},
 };

@@ -132,7 +132,8 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="ability.cpp" />
+    <ClCompile Include="objecta.cpp" />
+    <ClCompile Include="stat.cpp" />
     <ClCompile Include="actable.cpp" />
     <ClCompile Include="answers.cpp" />
     <ClCompile Include="archive.cpp" />
@@ -141,7 +142,6 @@
     <ClCompile Include="area_initialization.cpp" />
     <ClCompile Include="array.cpp" />
     <ClCompile Include="building.cpp" />
-    <ClCompile Include="collection.cpp" />
     <ClCompile Include="color.cpp" />
     <ClCompile Include="direction.cpp" />
     <ClCompile Include="draw.cpp" />
@@ -156,15 +156,12 @@
     <ClCompile Include="objective.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
-    <ClCompile Include="stat.cpp" />
     <ClCompile Include="textscript.cpp" />
-    <ClCompile Include="topicablea.cpp" />
+    <ClCompile Include="object.cpp" />
     <ClCompile Include="view_build.cpp" />
     <ClCompile Include="view_console.cpp" />
     <ClCompile Include="view_menu.cpp" />
     <ClCompile Include="view_theme.cpp" />
-    <ClCompile Include="topic.cpp" />
-    <ClCompile Include="tree.cpp" />
     <ClCompile Include="view_indicator.cpp" />
     <ClCompile Include="io_stream.cpp" />
     <ClCompile Include="locale.cpp" />
@@ -207,7 +204,9 @@
     <ClCompile Include="win_time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="ability.h" />
+    <ClInclude Include="my_initialize_list.h" />
+    <ClInclude Include="objecta.h" />
+    <ClInclude Include="storeable.h" />
     <ClInclude Include="actable.h" />
     <ClInclude Include="adat.h" />
     <ClInclude Include="answers.h" />
@@ -216,7 +215,6 @@
     <ClInclude Include="array.h" />
     <ClInclude Include="bsdata.h" />
     <ClInclude Include="building.h" />
-    <ClInclude Include="collection.h" />
     <ClInclude Include="color.h" />
     <ClInclude Include="direction.h" />
     <ClInclude Include="draw.h" />
@@ -232,12 +230,9 @@
     <ClInclude Include="pointa.h" />
     <ClInclude Include="stat.h" />
     <ClInclude Include="textscript.h" />
-    <ClInclude Include="topicablea.h" />
     <ClInclude Include="view_menu.h" />
     <ClInclude Include="view_theme.h" />
-    <ClInclude Include="topic.h" />
-    <ClInclude Include="topicable.h" />
-    <ClInclude Include="tree.h" />
+    <ClInclude Include="object.h" />
     <ClInclude Include="view_indicator.h" />
     <ClInclude Include="movement.h" />
     <ClInclude Include="order.h" />
@@ -267,7 +262,6 @@
     <ClInclude Include="terrain.h" />
     <ClInclude Include="thread.h" />
     <ClInclude Include="timer.h" />
-    <ClInclude Include="typeable.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="unita.h" />
     <ClInclude Include="video.h" />
@@ -290,6 +284,7 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />
+    <None Include="cpp.hint" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

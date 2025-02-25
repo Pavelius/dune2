@@ -57,7 +57,7 @@ static void apply_damage() {
 	auto n = get_damage(f);
 	auto pu = find_unit(v);
 	if(pu) {
-		if(is_resist(f, pu->geti().move))
+		if(is_resist(f, getmove(pu->type)))
 			pu->damage(n / 2);
 		else
 			pu->damage(n);

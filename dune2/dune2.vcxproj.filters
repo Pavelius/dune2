@@ -141,9 +141,6 @@
     <ClCompile Include="fix.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="collection.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="squad.cpp">
       <Filter>logic</Filter>
     </ClCompile>
@@ -180,22 +177,13 @@
     <ClCompile Include="fraction.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="tree.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
     <ClCompile Include="view_mentat.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
-    <ClCompile Include="topic.cpp">
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="view_theme.cpp">
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="view_build.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
-    <ClCompile Include="topicablea.cpp">
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="pointa.cpp">
@@ -234,10 +222,13 @@
     <ClCompile Include="objective.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="ability.cpp">
+    <ClCompile Include="stat.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="stat.cpp">
+    <ClCompile Include="object.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
+    <ClCompile Include="objecta.cpp">
       <Filter>logic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -353,9 +344,6 @@
     <ClInclude Include="sprite_util.h">
       <Filter>utils</Filter>
     </ClInclude>
-    <ClInclude Include="typeable.h">
-      <Filter>logic</Filter>
-    </ClInclude>
     <ClInclude Include="drawable.h">
       <Filter>logic</Filter>
     </ClInclude>
@@ -370,9 +358,6 @@
     </ClInclude>
     <ClInclude Include="fix.h">
       <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="collection.h">
-      <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="unita.h">
       <Filter>logic</Filter>
@@ -398,19 +383,10 @@
     <ClInclude Include="view_list.h">
       <Filter>logic</Filter>
     </ClInclude>
-    <ClInclude Include="tree.h">
-      <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="topic.h">
-      <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="topicable.h">
+    <ClInclude Include="object.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="view_theme.h">
-      <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="topicablea.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="pointa.h">
@@ -437,7 +413,7 @@
     <ClInclude Include="objective.h">
       <Filter>logic</Filter>
     </ClInclude>
-    <ClInclude Include="ability.h">
+    <ClInclude Include="storeable.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="flagset.h">
@@ -445,6 +421,12 @@
     </ClInclude>
     <ClInclude Include="stat.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="objecta.h">
+      <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="my_initialize_list.h">
+      <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -482,6 +464,9 @@
   <ItemGroup>
     <None Include="..\README.md">
       <Filter>doc</Filter>
+    </None>
+    <None Include="cpp.hint">
+      <Filter>support</Filter>
     </None>
   </ItemGroup>
 </Project>

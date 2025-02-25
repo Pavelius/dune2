@@ -4,9 +4,8 @@
 #include "player.h"
 #include "pushvalue.h"
 #include "resid.h"
-#include "tree.h"
+#include "objecta.h"
 #include "timer.h"
-#include "topic.h"
 #include "music.h"
 #include "view.h"
 #include "view_list.h"
@@ -17,10 +16,9 @@ using namespace draw;
 static const char* form_id;
 static unsigned long eye_clapping, eye_show_cursor, first_action;
 static fnevent paint_mentat_proc;
-static tree topics;
 
 static void paint_eyes() {
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
+	auto rid = getres(last_fraction);
 	auto frame = 0;
 	if(time_animate(eye_clapping, 1, 16))
 		frame = 4;
@@ -41,7 +39,7 @@ static void paint_eyes() {
 }
 
 static void paint_action() {
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
+	auto rid = getres(last_fraction);
 	auto frame = 0;
 	auto ps = gres(rid);
 	if(time_animate(first_action, 20, 32)) {
@@ -59,7 +57,7 @@ static void paint_action() {
 
 static void paint_speaking_mouth() {
 	static int speak_frames[] = {5, 6, 5, 6, 5, 6, 5, 6, 7, 6, 5, 6, 7, 8, 9};
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
+	auto rid = getres(last_fraction);
 	auto frame = speak_frames[get_frame() % (sizeof(speak_frames) / sizeof(speak_frames[0]))];
 	switch(rid) {
 	case MENSHPA: image(caret.x + 40, caret.y + 96, gres(rid), frame, 0); break;
@@ -106,20 +104,21 @@ static void paint_mentat_subject_ni() {
 }
 
 static bool allow_brief_row(int index, void* data) {
-	auto po = (tree::element*)data;
-	return !po->is(tree::Group);
+	auto type = *((objectn*)data);
+	return getparent(type) != NoObject;
 }
 
 static void paint_brief_row(int index, void* data) {
 	pushrect push;
 	auto push_fore = fore;
 	auto push_fore_stroke = fore_stroke;
-	auto po = (tree::element*)data;
-	auto p = (nameable*)po->data;
-	caret.x += po->level * 12; width -= po->level * 12;
-	if(po->level == 0)
+	auto type = *((objectn*)data);
+	if(getparent(type)) {
+		caret.x += 12;
+		width -= 12;
+	} else
 		fore = color(80, 120, 212);
-	text(p->getname(), -1, 0);
+	text(getnmo(type), -1, 0);
 	fore_stroke = push_fore_stroke;
 	fore = push_fore;
 }
@@ -136,7 +135,7 @@ static void paint_mentat_list() {
 	fore = push_fore;
 	font = gres(FONT6);
 	setoffset(1, 1);
-	paint_list_and_scroll(origin, topics.count, topics.data, topics.element_size, 7, paint_brief_row, allow_brief_row, buttonparam);
+	paint_list_and_scroll(origin, subjects.count, subjects.data, sizeof(subjects.data[0]), 7, paint_brief_row, allow_brief_row, buttonparam);
 }
 
 static void paint_mentat_information() {
@@ -148,7 +147,7 @@ static void paint_mentat_information() {
 
 static void paint_mentat_back() {
 	paint_mentat_information();
-	auto rid = bsdata<fractioni>::elements[last_fraction].mentat_face;
+	auto rid = getres(last_fraction);
 	switch(rid) {
 	case MENSHPA: image(caret.x + 128, caret.y + 128, gres(rid), 10, 0); break;
 	case MENSHPH: image(caret.x + 128, caret.y + 104, gres(rid), 10, 0); break;
@@ -158,7 +157,12 @@ static void paint_mentat_back() {
 
 static void paint_background() {
 	paint_background(colors::black);
-	image(gres(MENTATS), bsdata<fractioni>::elements[last_fraction].mentat_frame, 0);
+	switch(last_fraction) {
+	case Atreides: image(gres(MENTATS), 0, 0); break;
+	case Harkonens: image(gres(MENTATS), 1, 0); break;
+	case Ordos: image(gres(MENTATS), 2, 0); break;
+	default: image(gres(MENTATS), 3, 0); break;
+	}
 }
 
 static void paint_exit() {
@@ -216,23 +220,29 @@ void paint_mentat_silent() {
 }
 
 static int compare_topic_by_name(const void* v1, const void* v2) {
-	auto p1 = (tree::element*)v1;
-	auto p2 = (tree::element*)v2;
-	return szcmp(((nameable*)p1->data)->getname(), ((nameable*)p2->data)->getname());
+	auto i1 = *((objectn*)v1);
+	auto i2 = *((objectn*)v2);
+	return szcmp(getnmo(i1), getnmo(i2));
+}
+
+static void add_group(objectn parent) {
+	auto i0 = subjects.count;
+	subjects.add(parent);
+	auto i1 = subjects.count;
+	subjects.addchild(parent);
+	auto i2 = subjects.count;
+	if(i1 == i2) {
+		subjects.count = i0;
+		return;
+	}
+	qsort(subjects.data + i1, i2 - i1, sizeof(subjects.data[0]), compare_topic_by_name);
 }
 
 static void update_topics() {
-	topics.clear();
-	for(auto& e : bsdata<topici>()) {
-		topics.addgroup(&e, 0, 0);
-		auto i1 = topics.count;
-		auto count = e.source.count;
-		for(size_t i = e.start; i < count; i++)
-			topics.addchild(e.source.ptr(i), 0);
-		auto i2 = topics.count;
-		if(i1 != i2)
-			qsort(topics.ptr(i1), i2 - i1, topics.element_size, compare_topic_by_name);
-	}
+	subjects.clear();
+	add_group(House);
+	add_group(Unit);
+	add_group(Building);
 }
 
 static void* choose_mentat_topic() {
@@ -247,7 +257,7 @@ static void show_mentat_subject(const char* id, resid rid) {
 	pushvalue push_id(form_id, id);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject);
-	auto pi = getnme(ids(id, mainplayer().getfraction().id, "Info"));
+	auto pi = getnme(ids(id, getido(mainplayer().fraction), "Info"));
 	if(!pi)
 		pi = getnme(ids(id, "Info"));
 	reset_form_animation();
@@ -269,7 +279,7 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 	pushvalue push_header(form_header);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject_ni);
-	auto pi = getnme(str("%1%2%3.2i", mainplayer().getfraction().id, id, level));
+	auto pi = getnme(str("%1%2%3.2i", getido(mainplayer().fraction), id, level));
 	if(!pi)
 		return;
 	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
@@ -295,11 +305,11 @@ void open_mentat() {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
 	while(true) {
-		auto line = (tree::element*)choose_mentat_topic();
-		if(!line || !line->data)
+		auto line = (objectn*)choose_mentat_topic();
+		if(!line)
 			break;
-		auto subject = (topicable*)line->data;
-		show_mentat_subject(subject->id, subject->mentat_avatar);
+		auto subject = *line;
+		show_mentat_subject(getido(subject), getavatar(subject));
 	}
 	music_play(0);
 }

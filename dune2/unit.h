@@ -4,21 +4,12 @@
 #include "fix.h"
 #include "order.h"
 #include "resid.h"
-#include "topicable.h"
+#include "object.h"
 #include "stat.h"
 
-enum unitn : unsigned char {
-	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank, RocketTank
-};
 enum squadn : unsigned char;
 enum movementn : unsigned char;
-struct uniti : topicable {
-	movementn		move;
-	fixn			weapon;
-	resid			res;
-	unsigned char	frame, frame_shoot;
-};
-struct unit : moveable, fixable, statable<uniti, unitn> {
+struct unit : moveable, fixable, objectable {
 	squadn			squad;
 	void			clear();
 	bool			closing() { return moveable::closing(getshootrange()); }
@@ -34,7 +25,7 @@ struct unit : moveable, fixable, statable<uniti, unitn> {
 	int				getspeed() const;
 	bool			ismoveorder() const { return position != order; }
 	bool			ismoving() const;
-	bool			isturret() const { return geti().frame_shoot != 0; }
+	bool			isturret() const { return getframes(type)[1] != 0; }
 	bool			isharvest() const;
 	void			recovery();
 	bool			relax();
@@ -55,7 +46,7 @@ private:
 };
 extern unit *last_unit;
 
-void add_unit(point pt, unitn id, direction d);
+void add_unit(point pt, objectn id, direction d);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);

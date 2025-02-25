@@ -446,20 +446,22 @@ static void paint_harvest(direction d) {
 	}
 }
 
-static void paint_unit_harvest(const uniti& e, direction move_direction, unsigned char color_index) {
+static void paint_unit_harvest(objectn type, direction move_direction, unsigned char color_index) {
 	update_pallette_by_player(color_index);
-	paint_platform(gres(e.res), e.frame, move_direction);
+	paint_platform(gres(getres(type)), getframes(type)[0], move_direction);
 	paint_harvest(move_direction);
 }
 
-static void paint_unit(const uniti& e, direction move_direction, direction shoot_direction, unsigned char color_index, int index) {
+static void paint_unit(objectn type, direction move_direction, direction shoot_direction, unsigned char color_index, int index) {
 	update_pallette_by_player(color_index);
-	if(e.move == Footed)
-		paint_foot(gres(e.res), e.frame + index, move_direction);
+	auto ps = gres(getres(type));
+	auto pf = getframes(type);
+	if(getmove(type) == Footed)
+		paint_foot(ps, pf[0] + index, move_direction);
 	else {
-		paint_platform(gres(e.res), e.frame, move_direction);
-		if(e.frame_shoot)
-			paint_platform(gres(e.res), e.frame_shoot, shoot_direction);
+		paint_platform(ps, pf[0], move_direction);
+		if(pf[1])
+			paint_platform(ps, pf[1], shoot_direction);
 	}
 }
 
@@ -488,9 +490,9 @@ static void paint_unit() {
 	if(!area.is(p->position, player_index, Visible))
 		return;
 	if(p->isharvest())
-		paint_unit_harvest(p->geti(), p->move_direction, p->getplayer().color_index);
+		paint_unit_harvest(p->type, p->move_direction, p->getplayer().color_index);
 	else {
-		paint_unit(p->geti(), p->move_direction, p->shoot_direction,
+		paint_unit(p->type, p->move_direction, p->shoot_direction,
 			p->getplayer().color_index,
 			get_animation_frame(p->screen, m2sc(p->position)) % 4);
 	}
@@ -693,7 +695,7 @@ static void paint_radar() {
 	width = 64; height = 64;
 	caret.x = getwidth() - width;
 	caret.y = getheight() - height;
-	if(mainplayer().buildings[RadarOutpost])
+	if(mainplayer().objects[RadarOutpost])
 		paint_radar_on();
 	else
 		paint_radar_off();
@@ -1055,10 +1057,10 @@ static void paint_unit_orders() {
 	button(Stop, 'G');
 }
 
-static void paint_unit_icon(const uniti& ei) {
+static void paint_unit_icon(objectn type) {
 	pushrect push; width = 30; height = 16;
 	auto push_clip = clipping; setcliparea();
-	image(caret.x - 1, caret.y - 1, gres(SHAPES), ei.frame_avatar, ImageNoOffset);
+	image(caret.x - 1, caret.y - 1, gres(SHAPES), geticonavatar(type), ImageNoOffset);
 	clipping = push_clip;
 }
 
@@ -1067,7 +1069,7 @@ static void paint_unit_list() {
 	caret = push_caret + point(6, 8);
 	auto caret_origin = caret;
 	for(auto p : human_selected) {
-		paint_unit(p->geti(), RightDown, RightDown, p->getplayer().color_index, 0);
+		paint_unit(p->type, RightDown, RightDown, p->getplayer().color_index, 0);
 		caret.x += 16;
 		if(caret.x >= clipping.x2) {
 			caret.x = caret_origin.x;
@@ -1097,13 +1099,13 @@ static void human_build() {
 		p->progress();
 	else if(p->getprogress() == 100) {
 		auto push = placement_size;
-		auto build = (buildingn)((buildingi*)p->getbuild())->getindex();
+		auto build = p->build;
 		placement_size = p->getbuildsize();
 		markbuildarea(p->position, p->getbuildsize(), build);
 		copypath();
 		p->construct(choose_placement());
 		placement_size = push;
-	} else if(bsdata<uniti>::have(p->getbuild())) {
+	} else if(getparent(p->build)==Unit) {
 		if(p->build_count < 199)
 			p->build_count++;
 	}
@@ -1149,16 +1151,16 @@ static void paint_build_button(const char* format, int avatar, shapen shape, uns
 static void paint_build_button() {
 	auto push_height = height; height = 36;
 	setoffset(-1, 0);
-	auto pe = last_building->getbuild();
+	auto build = last_building->build;
 	shapen shape = NoShape;
-	if(bsdata< buildingi>::have(pe))
-		shape = ((buildingi*)pe)->shape;
+	if(getparent(build)==Building)
+		shape = getshape(build);
 	const char* format = 0;
 	if(last_building->isworking())
 		format = str("%1i%%", last_building->getprogress());
 	else
 		format = getnm("BuildIt");
-	paint_build_button(format, pe->frame_avatar, shape, 'B', last_building->build_count + 1);
+	paint_build_button(format, geticonavatar(build), shape, 'B', last_building->build_count + 1);
 	height = push_height;
 }
 
@@ -1174,11 +1176,11 @@ static void paint_bold(const char* title) {
 	fore_stroke = push_stroke;
 }
 
-static void paint_stats_info(const char* title, abilityn n) {
+static void paint_stats_info(const char* title, statn n) {
 	pushrect push;
 	caret.y += 2;
 	if(!title)
-		title = bsdata<abilityi>::elements[n].getname();
+		title = bsdata<stati>::elements[n].getname();
 	paint_bold(title);
 	paint_field("Used", mainplayer().abilities[n]);
 	paint_field("Max", mainplayer().maximum[n]);
@@ -1187,10 +1189,10 @@ static void paint_stats_info(const char* title, abilityn n) {
 static void paint_building_info() {
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	if(last_building->canbuild()) {
-		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->gethitsmax(), open_building, (long)last_building);
+		paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), open_building, (long)last_building);
 		paint_build_button();
 	} else {
-		paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->gethitsmax(), 0, 0);
+		paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), 0, 0);
 		switch(last_building->type) {
 		case SpiceSilo: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
 		case Windtrap: paint_stats_info(0, Energy); break;
@@ -1220,7 +1222,7 @@ static void human_order_building() {
 static void paint_turret_info() {
 	pushrect push;
 	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-	paint_unit_panel(last_building->geti().frame_avatar, last_building->hits, last_building->gethitsmax(), 0, 0);
+	paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), 0, 0);
 	setoffset(-1, 0);
 	height = 12;
 	button(bsdata<orderi>::elements[Attack].getname(), 'A', AlignCenter, human_order_building, Attack);
@@ -1241,7 +1243,7 @@ static void paint_unit_info() {
 		auto push_unit = last_unit;
 		last_unit = human_selected[0];
 		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
-		paint_unit_panel(last_unit->geti().frame_avatar, last_unit->hits, last_unit->gethitsmax(), 0, 0);
+		paint_unit_panel(geticonavatar(last_unit->type), last_unit->hits, last_unit->gethitsmax(), 0, 0);
 		paint_unit_orders();
 		last_unit = push_unit;
 	} else {

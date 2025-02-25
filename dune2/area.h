@@ -21,7 +21,8 @@ enum areasizen : unsigned char {
 struct tilepatch {
 	short unsigned	from;
 	short unsigned	to;
-	short unsigned	action;
+	unsigned char	action;
+	unsigned char	id;
 };
 struct areai {
 	typedef void(*fnset)(point v, int value);

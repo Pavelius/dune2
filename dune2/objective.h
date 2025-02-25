@@ -2,10 +2,10 @@
 
 #include "nameable.h"
 #include "order.h"
+#include "object.h"
 #include "player.h"
-#include "typeable.h"
 
-enum buildingn : unsigned char;
+enum objectn : unsigned char;
 enum unitn : unsigned char;
 
 enum objectiven : unsigned char {
@@ -16,7 +16,7 @@ enum objectiven : unsigned char {
 };
 struct objectivei : nameable {
 };
-struct objective : typeable<objectivei, objectiven>, playerable {
-	short unsigned		param, count;
-	explicit operator bool() const { return type != NoObjective; }
+struct objective : objectable, playerable {
+	short unsigned param, count;
+	explicit operator bool() const { return type != NoObject; }
 };

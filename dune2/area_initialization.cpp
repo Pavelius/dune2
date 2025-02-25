@@ -70,9 +70,9 @@ static featuren find_feature_by_frame(int frame) {
 		if(frame >= e.frame && frame < e.frame + e.count)
 			return (featuren)(&e - bsdata<featurei>::elements);
 	}
-	for(auto& e : bsdata<buildingi>()) {
-		auto& s = bsdata<shapei>::elements[e.shape];
-		auto i = find_frame(e.frames, s.count, frame);
+	for(auto n = ConstructionYard; n <= RocketTurret; n = (objectn)(n+1)) {
+		auto& s = bsdata<shapei>::elements[getshape(n)];
+		auto i = find_frame(getframes(n), s.count, frame);
 		if(i != -1) {
 			if(i == 0)
 				return BuildingHead;
@@ -112,18 +112,17 @@ static void add_feature_frame(int i) {
 }
 
 static void update_building_feature_frames() {
-	for(auto& e : bsdata<buildingi>()) {
-		for(auto& tp : e.tiles) {
-			if(map_features[tp.from])
-				map_features[tp.to] = map_features[tp.from];
-		}
+	for(auto& e : bsdata<tilepatch>()) {
+		//for(auto& tp : e.tiles) {
+		//	if(map_features[tp.from])
+		//		map_features[tp.to] = map_features[tp.from];
+		//}
 	}
 }
 
-static void update_building_special(buildingn n, size_t count) {
-	auto& ei = bsdata<buildingi>::elements[n];
+static void update_building_special(objectn n, size_t count) {
 	for(size_t i = 0; i < count; i++)
-		map_features[ei.frames[0] + i] = BuildingHead;
+		map_features[getframes(n)[0] + i] = BuildingHead;
 }
 
 void area_initialization() {

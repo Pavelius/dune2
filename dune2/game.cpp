@@ -33,7 +33,7 @@ static void update_unit_time() {
 		if(!e)
 			continue;
 		if(e.shoot_time)
-			e.shooting(e.screen, e.geti().weapon, e.get(Attacks));
+			e.shooting(e.screen, getweapon(e.type), e.get(Attacks));
 		while(e.start_time < game.time) {
 			auto n = e.start_time;
 			e.update();
@@ -44,25 +44,23 @@ static void update_unit_time() {
 }
 
 static void add_abilities(unsigned int* v1, const unsigned int* v2) {
-	for(auto i = Credits; i <= Supply; i = (abilityn)(i + 1))
+	for(auto i = Credits; i <= Supply; i = (statn)(i + 1))
 		v1[i] += v2[i];
 }
 
 static void update_player_time() {
 	// Remove all calculable ability
-	for(auto& e : bsdata<playeri>()) {
-		memset(e.buildings, 0, sizeof(e.buildings));
-		memset(e.units, 0, sizeof(e.units));
-	}
+	for(auto& e : bsdata<playeri>())
+		memset(e.objects, 0, sizeof(e.objects));
 	// Calculate building count
 	for(auto& e : bsdata<building>()) {
 		if(e)
-			e.getplayer().buildings[e.type]++;
+			e.getplayer().objects[e.type]++;
 	}
 	// Calculate units count
 	for(auto& e : bsdata<unit>()) {
 		if(e)
-			e.getplayer().units[e.type]++;
+			e.getplayer().objects[e.type]++;
 	}
 	// Finally update player values
 	for(auto& e : bsdata<playeri>())

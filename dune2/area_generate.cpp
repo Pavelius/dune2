@@ -8,7 +8,7 @@
 
 static int central[4] = {5, 6, 9, 10};
 static int nearest[4][2] = {{1, 4}, {2, 7}, {13, 8}, {14, 11}};
-static fractionn fractions[player_maximum];
+static objectn fractions[player_maximum];
 
 typedef void(*fngenerate)(rect rc);
 
@@ -93,10 +93,10 @@ static void create_player() {
 	player_index = player->getindex();
 	player->add(Credits, game.starting_credits);
 	player->fraction = fractions[player_index];
-	player->color_index = player->getfraction().default_color;
+	player->color_index = getdefaultcolor(player->fraction);
 }
 
-static void add_unit(point v, unitn u) {
+static void add_unit(point v, objectn u) {
 	area.blockland(Tracked);
 	blockunits();
 	auto v1 = area.nearest(v, isfreetrack, 5);

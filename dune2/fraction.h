@@ -1,18 +1,9 @@
 #pragma once
 
-#include "topicable.h"
+#include "object.h"
 
-enum fractionn : unsigned char {
-	NoFraction, Atreides, Harkonens, Ordos,
-};
-extern fractionn last_fraction;
-struct fractioni : topicable {
-	int			mentat_frame;
-	resid		mentat_face;
-	int			default_color;
-};
 struct fractionable {
-	fractionn	fraction;
-	const fractioni& getfraction() const;
+	objectn		fraction;
 	const char*	getfractionsuffix() const;
 };
+extern objectn last_fraction;

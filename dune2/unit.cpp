@@ -14,17 +14,17 @@
 #include "view.h"
 
 BSDATAC(unit, 2048)
-BSDATA(uniti) = {
-	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0},
-	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0},
-	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0},
-	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0},
-	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0},
-	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5},
-	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15},
-	{"RocketTank", RTANK, 73, 250, Tracked, FireRocket, UNITS2, 0, 35},
-};
-assert_enum(uniti, RocketTank)
+//BSDATA(uniti) = {
+//	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0},
+//	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0},
+//	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0},
+//	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0},
+//	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0},
+//	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5},
+//	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15},
+//	{"RocketTank", RTANK, 73, 250, Tracked, FireRocket, UNITS2, 0, 35},
+//};
+//assert_enum(uniti, RocketTank)
 
 unit *last_unit;
 
@@ -58,7 +58,7 @@ void unit::fixstate(const char* id) const {
 void unit::destroy() {
 	fixstate("UnitDestroyed");
 	cleanup();
-	switch(geti().move) {
+	switch(getmove(type)) {
 	case Wheeled: add_effect(m2sc(position), FixBikeExplosion); break;
 	case Tracked: add_effect(m2sc(position), FixExplosion); break;
 	default: break;
@@ -79,7 +79,7 @@ void unit::damage(int value) {
 		return;
 	}
 	hits -= value;
-	switch(geti().move) {
+	switch(getmove(type)) {
 	case Tracked:
 	case Wheeled:
 		if(hits <= gethitsmax() / 2)
@@ -124,7 +124,7 @@ void blockunits_no_foot_enemy(unsigned char player) {
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.isboard())
 			continue;
-		if(e.player != player && e.geti().move == Footed)
+		if(e.player != player && getmove(e.type) == Footed)
 			continue;
 		path_map[e.position.y][e.position.x] = BlockArea;
 	}
@@ -139,7 +139,7 @@ void blockunits() {
 
 int unit::getspeed() const {
 	auto n = get(Speed);
-	if(geti().move == Wheeled) {
+	if(getmove(type) == Wheeled) {
 		auto t = area.get(position);
 		if(t == Rock)
 			n /= 2;
@@ -169,7 +169,7 @@ bool unit::istrallfull() const {
 }
 
 static bool test_crushing(unit* p) {
-	if(p && p->geti().move == Footed) {
+	if(p && getmove(p->type) == Footed) {
 		area.set(p->position, Blood);
 		p->destroy();
 		return true;
@@ -178,8 +178,7 @@ static bool test_crushing(unit* p) {
 }
 
 bool unit::crushing() {
-	auto move = geti().move;
-	if(move == Tracked)
+	if(getmove(type) == Tracked)
 		return test_crushing(find_unit(position, this));
 	return false;
 }
@@ -190,7 +189,7 @@ bool unit::releasetile() {
 		return false;
 	//if(geti().move == Tracked && test_crushing(p))
 	//	return false;
-	auto move = geti().move;
+	auto move = getmove(type);
 	for(auto d : all_directions) {
 		auto v = to(position, d);
 		if(area.isblocked(v, move))
@@ -283,7 +282,7 @@ unit* find_enemy(point v, unsigned char player, int range, movementn move) {
 	unit* result = 0;
 	int result_priority = 1000 * range_multiplier;
 	for(auto& e : bsdata<unit>()) {
-		if(!e || e.isboard() || e.player == player || e.geti().move != move)
+		if(!e || e.isboard() || e.player == player || getmove(e.type) != move)
 			continue;
 		if(e.position.range(v) > range || !area.is(e.position, player, Visible))
 			continue;
@@ -334,7 +333,7 @@ unit* find_unit(point v, const unit* exclude) {
 	return 0;
 }
 
-void add_unit(point pt, unitn id, direction d) {
+void add_unit(point pt, objectn id, direction d) {
 	pt = area.nearest(pt, isfreetrack, 4);
 	if(!area.isvalid(pt))
 		return;
@@ -383,7 +382,7 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong
 			return false; // Not any valid base present
 		}
-		auto v = pb->nearestboard(position, geti().move);
+		auto v = pb->nearestboard(position, getmove(type));
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong
 			return false;
@@ -403,7 +402,7 @@ bool unit::returnbase() {
 			stop();
 			return false; // Not any valid base present
 		}
-		auto v = pb->nearestboard(position, geti().move);
+		auto v = pb->nearestboard(position, getmove(type));
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong - path is blocking
 			return false;
@@ -459,7 +458,7 @@ bool unit::relax() {
 }
 
 bool unit::usecrushing() {
-	if(geti().move != Tracked)
+	if(getmove(type) != Tracked)
 		return false;
 	auto p = find_enemy(position, player, getlos(), Footed);
 	if(p && !area.isblocked(p->position, Tracked)) {
@@ -470,11 +469,11 @@ bool unit::usecrushing() {
 }
 
 bool unit::shoot() {
-	return actable::shoot(screen, geti().weapon, get(Attacks), getshootrange());
+	return actable::shoot(screen, getweapon(type), get(Attacks), getshootrange());
 }
 
 void unit::update() {
-	auto move = geti().move;
+	auto move = getmove(type);
 	auto speed = getspeed();
 	if(moving(move, speed, getlos())) {
 		if(!isturret())
@@ -503,53 +502,4 @@ void unit::update() {
 		return;
 	else if(closing())
 		return;
-}
-
-template<> int getstat<unitn>(unitn type, statn i) {
-	switch(i) {
-	case Hits:
-		switch(type) {
-		case LightInfantry: case HeavyInfantry: return 4;
-		case Trike: case Quad: case RocketTank: return 5;
-		case Tank: case AssaultTank: return 6;
-		default: return 8;
-		}
-	case Armor:
-		switch(type) {
-		case HeavyInfantry: case Trike: case RocketTank: return 1;
-		case Quad: case Tank: case Harvester: return 2;
-		case AssaultTank: return 3;
-		default: return 0;
-		}
-	case Attacks:
-		switch(type) {
-		case Harvester: return 0;
-		case Tank: return 1;
-		default: return 2;
-		}
-	case LoS:
-		switch(type) {
-		case Trike: case RocketTank: return 3;
-		default: return 2;
-		}
-	case Range:
-		switch(type) {
-		case RocketTank: return 6;
-		case AssaultTank: return 4;
-		case Tank: return 3;
-		default: return 2;
-		}
-	case Speed:
-		switch(type) {
-		case Trike: return 10;
-		case Quad: return 8;
-		case RocketTank: case Tank: return 5;
-		case AssaultTank: return 4;
-		case HeavyInfantry: return 3;
-		case LightInfantry: return 2;
-		default: return 4;
-		}
-	default:
-		return 0;
-	}
 }

@@ -42,6 +42,7 @@ struct adat {
 	const T* end() const { return data + count; }
 	const T* endof() const { return data + count_max; }
 	[[nodiscard]] int find(const T t) const { for(auto& e : *this) if(e == t) return &e - data; return -1; }
+	[[nodiscard]] T first() const { return count ? data[0] : T(); }
 	[[nodiscard]] size_t size() const { return count; }
 	[[nodiscard]] size_t capacity() const { return count_max; }
 	[[nodiscard]] int indexof(const void* e) const { if(e >= data && e < data + count) return (T*)e - data; return -1; }
