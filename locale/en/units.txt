@@ -8,9 +8,10 @@ Carrier: Carrier
 Fregate: Fregate
 Harvester: Harvester
 HeavyInfantry: Heavy Infantry
-LightInfantry: Light Infantry
+LightInfantry: Infantry
 Ornitopter: Ornitopter
 Quad: Quad
 RocketTank: Rocket
+SandWorm: Sand Worm
 Tank: Tank
 Trike: Trike

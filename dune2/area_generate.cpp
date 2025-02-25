@@ -79,6 +79,10 @@ static void rock_region(rect rc) {
 static void dune_region(rect rc) {
 	set_terrain_circle(center(rc), Dune);
 	add_random(rc, set_terrain_circle, Dune, 5);
+	auto push_player = player_index;
+	player_index = 0;
+	add_unit(center(rc), SandWorm, Down);
+	player_index = push_player;
 }
 
 static void spice_region(rect rc) {
@@ -94,6 +98,12 @@ static void create_player() {
 	player->add(Credits, game.starting_credits);
 	player->fraction = fractions[player_index];
 	player->color_index = getdefaultcolor(player->fraction);
+}
+
+static void add_neutral_player() {
+	auto player = bsdata<playeri>::add();
+	player->clear();
+	player_index = player->getindex();
 }
 
 static void add_unit(point v, objectn u) {
@@ -180,6 +190,7 @@ void area_generate(areasizen n, int number_of_players) {
 	initialize_random_fractions();
 	bsdata<playeri>::source.clear();
 	area.clear(SmallMap);
+	add_neutral_player();
 	add_players(regions, number_of_players);
 	add_region(regions, dune_region);
 	generate_lands(regions);

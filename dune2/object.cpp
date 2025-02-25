@@ -29,9 +29,9 @@ BSDATA(objecti) = {
 	{"Windtrap", Building, WINDTRAP, 61, ICONS, {304, 305, 306, 307}},
 	{"Refinery", Building, REFINERY, 64, ICONS, {332, 333, 334, 337, 338, 339}},
 	{"RadarOutpost", Building, HEADQRTS, 70, ICONS, {379, 380, 386, 387}},
-	{"RepairFacility", Building, REPAIR, 65},
+	{"RepairFacility", Building, REPAIR, 65, ICONS, {345, 346, 347, 349, 350, 351}},
 	{"HouseOfIX", Building, IX, 58, ICONS, {280, 281, 282, 283}},
-	{"Palace", Building, PALACE, 54},
+	{"Palace", Building, PALACE, 54, ICONS, {216, 217, 218, 226, 227, 228, 235, 236, 237}},
 	{"Barracks", Building, BARRAC, 62, ICONS, {299, 300, 301, 302}},
 	{"WOR", Building, WOR, 59, ICONS, {285, 286, 288, 289}},
 	{"LightVehicleFactory", Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}},
@@ -49,6 +49,7 @@ BSDATA(objecti) = {
 	{"Tank", Unit, LTANK, 78, UNITS2, {0, 5}},
 	{"AssaultTank", Unit, HTANK, 72, UNITS2, {10, 15}},
 	{"RocketTank", Unit, RTANK, 73, UNITS2, {0, 35}},
+	{"SandWorm", Unit, WORM, 93},
 	{"Carrier", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Fregate", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Ornitopter", Unit, ORNI, 85, UNITS, {51}},
@@ -63,6 +64,7 @@ int getcreditscost(objectn type) {
 	case HighTechFacility: return 2500;
 	case Starport: return 2000;
 	case HouseOfIX: return 2000;
+	case Palace: return 3000;
 	case LightVehicleFactory: return 1000;
 	case RadarOutpost: return 500;
 	case Refinery: return 500;
@@ -127,8 +129,10 @@ shapen getshape(objectn type) {
 	case Refinery:
 	case HeavyVehicleFactory:
 	case HighTechFacility:
+	case RepairFacility:
 		return Shape3x2;
 	case Starport:
+	case Palace:
 		return Shape3x3;
 	default:
 		return Shape1x1;
@@ -186,7 +190,9 @@ int getstat(objectn type, statn i) {
 		}
 	case Range:
 		switch(type) {
-		case AssaultTank: return 4;
+		case LightInfantry: case HeavyInfantry: return 2;
+		case Trike: case Quad: return 2;
+		case Tank: case AssaultTank: return 4;
 		case Turret: return 5;
 		case RocketTurret: return 6;
 		case RocketTank: return 6;
@@ -200,6 +206,7 @@ int getstat(objectn type, statn i) {
 		case AssaultTank: return 4;
 		case HeavyInfantry: return 3;
 		case LightInfantry: return 2;
+		case SandWorm: return 6;
 		default: return 4;
 		}
 	default:
@@ -283,9 +290,15 @@ unsigned short* getframes(objectn type) {
 
 movementn getmove(objectn type) {
 	switch(type) {
-	case LightInfantry: case HeavyInfantry: return Footed;
-	case Quad: case Trike: return Wheeled;
-	case Tank: case Harvester: case AssaultTank: case RocketTank: return Tracked;
-	default: return NoMovement;
+	case LightInfantry: case HeavyInfantry:
+		return Footed;
+	case Quad: case Trike:
+		return Wheeled;
+	case Tank: case Harvester: case AssaultTank: case RocketTank:
+		return Tracked;
+	case SandWorm:
+		return Undersand;
+	default:
+		return NoMovement;
 	}
 }

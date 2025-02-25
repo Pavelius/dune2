@@ -63,11 +63,20 @@ bool moveable::ismoving() const {
 direction moveable::nextpath(point v, movementn movement) {
 	if(!area.isvalid(v))
 		return Center;
+	if(movement == Undersand) {
+		blockland(movement);
+		blockunits(player);
+		unblock();
+		if(path_map[v.y][v.x] == BlockArea)
+			return Center;
+		area.movewave(v, movement); // Consume time action
+		return area.moveto(position, move_direction);
+	}
 	auto need_block_units = v.range(position) < 3;
 	blockland(movement);
 	if(need_block_units) {
 		if(movement == Tracked)
-			blockunits_no_foot_enemy(player);
+			blockunits(player, Footed);
 		else
 			blockunits();
 		unblock();
@@ -78,7 +87,7 @@ direction moveable::nextpath(point v, movementn movement) {
 		area.movewave(v, movement); // Consume time action
 		if(!need_block_units) {
 			if(movement == Tracked)
-				blockunits_no_foot_enemy(player);
+				blockunits(player, Footed);
 			else
 				blockunits();
 			unblock();
@@ -123,7 +132,8 @@ bool moveable::moving(movementn movement, int move_speed, int line_of_sight) {
 	tracking();
 	if(ismoving()) {// Unit just moving to neightboar tile. MUST FINISH!!!
 		movescreen(move_speed);
-		leavetrail(movement == Tracked);
+		if(movement != Undersand)
+			leavetrail(movement == Tracked);
 		if(!ismoving()) {
 			scouting(line_of_sight);
 			path_direction = Center; // Arrive to next tile, we need new path direction.

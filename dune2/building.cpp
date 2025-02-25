@@ -10,6 +10,16 @@
 BSDATA(tilepatch) = {
 	{334, 342, BoardUnit, Refinery},
 	{339, 344, BoardUnit, Refinery},
+	{314, 326, BoardUnit, Starport},
+	{315, 327, BoardUnit, Starport},
+	{319, 330, BoardUnit, Starport},
+	{320, 331, BoardUnit, Starport},
+	{262, 264, BoardUnit, HeavyVehicleFactory},
+	{263, 265, BoardUnit, HeavyVehicleFactory},
+	{264, 266, BoardUnit, HeavyVehicleFactory},
+	{265, 267, BoardUnit, HeavyVehicleFactory},
+	{249, 250, BoardUnit, LightVehicleFactory},
+	{350, 352, BoardUnit, RepairFacility},
 };
 BSDATAF(tilepatch)
 

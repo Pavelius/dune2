@@ -40,6 +40,9 @@ pushfontb::~pushfontb() {
 }
 
 void copybits(int x, int y, int width, int height, int x1, int y1) {
+	point v1(x, y), v2(x + width, y + height);
+	if(!v1.in(clipping) || !v2.in(clipping))
+		return; // Clipping
 	if(x == x1 && y == y1)
 		return;
 	auto ps = canvas->ptr(x, y);

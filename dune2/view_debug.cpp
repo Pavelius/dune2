@@ -353,6 +353,9 @@ static void show_pallette(resid id, int dy) {
 
 static void change_debug() {
 	debug_toggle = !debug_toggle;
+	auto pb = find_building(area.getcorner(area_spot));
+	if(pb)
+		pb->set(BoardUnit, debug_toggle);
 	//if(debug_toggle) {
 	//	area.blockcontrol();
 	//	area.controlwave(area_spot, allowcontrol, 32);

@@ -113,6 +113,7 @@ BSDATA(fixeffecti) = {
 	{"FixBigExplosion", 0, UNITS1, 37, 5, add_explosion_tile},
 	{"FixBikeExplosion", 100, UNITS1, 32, 2, 0, FixBikeExplosionEnd},
 	{"FixBikeExplosionEnd", 100, UNITS1, 0, 2, add_explosion_tile},
+	{"WormDevour", 200, UNITS1, 67, 5},
 	{"FixHitSand", 200, UNITS1, 5, 3, add_explosion_tile},
 };
 assert_enum(fixeffecti, FixHitSand)

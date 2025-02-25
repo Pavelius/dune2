@@ -88,8 +88,27 @@ void unit::damage(int value) {
 	}
 }
 
-bool unit::ismoving() const {
-	return !isboard() && screen != m2sc(position);
+bool unit::devour() {
+	auto move = getmove(type);
+	if(move == Undersand) {
+		auto pu = find_unit(position, this);
+		if(!pu)
+			return false;
+		pu->fixstate("UnitDevoured");
+		pu->cleanup();
+		pu->clear();
+		add_effect(screen, WormDevour);
+		start_time += 3 * 1000;
+		return true;
+	} else if(move == Tracked) {
+		auto pu = find_unit(position, this);
+		if(!pu || getmove(pu->type) != Footed)
+			return false;
+		area.set(pu->position, Blood);
+		pu->destroy();
+		return true;
+	}
+	return false;
 }
 
 short unsigned unit::getindex() const {
@@ -120,11 +139,21 @@ void unit::scouting() {
 	area.scouting(position, player, getlos());
 }
 
-void blockunits_no_foot_enemy(unsigned char player) {
+void blockunits(unsigned char player, movementn move) {
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.isboard())
 			continue;
-		if(e.player != player && getmove(e.type) == Footed)
+		if(e.player != player && getmove(e.type) == move)
+			continue;
+		path_map[e.position.y][e.position.x] = BlockArea;
+	}
+}
+
+void blockunits(unsigned char player) {
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.isboard())
+			continue;
+		if(e.player != player)
 			continue;
 		path_map[e.position.y][e.position.x] = BlockArea;
 	}
@@ -168,28 +197,16 @@ bool unit::istrallfull() const {
 	return getpurpose() == Harvest && action >= 10;
 }
 
-static bool test_crushing(unit* p) {
-	if(p && getmove(p->type) == Footed) {
-		area.set(p->position, Blood);
-		p->destroy();
-		return true;
-	}
-	return false;
-}
-
-bool unit::crushing() {
-	if(getmove(type) == Tracked)
-		return test_crushing(find_unit(position, this));
-	return false;
-}
-
 bool unit::releasetile() {
 	auto p = find_unit(position, this);
 	if(!p)
 		return false;
-	//if(geti().move == Tracked && test_crushing(p))
-	//	return false;
 	auto move = getmove(type);
+	auto enemy_move = getmove(p->type);
+	if(enemy_move == Tracked && move == Footed)
+		return false;
+	if(enemy_move == Undersand)
+		return false;
 	for(auto d : all_directions) {
 		auto v = to(position, d);
 		if(area.isblocked(v, move))
@@ -458,12 +475,17 @@ bool unit::relax() {
 }
 
 bool unit::usecrushing() {
-	if(getmove(type) != Tracked)
-		return false;
-	auto p = find_enemy(position, player, getlos(), Footed);
-	if(p && !area.isblocked(p->position, Tracked)) {
-		order = p->position;
-		return true;
+	auto move = getmove(type);
+	if(move == Tracked || move == Undersand) {
+		unit* p = 0;
+		if(move == Tracked)
+			p = find_enemy(position, player, getlos(), Footed);
+		else
+			p = find_enemy(position, player, getlos());
+		if(p && !area.isblocked(p->position, move)) {
+			order = p->position;
+			return true;
+		}
 	}
 	return false;
 }
@@ -476,6 +498,8 @@ void unit::update() {
 	auto move = getmove(type);
 	auto speed = getspeed();
 	if(moving(move, speed, getlos())) {
+		if(!ismoving() && devour())
+			return;
 		if(!isturret())
 			shoot_direction = move_direction;
 		else if(shoot())
@@ -488,11 +512,9 @@ void unit::update() {
 			move_direction = shoot_direction;
 		stopmove();
 		return;
-	} else if(nextmoving(move, speed)) {
-		if(crushing())
-			return;
+	} else if(nextmoving(move, speed))
 		return;
-	} else if(usecrushing())
+	else if(usecrushing())
 		return;
 	else if(releasetile())
 		return;

@@ -15,7 +15,7 @@ enum fixn : unsigned char {
 	FixSmallHit, FixMediumHit, FixLargeHit,
 	FixExplosion, FixBigExplosion,
 	FixBikeExplosion, FixBikeExplosionEnd,
-	FixHitSand,
+	WormDevour, FixHitSand,
 };
 
 typedef void(*fnevent)();

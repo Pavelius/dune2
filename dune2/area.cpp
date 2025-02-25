@@ -454,7 +454,7 @@ point find_smallest_position() {
 	for(auto y = 0; y < area.maximum.y; y++) {
 		for(auto x = 0; x < area.maximum.x; x++) {
 			auto i = path_map[y][x];
-			if(i == BlockArea || i == 1)
+			if(i == BlockArea || i <= 1)
 				continue; // Blocked or started area don't count
 			if(i < n) {
 				r = point(x, y);

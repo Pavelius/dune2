@@ -32,6 +32,7 @@ HarvesterWork: %Unit is %UnitThrall percent full.
 HarvesterUnload: %Unit is unloading spice.
 HarvesterReturn: %Unit is return with %UnitThrall percent full.
 UnitDestroyed: %Unit is destroyed.
+UnitDevoured: %Unit is devoured by worm.
 UnitCantDoThis: %Unit can't execute order.
 ReachSpiceMaximum: There is no room for spice - build more Spice Silos.
 

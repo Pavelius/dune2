@@ -330,6 +330,23 @@ static void rectb_hilite(bool crossed) {
 	fore = push;
 }
 
+static void paint_worm_old(point v) {
+	static point points[] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+	pushrect push; width = 14; height = 14;
+	auto push_clip = clipping; setclip({caret.x + 2, caret.y + 2, caret.x + 14, caret.y + 14});
+	caret = caret + points[(animate_time / 100) % (sizeof(points) / sizeof(points[0]))];
+	auto f = area.getframe(v);
+	image(gres(ICONS), f, 0);
+	clipping = push_clip;
+}
+
+static void paint_worm() {
+	static point points[] = {{-1, 0}, {0, -1}, {1, 0}, {0, 1}};
+	auto n = caret + point(-6, -6);
+	auto v = n + points[(animate_time / 100) % (sizeof(points) / sizeof(points[0]))];
+	copybits(n.x, n.y, 12, 12, v.x, v.y);
+}
+
 static void paint_cursor(int avatar, point offset, bool choose_mode) {
 	auto v = area_spot - area_origin;
 	if(!area.isvalid(v))
@@ -357,6 +374,13 @@ static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
 	// debug_control();
+	//auto v = area_spot - area_origin;
+	//if(area.isvalid(v)) {
+	//	auto push_caret = caret;
+	//	caret = map_to_screen(v);// +point(8, 8);
+	//	paint_worm(area_spot);
+	//	caret = push_caret;
+	//}
 	paint_cursor(5, {8, 8}, false);
 	debug_map_message();
 }
@@ -489,7 +513,10 @@ static void paint_unit() {
 		return;
 	if(!area.is(p->position, player_index, Visible))
 		return;
-	if(p->isharvest())
+	if(p->type == SandWorm) {
+		if(p->ismoving())
+			paint_worm();
+	} else if(p->isharvest())
 		paint_unit_harvest(p->type, p->move_direction, p->getplayer().color_index);
 	else {
 		paint_unit(p->type, p->move_direction, p->shoot_direction,
@@ -746,6 +773,11 @@ static void mouse_select() {
 		human_selected.add(p);
 }
 
+static void mouse_select_unit() {
+	human_selected.clear();
+	human_selected.add((unit*)hot.object);
+}
+
 static void selection_rect_dropped(const rect& rc) {
 	human_selected.clear();
 	if(!area.isvalid(area_spot))
@@ -948,8 +980,9 @@ static void paint_map_info_background() {
 	fore = color(69, 69, 52);
 }
 
-static void paint_bar(int value, int value_maximum) {
-	form_frame_rect();
+static void paint_bar(int value, int value_maximum, bool back) {
+	if(back)
+		form_frame_rect();
 	if(!value_maximum)
 		return;
 	auto push_fore = fore;
@@ -967,7 +1000,7 @@ static void paint_bar(int value, int value_maximum) {
 static void paint_health_bar(int value, int value_maximum) {
 	pushrect push;
 	height = 8; width = 27;
-	paint_bar(value, value_maximum);
+	paint_bar(value, value_maximum, true);
 	image(caret.x, caret.y + height + 1, gres(SHAPES), 15, 0);
 }
 
@@ -1057,26 +1090,34 @@ static void paint_unit_orders() {
 	button(Stop, 'G');
 }
 
-static void paint_unit_icon(objectn type) {
+static void paint_icon_health_bar(int value, int value_maximum) {
+	if(value == value_maximum)
+		return;
+	paint_bar(value, value_maximum, false);
+}
+
+static void paint_unit_icon(unit* p) {
 	pushfore push_fore;
 	pushrect push; width = 29; height = 15;
+	if(ishilite()) {
+		if(hot.key == MouseLeft && !hot.pressed)
+			execute(mouse_select_unit, 0, 0, p);
+	}
 	auto push_clip = clipping; setcliparea();
-	image(caret.x - 2, caret.y - 1, gres(SHAPES), geticonavatar(type), ImageNoOffset);
+	image(caret.x - 2, caret.y - 2, gres(SHAPES), geticonavatar(p->type), ImageNoOffset);
 	clipping = push_clip;
 	fore = form_button_light;
-	// rectb();
 	form_frame(form_button_light, form_button_dark);
+	caret.y += 11; height = 3;
+	caret.x += 1; width -= 2;
+	paint_icon_health_bar(p->hits, p->gethitsmax());
 }
 
 static void paint_unit_list() {
 	const int element_width = 30;
 	auto push_caret = caret; caret.y += 1;
-	// caret = push_caret + point(6, 8);
-	// caret = push_caret + point(-1, 0);
-	// auto caret_origin = caret;
 	for(auto p : human_selected) {
-		// paint_unit(p->type, RightDown, RightDown, p->getplayer().color_index, 0);
-		paint_unit_icon(p->type);
+		paint_unit_icon(p);
 		caret.x += element_width + 1;
 		if(caret.x + element_width >= clipping.x2) {
 			caret.x = push_caret.x;
