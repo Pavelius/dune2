@@ -161,6 +161,7 @@ int getstat(objectn type, statn i) {
 		case Trike: case RocketTank: return 5;
 		case Quad: case Tank: case AssaultTank: return 6;
 		case Harvester: return 8;
+		case SandWorm: return 10;
 		default: return 20;
 		}
 	case Armor:
@@ -169,6 +170,7 @@ int getstat(objectn type, statn i) {
 		case HeavyInfantry: case Quad: case Trike: return 1;
 		case Tank: case RocketTank: case Harvester: return 2;
 		case AssaultTank: return 3;
+		case SandWorm: return 3;
 		default: return 1;
 		}
 	case Attacks:
@@ -186,6 +188,7 @@ int getstat(objectn type, statn i) {
 		switch(type) {
 		case RadarOutpost: return 8;
 		case Trike: return 3;
+		case SandWorm: return 3;
 		default: return 2;
 		}
 	case Range:
@@ -196,7 +199,6 @@ int getstat(objectn type, statn i) {
 		case Turret: return 5;
 		case RocketTurret: return 6;
 		case RocketTank: return 6;
-		case SandWorm: return 3;
 		default: return 0;
 		}
 	case Speed:
