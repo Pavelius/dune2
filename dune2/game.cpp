@@ -7,6 +7,7 @@
 #include "math.h"
 #include "music.h"
 #include "print.h"
+#include "pointa.h"
 #include "player.h"
 #include "rand.h"
 #include "textscript.h"
@@ -100,6 +101,29 @@ static void update_scouting() {
 	}
 }
 
+static void get_sand_vibrations(pointa& result) {
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.isboard())
+			continue;
+		auto move = getmove(e.type);
+		if(move == Undersand || move == Flying || move == NoMovement)
+			continue;
+		auto f = area.get(e.position);
+		if(f == Sand || f == Dune || f == Spice || f == SpiceRich || f == SpiceBlow)
+			result.add(e.position);
+	}
+}
+
+static void update_worm_sand_sence() {
+	pointa vibrations; get_sand_vibrations(vibrations);
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.isboard() || e.isorder())
+			continue;
+		if(e.type == SandWorm)
+			e.order = vibrations.nearest(e.position, e.getlos() * 4);
+	}
+}
+
 static void update_animated_tiles() {
 	area.changealternate();
 }
@@ -122,6 +146,7 @@ static void update_game_turn() {
 		case 1: update_player_time(); break;
 		case 2: update_scouting(); break;
 		case 3: update_unit_recovery(); break;
+		case 4: update_worm_sand_sence(); break;
 		}
 	}
 }

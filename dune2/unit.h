@@ -23,7 +23,6 @@ struct unit : moveable, fixable, objectable {
 	ordern getpurpose() const;
 	int getshootrange() const { return get(Range); }
 	int	getspeed() const;
-	bool ismoveorder() const { return position != order; }
 	bool isturret() const { return getframes(type)[1] != 0; }
 	bool isharvest() const;
 	void recovery();

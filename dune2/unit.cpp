@@ -14,17 +14,6 @@
 #include "view.h"
 
 BSDATAC(unit, 2048)
-//BSDATA(uniti) = {
-//	{"Harvester", HARVEST, 88, 400, Tracked, NoEffect, UNITS, 10, 0},
-//	{"LightInfantry", INFANTRY, 81, 40, Footed, ShootAssaultRifle, UNITS, 91, 0},
-//	{"HeavyInfantry", HYINFY, 91, 70, Footed, ShootRotaryCannon, UNITS, 103, 0},
-//	{"Trike", TRIKE, 80, 100, Wheeled, Shoot20mm, UNITS, 5, 0},
-//	{"Quad", QUAD, 74, 140, Wheeled, Shoot30mm, UNITS, 0, 0},
-//	{"Tank", LTANK, 78, 200, Tracked, Shoot155mm, UNITS2, 0, 5},
-//	{"AssaultTank", HTANK, 72, 350, Tracked, Shoot155mm, UNITS2, 10, 15},
-//	{"RocketTank", RTANK, 73, 250, Tracked, FireRocket, UNITS2, 0, 35},
-//};
-//assert_enum(uniti, RocketTank)
 
 unit *last_unit;
 

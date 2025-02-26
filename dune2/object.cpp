@@ -196,6 +196,7 @@ int getstat(objectn type, statn i) {
 		case Turret: return 5;
 		case RocketTurret: return 6;
 		case RocketTank: return 6;
+		case SandWorm: return 3;
 		default: return 0;
 		}
 	case Speed:
