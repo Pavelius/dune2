@@ -18,4 +18,5 @@ void load_game(const char* id);
 void open_options();
 void save_game(const char* id);
 void show_scenario_prompt(const char* id, resid rid, int level);
+void update_ai_commands(unsigned char player);
 void update_game_time();

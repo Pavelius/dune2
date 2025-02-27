@@ -12,6 +12,7 @@ playeri& mainplayer() {
 
 void playeri::clear() {
 	memset(this, 0, sizeof(*this));
+	spice = {-10000, -10000};
 }
 
 unsigned char playeri::getindex() const {

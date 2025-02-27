@@ -1,22 +1,22 @@
 #pragma once
 
-#include "nameable.h"
-#include "order.h"
 #include "object.h"
 #include "player.h"
 
-enum objectn : unsigned char;
-enum unitn : unsigned char;
-
-enum objectiven : unsigned char {
-	NoObjective,
-	BuildStructure, BuildUnit,
-	EarnCredits, FindSpiceField,
-	EngageEnemyArmy, EngageEnemyHarvesters, EngageEnemyBase,
-};
-struct objectivei : nameable {
-};
 struct objective : objectable, playerable {
-	short unsigned param, count;
-	explicit operator bool() const { return type != NoObject; }
+	short unsigned	param, count;
+	short unsigned	executor; // Unit task executor
+	unsigned long	turn;
+	short unsigned	parent;
+	void			clear();
+	void			cleanup();
+	short unsigned	getindex() const;
+	objective*		getparent() const;
+	void			setparent(const objective* v);
+	void			update();
+private:
+	void			done();
+	void			thinking();
 };
+
+objective* add_objective(objectn type, unsigned char player, short unsigned param, short unsigned count = 0);

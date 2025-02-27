@@ -231,6 +231,9 @@
     <ClCompile Include="objecta.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="game_ai.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

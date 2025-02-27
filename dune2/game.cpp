@@ -6,6 +6,7 @@
 #include "game.h"
 #include "math.h"
 #include "music.h"
+#include "objective.h"
 #include "print.h"
 #include "pointa.h"
 #include "player.h"
@@ -141,12 +142,13 @@ static void update_game_turn() {
 		game.turn++;
 		update_building_time();
 		update_animated_tiles();
+		update_player_time();
+		update_ai_commands(1 + game.turn % 3);
 		switch(game.turn % 6) {
 		case 0: update_area_decoy(); break;
-		case 1: update_player_time(); break;
-		case 2: update_scouting(); break;
-		case 3: update_unit_recovery(); break;
-		case 4: update_worm_sand_sence(); break;
+		case 1: update_scouting(); break;
+		case 2: update_unit_recovery(); break;
+		case 3: update_worm_sand_sence(); break;
 		}
 	}
 }
@@ -320,7 +322,8 @@ void main_menu() {
 }
 
 static void unit_name(stringbuilder& sb) {
-	sb.add(last_unit->getfractionname());
+	if(last_unit->getplayer().fraction)
+		sb.adds(last_unit->getfractionname());
 	sb.adds(last_unit->getname());
 }
 

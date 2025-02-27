@@ -1,13 +1,16 @@
 #pragma once
 
-#include "storeable.h"
 #include "fraction.h"
+#include "point.h"
+#include "storeable.h"
 
 const int player_maximum = 6; // 0 - neutral and 1-5 for player humans/ai.
 
 struct playeri : fractionable, storeable {
 	unsigned char	color_index;
+	unsigned char	region;
 	unsigned short	objects[64]; // Count of all by type
+	point			base, spice;	
 	void			clear();
 	unsigned char	getindex() const;
 	void			update();

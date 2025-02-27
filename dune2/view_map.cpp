@@ -87,6 +87,8 @@ static void debug_map_message() {
 	text(sb.text, -1, TextStroke); caret.y += texth();
 	sb.clear(); sb.add("Mouse %1i, %2i", hot.mouse.x, hot.mouse.y);
 	text(sb.text, -1, TextStroke); caret.y += texth();
+	sb.clear(); sb.add("Seed %1i", start_random_seed);
+	text(sb.text, -1, TextStroke); caret.y += texth();
 }
 
 static void update_tick() {
@@ -1159,7 +1161,7 @@ static void human_build() {
 		auto push = placement_size;
 		auto build = p->build;
 		placement_size = p->getbuildsize();
-		markbuildarea(p->position, p->getbuildsize(), build);
+		markbuildarea(p->position, placement_size, build);
 		copypath();
 		p->construct(choose_placement());
 		placement_size = push;

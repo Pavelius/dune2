@@ -17,6 +17,7 @@ struct building : actable, objectable {
 	unsigned char	build_count;
 	unsigned short	build_spend;
 	unsigned short	unit_board;
+	explicit operator bool() const { return hits > 0; }
 	void			board(unit* p);
 	void			block() const { setblock(0xFFFF); }
 	void			buildlist() const;
@@ -36,6 +37,7 @@ struct building : actable, objectable {
 	point			getsize() const;
 	fixn			getweapon() const;
 	bool			isnear(point v) const;
+	bool			isbuildplacement() const;
 	bool			isworking() const { return build_spend != 0; }
 	point			nearestboard(point v, movementn move) const;
 	bool			progress();
@@ -58,4 +60,4 @@ building* find_board(const unit* p);
 
 bool isbuildplace(point v);
 bool isbuildslabplace(point v);
-void markbuildarea(point base, point placement_size, objectn build);
+void markbuildarea(point base, point placement_size, objectn build, bool full_slab_size = false);

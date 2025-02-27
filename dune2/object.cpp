@@ -20,6 +20,7 @@ BSDATA(objecti) = {
 	{"Houses"},
 	{"Buildings"},
 	{"Units"},
+	{"Objectives"},
 	{"Atreides", House, FARTR, 0, MENSHPA},
 	{"Harkonens", House, FHARK, 1, MENSHPH},
 	{"Ordos", House, FORDOS, 2, MENSHPO},
@@ -53,8 +54,16 @@ BSDATA(objecti) = {
 	{"Carrier", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Fregate", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Ornitopter", Unit, ORNI, 85, UNITS, {51}},
+	{"BuildStructure", Objective},
+	{"BuildUnit", Objective, LITEFTRY},
+	{"EarnCredits", Objective, REFINERY},
+	{"FindSpiceField", Objective, TRIKE},
+	{"ExploreArea", Objective, TRIKE},
+	{"EngageEnemyArmy", Objective, INFANTRY},
+	{"EngageEnemyHarvesters", Objective, HARVEST},
+	{"EngageEnemyBase", Objective, WIN1},
 };
-assert_enum(objecti, Ornitopter)
+assert_enum(objecti, EngageEnemyBase)
 
 int getcreditscost(objectn type) {
 	switch(type) {

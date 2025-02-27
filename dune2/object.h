@@ -7,13 +7,16 @@ enum shapen	: unsigned char;
 enum statn : unsigned char;
 
 enum objectn : unsigned char {
-	NoObject, House, Building, Unit,
+	NoObject, House, Building, Unit, Objective,
 	Atreides, Harkonens, Ordos,
 	ConstructionYard, SpiceSilo, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,
 	Slab, Slab4, Turret, RocketTurret,
 	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, Tank, AssaultTank, RocketTank,
 	SandWorm, Carrier, Fregate, Ornitopter,
+	BuildStructure, BuildUnit,
+	EarnCredits, FindSpiceField, ExploreArea,
+	EngageEnemyArmy, EngageEnemyHarvesters, EngageEnemyBase,
 	LastObject,
 };
 
@@ -45,6 +48,7 @@ const char* getido(objectn type);
 
 struct objectable {
 	objectn		type;
+	explicit operator bool() const { return type != NoObject; }
 	const char*	getname() const { return getnmo(type); }
 	int			get(statn i) const { return getstat(type, i); }
 };

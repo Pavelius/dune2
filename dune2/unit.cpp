@@ -246,9 +246,14 @@ bool unit::harvest() {
 	if(!area.isvalid(target_position))
 		return false;
 	auto v = area.nearest(position, isspicefield, getlos() + 2);
-	if(!area.isvalid(v)) {
-		stop();
-		return false;
+	if(!area.isvalid(v)) { 
+		if(position != target_position) {
+			order = target_position;
+			return true;
+		} else {
+			stop();
+			return false;
+		}
 	}
 	if(position != v)
 		order = v;

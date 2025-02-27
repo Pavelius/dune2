@@ -347,6 +347,10 @@ point building::getsize() const {
 	return bsdata<shapei>::elements[getshape(type)].size;
 }
 
+bool building::isbuildplacement() const {
+	return build && build_spend && build_spend >= getcreditscost(build);
+}
+
 bool building::isnear(point v) const {
 	auto size = getsize();
 	return v.x >= position.x - 1 && v.x <= position.x + size.x
@@ -438,19 +442,33 @@ bool isbuildslabplace(point v) {
 	return true;
 }
 
+bool isbuildslabplacens(point v) {
+	if(area.get(v) != Rock)
+		return false;
+	auto f = area.getfeature(v);
+	if(f == SlabFeature)
+		return false;
+	if(f >= BuildingHead)
+		return false;
+	return true;
+}
+
 static bool iscopycontrol(point v) {
 	auto cost = path_map_copy[v.y][v.x];
 	return cost != 0 && cost != BlockArea;
 }
 
-void markbuildarea(point base, point placement_size, objectn build) {
+void markbuildarea(point base, point placement_size, objectn build, bool full_slab_size) {
 	area.blockcontrol();
 	area.controlwave(base, allowcontrol, 32);
 	memcpy(path_map_copy, path_map, sizeof(path_map));
 	clearpath();
-	if(build == Slab || build == Slab4)
-		blockarea(isbuildslabplace, placement_size);
-	else
+	if(build == Slab || build == Slab4) {
+		if(full_slab_size)
+			blockarea(isbuildslabplacens, placement_size);
+		else
+			blockarea(isbuildslabplace, placement_size);
+	} else
 		blockarea(isbuildplace, placement_size);
 	blockareaor(iscopycontrol, placement_size);
 }

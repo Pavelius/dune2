@@ -10,6 +10,31 @@ areai area;
 point area_origin, area_spot;
 rect area_screen = {0, 40, 240, 200};
 
+unsigned char region_player[16] = {
+	0, 0, 3, 3,
+	0, 0, 3, 3,
+	12, 12, 15, 15,
+	12, 12, 15, 15,
+};
+unsigned char region_central[16] = {
+	5, 5, 6, 6,
+	5, 5, 6, 6,
+	9, 9, 10, 10,
+	9, 9, 10, 10,
+};
+unsigned char region_near_v[16] = {
+	4, 5, 6, 7,
+	8, 9, 10, 11,
+	4, 5, 6, 7,
+	8, 9, 10, 11,
+};
+unsigned char region_near_h[16] = {
+	1, 2, 1, 2,
+	5, 6, 5, 6,
+	9, 10, 9, 10,
+	13, 14, 13, 14,
+};
+
 static unsigned char map_count[area_frame_maximum];
 unsigned short path_map[areai::my][areai::mx];
 unsigned short path_map_copy[areai::my][areai::mx];
@@ -790,4 +815,33 @@ void areai::patch(point v, point size, const tilepatch* tiles, size_t count, boo
 	for(auto y = v.y; y < v.y + size.y; y++)
 		for(auto x = v.x; x < v.x + size.x; x++)
 			patch(point(x, y), tiles, count, apply);
+}
+
+point areai::m2r(point v) const {
+	v.x = v.x / (area.maximum.x / 4);
+	v.y = v.y / (area.maximum.y / 4);
+	return v;
+}
+
+bool areai::isexist(point v, int range, fntest proc) const {
+	if(!isvalid(v))
+		return false;
+	for(auto y = v.y - range; y < v.y + range; y++) {
+		for(auto x = v.x - range; x < v.x + range; x++) {
+			if(!isvalid(x, y))
+				continue;
+			if(proc(point(x, y)))
+				return true;
+		}
+	}
+	return false;
+}
+
+bool isspice(point v) {
+	auto t = area.get(v);
+	return t == Spice || t == SpiceRich;
+}
+
+rect allarea() {
+	return {0, 0, area.maximum.x, area.maximum.y};
 }

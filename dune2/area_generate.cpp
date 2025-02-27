@@ -3,6 +3,7 @@
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
+#include "objective.h"
 #include "terrain.h"
 #include "unit.h"
 
@@ -81,7 +82,7 @@ static void dune_region(rect rc) {
 	add_random(rc, set_terrain_circle, Dune, 5);
 	auto push_player = player_index;
 	player_index = 0;
-	add_unit(center(rc), SandWorm, Down);
+	// add_unit(center(rc), SandWorm, Down);
 	player_index = push_player;
 }
 
@@ -100,6 +101,11 @@ static void create_player() {
 	player->color_index = getdefaultcolor(player->fraction);
 }
 
+static void set_player_region(point v) {
+	auto player = bsdata<playeri>::elements + player_index;
+	player->region = r2i(area.m2r(v));
+}
+
 static void add_neutral_player() {
 	auto player = bsdata<playeri>::add();
 	player->clear();
@@ -113,6 +119,16 @@ static void add_unit(point v, objectn u) {
 	add_unit(v1, u, Down);
 }
 
+static int center_expanse(int r) {
+	switch(r) {
+	case 15: return 10;
+	case 12: return 9;
+	case 0: return 5;
+	case 3: return 6;
+	default: return -1;
+	}
+}
+
 static void player_base(rect rc) {
 	create_player();
 	auto v = center(rc);
@@ -120,12 +136,16 @@ static void player_base(rect rc) {
 	add_random(rc, set_terrain_big_circle, Rock, 6);
 	add_building(v, ConstructionYard);
 	add_unit(v, Harvester);
-	add_unit(v, LightInfantry);
-	add_unit(v, HeavyInfantry);
+	//add_unit(v, LightInfantry);
+	//add_unit(v, HeavyInfantry);
 	add_unit(v, Trike);
-	add_unit(v, Quad);
-	add_unit(v, AssaultTank);
+	//add_unit(v, Quad);
+	//add_unit(v, AssaultTank);
 	add_unit(v, RocketTank);
+	auto region = r2i(area.m2r(v));
+	auto p1 = add_objective(ExploreArea, player_index, region);
+	auto p2 = add_objective(ExploreArea, player_index, center_expanse(region));
+	// p2->setparent(p1);
 }
 
 static void add_region(fngenerate* regions, int index, fngenerate value) {
@@ -156,14 +176,15 @@ static void add_players(fngenerate* regions, size_t count) {
 	int indecies[4] = {0, 3, 12, 15};
 	zshuffle(indecies, sizeof(indecies) / sizeof(indecies[0]));
 	for(size_t i = 0; i < count; i++) {
-		add_region(regions, indecies[i], player_base);
-		add_region(regions, central[i], spice_region);
+		auto ri = indecies[i];
+		add_region(regions, ri, player_base);
+		add_region(regions, region_central[ri], spice_region);
 		if(game_chance(50)) {
-			add_region(regions, nearest[i][0], spice_region);
-			add_region(regions, nearest[i][1], rock_region);
+			add_region(regions, region_near_h[ri], spice_region);
+			add_region(regions, region_near_v[ri], rock_region);
 		} else {
-			add_region(regions, nearest[i][1], spice_region);
-			add_region(regions, nearest[i][0], rock_region);
+			add_region(regions, region_near_v[ri], spice_region);
+			add_region(regions, region_near_h[ri], rock_region);
 		}
 	}
 }
