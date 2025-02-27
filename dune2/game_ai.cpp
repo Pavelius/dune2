@@ -7,10 +7,16 @@
 #include "pushvalue.h"
 #include "unit.h"
 
+struct objectunit {
+	objectn			type;
+	unsigned char	count;
+};
+
 static pointa points;
 static playeri* player_active;
-static int explore_demand, units_demand;
-static objectn build_order[] = {Refinery, Windtrap, SpiceSilo, Barracks, Wor};
+static int explore_demand;
+static objectn build_order[] = {Refinery, Windtrap, SpiceSilo, Barracks, RadarOutpost, Wor, LightVehicleFactory};
+static objectunit build_units[] = {{LightInfantry, 10}, {HeavyInfantry, 10}};
 
 static bool isexploredspice(point v) {
 	if(!area.is(v, player_index, Explored))
@@ -25,6 +31,14 @@ static bool isnotexploredborder(point v) {
 		if(area.is(to(v, d), player_index, Explored))
 			return true;
 	}
+	return false;
+}
+
+static bool player_own(objectn t, int count = 1) {
+	if(!player_active)
+		return false;
+	if(t < lenghtof(player_active->objects))
+		return player_active->objects[t] >= count;
 	return false;
 }
 
@@ -58,6 +72,35 @@ static unit* find_free_explorer(point near) {
 	return result;
 }
 
+static point enemy_spotted() {
+	if(!area.isvalid(player_active->base))
+		return {-10000, -10000};
+	point result = {-10000, -10000};
+	int result_range = 256 * 256 * 256;
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.player != player_index || !area.is(e.position, player_index, Visible))
+			continue;
+		auto range = e.position.range(player_active->base);
+		if(result_range > range) {
+			result_range = range;
+			result = e.position;
+		}
+	}
+	return result;
+}
+
+static void check_enemy_spotted() {
+	if(area.isvalid(player_active->enemy)) {
+		if((player_active->enemy_spot_turn - game.turn) > 100) {
+			player_active->enemy = {-10000, -10000};
+			return;
+		}
+	} else {
+		player_active->enemy = enemy_spotted();
+		player_active->enemy_spot_turn = game.turn;
+	}
+}
+
 static void explore_area() {
 	if(!explore_demand)
 		return;
@@ -67,10 +110,8 @@ static void explore_area() {
 		return;
 	auto v = points.nearest(player_active->base);
 	auto p = find_free_explorer(v);
-	if(!p) {
-		units_demand++;
+	if(!p)
 		return;
-	}
 	p->order = v;
 }
 
@@ -103,7 +144,7 @@ static point choose_placement(point factory, objectn t, bool full_slab_size) {
 	points.select(allarea(), isnonblocked);
 	if(!points)
 		return {-10000, -10000};
-	return points.random();
+	return points.nearest(factory);
 }
 
 static void build_placement(building& e) {
@@ -125,13 +166,13 @@ static void check_build_placement() {
 	}
 }
 
-static void build_structrure(objectn t) {
+static bool build_structrure(objectn t) {
 	auto factory = getbuild(t);
 	auto pb = find_base(factory, player_index);
 	if(!pb)
-		return;
+		return false;
 	if(pb->isworking())
-		return;
+		return false;
 	if(t != Slab && t != Slab4) {
 		auto v = choose_placement(pb->position, t, true);
 		if(!area.isvalid(v)) {
@@ -148,27 +189,48 @@ static void build_structrure(objectn t) {
 	}
 	pb->build = t;
 	pb->progress();
+	return true;
 }
 
 static void check_build_order() {
 	int objects[64] = {};
 	for(auto t : build_order) {
 		objects[t]++;
-		if(player_active->objects[t] < objects[t]) {
-			build_structrure(t);
+		if(!player_own(t, objects[t])) {
+			build_structrure(t); // Try build first that match
 			break;
 		}
 	}
 }
 
+static void build_unit(objectn t) {
+	auto build = getbuild(t);
+	if(!player_own(build))
+		return;
+	for(auto& e : bsdata<building>()) {
+		if(!e || e.player != player_index || e.type!=build || e.isworking())
+			continue;
+		e.build = t;
+		e.progress();
+	}
+}
+
+static void check_build_units() {
+	for(auto& e : build_units) {
+		if(!player_own(e.type, e.count))
+				build_unit(e.type);
+	}
+}
+
 static void active_player_update() {
-	units_demand = 0;
 	explore_demand = 0;
 	check_spice_area();
+	check_enemy_spotted();
 	explore_area();
 	harvester_commands();
 	check_build_order();
 	check_build_placement();
+	check_build_units();
 }
 
 void update_ai_commands(unsigned char player) {

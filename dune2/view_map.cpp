@@ -1176,7 +1176,7 @@ static void human_cancel() {
 	p->cancel();
 }
 
-static void paint_build_button(const char* format, int avatar, objectn type, unsigned key, int count) {
+static void paint_build_button(const char* format, int avatar, objectn type, unsigned key, int count, int total_count) {
 	bool pressed;
 	auto push_fore = fore;
 	if(true) {
@@ -1190,12 +1190,13 @@ static void paint_build_button(const char* format, int avatar, objectn type, uns
 		setoffset(2, 2);
 		image(gres(SHAPES), avatar, 0);
 		paint_build_shape(caret.x + 35, caret.y + 2, type);
-		if(count >= 2) {
+		if(count > 1) {
 			pushrect push;
-			char temp[32]; stringbuilder sb(temp); sb.add("x%1i", count);
 			caret.x += 32; width -= 32;
 			fore = form_button_dark;
-			texta(temp, AlignCenterCenter);
+			char temp[32]; stringbuilder sb(temp);
+			sb.clear(); sb.add("x%1i", count); texta(temp, AlignCenter); caret.y += texth();
+			// texta(temp, AlignCenteCenter);
 		}
 		fore = form_button_dark;
 		caret.y += 24; texta(format, AlignCenter);
@@ -1218,7 +1219,7 @@ static void paint_build_button() {
 		format = str(getnm("CompleteProgress"), last_building->getprogress());
 	else
 		format = getnm("BuildIt");
-	paint_build_button(format, geticonavatar(build), build, 'B', last_building->build_count + 1);
+	paint_build_button(format, geticonavatar(build), build, 'B', last_building->build_count + 1, bsdata<playeri>::elements[player_index].objects[build]);
 	height = push_height;
 }
 
