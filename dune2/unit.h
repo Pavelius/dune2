@@ -40,7 +40,7 @@ private:
 	bool		harvest();
 	bool		istrallfull() const;
 	bool		releasetile();
-	bool		returnbase();
+	bool		retreat();
 	bool		shoot();
 };
 extern unit *last_unit;

@@ -444,28 +444,99 @@ bool areai::isblocked(point v, movementn move) const {
 	return false;
 }
 
+void areai::blockland(terrainn v) const {
+	for(auto y = 0; y < maximum.y; y++) {
+		for(auto x = 0; x < maximum.x; x++) {
+			auto t = get(point(x, y));
+			if(t == v)
+				path_map[y][x] = BlockArea;
+		}
+	}
+}
+
 void areai::blockland(movementn mv) const {
+	auto md = bsdata<movementi>::elements[mv].cost;
+	for(auto y = 0; y < maximum.y; y++) {
+		for(auto x = 0; x < maximum.x; x++) {
+			auto t = get(point(x, y));
+			if(md[t] == 0xFF)
+				path_map[y][x] = BlockArea;
+		}
+	}
+}
+
+void areai::blockset(point start, point size, unsigned short value) const {
+	auto x2 = start.x + size.x;
+	auto y2 = start.y + size.y;
+	for(auto y = start.y; y < y2; y++) {
+		for(auto x = start.x; x < x2; x++) {
+			if(isvalid(x, y))
+				path_map[y][x] = value;
+		}
+	}
+}
+
+void areai::blockbuildingne(unsigned char player) const {
+	for(auto& e : bsdata<building>()) {
+		if(e && e.player != player)
+			blockset(e.position, e.getsize(), BlockArea);
+	}
+}
+
+void areai::blockunits() const {
+	for(auto& e : bsdata<unit>()) {
+		if(e && !e.isboard() && isvalid(e.position))
+			path_map[e.position.y][e.position.x] = BlockArea;
+	}
+}
+
+void areai::blockunits(point exclude) const {
+	for(auto& e : bsdata<unit>()) {
+		if(e && !e.isboard() && e.position != exclude && isvalid(e.position))
+			path_map[e.position.y][e.position.x] = BlockArea;
+	}
+}
+
+point areai::nearest(point start, point goal, movementn move, int range, unsigned char player) const {
+	if(!isvalid(start))
+		return {-10000, -10000};
+	blockclear();
+	blockbuildingne(player);
+	movewave(start, move); // Consume time action
+	blockunits(start);
+	area.blockbuildings(player);
+	return area.nearestpf(goal, isnonblocked, range);
+}
+
+void areai::blockbuildings() const {
+	for(auto& e : bsdata<building>()) {
+		if(e)
+			blockset(e.position, e.getsize(), BlockArea);
+	}
+}
+
+void areai::blockbuildings(unsigned char player) const {
+	for(auto& e : bsdata<building>()) {
+		if(e && e.player == player)
+			blockset(e.position, e.getsize(), BlockArea);
+	}
+}
+
+void areai::blockland(movementn mv, unsigned char player) const {
 	auto md = bsdata<movementi>::elements[mv].cost;
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++) {
 			auto t = get(point(x, y));
 			auto f = map_features[frames[y][x]];
 			if(f == BuildingHead || f == BuildingLeft || f == BuildingUp) {
+				if(player) {
+					auto p = find_building(getcorner(point(x, y)));
+					if(p->player == player)
+						continue;
+				}
 				path_map[y][x] = BlockArea;
 				continue;
 			} else if(md[t] == 0xFF)
-				path_map[y][x] = BlockArea;
-			else
-				path_map[y][x] = 0;
-		}
-	}
-}
-
-void areai::blockcontrol() const {
-	for(auto y = 0; y < maximum.y; y++) {
-		for(auto x = 0; x < maximum.x; x++) {
-			auto t = get(point(x, y));
-			if(t == Mountain)
 				path_map[y][x] = BlockArea;
 			else
 				path_map[y][x] = 0;
@@ -547,7 +618,7 @@ bool allowbuild(point v) {
 	return true;
 }
 
-void clearpath() {
+void blockclear() {
 	memset(path_map, 0, sizeof(path_map));
 }
 
@@ -696,24 +767,47 @@ point areai::nearest(point v, fntest proc, int radius) const {
 	return point(-10000, -10000);
 }
 
-//point areai::nearest(point v, fntest proc, int radius, bool test_explored) const {
-//	if(proc(v))
-//		return v;
-//	for(auto i = 1; i < radius; i++) {
-//		auto n = game_chance(50) ? -i : i;
-//		for(auto j = 0; j < 2; j++) {
-//			auto y = n + v.y;
-//			for(auto x = v.x - i; x <= v.x + i; x++) {
-//				if(!isvalid(x, y))
-//					continue;
-//				if(proc(point(x, y)))
-//					return point(x, y);
-//			}
-//			n = -n;
-//		}
-//	}
-//	return point(-10000, -10000);
-//}
+point areai::nearestpf(point v, fntest proc, int radius) const {
+	point result = point(-10000, -10000);
+	int result_cost = 256 * 256 * 256;
+	for(auto i = 1; i < radius; i++) {
+		auto y = v.y - i;
+		for(auto j = 0; j < 2; j++) {
+			for(auto x = v.x - i; x <= v.x + i; x++) {
+				if(!isvalid(x, y))
+					continue;
+				if(path_map[y][x] == BlockArea)
+					continue;
+				if(proc(point(x, y))) {
+					if(result_cost > path_map[y][x]) {
+						result_cost = path_map[y][x];
+						result = point(x, y);
+					}
+				}
+			}
+			y = v.y + i;
+		}
+		auto x = v.x - i;
+		for(auto j = 0; j < 2; j++) {
+			for(auto y = v.y - i + 1; y <= v.y + i - 1; y++) {
+				if(!isvalid(x, y))
+					continue;
+				if(path_map[y][x] == BlockArea)
+					continue;
+				if(proc(point(x, y))) {
+					if(result_cost > path_map[y][x]) {
+						result_cost = path_map[y][x];
+						result = point(x, y);
+					}
+				}
+			}
+			x = v.x + i;
+		}
+		if(result_cost != 256 * 256 * 256)
+			break; // Find smallest circ
+	}
+	return result;
+}
 
 point areai::getcorner(point v) const {
 	while(isvalid(v)) {
@@ -730,27 +824,6 @@ point areai::getcorner(point v) const {
 			break;
 	}
 	return v;
-}
-
-void areai::unblockbuilding(point v) {
-	v = getcorner(v);
-	if(!isvalid(v))
-		return;
-	if(map_features[frames[v.y][v.x]] != BuildingHead)
-		return;
-	auto x2 = v.x;
-	auto v1 = point(v.x + 1, v.y);
-	while(isvalid(v1) && map_features[frames[v1.y][v1.x]] == BuildingLeft) {
-		path_map[v1.y][v1.x++] = 0;
-		x2++;
-	}
-	v1 = point(v.x, v.y + 1);
-	while(isvalid(v1) && map_features[frames[v1.y][v1.x]] == BuildingUp) {
-		v1.x = v.x;
-		while(isvalid(v1) && v1.x <= x2 && map_features[frames[v1.y][v1.x]] == BuildingUp)
-			path_map[v1.y][v1.x++] = 0;
-		v1.y++;
-	}
 }
 
 void areai::scouting(point v, unsigned char player, int radius) {

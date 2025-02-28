@@ -113,7 +113,7 @@ static void add_neutral_player() {
 }
 
 static void add_unit(point v, objectn u) {
-	area.blockland(Tracked);
+	area.blockland(Tracked, 0);
 	blockunits();
 	auto v1 = area.nearest(v, isfreetrack, 5);
 	add_unit(v1, u, Down, player_index);

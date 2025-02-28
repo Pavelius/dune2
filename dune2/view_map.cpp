@@ -96,6 +96,8 @@ static void update_tick() {
 }
 
 static void update_next_turn() {
+	if(debug_toggle)
+		return;
 	if(!next_game_time)
 		next_game_time = animate_time;
 	if(next_game_time >= animate_time)
@@ -375,7 +377,7 @@ static void paint_cursor(point size, bool choose_mode, bool disabled) {
 static void paint_main_map_debug() {
 	if(!debug_toggle)
 		return;
-	// debug_control();
+	debug_control();
 	//auto v = area_spot - area_origin;
 	//if(area.isvalid(v)) {
 	//	auto push_caret = caret;

@@ -11,6 +11,7 @@ const int area_tile_width = 16;
 const int area_tile_height = 16;
 const int area_frame_maximum = 389;
 const unsigned short BlockArea = 0xFFFF;
+const unsigned short TargetArea = 0xFFFE;
 
 enum areaf : unsigned char {
 	Explored, Visible, Control,
@@ -33,9 +34,17 @@ struct areai {
 	rect			regions[region_maximum];
 	point			maximum;
 	areasizen		sizetype;
-	void			blockcontrol() const;
+	void			blockbuildingne(unsigned char player) const;
+	void			blockbuildings() const;
+	void			blockbuildings(unsigned char player) const;
 	void			blockland(movementn mv) const;
+	void			blockland(movementn mv, unsigned char player) const;
+	void			blockland(terrainn v) const;
+	void			blockset(point start, point size, unsigned short value) const;
+	void			blockunits() const;
+	void			blockunits(point exclude) const;
 	void			changealternate();
+	point			center() const { return point(maximum.x / 2, maximum.y / 2); }
 	void			clear(areasizen v);
 	point			correct(point v) const;
 	void			controlwave(point start, fntest proc, int range) const;
@@ -47,7 +56,7 @@ struct areai {
 	unsigned		getframeside(point v, terrainn t) const;
 	unsigned		getframefow(point v, unsigned player, areaf t) const;
 	unsigned short	getframefeature(point v) const { return frames_overlay[v.y][v.x]; }
-	point			getregion(int n) const { return center(regions[n]); }
+	point			getregion(int n) const { return ::center(regions[n]); }
 	point			m2r(point v) const;
 	bool			isblocked(point v, movementn move) const;
 	bool			isexist(point v, int range, fntest proc) const;
@@ -63,6 +72,8 @@ struct areai {
 	void			movewave(point v, movementn mv) const;
 	direction		moveto(point start, direction wanted_direction = Center) const;
 	point			nearest(point v, fntest proc, int radius) const;
+	point			nearest(point start, point goal, movementn move, int range, unsigned char player) const;
+	point			nearestpf(point v, fntest proc, int radius) const;
 	void			patch(point v, const tilepatch* tiles, size_t count, bool apply);
 	void			patch(point v, point size, const tilepatch* tiles, size_t count, bool apply);
 	void			random(rect r, fnset proc, int value);
@@ -70,7 +81,7 @@ struct areai {
 	void			random(point v, int s, int r, fnset proc, int value);
 	void			random(point v, int s, int r, fnset proc, int value, size_t count);
 	void			remove(unsigned char player, areaf t);
-	int				scan(point v, int range, fntest proc) const;
+//	int				scan(point v, int range, fntest proc) const;
 	void			scouting(point v, unsigned char player, int radius);
 	void			scouting(point v, point size, unsigned char player, int radius);
 	void			set(point v, terrainn t);
@@ -82,7 +93,6 @@ struct areai {
 	void			set(rect v, fnset proc, int value);
 	void			set(point v, unsigned char player, areaf t) { flags[player][v.y][v.x] |= (1 << t); }
 	void			setcamera(point v, bool center_view);
-	void			unblockbuilding(point v);
 private:
 	unsigned char	flags[6][my][mx]; // Flags for each player (0 - neutral and 1-6)
 	short unsigned	frames[my][mx];
@@ -110,7 +120,7 @@ bool allowbuild(point v);
 void blockarea(areai::fntest proc);
 void blockarea(areai::fntest proc, point size);
 void blockareaor(areai::fntest proc, point size);
-void clearpath();
+void blockclear();
 void copypath();
 bool isspice(point v);
 void setareascout(point v, int player_index);

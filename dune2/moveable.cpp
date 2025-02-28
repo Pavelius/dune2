@@ -21,8 +21,8 @@ static int get_trail_param(direction d) {
 	}
 }
 
-void blockland(movementn movement) {
-	area.blockland(movement);
+void blockland(movementn movement, unsigned char player) {
+	area.blockland(movement, player);
 }
 
 void moveable::startmove(int move_speed) {
@@ -64,7 +64,7 @@ direction moveable::nextpath(point v, movementn movement) {
 	if(!area.isvalid(v))
 		return Center;
 	if(movement == Undersand) {
-		blockland(movement);
+		blockland(movement, player);
 		blockunits(player);
 		unblock();
 		if(path_map[v.y][v.x] == BlockArea)
@@ -73,7 +73,7 @@ direction moveable::nextpath(point v, movementn movement) {
 		return area.moveto(position, move_direction);
 	}
 	auto need_block_units = v.range(position) < 3;
-	blockland(movement);
+	blockland(movement, player);
 	if(need_block_units) {
 		if(movement == Tracked)
 			blockunits(player, Footed);

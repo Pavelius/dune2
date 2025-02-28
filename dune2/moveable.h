@@ -23,7 +23,7 @@ private:
 	void			scouting(int line_of_sight);
 };
 
-void blockland(movementn movement);
+void blockland(movementn movement, unsigned char player);
 void blockunits();
 void blockunits(unsigned char player);
 void blockunits(unsigned char player, movementn move);

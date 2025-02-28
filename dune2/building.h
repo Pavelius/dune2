@@ -39,16 +39,15 @@ struct building : actable, objectable {
 	bool			isnear(point v) const;
 	bool			isbuildplacement() const;
 	bool			isworking() const { return build_spend != 0; }
-	point			nearestboard(point v, movementn move) const;
 	bool			progress();
 	void			scouting();
 	void			set(buildstaten action, bool apply);
+	void			setblock(short unsigned n) const;
 	void			update();
 	void			unblock() const { setblock(0); }
 	void			unboard();
 private:
 	bool			autoproduct();
-	void			setblock(short unsigned n) const;
 	void			updateturrets();
 };
 extern building* last_building;

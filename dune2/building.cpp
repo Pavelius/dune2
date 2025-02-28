@@ -128,11 +128,14 @@ void building::board(unit* p) {
 void building::unboard() {
 	if(unit_board == 0xFFFF)
 		return;
-	auto v = area.nearest(position, isfreetrack, 8);
+	auto p = bsdata<unit>::elements + unit_board;
+	auto start = p->target_position;
+	if(!area.isvalid(start))
+		start = area.center();
+	auto v = area.nearest(start, position, getmove(p->type), 24, player);
 	if(!area.isvalid(v))
 		return;
 	set(BoardUnit, false);
-	auto p = bsdata<unit>::elements + unit_board;
 	p->position = v;
 	p->screen = m2sc(p->position);
 	p->stopmove();
@@ -284,7 +287,7 @@ bool building::canbuild() const {
 }
 
 static point get_unit_place_point(point start, int range) {
-	area.blockland(Tracked);
+	area.blockland(Tracked, 0);
 	blockunits();
 	return area.nearest(start, isnonblocked, range);
 }
@@ -422,20 +425,6 @@ void building::setblock(short unsigned n) const {
 	}
 }
 
-point building::nearestboard(point v, movementn move) const {
-	if(!area.isvalid(v))
-		return {-10000, -10000};
-	blockland(move);
-	blockunits();
-	path_map[v.y][v.x] = 0;
-	unblock();
-	area.movewave(position, move); // Consume time action
-	if(path_map[position.y][position.x] == BlockArea)
-		return {-10000, -10000};
-	block();
-	return find_smallest_position();
-}
-
 bool isbuildplace(point v) {
 	auto f = area.getfeature(v);
 	if(f != SlabFeature)
@@ -469,10 +458,11 @@ static bool iscopycontrol(point v) {
 }
 
 void markbuildarea(point base, point placement_size, objectn build, bool full_slab_size) {
-	area.blockcontrol();
+	blockclear();
+	area.blockland(Mountain);
 	area.controlwave(base, allowcontrol, 32);
 	memcpy(path_map_copy, path_map, sizeof(path_map));
-	clearpath();
+	blockclear();
 	if(build == Slab || build == Slab4) {
 		if(full_slab_size)
 			blockarea(isbuildslabplacens, placement_size);

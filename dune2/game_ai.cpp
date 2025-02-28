@@ -8,15 +8,15 @@
 #include "unit.h"
 
 struct objectunit {
-	objectn			type;
-	unsigned char	count;
+	objectn	type;
+	unsigned char count;
 };
 
 static pointa points;
 static playeri* player_active;
 static int explore_demand;
 static objectn build_order[] = {Refinery, Windtrap, SpiceSilo, Barracks, RadarOutpost, Wor, LightVehicleFactory};
-static objectunit build_units[] = {{LightInfantry, 10}, {HeavyInfantry, 10}};
+static objectunit build_units[] = {{LightInfantry, 5}, {HeavyInfantry, 5}, {Quad, 10}, {Tank, 5}, {AssaultTank, 5}, {RocketTank, 5}};
 
 static bool isexploredspice(point v) {
 	if(!area.is(v, player_index, Explored))
@@ -182,7 +182,7 @@ static point choose_placement(point factory, objectn t, bool full_slab_size) {
 	points.select(allarea(), isnonblocked);
 	if(!points)
 		return {-10000, -10000};
-	return points.nearest(factory);
+	return points.nearest(area.center());
 }
 
 static void build_placement(building& e) {
@@ -256,7 +256,7 @@ static void build_unit(objectn t) {
 static void check_build_units() {
 	for(auto& e : build_units) {
 		if(!player_own(e.type, e.count))
-				build_unit(e.type);
+			build_unit(e.type);
 	}
 }
 

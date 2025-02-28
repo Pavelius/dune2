@@ -218,7 +218,7 @@ bool unit::releasetile() {
 }
 
 bool unit::harvest() {
-	if(getpurpose() != Harvest)
+	if(type != Harvester)
 		return false;
 	remove(NoEffect);
 	if(isboard()) {
@@ -245,7 +245,7 @@ bool unit::harvest() {
 		return true;
 	}
 	if(istrallfull()) {
-		returnbase();
+		retreat();
 		return true;
 	}
 	if(!area.isvalid(target_position))
@@ -390,7 +390,7 @@ static building* get_refinery(unsigned char player) {
 	return find_base(Refinery, player);
 }
 
-bool unit::returnbase() {
+bool unit::retreat() {
 	auto kind = getpurpose();
 	if(kind == Harvest) {
 		auto pb = get_refinery(player);
@@ -398,7 +398,7 @@ bool unit::returnbase() {
 			cantdothis(); // Something wrong
 			return false; // Not any valid base present
 		}
-		auto v = pb->nearestboard(position, getmove(type));
+		auto v = area.nearest(position, pb->position, getmove(type), 24, player);
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong
 			return false;
@@ -418,7 +418,7 @@ bool unit::returnbase() {
 			stop();
 			return false; // Not any valid base present
 		}
-		auto v = pb->nearestboard(position, getmove(type));
+		auto v = area.nearest(position, pb->position, getmove(type), 24, player);
 		if(!area.isvalid(v)) {
 			cantdothis(); // Something wrong - path is blocking
 			return false;
@@ -436,7 +436,7 @@ void unit::setorder(ordern type, point v) {
 	case Attack: setaction(type, v, true); break;
 	case Harvest: setaction(type, v, false); order = v; break;
 	case Move: stop(); order = v; start_time = game.time; break;
-	case Retreat: returnbase(); break;
+	case Retreat: retreat(); break;
 	default: stop(); break;
 	}
 }
