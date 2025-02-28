@@ -5,6 +5,7 @@
 #include "game.h"
 #include "objecta.h"
 #include "pointa.h"
+#include "pushvalue.h"
 #include "resid.h"
 
 BSDATA(tilepatch) = {
@@ -86,6 +87,21 @@ building* find_building(point v) {
 			return &e;
 	}
 	return 0;
+}
+
+static bool isenemybuilding(point v) {
+	auto f = area.getfeature(v);
+	if(f < BuildingHead)
+		return false;
+	auto p = find_building(area.getcorner(v));
+	if(!p)
+		return false;
+	return p->player != player_index;
+}
+
+point find_enemy_building(point v, unsigned char player, int range) {
+	pushvalue push(player_index, player);
+	return area.nearest(v, isenemybuilding, range);
 }
 
 building* find_board(const unit* p) {

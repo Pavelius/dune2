@@ -1,6 +1,7 @@
 #include "actable.h"
 #include "area.h"
 #include "bsdata.h"
+#include "building.h"
 #include "direction.h"
 #include "game.h"
 #include "player.h"
@@ -116,6 +117,11 @@ bool actable::seeking(int range) {
 		if(enemy) {
 			target = enemy->getindex();
 			target_position = enemy->position;
+			return true;
+		}
+		auto v = find_enemy_building(position, player, range);
+		if(area.isvalid(v)) {
+			target_position = v;
 			return true;
 		}
 	}

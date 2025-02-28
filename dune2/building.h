@@ -58,6 +58,8 @@ building* find_base(objectn type, unsigned char player);
 building* find_building(point v);
 building* find_board(const unit* p);
 
+point find_enemy_building(point v, unsigned char player, int range);
+
 bool isbuildplace(point v);
 bool isbuildslabplace(point v);
 void markbuildarea(point base, point placement_size, objectn build, bool full_slab_size = false);

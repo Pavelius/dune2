@@ -7,6 +7,7 @@
 #include "movement.h"
 #include "print.h"
 #include "player.h"
+#include "pushvalue.h"
 #include "stringbuilder.h"
 #include "squad.h"
 #include "unit.h"
