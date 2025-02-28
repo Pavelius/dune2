@@ -116,7 +116,7 @@ static void add_unit(point v, objectn u) {
 	area.blockland(Tracked);
 	blockunits();
 	auto v1 = area.nearest(v, isfreetrack, 5);
-	add_unit(v1, u, Down);
+	add_unit(v1, u, Down, player_index);
 }
 
 static int center_expanse(int r) {

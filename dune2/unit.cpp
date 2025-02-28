@@ -117,6 +117,8 @@ void unit::cleanup() {
 		if(e.target == i)
 			e.actable::stop();
 	}
+	if(bsdata<playeri>::elements[player].scout == i)
+		bsdata<playeri>::elements[player].scout = 0xFFFF;
 	if(last_unit == this)
 		last_unit = 0;
 	human_selected.remove(this);
@@ -187,6 +189,8 @@ bool unit::istrallfull() const {
 }
 
 bool unit::releasetile() {
+	if(isboard())
+		return false; // Two harvester is unboard and have same position!!! Cut off this case.
 	auto p = find_unit(position, this);
 	if(!p)
 		return false;
@@ -344,7 +348,7 @@ unit* find_unit(point v, const unit* exclude) {
 	return 0;
 }
 
-void add_unit(point pt, objectn id, direction d) {
+void add_unit(point pt, objectn id, direction d, unsigned char player) {
 	pt = area.nearest(pt, isfreetrack, 4);
 	if(!area.isvalid(pt))
 		return;
@@ -357,7 +361,7 @@ void add_unit(point pt, objectn id, direction d) {
 	last_unit->move_direction = d;
 	last_unit->shoot_direction = d;
 	last_unit->hits = last_unit->gethitsmax();
-	last_unit->player = player_index;
+	last_unit->player = player;
 	last_unit->start_time = game.time;
 	last_unit->stop();
 	last_unit->scouting();

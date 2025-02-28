@@ -45,7 +45,7 @@ private:
 };
 extern unit *last_unit;
 
-void add_unit(point pt, objectn id, direction d);
+void add_unit(point pt, objectn id, direction d, unsigned char player);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);

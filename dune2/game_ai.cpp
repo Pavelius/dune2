@@ -42,21 +42,6 @@ static bool player_own(objectn t, int count = 1) {
 	return false;
 }
 
-static short unsigned find_executor(statn best) {
-	auto result_value = 0;
-	unit* result = 0;
-	for(auto& e : bsdata<unit>()) {
-		if(!e || e.isboard() || e.player != player_index)
-			continue;
-		auto value = e.get(best);
-		if(result_value < value) {
-			result_value = value;
-			result = &e;
-		}
-	}
-	return result ? result - bsdata<unit>::elements : 0xFFFF;
-}
-
 static unit* find_free_explorer(point near) {
 	unit* result = 0;
 	int result_range = 256 * 256;
@@ -72,13 +57,39 @@ static unit* find_free_explorer(point near) {
 	return result;
 }
 
+static short unsigned find_executor(statn best) {
+	auto result_value = 0;
+	unit* result = 0;
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.type == Harvester || e.isboard() || e.player != player_index)
+			continue;
+		auto value = e.get(best);
+		if(result_value < value) {
+			result_value = value;
+			result = &e;
+		}
+	}
+	return result ? result - bsdata<unit>::elements : 0xFFFF;
+}
+
+static unit* find_scout() {
+	if(player_active->scout == 0xFFFF)
+		player_active->scout = find_executor(Speed);
+	if(player_active->scout == 0xFFFF)
+		return 0;
+	auto p = bsdata<unit>::elements + player_active->scout;
+	if(p->isorder())
+		return 0;
+	return p;
+}
+
 static point enemy_spotted() {
 	if(!area.isvalid(player_active->base))
 		return {-10000, -10000};
 	point result = {-10000, -10000};
 	int result_range = 256 * 256 * 256;
 	for(auto& e : bsdata<unit>()) {
-		if(!e || e.player != player_index || !area.is(e.position, player_index, Visible))
+		if(!e || e.player == player_index || !area.is(e.position, player_index, Visible))
 			continue;
 		auto range = e.position.range(player_active->base);
 		if(result_range > range) {
@@ -89,16 +100,43 @@ static point enemy_spotted() {
 	return result;
 }
 
-static void check_enemy_spotted() {
-	if(area.isvalid(player_active->enemy)) {
-		if((player_active->enemy_spot_turn - game.turn) > 100) {
-			player_active->enemy = {-10000, -10000};
-			return;
+static point enemy_building_spotted() {
+	if(!area.isvalid(player_active->base))
+		return {-10000, -10000};
+	point result = {-10000, -10000};
+	int result_range = 256 * 256 * 256;
+	for(auto& e : bsdata<building>()) {
+		if(!e || e.player == player_index || !area.is(e.position, player_index, Explored))
+			continue;
+		auto range = e.position.range(player_active->base);
+		if(result_range > range) {
+			result_range = range;
+			result = e.position;
 		}
-	} else {
+	}
+	return result;
+}
+
+static bool need_update_enemy_spot(point v) {
+	if(!area.isvalid(v))
+		return true;
+	return (player_active->enemy_spot_turn - game.turn) > 200;
+}
+
+static void check_enemy_spotted() {
+	if(need_update_enemy_spot(player_active->enemy)) {
 		player_active->enemy = enemy_spotted();
 		player_active->enemy_spot_turn = game.turn;
 	}
+	player_active->enemy_base = enemy_building_spotted();
+}
+
+static void seek_enemy_base() {
+	if(!player_active->objects[RadarOutpost])
+		return;
+	if(area.isvalid(player_active->enemy_base))
+		return;
+	explore_demand++;
 }
 
 static void explore_area() {
@@ -109,10 +147,10 @@ static void explore_area() {
 	if(!points)
 		return;
 	auto v = points.nearest(player_active->base);
-	auto p = find_free_explorer(v);
+	auto p = find_scout();
 	if(!p)
 		return;
-	p->order = v;
+	p->order = area.nearest(v, isfreetrack, 10);
 }
 
 static void check_spice_area() {
@@ -131,7 +169,7 @@ static void harvester_commands() {
 	if(!area.isvalid(player_active->spice))
 		return;
 	for(auto& e : bsdata<unit>()) {
-		if(!e || e.player != player_index || e.type != Harvester || area.isvalid(e.target_position))
+		if(!e || e.isboard() || e.player != player_index || e.type != Harvester || area.isvalid(e.target_position))
 			continue;
 		e.target_position = player_active->spice;
 	}
@@ -222,15 +260,52 @@ static void check_build_units() {
 	}
 }
 
+static bool player_gain_army() {
+	for(auto& e : build_units) {
+		if(!player_own(e.type, e.count))
+			return false;
+	}
+	return true;
+}
+
+static areai::fntest get_move(movementn n) {
+	switch(n) {
+	case Footed: return isfreefoot;
+	default: return isfreetrack;
+	}
+}
+
+static point get_near(objectn type, point v) {
+	return area.nearest(v, get_move(getmove(type)), 15);
+}
+
+static void give_order_army(point v) {
+	if(!area.isvalid(v))
+		return;
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.player != player_index || e.isorder() || getweapon(e.type)==NoEffect)
+			continue;
+		e.order = get_near(e.type, v);
+	}
+}
+
+static void check_army() {
+	if(!player_gain_army())
+		return;
+	give_order_army(player_active->enemy_base);
+}
+
 static void active_player_update() {
 	explore_demand = 0;
 	check_spice_area();
 	check_enemy_spotted();
+	seek_enemy_base();
 	explore_area();
 	harvester_commands();
 	check_build_order();
 	check_build_placement();
 	check_build_units();
+	check_army();
 }
 
 void update_ai_commands(unsigned char player) {

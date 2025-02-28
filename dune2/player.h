@@ -10,8 +10,9 @@ struct playeri : fractionable, storeable {
 	unsigned char	color_index;
 	unsigned char	region;
 	unsigned short	objects[64]; // Count of all by type
-	point			base, spice, enemy;
+	point			base, spice, enemy, enemy_base;
 	unsigned long	enemy_spot_turn;
+	unsigned short	scout;
 	void			clear();
 	unsigned char	getindex() const;
 	void			update();

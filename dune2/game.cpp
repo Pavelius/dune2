@@ -288,22 +288,6 @@ void open_options() {
 	execute_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), quit_game, elements);
 }
 
-static void generate_base(int br, int sr) {
-	auto v = area.getregion(br);
-	area.set({v.x - 2, v.y - 2, v.x + 4, v.y + 4}, set_terrain, Rock);
-	rect rc = {v.x - 4, v.y - 4, v.x + 6, v.y + 6};
-	area.random(rc, set_terrain_big_circle, Rock, 12);
-	area.random(rc, set_terrain_circle, Mountain, 4);
-	auto spice = area.getregion(sr);
-	rect r1 = {spice.x - 5, spice.y - 5, spice.x + 5, spice.y + 5};
-	area.random(r1, set_terrain_circle, Spice, 20);
-	area.random(r1, set_terrain_small_circle, SpiceRich, 5);
-	add_building(v, ConstructionYard);
-	add_unit(v, Trike, Down);
-	add_unit(v, AssaultTank, Down);
-	add_unit(v, Quad, Down);
-}
-
 void camera_to_base() {
 	auto pb = find_base(ConstructionYard, player_index);
 	if(pb)

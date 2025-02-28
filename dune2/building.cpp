@@ -268,14 +268,8 @@ bool building::canbuild() const {
 }
 
 static point get_unit_place_point(point start, int range) {
-	//pointa points;
 	area.blockland(Tracked);
 	blockunits();
-	//area.controlwave(start, allowcontrol, range);
-	//blockarea(isunitpossible);
-	//blockunits();
-	//points.selectfree();
-	//return points.random();
 	return area.nearest(start, isnonblocked, range);
 }
 
@@ -288,7 +282,7 @@ bool building::autoproduct() {
 		return false;
 	auto v = get_unit_place_point(position, 32);
 	if(area.isvalid(v))
-		add_unit(v, build, to(position, v));
+		add_unit(v, build, to(position, v), player);
 	build_spend = 0;
 	return true;
 }
