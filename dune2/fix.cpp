@@ -68,11 +68,11 @@ static void apply_damage() {
 }
 
 void add_effect(point v, fixn i) {
-	add_effect(v, i, animate_time);
+	add_effect(v, i, game.time);
 }
 
 void add_effect(point from, point to, fixn i) {
-	add_effect(from, to, i, animate_time);
+	add_effect(from, to, i, game.time);
 }
 
 int fixeffecti::getframe(unsigned& flags, point from, point to) const {

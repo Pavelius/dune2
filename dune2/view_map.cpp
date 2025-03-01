@@ -95,6 +95,60 @@ static void update_tick() {
 	animate_time = getcputime();
 }
 
+static int calculate(int v1, int v2, int n, int m) {
+	return v1 + (v2 - v1) * n / m;
+}
+
+static void update_effect_fix() {
+	auto p = (draweffect*)last_object;
+	if(!p->param || p->start_time > game.time)
+		return;
+	auto pf = bsdata<fixeffecti>::elements + p->param;
+	unsigned long delay = pf->milliseconds;
+	auto need_finish = false;
+	auto duration = game.time - p->start_time;
+	if(p->from != p->to) {
+		delay = pf->milliseconds * p->from.range(p->to) / area_tile_width;
+		if(duration >= delay)
+			need_finish = true;
+		else {
+			p->screen.x = calculate(p->from.x, p->to.x, duration, delay);
+			p->screen.y = calculate(p->from.y, p->to.y, duration, delay);
+		}
+	} else {
+		if(!delay)
+			delay = 60;
+		if(duration >= delay * pf->count)
+			need_finish = true;
+	}
+	if(need_finish) {
+		p->screen = p->to;
+		if(pf->apply)
+			pf->apply();
+		auto next = pf->next;
+		if(pf->next_proc)
+			next = pf->next_proc();
+		if(next) {
+			p->from = p->to;
+			p->to = p->to;
+			p->param = pf->next;
+			p->start_time = game.time;
+		} else
+			p->clearobject();
+	}
+}
+
+static void update_draw_effects() {
+	auto push = last_object;
+	for(auto& e : bsdata<draweffect>()) {
+		if(!e)
+			continue;
+		last_object = &e;
+		update_effect_fix();
+	}
+	last_object = push;
+}
+
 static void update_next_turn() {
 	if(debug_toggle)
 		return;
@@ -107,6 +161,7 @@ static void update_next_turn() {
 	if(delta < 1000) { // Check if pause will be pressed
 		game.time += delta;
 		update_game_time();
+		update_draw_effects();
 	}
 }
 
@@ -530,13 +585,9 @@ static void paint_unit() {
 	paint_unit_effect(p);
 }
 
-static int calculate(int v1, int v2, int n, int m) {
-	return v1 + (v2 - v1) * n / m;
-}
-
 static void paint_effect_fix() {
 	auto p = (draweffect*)last_object;
-	if(!p->param || p->start_time > animate_time)
+	if(!p->param || p->start_time > game.time)
 		return;
 	auto pf = bsdata<fixeffecti>::elements + p->param;
 	auto delay = pf->milliseconds;
@@ -545,51 +596,12 @@ static void paint_effect_fix() {
 	if(!delay)
 		delay = 60;
 	unsigned image_flags = 0;
+	auto duration = game.time - p->start_time;
 	auto frame = pf->getframe(image_flags, p->from, p->to);
-	auto duration = animate_time - p->start_time;
-	if(p->from == p->to) {
-		auto frame_offset = (short unsigned)(duration / delay);
-		if(frame_offset >= pf->count) {
-			if(pf->apply)
-				pf->apply();
-			auto next = pf->next;
-			if(pf->next_proc)
-				next = pf->next_proc();
-			if(next) {
-				p->param = next;
-				p->start_time = animate_time;
-				pf = bsdata<fixeffecti>::elements + next;
-				frame = pf->frame;
-			} else {
-				p->clearobject();
-				return; // No render image
-			}
-		} else
-			frame += frame_offset;
-	} else {
-		pf->getframe(image_flags, p->from, p->to);
-		if(duration >= delay) {
-			caret = s2i(p->to);
-			p->screen = p->to;
-			if(pf->apply)
-				pf->apply();
-			if(pf->next) {
-				p->from = p->to;
-				p->to = p->to;
-				p->param = pf->next;
-				p->start_time = animate_time;
-				pf = bsdata<fixeffecti>::elements + pf->next;
-				frame = pf->frame;
-			} else {
-				p->clearobject();
-				return; // No render image
-			}
-		} else {
-			p->screen.x = calculate(p->from.x, p->to.x, duration, delay);
-			p->screen.y = calculate(p->from.y, p->to.y, duration, delay);
-			caret = s2i(p->screen);
-		}
-	}
+	auto frame_offset = (unsigned short)(duration / delay);
+	if(frame_offset >= pf->count)
+		frame_offset = pf->count - 1;
+	frame += frame_offset;
 	image(gres(pf->rid), frame, image_flags);
 }
 
