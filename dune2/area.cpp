@@ -529,11 +529,11 @@ void areai::blockland(movementn mv, unsigned char player) const {
 			auto t = get(point(x, y));
 			auto f = map_features[frames[y][x]];
 			if(f == BuildingHead || f == BuildingLeft || f == BuildingUp) {
-				if(player) {
-					auto p = find_building(getcorner(point(x, y)));
-					if(p->player == player)
-						continue;
-				}
+				//if(player) {
+				//	auto p = find_building(getcorner(point(x, y)));
+				//	if(p->player == player)
+				//		continue;
+				//}
 				path_map[y][x] = BlockArea;
 				continue;
 			} else if(md[t] == 0xFF)

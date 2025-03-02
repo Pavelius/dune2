@@ -22,3 +22,5 @@ WOR: WOR
 Windtrap: Wind Trap
 
 Energy: Energy
+
+CantSupportEnergy: Not enought energy. Build more wind traps.

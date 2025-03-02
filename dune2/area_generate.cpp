@@ -197,13 +197,11 @@ static void generate_lands(fngenerate* regions) {
 }
 
 static void initialize_random_fractions() {
-	fractions[0] = Atreides;
-	fractions[1] = Harkonens;
-	fractions[2] = Ordos;
-	fractions[3] = Atreides;
-	fractions[4] = Harkonens;
-	fractions[5] = Ordos;
-	zshuffle(fractions, sizeof(fractions) / sizeof(fractions[0]));
+	memset(fractions, 0, sizeof(fractions));
+	fractions[1] = Atreides;
+	fractions[2] = Harkonens;
+	fractions[3] = Ordos;
+	zshuffle(fractions + 1, 3);
 }
 
 void area_generate(areasizen n, int number_of_players) {
@@ -217,4 +215,5 @@ void area_generate(areasizen n, int number_of_players) {
 	generate_lands(regions);
 	check_surrounded(SpiceRich, Spice);
 	check_surrounded(Mountain, Rock);
+	player_human = player_index;
 }

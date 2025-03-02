@@ -7,7 +7,7 @@ enum shapen	: unsigned char;
 enum statn : unsigned char;
 
 enum objectn : unsigned char {
-	NoObject, House, Building, Unit, Objective,
+	NoObject, House, Building, Unit, Special, Objective,
 	Atreides, Harkonens, Ordos,
 	ConstructionYard, SpiceSilo, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFacility,

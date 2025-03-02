@@ -2,6 +2,7 @@ ChooseTarget: Target
 ChooseTargetInfo: Choose move target
 
 Units: Units
+Special: Special
 
 AssaultTank: Assault Tank
 Carrier: Carrier

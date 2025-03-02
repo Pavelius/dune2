@@ -246,6 +246,7 @@ static void update_topics() {
 	add_group(House);
 	add_group(Unit);
 	add_group(Building);
+	add_group(Special);
 }
 
 static void* choose_mentat_topic() {

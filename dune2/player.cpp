@@ -4,7 +4,7 @@
 
 BSDATAC(playeri, player_maximum)
 
-unsigned char player_index;
+unsigned char player_index, player_human;
 
 playeri& mainplayer() {
 	return bsdata<playeri>::elements[player_index];
@@ -44,4 +44,11 @@ void playeri::update() {
 		maximum[Energy] += getenergyprofit(i) * objects[i];
 		maximum[Credits] += getspicecap(i) * objects[i];
 	}
+}
+
+bool playeri::cansupportenergy(objectn type) const {
+	auto cost_energy = getenergycost(type);
+	if(!cost_energy)
+		return true;
+	return abilities[Energy] + cost_energy <= maximum[Energy];
 }

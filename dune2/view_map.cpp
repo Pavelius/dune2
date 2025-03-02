@@ -1167,11 +1167,23 @@ static point choose_placement() {
 	return show_scene(paint_main_map_choose_placement, 0, 0);
 }
 
+static bool can_support_energy(objectn build) {
+	if(!player_index)
+		return true;
+	if(!bsdata<playeri>::elements[player_index].cansupportenergy(build)) {
+		print(getnm("CantSupportEnergy"));
+		return false;
+	}
+	return true;
+}
+
 static void human_build() {
 	auto p = (building*)hot.object;
-	if(!p->isworking())
+	if(!p->isworking()) {
+		if(!can_support_energy(p->build))
+			return;
 		p->progress();
-	else if(p->getprogress() == 100) {
+	} else if(p->getprogress() == 100) {
 		auto push = placement_size;
 		auto build = p->build;
 		placement_size = p->getbuildsize();

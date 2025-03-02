@@ -20,6 +20,7 @@ BSDATA(objecti) = {
 	{"Houses"},
 	{"Buildings"},
 	{"Units"},
+	{"Special"},
 	{"Objectives"},
 	{"Atreides", House, FARTR, 0, MENSHPA},
 	{"Harkonens", House, FHARK, 1, MENSHPH},
@@ -50,7 +51,7 @@ BSDATA(objecti) = {
 	{"Tank", Unit, LTANK, 78, UNITS2, {0, 5}},
 	{"AssaultTank", Unit, HTANK, 72, UNITS2, {10, 15}},
 	{"RocketTank", Unit, RTANK, 73, UNITS2, {0, 35}},
-	{"SandWorm", Unit, WORM, 93},
+	{"SandWorm", Special, WORM, 93},
 	{"Carrier", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Fregate", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Ornitopter", Unit, ORNI, 85, UNITS, {51}},
@@ -104,7 +105,12 @@ int getenergycost(objectn type) {
 	case Starport: return 1500;
 	case RocketTurret: return 500;
 	case Turret: return 300;
-	default: return 500;
+	case Refinery: case ConstructionYard: case Windtrap: return 0;
+	case Slab: case Slab4: return 0;
+	default:
+		if(type >= Harvester)
+			return 0;
+		return 500;
 	}
 }
 

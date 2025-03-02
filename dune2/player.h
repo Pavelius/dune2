@@ -13,6 +13,7 @@ struct playeri : fractionable, storeable {
 	point			base, spice, enemy, enemy_base;
 	unsigned long	enemy_spot_turn;
 	unsigned short	scout;
+	bool			cansupportenergy(objectn type) const;
 	void			clear();
 	unsigned char	getindex() const;
 	void			update();
@@ -22,6 +23,6 @@ struct playerable {
 	playeri&		getplayer() const;
 	void			setplayer(const playeri* v);
 };
-extern unsigned char player_index;
+extern unsigned char player_index, player_human;
 
 playeri& mainplayer();

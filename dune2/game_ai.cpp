@@ -15,7 +15,7 @@ struct objectunit {
 static pointa points;
 static playeri* player_active;
 static int explore_demand;
-static objectn build_order[] = {Refinery, Windtrap, SpiceSilo, Barracks, RadarOutpost, Wor, LightVehicleFactory};
+static objectn build_order[] = {Refinery, Windtrap, SpiceSilo, Barracks, Windtrap, RadarOutpost, Wor, Windtrap, Windtrap, LightVehicleFactory, Windtrap, HeavyVehicleFactory};
 static objectunit build_units[] = {{LightInfantry, 5}, {HeavyInfantry, 5}, {Quad, 10}, {Tank, 5}, {AssaultTank, 5}, {RocketTank, 5}};
 
 static bool isexploredspice(point v) {
@@ -310,6 +310,8 @@ static void active_player_update() {
 
 void update_ai_commands(unsigned char player) {
 	if(player >= bsdata<playeri>::source.count)
+		return;
+	if(player_human && player_human == player)
 		return;
 	pushvalue push_active(player_active, bsdata<playeri>::elements + player);
 	pushvalue push_player(player_index, player);
