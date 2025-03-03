@@ -40,6 +40,7 @@ resid getres(objectn type);
 movementn getmove(objectn type);
 
 fixn getweapon(objectn type);
+fixn getheavyweapon(objectn type);
 
 unsigned short* getframes(objectn type);
 

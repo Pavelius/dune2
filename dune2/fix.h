@@ -11,7 +11,7 @@ enum fixn : unsigned char {
 	NoEffect,
 	Smoke, BurningFire,
 	ShootAssaultRifle, ShootRotaryCannon, Shoot20mm, Shoot30mm, Shoot155mm, Shoot200mm,
-	FireRocket,
+	HandRocket, FireRocket,
 	FixSmallHit, FixMediumHit, FixLargeHit,
 	FixExplosion, FixBigExplosion,
 	FixBikeExplosion, FixBikeExplosionEnd,

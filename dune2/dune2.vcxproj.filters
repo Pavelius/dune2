@@ -1,9 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="support">
-      <UniqueIdentifier>{96d04262-89cf-4a1d-805e-48af539fba52}</UniqueIdentifier>
-    </Filter>
     <Filter Include="logic">
       <UniqueIdentifier>{df757365-607f-44c6-8ada-1c2ec77f6266}</UniqueIdentifier>
     </Filter>
@@ -19,16 +16,19 @@
     <Filter Include="locale">
       <UniqueIdentifier>{38766d70-5434-4b29-ada1-8c316fe7f192}</UniqueIdentifier>
     </Filter>
+    <Filter Include="logic\support">
+      <UniqueIdentifier>{96d04262-89cf-4a1d-805e-48af539fba52}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="draw.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="draw_text.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="io_stream.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="main.cpp">
       <Filter>logic</Filter>
@@ -43,34 +43,34 @@
       <Filter>platform</Filter>
     </ClCompile>
     <ClCompile Include="color.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="stringbuilder.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="locale.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="log.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="point.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="print.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="array.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="math.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="scale.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="szdup.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="resid.cpp">
       <Filter>logic</Filter>
@@ -85,16 +85,16 @@
       <Filter>utils</Filter>
     </ClCompile>
     <ClCompile Include="nameable.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="surface_serial.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="iff.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="log_file.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="terrain.cpp">
       <Filter>logic</Filter>
@@ -106,16 +106,16 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="manager.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="midi.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="music.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="thread.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
       <Filter>logic</Filter>
@@ -145,7 +145,7 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="rect.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="unita.cpp">
       <Filter>logic</Filter>
@@ -160,7 +160,7 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="screenshoot.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="view_debug.cpp">
       <Filter>logic</Filter>
@@ -193,10 +193,10 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="answers.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="archive.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="serial.cpp">
       <Filter>logic</Filter>
@@ -205,7 +205,7 @@
       <Filter>logic</Filter>
     </ClCompile>
     <ClCompile Include="textscript.cpp">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClCompile>
     <ClCompile Include="actable.cpp">
       <Filter>logic</Filter>
@@ -237,55 +237,55 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="flagable.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="io_stream.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="rand.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="color.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="stringbuilder.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="win.h">
       <Filter>platform</Filter>
     </ClInclude>
     <ClInclude Include="log.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="point.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="print.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="rect.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="array.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="seqlink.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="math.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="timer.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="resid.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="bsdata.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="view.h">
       <Filter>logic</Filter>
@@ -294,19 +294,19 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="pushvalue.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="fraction.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="nameable.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="iff.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="log_file.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="terrain.h">
       <Filter>logic</Filter>
@@ -315,7 +315,7 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="slice.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="direction.h">
       <Filter>logic</Filter>
@@ -324,16 +324,16 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="manager.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="midi.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="music.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="thread.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
       <Filter>logic</Filter>
@@ -357,7 +357,7 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="adat.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="fix.h">
       <Filter>logic</Filter>
@@ -375,7 +375,7 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="screenshoot.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="order.h">
       <Filter>logic</Filter>
@@ -396,16 +396,16 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="answers.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="view_menu.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="archive.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="textscript.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="actable.h">
       <Filter>logic</Filter>
@@ -420,7 +420,7 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="flagset.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
     <ClInclude Include="stat.h">
       <Filter>logic</Filter>
@@ -429,7 +429,7 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="my_initialize_list.h">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
@@ -469,7 +469,7 @@
       <Filter>doc</Filter>
     </None>
     <None Include="cpp.hint">
-      <Filter>support</Filter>
+      <Filter>logic\support</Filter>
     </None>
   </ItemGroup>
 </Project>

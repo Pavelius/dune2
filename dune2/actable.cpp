@@ -80,13 +80,14 @@ static unsigned get_miss_chance(fixn weapon) {
 	}
 }
 
-bool actable::launching(point screen, fixn weapon, int maximum_range) {
+bool actable::launch(point screen, fixn weapon, int maximum_range) {
 	if(!weapon)
 		return false;
 	if(heavy_shoot_time && heavy_shoot_time + (action_duration * 3) < game.time) {
 		heavy_shoot_time = 0;
 		return false;
-	}
+	} else if(heavy_shoot_time)
+		return false;
 	if(canshoot(maximum_range)) {
 		auto d = to(position, target_position);
 		fixshoot(screen, m2sc(target_position), weapon, get_miss_chance(weapon));

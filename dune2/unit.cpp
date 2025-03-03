@@ -507,7 +507,9 @@ void unit::update() {
 		else if(!area.isvalid(target_position))
 			turn(shoot_direction, move_direction);
 		return;
-	} else if(shoot()) {
+	} else if(launch(screen, getheavyweapon(type), 6))
+		return;
+	else if(shoot()) {
 		if(!isturret())
 			move_direction = shoot_direction;
 		stopmove();

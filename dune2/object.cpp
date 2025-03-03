@@ -168,6 +168,13 @@ fixn getweapon(objectn type) {
 	}
 }
 
+fixn getheavyweapon(objectn type) {
+	switch(type) {
+	case HeavyInfantry: return HandRocket;
+	default: return NoEffect;
+	}
+}
+
 int getstat(objectn type, statn i) {
 	switch(i) {
 	case Hits:

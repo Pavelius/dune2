@@ -27,7 +27,7 @@ struct actable : playerable {
 	const char*		getfractionname() const;
 	bool			isboard() const { return position.x < 0; }
 	bool			isenemy(unsigned char player_index) const;
-	bool			launching(point screen, fixn weapon, int maximum_range);
+	bool			launch(point screen, fixn weapon, int maximum_range);
 	bool			seeking(int range);
 	void			setaction(ordern type, point v, bool lock_unit);
 	bool			shoot(point screen, fixn weapon, int attacks, int maximum_range);

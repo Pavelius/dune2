@@ -26,6 +26,7 @@ static int get_damage(fixn v) {
 	case Shoot20mm: case Shoot30mm: return 4;
 	case Shoot155mm: return 6;
 	case FireRocket: return 8;
+	case HandRocket: return 6;
 	default: return 0;
 	}
 }
@@ -105,6 +106,7 @@ BSDATA(fixeffecti) = {
 	{"Shoot30mm", 100, UNITS1, 23, 1, apply_damage, FixSmallHit},
 	{"Shoot155mm", 110, UNITS1, 24, 1, apply_damage, FixMediumHit},
 	{"Shoot200mm", 110, UNITS1, 25, 1, apply_damage, FixLargeHit},
+	{"HandRocket", 100, UNITS, 30, 5, apply_damage, FixExplosion},
 	{"FireRocket", 100, UNITS, 20, 5, apply_damage, FixExplosion},
 	{"FixSmallHit", 0, UNITS1, 2, 1, add_explosion_tile},
 	{"FixMediumHit", 0, UNITS1, 3, 1, add_explosion_tile},
