@@ -18,15 +18,16 @@ struct actable : playerable {
 	short unsigned	hits;
 	unsigned char	action; // Sequence action in a row
 	direction		shoot_direction;
-	unsigned long	shoot_time; // Start shoot game time
+	unsigned long	shoot_time, heavy_shoot_time; // Start shoot game time
 	explicit operator bool() const { return hits > 0; }
 	bool			canshoot(int maximum_range) const;
+	void			fixstate(const char* id) const;
+	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
 	unit*			getenemy() const;
 	const char*		getfractionname() const;
 	bool			isboard() const { return position.x < 0; }
 	bool			isenemy(unsigned char player_index) const;
-	void			fixstate(const char* id) const;
-	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);
+	bool			launching(point screen, fixn weapon, int maximum_range);
 	bool			seeking(int range);
 	void			setaction(ordern type, point v, bool lock_unit);
 	bool			shoot(point screen, fixn weapon, int attacks, int maximum_range);

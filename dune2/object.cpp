@@ -185,7 +185,7 @@ int getstat(objectn type, statn i) {
 		case HeavyInfantry: case Quad: case Trike: return 1;
 		case Tank: case RocketTank: case Harvester: return 2;
 		case AssaultTank: return 3;
-		case SandWorm: return 3;
+		case SandWorm: return 4;
 		default: return 1;
 		}
 	case Attacks:

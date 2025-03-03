@@ -311,8 +311,8 @@ static void active_player_update() {
 void update_ai_commands(unsigned char player) {
 	if(player >= bsdata<playeri>::source.count)
 		return;
-	if(player_human && player_human == player)
-		return;
+//	if(player_human && player_human == player)
+//		return;
 	pushvalue push_active(player_active, bsdata<playeri>::elements + player);
 	pushvalue push_player(player_index, player);
 	active_player_update();
