@@ -91,6 +91,13 @@ static void debug_map_message() {
 	text(sb.text, -1, TextStroke); caret.y += texth();
 }
 
+static void mouse_cancel(rect rc) {
+	if(hot.mouse.in(rc)) {
+		if((hot.key == MouseLeft || hot.key == MouseRight || hot.key == MouseLeftDBL) && hot.pressed)
+			execute(buttoncancel);
+	}
+}
+
 static void update_tick() {
 	animate_time = getcputime();
 }
@@ -744,29 +751,23 @@ static void paint_radar() {
 		paint_radar_off();
 }
 
-static void paint_background(resid rid) {
+static void paint_background() {
 	caret.x = 0; caret.y = 0;
-	if(rid == SCREEN) {
-		const int right_panel = 120;
-		image(0, 0, gres(rid), 0, ImagePallette);
-		caret.x = 0; caret.y = 40;
-		if(width > 320) {
-			copybits(320 - right_panel, 0, right_panel, 200, width - right_panel, 0);
-			fillbitsh(184, 0, 16, 16, width - right_panel - 184);
-			fillbitsh(184, 16, 115, 24, width - right_panel - 184);
-		}
-		if(height > 200) {
-			copybits(width - 80, 118, 80, 82, width - 80, height - 82);
-			fillbitsv(width - 80, 92, 16, 25, height - 200 + 25);
-		}
-		width = width - 80;
-		height = height - caret.y;
-		area_screen.set(caret.x, caret.y, caret.x + width, caret.y + height);
-	} else {
-		if(width > 320 || height > 200)
-			paint_background(colors::black);
-		image(caret.x, caret.y, gres(rid), 0, 0);
+	const int right_panel = 120;
+	image(0, 0, gres(SCREEN), 0, ImagePallette);
+	caret.x = 0; caret.y = 40;
+	if(width > 320) {
+		copybits(320 - right_panel, 0, right_panel, 200, width - right_panel, 0);
+		fillbitsh(184, 0, 16, 16, width - right_panel - 184);
+		fillbitsh(184, 16, 115, 24, width - right_panel - 184);
 	}
+	if(height > 200) {
+		copybits(width - 80, 118, 80, 82, width - 80, height - 82);
+		fillbitsv(width - 80, 92, 16, 25, height - 200 + 25);
+	}
+	width = width - 80;
+	height = height - caret.y;
+	area_screen.set(caret.x, caret.y, caret.x + width, caret.y + height);
 }
 
 static void rectb_alpha() {
@@ -1347,7 +1348,7 @@ static void paint_map_info(fnevent proc) {
 
 void paint_main_map() {
 	update_pallette_by_player();
-	paint_background(SCREEN);
+	paint_background();
 	update_pallette_colors();
 	input_game_menu();
 	paint_spice();
@@ -1360,16 +1361,9 @@ void paint_main_map() {
 	update_next_turn();
 }
 
-static void mouse_cancel(rect rc) {
-	if(hot.mouse.in(rc)) {
-		if((hot.key == MouseLeft || hot.key == MouseRight || hot.key == MouseLeftDBL) && hot.pressed)
-			execute(buttoncancel);
-	}
-}
-
 void paint_main_map_choose_terrain() {
 	update_pallette_by_player();
-	paint_background(SCREEN);
+	paint_background();
 	update_pallette_colors();
 	paint_spice();
 	paint_console();
@@ -1383,7 +1377,7 @@ void paint_main_map_choose_terrain() {
 
 void paint_main_map_choose_placement() {
 	update_pallette_by_player();
-	paint_background(SCREEN);
+	paint_background();
 	update_pallette_colors();
 	paint_spice();
 	paint_console();

@@ -2,6 +2,8 @@
 
 #pragma comment(lib, "winmm.lib")
 
+extern "C" int atexit(void(*fnevent)(void));
+
 namespace {
 #pragma pack(push, 1)
 struct mid_header {
@@ -311,8 +313,8 @@ static HMIDISTRM stream_out;
 static void midi_play(unsigned ticks, trk* tracks, unsigned ntracks, unsigned* streambuf, unsigned streambufsize) {
 	music_event = CreateEventA(0, 0, 0, 0);
 	if(music_event) {
-		unsigned int device = 0;
-		if(midiStreamOpen(&stream_out, &device, 1, (DWORD)midi_play_callback, 0, CALLBACK_FUNCTION) == MMSYSERR_NOERROR) {
+//		unsigned int device = 0;
+//		if(midiStreamOpen(&stream_out, &device, 1, (DWORD)midi_play_callback, 0, CALLBACK_FUNCTION) == MMSYSERR_NOERROR) {
 			MIDIPROPTIMEDIV prop;
 			prop.cbStruct = sizeof(MIDIPROPTIMEDIV);
 			prop.dwTimeDiv = ticks;
@@ -339,16 +341,27 @@ static void midi_play(unsigned ticks, trk* tracks, unsigned ntracks, unsigned* s
 					midiOutUnprepareHeader((HMIDIOUT)stream_out, &mhdr, sizeof(MIDIHDR));
 				}
 			}
-			midiStreamClose(stream_out);
-		}
+//			midiStreamClose(stream_out);
+//		}
 		CloseHandle(music_event);
 		music_event = 0;
 	}
 	midi_need_close = false;
 }
 
-static void midi_open() {
+static void midi_close() {
+	if(stream_out) {
+		midiStreamClose(stream_out);
+		stream_out = 0;
+	}
+}
 
+static void midi_open() {
+	unsigned int device = 0;
+	if(!stream_out) {
+		midiStreamOpen(&stream_out, &device, 1, (DWORD)midi_play_callback, 0, CALLBACK_FUNCTION);
+		atexit(midi_close);
+	}
 }
 
 #endif // _WIN32
@@ -357,6 +370,8 @@ void midi_play_raw(void* mid_data) {
 
 	if(!mid_data)
 		return;
+
+	midi_open();
 
 	current_time = 0;
 	auto midibuf = (unsigned char*)mid_data;
@@ -377,6 +392,8 @@ void midi_play_raw(void* mid_data) {
 		midi_play(midi_bytes_short(hdr->ticks), tracks, ntracks, music_buffer, music_buffer_size);
 		delete[] tracks;
 	}
+
+	// midi_close();
 
 }
 

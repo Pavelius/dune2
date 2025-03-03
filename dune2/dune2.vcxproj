@@ -206,6 +206,7 @@
     <ClCompile Include="win_time.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="air.h" />
     <ClInclude Include="my_initialize_list.h" />
     <ClInclude Include="objecta.h" />
     <ClInclude Include="storeable.h" />
