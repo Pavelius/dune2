@@ -31,7 +31,7 @@ static building* find_base(unsigned char player) {
 
 void airunit::update() {
 	const auto move = Flying;
-	auto speed = 20;
+	auto speed = getspeedfp(getspeed(type));
 	if(moving(move, speed, 0))
 		return;
 	else if(nextmoving(move, speed))

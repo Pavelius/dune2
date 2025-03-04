@@ -571,16 +571,16 @@ static void paint_platform(const sprite* ps, int frame, direction d) {
 	}
 }
 
-static void paint_air_platform(const sprite* ps, int frame, direction d) {
+static void paint_air_platform(const sprite* ps, int frame, direction d, int step) {
 	switch(d) {
 	case Up: image(caret.x, caret.y, ps, frame + 0, ImagePallette); break;
-	case RightUp: image(caret.x, caret.y, ps, frame + 1, ImagePallette); break;
-	case Right: image(caret.x, caret.y, ps, frame + 2, ImagePallette); break;
-	case RightDown: image(caret.x, caret.y, ps, frame + 1, ImagePallette | ImageMirrorV); break;
+	case RightUp: image(caret.x, caret.y, ps, frame + 1 * step, ImagePallette); break;
+	case Right: image(caret.x, caret.y, ps, frame + 2 * step, ImagePallette); break;
+	case RightDown: image(caret.x, caret.y, ps, frame + 1 * step, ImagePallette | ImageMirrorV); break;
 	case Down: image(caret.x, caret.y, ps, frame + 0, ImagePallette | ImageMirrorV); break;
-	case LeftDown: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH | ImageMirrorV | ImagePallette); break;
-	case Left: image(caret.x, caret.y, ps, frame + 2, ImageMirrorH | ImagePallette); break;
-	case LeftUp: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH | ImagePallette); break;
+	case LeftDown: image(caret.x, caret.y, ps, frame + 1 * step, ImageMirrorH | ImageMirrorV | ImagePallette); break;
+	case Left: image(caret.x, caret.y, ps, frame + 2 * step, ImageMirrorH | ImagePallette); break;
+	case LeftUp: image(caret.x, caret.y, ps, frame + 1 * step, ImageMirrorH | ImagePallette); break;
 	default: break;
 	}
 }
@@ -658,20 +658,23 @@ static void paint_unit() {
 	paint_unit_effect(p);
 }
 
-static void paint_air_unit(objectn type, direction move_direction, unsigned char color_index) {
+static void paint_air_unit(objectn type, direction move_direction, unsigned char color_index, int animation) {
 	update_pallette_by_player(color_index);
 	auto ps = gres(getres(type));
 	auto pf = getframes(type);
-	paint_air_platform(ps, pf[0], move_direction);
+	auto step = pf[1] ? pf[1] : 1;
+	paint_air_platform(ps, pf[0] + animation % step, move_direction, step);
 }
 
 static void paint_air_unit() {
 	auto p = static_cast<airunit*>(last_object);
 	if(!p->operator bool())
 		return;
-	if(!area.is(p->position, player_index, Visible))
+	if(!area.is(p->position, player_index, Explored))
 		return;
-	paint_air_unit(p->type, p->move_direction, p->getplayer().color_index);
+	auto pf = getframes(p->type);
+	auto step = pf[1] ? 1 : pf[1];
+	paint_air_unit(p->type, p->move_direction, p->getplayer().color_index, get_animation_frame(p->screen, m2sc(p->position)) / 2);
 }
 
 static void paint_effect_fix() {
