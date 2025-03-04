@@ -9,7 +9,7 @@ enum resid : unsigned short;
 
 enum fixn : unsigned char {
 	NoEffect,
-	Smoke, BurningFire,
+	Smoke, BurningFire, BurningFireEnd,
 	ShootAssaultRifle, ShootRotaryCannon, Shoot20mm, Shoot30mm, Shoot155mm, Shoot200mm,
 	HandRocket, FireRocket,
 	FixSmallHit, FixMediumHit, FixLargeHit,

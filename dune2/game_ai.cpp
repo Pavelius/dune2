@@ -146,10 +146,11 @@ static void explore_area() {
 	points.select(allarea(), isnotexploredborder);
 	if(!points)
 		return;
-	auto v = points.nearest(player_active->base);
 	auto p = find_scout();
 	if(!p)
 		return;
+	// auto v = points.nearest(p->position);
+	auto v = points.nearest(player_active->base);
 	p->order = area.nearest(v, isfreetrack, 10);
 }
 

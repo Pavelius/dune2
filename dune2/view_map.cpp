@@ -73,18 +73,20 @@ static void debug_map_message() {
 	caret.x = clipping.x1 + 2; caret.y = clipping.y1 + 2;
 	auto t = area.get(area_spot);
 	string sb;
-	sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
-	auto pb = find_building(area.getcorner(area_spot));
-	if(pb)
-		sb.adds(pb->getname());
-	text(sb.text, -1, TextStroke); caret.y += texth();
-	sb.clear(); sb.add("Frame %1i", area.getframe(area_spot));
-	auto cost = path_map[area_spot.y][area_spot.x];
-	if(cost == BlockArea)
-		sb.adds("Blocked");
-	else
-		sb.adds("Path %1i", cost);
-	text(sb.text, -1, TextStroke); caret.y += texth();
+	if(area.isvalid(area_spot)) {
+		sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
+		auto pb = find_building(area.getcorner(area_spot));
+		if(pb)
+			sb.adds(pb->getname());
+		text(sb.text, -1, TextStroke); caret.y += texth();
+		sb.clear(); sb.add("Frame %1i", area.getframe(area_spot));
+		auto cost = path_map[area_spot.y][area_spot.x];
+		if(cost == BlockArea)
+			sb.adds("Blocked");
+		else
+			sb.adds("Path %1i", cost);
+		text(sb.text, -1, TextStroke); caret.y += texth();
+	}
 	sb.clear(); sb.add("Mouse %1i, %2i", hot.mouse.x, hot.mouse.y);
 	text(sb.text, -1, TextStroke); caret.y += texth();
 	sb.clear(); sb.add("Seed %1i", start_random_seed);
@@ -964,14 +966,35 @@ static void paint_move_order() {
 	alpha = push_alpha;
 }
 
+static void correct_camera() {
+	auto w = area_screen.width();
+	auto h = area_screen.height();
+	auto mx = area.maximum.x * area_tile_width;
+	auto my = area.maximum.y * area_tile_height;
+	if(camera.x + w > mx)
+		camera.x = mx - w;
+	if(camera.y + h > my)
+		camera.y = my - h;
+	if(camera.x < 0)
+		camera.x = 0;
+	if(camera.y < 0)
+		camera.y = 0;
+	if(w > mx)
+		camera.x = area_screen.x1 + (w - mx) / 2;
+	if(h > my)
+		camera.y = area_screen.y1 + (h - my) / 2;
+}
+
 static void paint_game_map() {
 	auto push_clip = clipping; setclip(area_screen);
 	camera = m2s(area_origin);
+	correct_camera();
+	area_origin = s2m(camera);
 	if(hot.mouse.in(area_screen)) {
-		area_spot.x = (hot.mouse.x - area_screen.x1) / area_tile_width + area_origin.x;
-		area_spot.y = (hot.mouse.y - area_screen.y1) / area_tile_height + area_origin.y;
+		area_spot.x = (camera.x + (hot.mouse.x - area_screen.x1)) / area_tile_width;
+		area_spot.y = (camera.y + (hot.mouse.y - area_screen.y1)) / area_tile_height;
 	} else
-		area_spot = 0xFFFF;
+		area_spot = {-10000, -10000};
 	paint_map_tiles();
 	paint_map_features();
 	paint_objects();
