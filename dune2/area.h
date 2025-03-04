@@ -92,7 +92,6 @@ struct areai {
 	void			set(point v, point s, fnset proc, int value);
 	void			set(rect v, fnset proc, int value);
 	void			set(point v, unsigned char player, areaf t) { flags[player][v.y][v.x] |= (1 << t); }
-	void			setcamera(point v, bool center_view);
 private:
 	unsigned char	flags[6][my][mx]; // Flags for each player (0 - neutral and 1-6)
 	short unsigned	frames[my][mx];
@@ -101,7 +100,6 @@ private:
 	void			update(point v);
 };
 extern areai area;
-extern point area_origin;
 extern point area_spot;
 extern rect area_screen;
 extern terrainn map_terrain[area_frame_maximum];

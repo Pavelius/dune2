@@ -47,6 +47,41 @@ bool debug_toggle;
 // External for debug tools. In release mode must be removed by linker.
 void view_debug_input();
 
+static point get_area_origin() {
+	return point(camera.x / area_tile_width, camera.y / area_tile_height);
+}
+
+static void correct_camera() {
+	auto w = area_screen.width();
+	auto h = area_screen.height();
+	auto mx = area.maximum.x * area_tile_width;
+	auto my = area.maximum.y * area_tile_height;
+	if(camera.x + w > mx)
+		camera.x = mx - w;
+	if(camera.y + h > my)
+		camera.y = my - h;
+	if(camera.x < 0)
+		camera.x = 0;
+	if(camera.y < 0)
+		camera.y = 0;
+	if(w > mx)
+		camera.x = area_screen.x1 + (w - mx) / 2;
+	if(h > my)
+		camera.y = area_screen.y1 + (h - my) / 2;
+}
+
+void setcamera(point v, bool center_view) {
+	int x = v.x * area_tile_width;
+	int y = v.y * area_tile_height;
+	if(center_view) {
+		x -= area_screen.width() / 2;
+		y -= area_screen.height() / 2;
+	}
+	camera.x = x;
+	camera.y = y;
+	correct_camera();
+}
+
 static void debug_control() {
 	pushrect push;
 	auto push_fore = fore; fore = pallette[144];
@@ -56,7 +91,7 @@ static void debug_control() {
 	width = 14; height = 14;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
-			auto v = area_origin; v.x += x; v.y += y;
+			auto v = get_area_origin(); v.x += x; v.y += y;
 			if(path_map[v.y][v.x] >= 0xFF00)
 				continue;
 			caret.x = x * area_tile_width + push.caret.x + 1;
@@ -299,7 +334,7 @@ static void common_input() {
 
 static void set_area_view() {
 	auto v = (unsigned)hot.param;
-	area.setcamera(v, hot.param2 > 0);
+	setcamera(v, hot.param2 > 0);
 }
 
 static rect get_corner_area(direction d) {
@@ -367,7 +402,7 @@ static void check_mouse_corner_slice() {
 		if(hot.mouse.in(rc)) {
 			show_mouse_camera_slider(d, rc.centerx(), rc.centery(), get_arrows_frame(d));
 			if(mouse_hower(100, false))
-				execute(set_area_view, (long)(area_origin + getpoint(d)));
+				execute(set_area_view, (long)(get_area_origin() + getpoint(d)));
 		}
 	}
 }
@@ -416,7 +451,7 @@ static void paint_worm() {
 }
 
 static void paint_cursor(int avatar, point offset, bool choose_mode) {
-	auto v = area_spot - area_origin;
+	auto v = area_spot - get_area_origin();
 	if(!area.isvalid(v))
 		return;
 	auto pt = map_to_screen(v) + offset;
@@ -426,7 +461,7 @@ static void paint_cursor(int avatar, point offset, bool choose_mode) {
 }
 
 static void paint_cursor(point size, bool choose_mode, bool disabled) {
-	auto v = area_spot - area_origin;
+	auto v = area_spot - get_area_origin();
 	if(!area.isvalid(v))
 		return;
 	pushrect push;
@@ -470,11 +505,12 @@ static void update_pallette_colors() {
 
 static void paint_map_tiles() {
 	auto ps = gres(ICONS);
+	auto vo = get_area_origin();
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
-			auto v = area_origin; v.x += x; v.y += y;
+			auto v = vo; v.x += x; v.y += y;
 			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, area.getframe(v), ImagePallette);
 		}
 	}
@@ -482,11 +518,12 @@ static void paint_map_tiles() {
 
 static void paint_map_features() {
 	auto ps = gres(ICONS);
+	auto vo = get_area_origin();
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
-			auto v = area_origin; v.x += x; v.y += y;
+			auto v = vo; v.x += x; v.y += y;
 			if(!area.is(v, player_index, Visible))
 				continue;
 			auto i = area.getframefeature(v);
@@ -616,16 +653,17 @@ static void paint_effect_fix() {
 
 static void paint_radar_rect() {
 	pushrect push;
+	auto vo = get_area_origin();
 	switch(area.sizetype) {
 	case SmallMap:
-		caret.x = getwidth() - 64 + area_origin.x * 2;
-		caret.y = getheight() - 64 + area_origin.y * 2;
+		caret.x = getwidth() - 64 + vo.x * 2;
+		caret.y = getheight() - 64 + vo.y * 2;
 		width = 2 * area_screen.width() / area_tile_width;
 		height = 2 * area_screen.height() / area_tile_height;
 		break;
 	default:
-		caret.x = getwidth() - 64 + area_origin.x;
-		caret.y = getheight() - 64 + area_origin.y;
+		caret.x = getwidth() - 64 + vo.x;
+		caret.y = getheight() - 64 + vo.y;
 		width = area_screen.width() / area_tile_width;
 		height = area_screen.height() / area_tile_height;
 		break;
@@ -702,6 +740,9 @@ static void input_radar() {
 		case MouseRight:
 			if(hot.pressed)
 				execute(mouse_unit_move, (long)hot_mouse);
+			break;
+		case 'C':
+			execute(set_area_view, (long)(hot_mouse), 1);
 			break;
 		}
 	}
@@ -880,12 +921,13 @@ static void paint_fow() {
 	pushrect push;
 	pushfore push_fore(colors::black);
 	auto ps = gres(ICONS);
+	auto vo = get_area_origin();
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
 	width = area_tile_width; height = area_tile_height;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
-			auto v = area_origin; v.x += x; v.y += y;
+			auto v = vo; v.x += x; v.y += y;
 			if(!area.is(v, player_index, Explored)) {
 				caret.x = x * area_tile_width + push.caret.x;
 				caret.y = y * area_tile_height + push.caret.y;
@@ -906,12 +948,13 @@ static void paint_visibility() {
 	pushfore push_fore(colors::black);
 	auto push_alpha = alpha; alpha = 32;
 	auto ps = gres(ICONS);
+	auto vo = get_area_origin();
 	auto xm = (width + area_tile_width - 1) / area_tile_width;
 	auto ym = (height + area_tile_height - 1) / area_tile_height;
 	width = area_tile_width; height = area_tile_height;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
-			auto v = area_origin; v.x += x; v.y += y;
+			auto v = vo; v.x += x; v.y += y;
 			if(!area.is(v, player_index, Explored))
 				continue;
 			if(!area.is(v, player_index, Visible)) {
@@ -966,30 +1009,9 @@ static void paint_move_order() {
 	alpha = push_alpha;
 }
 
-static void correct_camera() {
-	auto w = area_screen.width();
-	auto h = area_screen.height();
-	auto mx = area.maximum.x * area_tile_width;
-	auto my = area.maximum.y * area_tile_height;
-	if(camera.x + w > mx)
-		camera.x = mx - w;
-	if(camera.y + h > my)
-		camera.y = my - h;
-	if(camera.x < 0)
-		camera.x = 0;
-	if(camera.y < 0)
-		camera.y = 0;
-	if(w > mx)
-		camera.x = area_screen.x1 + (w - mx) / 2;
-	if(h > my)
-		camera.y = area_screen.y1 + (h - my) / 2;
-}
-
 static void paint_game_map() {
 	auto push_clip = clipping; setclip(area_screen);
-	camera = m2s(area_origin);
 	correct_camera();
-	area_origin = s2m(camera);
 	if(hot.mouse.in(area_screen)) {
 		area_spot.x = (camera.x + (hot.mouse.x - area_screen.x1)) / area_tile_width;
 		area_spot.y = (camera.y + (hot.mouse.y - area_screen.y1)) / area_tile_height;

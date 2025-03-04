@@ -291,15 +291,15 @@ void open_options() {
 void camera_to_base() {
 	auto pb = find_base(ConstructionYard, player_index);
 	if(pb)
-		area.setcamera(pb->position, true);
+		setcamera(pb->position, true);
 }
 
 void main_menu() {
-	// music_disabled = true;
-	show_introdution();
+//	music_disabled = true;
+//	show_introdution();
 	game.starting_credits = 1000;
 	area_generate(SmallMap, 2);
-	show_scenario_prompt("Brief", HARVEST, 1);
+//	show_scenario_prompt("Brief", HARVEST, 1);
 	camera_to_base();
 	show_scene(paint_main_map, 0, 0);
 }

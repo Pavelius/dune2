@@ -7,7 +7,7 @@
 #include "slice.h"
 
 areai area;
-point area_origin, area_spot;
+point area_spot;
 rect area_screen = {0, 40, 240, 200};
 
 unsigned char region_player[16] = {
@@ -268,27 +268,6 @@ void areai::decoy(point v) {
 		else if(n > 0)
 			frames_overlay[v.y][v.x] = n;
 	}
-}
-
-void areai::setcamera(point v, bool center_view) {
-	int x = v.x;
-	int y = v.y;
-	auto mx = area_screen.width() / area_tile_width;
-	auto my = area_screen.height() / area_tile_height;
-	if(center_view) {
-		x -= mx / 2;
-		y -= my / 2;
-	}
-	if(x > maximum.x - mx)
-		x = maximum.x - mx;
-	if(y > maximum.y - my)
-		y = maximum.y - my;
-	if(x < 0)
-		x = 0;
-	if(y < 0)
-		y = 0;
-	area_origin.x = (char)x;
-	area_origin.y = (char)y;
 }
 
 void areai::set(point v, point s, fnset proc, int value) {
