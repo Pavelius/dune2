@@ -48,14 +48,9 @@ bool debug_toggle;
 // External for debug tools. In release mode must be removed by linker.
 void view_debug_input();
 
-void setcamera(point v, bool center_view) {
-	area_origin = v;
-	auto w = (area_screen.width() + area_tile_width - 1) / area_tile_width;
-	auto h = (area_screen.height() + area_tile_height - 1) / area_tile_height;
-	if(center_view) {
-		area_origin.x -= w / 2;
-		area_origin.y -= h / 2;
-	}
+static void correct_origin() {
+	auto w = (area_screen.width()) / area_tile_width;
+	auto h = (area_screen.height()) / area_tile_height;
 	if(area_origin.x + w >= area.maximum.x)
 		area_origin.x = area.maximum.x - w;
 	if(area_origin.y + h >= area.maximum.y)
@@ -64,6 +59,16 @@ void setcamera(point v, bool center_view) {
 		area_origin.x = 0;
 	if(area_origin.y < 0)
 		area_origin.y = 0;
+}
+
+void setcamera(point v, bool center_view) {
+	area_origin = v;
+	auto w = (area_screen.width() + area_tile_width - 1) / area_tile_width;
+	auto h = (area_screen.height() + area_tile_height - 1) / area_tile_height;
+	if(center_view) {
+		area_origin.x -= w / 2;
+		area_origin.y -= h / 2;
+	}
 }
 
 static void debug_control() {
@@ -875,6 +880,7 @@ static void paint_background() {
 	width = width - 80;
 	height = height - caret.y;
 	area_screen.set(caret.x, caret.y, caret.x + width, caret.y + height);
+	correct_origin();
 }
 
 static void rectb_alpha() {
