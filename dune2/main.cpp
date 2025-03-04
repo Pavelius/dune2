@@ -1,4 +1,5 @@
 #include "area.h"
+#include "midi.h"
 #include "music.h"
 #include "log.h"
 #include "rand.h"
@@ -23,6 +24,7 @@ int main() {
 		return -1;
 	area_initialization();
 	music_initialize();
+	midi_open();
 	// song_play("ambient06");
 #ifdef _DEBUG
 	util_main();
