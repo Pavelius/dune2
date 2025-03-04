@@ -232,6 +232,9 @@ int getstat(objectn type, statn i) {
 		case HeavyInfantry: return 3;
 		case LightInfantry: return 2;
 		case SandWorm: return 6;
+		case Carrier: return 16;
+		case Ornitopter: return 20;
+		case Fregate: return 6;
 		default: return 4;
 		}
 	default:
@@ -332,20 +335,4 @@ int getspeedfp(int n) {
 	if(n <= 0)
 		return 64 * 4;
 	return 64 * 4 / n;
-}
-
-int getspeed(objectn type) {
-	switch(type) {
-	case Trike: return 10;
-	case Quad: return 8;
-	case RocketTank: case Tank: return 5;
-	case AssaultTank: return 4;
-	case HeavyInfantry: return 3;
-	case LightInfantry: return 2;
-	case SandWorm: return 6;
-	case Carrier: return 16;
-	case Ornitopter: return 20;
-	case Fregate: return 6;
-	default: return 4;
-	}
 }

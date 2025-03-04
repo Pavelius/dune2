@@ -27,7 +27,6 @@ int getenergyprofit(objectn type);
 int geticonavatar(objectn type);
 int getspicecap(objectn type);
 int getstat(objectn type, statn i);
-int getspeed(objectn type);
 int getspeedfp(int v);
 
 shapen getshape(objectn type);

@@ -6,6 +6,5 @@ struct stati : nameable {
 };
 enum statn : unsigned char {
 	Credits, Energy, Supply,
-	Hits, Attacks, Speed, Armor, Range,
-	LoS,
+	Hits, Attacks, Speed, Armor, Range, LoS,
 };
