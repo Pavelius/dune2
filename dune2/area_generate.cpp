@@ -1,4 +1,5 @@
 #include "adat.h"
+#include "airunit.h"
 #include "area.h"
 #include "bsdata.h"
 #include "building.h"
@@ -119,6 +120,10 @@ static void add_unit(point v, objectn u) {
 	add_unit(v1, u, Down, player_index);
 }
 
+static void add_air_unit(point v, objectn u) {
+	add_air_unit(v, u, Down, player_index);
+}
+
 static int center_expanse(int r) {
 	switch(r) {
 	case 15: return 10;
@@ -137,6 +142,7 @@ static void player_base(rect rc) {
 	add_building(v, ConstructionYard);
 	add_unit(v, LightInfantry);
 	add_unit(v, HeavyInfantry);
+	add_air_unit(v, Carrier);
 	// add_unit(v, Trike);
 	// add_unit(v, Quad);
 	// add_unit(v, AssaultTank);

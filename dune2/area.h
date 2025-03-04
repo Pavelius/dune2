@@ -76,12 +76,12 @@ struct areai {
 	point			nearestpf(point v, fntest proc, int radius) const;
 	void			patch(point v, const tilepatch* tiles, size_t count, bool apply);
 	void			patch(point v, point size, const tilepatch* tiles, size_t count, bool apply);
+	point			random(rect r) const;
 	void			random(rect r, fnset proc, int value);
 	void			random(rect r, fnset proc, int value, int count);
 	void			random(point v, int s, int r, fnset proc, int value);
 	void			random(point v, int s, int r, fnset proc, int value, size_t count);
 	void			remove(unsigned char player, areaf t);
-//	int				scan(point v, int range, fntest proc) const;
 	void			scouting(point v, unsigned char player, int radius);
 	void			scouting(point v, point size, unsigned char player, int radius);
 	void			set(point v, terrainn t);

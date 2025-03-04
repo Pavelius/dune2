@@ -295,6 +295,14 @@ void areai::random(rect r, fnset proc, int value) {
 		proc(point(x, y), value);
 }
 
+point areai::random(rect r) const {
+	auto x = game_rand(r.x1, r.x2);
+	auto y = game_rand(r.y1, r.y2);
+	if(isvalid(x, y))
+		return point(x, y);
+	return {-10000, -10000};
+}
+
 void areai::random(rect r, fnset proc, int value, int count) {
 	if(!count)
 		return;

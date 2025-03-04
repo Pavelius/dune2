@@ -46,6 +46,8 @@ static void add_objects(drawablea& objects, drawrenderi& e, const rect& rc) {
 static int compare_unit(const void* v1, const void* v2) {
 	auto p1 = *((drawable**)v1);
 	auto p2 = *((drawable**)v2);
+	if(p1->render != p2->render)
+		return p1->render - p2->render;
 	if(p1->screen.y != p2->screen.y)
 		return p1->screen.y - p2->screen.y;
 	if(p1->screen.x != p2->screen.x)

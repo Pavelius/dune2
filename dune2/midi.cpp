@@ -325,12 +325,12 @@ static void midi_play(unsigned ticks, trk* tracks, unsigned ntracks, unsigned* s
 				if(midiStreamRestart(stream_out) == MMSYSERR_NOERROR) {
 					unsigned int streamlen = 0;
 					get_buffer_ex9(tracks, ntracks, streambuf, &streamlen);
-					while(streamlen > 0 && !midi_need_close) {
+					while(streamlen > 0 && !midi_need_close && stream_out) {
 						mhdr.dwBytesRecorded = streamlen;
 						if(midiStreamOut(stream_out, &mhdr, sizeof(MIDIHDR)) != MMSYSERR_NOERROR)
 							break;
 						WaitForSingleObject(music_event, INFINITE);
-						if(midi_need_close || !stream_out)
+						if(midi_need_close)
 							break;
 						get_buffer_ex9(tracks, ntracks, streambuf, &streamlen);
 					}

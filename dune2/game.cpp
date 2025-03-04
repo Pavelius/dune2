@@ -1,3 +1,4 @@
+#include "airunit.h"
 #include "area.h"
 #include "answers.h"
 #include "bsdata.h"
@@ -36,6 +37,19 @@ static void update_unit_time() {
 			continue;
 		if(e.shoot_time)
 			e.shooting(e.screen, getweapon(e.type), e.get(Attacks));
+		while(e.start_time < game.time) {
+			auto n = e.start_time;
+			e.update();
+			if(n == e.start_time && e.start_time <= game.time)
+				e.start_time += look_duration; // Pause to think
+		}
+	}
+}
+
+static void update_airunit_time() {
+	for(auto& e : bsdata<airunit>()) {
+		if(!e)
+			continue;
 		while(e.start_time < game.time) {
 			auto n = e.start_time;
 			e.update();
@@ -155,6 +169,7 @@ static void update_game_turn() {
 
 void update_game_time() {
 	update_unit_time();
+	update_airunit_time();
 	update_game_turn();
 }
 

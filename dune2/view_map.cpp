@@ -1,4 +1,5 @@
 #include "area.h"
+#include "airunit.h"
 #include "answers.h"
 #include "bsdata.h"
 #include "building.h"
@@ -506,12 +507,18 @@ static void update_pallette_colors() {
 static void paint_map_tiles() {
 	auto ps = gres(ICONS);
 	auto vo = get_area_origin();
-	auto xm = (width + area_tile_width - 1) / area_tile_width;
-	auto ym = (height + area_tile_height - 1) / area_tile_height;
-	for(auto y = 0; y < ym; y++) {
-		for(auto x = 0; x < xm; x++) {
-			auto v = vo; v.x += x; v.y += y;
-			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, area.getframe(v), ImagePallette);
+	auto xm = vo.x + (width + area_tile_width - 1) / area_tile_width;
+	auto ym = vo.y + (height + area_tile_height - 1) / area_tile_height;
+	if(ym > area.maximum.y)
+		ym = area.maximum.y;
+	if(xm > area.maximum.x)
+		xm = area.maximum.x;
+	point v;
+	for(v.y = vo.y; v.y < ym; v.y++) {
+		for(v.x = vo.x; v.x < xm; v.x++) {
+			auto ix = v.x * area_tile_width - camera.x + caret.x;
+			auto iy = v.y * area_tile_height - camera.y + caret.y;
+			image(ix, iy, ps, area.getframe(v), ImagePallette);
 		}
 	}
 }
@@ -519,17 +526,23 @@ static void paint_map_tiles() {
 static void paint_map_features() {
 	auto ps = gres(ICONS);
 	auto vo = get_area_origin();
-	auto xm = (width + area_tile_width - 1) / area_tile_width;
-	auto ym = (height + area_tile_height - 1) / area_tile_height;
-	for(auto y = 0; y < ym; y++) {
-		for(auto x = 0; x < xm; x++) {
-			auto v = vo; v.x += x; v.y += y;
+	auto xm = vo.x + (width + area_tile_width - 1) / area_tile_width;
+	auto ym = vo.y + (height + area_tile_height - 1) / area_tile_height;
+	if(ym > area.maximum.y)
+		ym = area.maximum.y;
+	if(xm > area.maximum.x)
+		xm = area.maximum.x;
+	point v;
+	for(v.y = vo.y; v.y < ym; v.y++) {
+		for(v.x = vo.x; v.x < xm; v.x++) {
 			if(!area.is(v, player_index, Visible))
 				continue;
 			auto i = area.getframefeature(v);
 			if(!i)
 				continue;
-			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, 0);
+			auto ix = v.x * area_tile_width - camera.x + caret.x;
+			auto iy = v.y * area_tile_height - camera.y + caret.y;
+			image(ix, iy, ps, i, 0);
 		}
 	}
 }
@@ -552,6 +565,20 @@ static void paint_platform(const sprite* ps, int frame, direction d) {
 	case RightDown: image(ps, frame + 3, ImagePallette); break;
 	case Down: image(ps, frame + 4, ImagePallette); break;
 	case LeftDown: image(caret.x, caret.y, ps, frame + 3, ImageMirrorH | ImagePallette); break;
+	case Left: image(caret.x, caret.y, ps, frame + 2, ImageMirrorH | ImagePallette); break;
+	case LeftUp: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH | ImagePallette); break;
+	default: break;
+	}
+}
+
+static void paint_air_platform(const sprite* ps, int frame, direction d) {
+	switch(d) {
+	case Up: image(caret.x, caret.y, ps, frame + 0, ImagePallette); break;
+	case RightUp: image(caret.x, caret.y, ps, frame + 1, ImagePallette); break;
+	case Right: image(caret.x, caret.y, ps, frame + 2, ImagePallette); break;
+	case RightDown: image(caret.x, caret.y, ps, frame + 1, ImagePallette | ImageMirrorV); break;
+	case Down: image(caret.x, caret.y, ps, frame + 0, ImagePallette | ImageMirrorV); break;
+	case LeftDown: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH | ImageMirrorV | ImagePallette); break;
 	case Left: image(caret.x, caret.y, ps, frame + 2, ImageMirrorH | ImagePallette); break;
 	case LeftUp: image(caret.x, caret.y, ps, frame + 1, ImageMirrorH | ImagePallette); break;
 	default: break;
@@ -629,6 +656,22 @@ static void paint_unit() {
 			get_animation_frame(p->screen, m2sc(p->position)) % 4);
 	}
 	paint_unit_effect(p);
+}
+
+static void paint_air_unit(objectn type, direction move_direction, unsigned char color_index) {
+	update_pallette_by_player(color_index);
+	auto ps = gres(getres(type));
+	auto pf = getframes(type);
+	paint_air_platform(ps, pf[0], move_direction);
+}
+
+static void paint_air_unit() {
+	auto p = static_cast<airunit*>(last_object);
+	if(!p->operator bool())
+		return;
+	if(!area.is(p->position, player_index, Visible))
+		return;
+	paint_air_unit(p->type, p->move_direction, p->getplayer().color_index);
 }
 
 static void paint_effect_fix() {
@@ -1564,5 +1607,6 @@ void initialize_view(const char* title, fnevent main_scene) {
 BSDATA(drawrenderi) = {
 	{"PaintUnit", bsdata<unit>::source, bsdata<unit>::elements, paint_unit},
 	{"PaintEffectFix", bsdata<draweffect>::source, bsdata<draweffect>::elements, paint_effect_fix},
+	{"PaintAirUnit", bsdata<airunit>::source, bsdata<airunit>::elements, paint_air_unit},
 };
 BSDATAF(drawrenderi)

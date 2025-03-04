@@ -63,6 +63,8 @@ bool moveable::ismoving() const {
 direction moveable::nextpath(point v, movementn movement) {
 	if(!area.isvalid(v))
 		return Center;
+	if(movement == Flying)
+		return to(position, v);
 	if(movement == Undersand) {
 		blockland(movement, player);
 		blockunits(player);
@@ -114,7 +116,7 @@ bool moveable::nextmoving(movementn movement, int move_speed) {
 		if(path_direction == Center) {
 			stopmove(); // Something in the way. Stop move.
 			start_time += look_duration / 2; // Turning pause
-		} else if(movement == Footed) {
+		} else if(movement == Footed || movement == Flying) {
 			move_direction = path_direction; // Footed units turn around momentary.
 			startmove(move_speed);
 		} else {
