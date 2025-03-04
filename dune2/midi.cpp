@@ -183,6 +183,8 @@ void midi_sleep(unsigned milliseconds) {
 		Sleep(milliseconds);
 }
 
+static HMIDISTRM stream_out;
+
 static void CALLBACK midi_play_callback(HMIDIOUT out, unsigned int msg, DWORD dwInstance, DWORD dwParam1, DWORD dwParam2) {
 	switch(msg) {
 	case MOM_DONE:
@@ -308,41 +310,37 @@ static unsigned int get_buffer_ex9(struct trk* tracks, unsigned int ntracks, uns
 	return 1;
 }
 
-static HMIDISTRM stream_out;
-
 static void midi_play(unsigned ticks, trk* tracks, unsigned ntracks, unsigned* streambuf, unsigned streambufsize) {
 	music_event = CreateEventA(0, 0, 0, 0);
 	if(music_event) {
-//		unsigned int device = 0;
-//		if(midiStreamOpen(&stream_out, &device, 1, (DWORD)midi_play_callback, 0, CALLBACK_FUNCTION) == MMSYSERR_NOERROR) {
-			MIDIPROPTIMEDIV prop;
-			prop.cbStruct = sizeof(MIDIPROPTIMEDIV);
-			prop.dwTimeDiv = ticks;
-			if(midiStreamProperty(stream_out, (unsigned char*)&prop, MIDIPROP_SET | MIDIPROP_TIMEDIV) == MMSYSERR_NOERROR) {
-				MIDIHDR mhdr;
-				mhdr.lpData = (char*)streambuf;
-				mhdr.dwBufferLength = mhdr.dwBytesRecorded = streambufsize;
-				mhdr.dwFlags = 0;
-				if(midiOutPrepareHeader((HMIDIOUT)stream_out, &mhdr, sizeof(MIDIHDR)) == MMSYSERR_NOERROR) {
-					if(midiStreamRestart(stream_out) == MMSYSERR_NOERROR) {
-						unsigned int streamlen = 0;
+		MIDIPROPTIMEDIV prop;
+		prop.cbStruct = sizeof(MIDIPROPTIMEDIV);
+		prop.dwTimeDiv = ticks;
+		if(midiStreamProperty(stream_out, (unsigned char*)&prop, MIDIPROP_SET | MIDIPROP_TIMEDIV) == MMSYSERR_NOERROR) {
+			MIDIHDR mhdr;
+			mhdr.lpData = (char*)streambuf;
+			mhdr.dwBufferLength = mhdr.dwBytesRecorded = streambufsize;
+			mhdr.dwFlags = 0;
+			if(midiOutPrepareHeader((HMIDIOUT)stream_out, &mhdr, sizeof(MIDIHDR)) == MMSYSERR_NOERROR) {
+				if(midiStreamRestart(stream_out) == MMSYSERR_NOERROR) {
+					unsigned int streamlen = 0;
+					get_buffer_ex9(tracks, ntracks, streambuf, &streamlen);
+					while(streamlen > 0 && !midi_need_close) {
+						mhdr.dwBytesRecorded = streamlen;
+						if(midiStreamOut(stream_out, &mhdr, sizeof(MIDIHDR)) != MMSYSERR_NOERROR)
+							break;
+						WaitForSingleObject(music_event, INFINITE);
+						if(midi_need_close || !stream_out)
+							break;
 						get_buffer_ex9(tracks, ntracks, streambuf, &streamlen);
-						while(streamlen > 0 && !midi_need_close) {
-							mhdr.dwBytesRecorded = streamlen;
-							if(midiStreamOut(stream_out, &mhdr, sizeof(MIDIHDR)) != MMSYSERR_NOERROR)
-								break;
-							WaitForSingleObject(music_event, INFINITE);
-							if(midi_need_close)
-								break;
-							get_buffer_ex9(tracks, ntracks, streambuf, &streamlen);
-						}
-						midiOutReset((HMIDIOUT)stream_out);
 					}
-					midiOutUnprepareHeader((HMIDIOUT)stream_out, &mhdr, sizeof(MIDIHDR));
+					if(stream_out)
+						midiOutReset((HMIDIOUT)stream_out);
 				}
+				if(stream_out)
+					midiOutUnprepareHeader((HMIDIOUT)stream_out, &mhdr, sizeof(MIDIHDR));
 			}
-//			midiStreamClose(stream_out);
-//		}
+		}
 		CloseHandle(music_event);
 		music_event = 0;
 	}
