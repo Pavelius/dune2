@@ -16,7 +16,7 @@ static bool serial_game_url(const char* url, bool writemode) {
 		return false;
 	e.set(game);
 	e.set(area);
-	e.set(draw::camera);
+	e.set(area_origin);
 	e.set(bsdata<playeri>::source);
 	e.set(bsdata<unit>::source);
 	e.set(bsdata<airunit>::source);

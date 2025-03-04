@@ -165,7 +165,7 @@ struct surface {
 extern surface*			canvas;
 extern rect				clipping; // Clipping area
 extern fnevent			domodal;
-extern point			dragmouse, caret, camera, tips_caret, tips_size;
+extern point			dragmouse, caret, tips_caret, tips_size;
 extern color			fore, fore_stroke;
 extern const void*		hilite_object;
 extern point			hilite_position;
@@ -244,7 +244,6 @@ void				rectf(); // Draw rectangle area. Right and bottom side is one pixel less
 void				rectfe(rect rc, int radius);
 void				rectx();
 void				rectfocus();
-void				set(int x, int y);
 void				setcaption(const char* string);
 void				setclip(rect rc);
 inline void			setclip() { clipping.set(0, 0, getwidth(), getheight()); }

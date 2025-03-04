@@ -7,7 +7,7 @@
 #include "slice.h"
 
 areai area;
-point area_spot;
+point area_spot, area_origin;
 rect area_screen = {0, 40, 240, 200};
 
 unsigned char region_player[16] = {
@@ -36,8 +36,8 @@ unsigned char region_near_h[16] = {
 };
 
 static unsigned char map_count[area_frame_maximum];
-unsigned short path_map[areai::my][areai::mx];
-unsigned short path_map_copy[areai::my][areai::mx];
+unsigned short path_map[area_max][area_max];
+unsigned short path_map_copy[area_max][area_max];
 
 static point stack[256 * 16];
 static size_t push_stack, pop_stack;
@@ -664,6 +664,11 @@ void blockareaor(areai::fntest proc, point size) {
 				path_map[y][x] = BlockArea;
 		}
 	}
+}
+
+void setcontrol(point v, int player_index) {
+	if(area.isvalid(v))
+		area.control[v.y][v.x] = player_index;
 }
 
 void setareascout(point v, int player_index) {

@@ -55,7 +55,7 @@ static int compare_unit(const void* v1, const void* v2) {
 	return (char)p1->render - (char)p2->render;
 }
 
-void paint_objects() {
+void paint_objects(point camera) {
 	pushrect origin;
 	rect rc = {camera.x, camera.y, camera.x + width, camera.y + height};
 	rc.offset(-object_padding);

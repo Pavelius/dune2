@@ -13,6 +13,8 @@ const int area_frame_maximum = 389;
 const unsigned short BlockArea = 0xFFFF;
 const unsigned short TargetArea = 0xFFFE;
 
+const int area_max = 64;
+
 enum areaf : unsigned char {
 	Explored, Visible, Control,
 };
@@ -28,10 +30,9 @@ struct tilepatch {
 struct areai {
 	typedef void(*fnset)(point v, int value);
 	typedef bool(*fntest)(point v);
-	static constexpr int mx = 64;
-	static constexpr int my = 64;
 	static constexpr int region_maximum = 16;
 	rect			regions[region_maximum];
+	unsigned char	control[area_max][area_max];
 	point			maximum;
 	areasizen		sizetype;
 	void			blockbuildingne(unsigned char player) const;
@@ -93,20 +94,23 @@ struct areai {
 	void			set(rect v, fnset proc, int value);
 	void			set(point v, unsigned char player, areaf t) { flags[player][v.y][v.x] |= (1 << t); }
 private:
-	unsigned char	flags[6][my][mx]; // Flags for each player (0 - neutral and 1-6)
-	short unsigned	frames[my][mx];
-	short unsigned	frames_overlay[my][mx];
+	unsigned char	flags[6][area_max][area_max]; // Flags for each player (0 - neutral and 1-6)
+	short unsigned	frames[area_max][area_max];
+	short unsigned	frames_overlay[area_max][area_max];
 	void			setnu(point v, terrainn t);
 	void			update(point v);
 };
+
 extern areai area;
-extern point area_spot;
+extern point area_spot, area_origin;
 extern rect area_screen;
+
+extern unsigned short path_map[area_max][area_max];
+extern unsigned short path_map_copy[area_max][area_max];
+
 extern terrainn map_terrain[area_frame_maximum];
 extern featuren map_features[area_frame_maximum];
 extern unsigned short map_alternate[area_frame_maximum];
-extern unsigned short path_map[areai::my][areai::mx];
-extern unsigned short path_map_copy[areai::my][areai::mx];
 extern unsigned char region_central[16];
 extern unsigned char region_near_h[16];
 extern unsigned char region_near_v[16];
@@ -123,6 +127,7 @@ void copypath();
 bool isspice(point v);
 void setareascout(point v, int player_index);
 void setnofeature(point v, int param);
+void setcontrol(point v, int player_index);
 
 rect allarea();
 

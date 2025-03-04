@@ -232,7 +232,7 @@ int getstat(objectn type, statn i) {
 		case HeavyInfantry: return 3;
 		case LightInfantry: return 2;
 		case SandWorm: return 6;
-		case Carrier: return 16;
+		case Carrier: return 12;
 		case Ornitopter: return 20;
 		case Fregate: return 6;
 		default: return 4;

@@ -33,4 +33,4 @@ extern int object_padding;
 
 void add_effect(point screen, short unsigned param, unsigned long start_time);
 void add_effect(point from, point to, short unsigned param, unsigned long start_time);
-void paint_objects();
+void paint_objects(point camera);

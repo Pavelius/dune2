@@ -67,7 +67,7 @@ rect				sys_static_area;
 // Locale draw variables
 static draw::surface default_surface;
 draw::surface*	draw::canvas = &default_surface;
-point			draw::caret, draw::camera, draw::tips_caret, draw::tips_size;
+point			draw::caret, draw::tips_caret, draw::tips_size;
 bool			line_antialiasing = true;
 // Metrics
 sprite*			metrics::font;
@@ -2382,11 +2382,6 @@ void draw::fire(bool run, fnevent proc, long value, long value2, const void* obj
 		return;
 	if(run)
 		execute(proc, value, value2, object);
-}
-
-void draw::set(int x, int y) {
-	caret.x = x - camera.x;
-	caret.y = y - camera.y;
 }
 
 bool draw::isclipped(int size) {

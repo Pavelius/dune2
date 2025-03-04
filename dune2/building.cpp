@@ -61,6 +61,7 @@ void add_building(point pt, objectn type) {
 	last_building->player = player_index;
 	last_building->stop();
 	area.set(last_building->getrect(), setnofeature, 0);
+	area.set(last_building->getrect(), setcontrol, player_index);
 	if(type == Refinery)
 		add_unit(pt, Harvester, to(pt, area.center()), player_index);
 }

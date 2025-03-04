@@ -48,39 +48,22 @@ bool debug_toggle;
 // External for debug tools. In release mode must be removed by linker.
 void view_debug_input();
 
-static point get_area_origin() {
-	return point(camera.x / area_tile_width, camera.y / area_tile_height);
-}
-
-static void correct_camera() {
-	auto w = area_screen.width();
-	auto h = area_screen.height();
-	auto mx = area.maximum.x * area_tile_width;
-	auto my = area.maximum.y * area_tile_height;
-	if(camera.x + w > mx)
-		camera.x = mx - w;
-	if(camera.y + h > my)
-		camera.y = my - h;
-	if(camera.x < 0)
-		camera.x = 0;
-	if(camera.y < 0)
-		camera.y = 0;
-	if(w > mx)
-		camera.x = area_screen.x1 + (w - mx) / 2;
-	if(h > my)
-		camera.y = area_screen.y1 + (h - my) / 2;
-}
-
 void setcamera(point v, bool center_view) {
-	int x = v.x * area_tile_width;
-	int y = v.y * area_tile_height;
+	area_origin = v;
+	auto w = (area_screen.width() + area_tile_width - 1) / area_tile_width;
+	auto h = (area_screen.height() + area_tile_height - 1) / area_tile_height;
 	if(center_view) {
-		x -= area_screen.width() / 2;
-		y -= area_screen.height() / 2;
+		area_origin.x -= w / 2;
+		area_origin.y -= h / 2;
 	}
-	camera.x = x;
-	camera.y = y;
-	correct_camera();
+	if(area_origin.x + w >= area.maximum.x)
+		area_origin.x = area.maximum.x - w;
+	if(area_origin.y + h >= area.maximum.y)
+		area_origin.y = area.maximum.y - h;
+	if(area_origin.x < 0)
+		area_origin.x = 0;
+	if(area_origin.y < 0)
+		area_origin.y = 0;
 }
 
 static void debug_control() {
@@ -92,7 +75,7 @@ static void debug_control() {
 	width = 14; height = 14;
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
-			auto v = get_area_origin(); v.x += x; v.y += y;
+			auto v = area_origin; v.x += x; v.y += y;
 			if(path_map[v.y][v.x] >= 0xFF00)
 				continue;
 			caret.x = x * area_tile_width + push.caret.x + 1;
@@ -245,16 +228,14 @@ static int get_frame(sprite* ps, unsigned long resolution) {
 }
 
 static point s2i(point v) {
-	v = v - camera;
-	v.x += area_screen.x1;
-	v.y += area_screen.y1;
+	v.x += area_screen.x1 - area_origin.x * area_tile_width;
+	v.y += area_screen.y1 - area_origin.y * area_tile_height;
 	return v;
 }
 
 static point i2s(point v) {
-	v.x -= area_screen.x1;
-	v.y -= area_screen.y1;
-	v = v + camera;
+	v.x -= area_screen.x1 - area_origin.x * area_tile_width;
+	v.y -= area_screen.y1 - area_origin.y * area_tile_height;
 	return v;
 }
 
@@ -403,13 +384,9 @@ static void check_mouse_corner_slice() {
 		if(hot.mouse.in(rc)) {
 			show_mouse_camera_slider(d, rc.centerx(), rc.centery(), get_arrows_frame(d));
 			if(mouse_hower(100, false))
-				execute(set_area_view, (long)(get_area_origin() + getpoint(d)));
+				execute(set_area_view, (long)(area_origin + getpoint(d)));
 		}
 	}
-}
-
-static point map_to_screen(point v) {
-	return {(short)(v.x * area_tile_width + area_screen.x1), (short)(v.y * area_tile_height + area_screen.y1)};
 }
 
 static void rectb_hilite() {
@@ -452,23 +429,21 @@ static void paint_worm() {
 }
 
 static void paint_cursor(int avatar, point offset, bool choose_mode) {
-	auto v = area_spot - get_area_origin();
-	if(!area.isvalid(v))
+	if(!area.isvalid(area_spot))
 		return;
-	auto pt = map_to_screen(v) + offset;
+	auto pt = s2i(m2s(area_spot)) + offset;
 	image(pt.x, pt.y, gres(MOUSE), avatar, 0);
 	if(choose_mode && hot.key == MouseLeft && hot.pressed)
 		execute(buttonparam, (long)area_spot);
 }
 
 static void paint_cursor(point size, bool choose_mode, bool disabled) {
-	auto v = area_spot - get_area_origin();
-	if(!area.isvalid(v))
+	if(!area.isvalid(area_spot))
 		return;
 	pushrect push;
+	caret = s2i(m2s(area_spot));
 	width = 16 * size.x;
 	height = 16 * size.y;
-	caret = map_to_screen(v);
 	rectb_hilite(disabled);
 	if(choose_mode && hot.key == MouseLeft && hot.pressed)
 		execute(buttonparam, (long)area_spot);
@@ -506,45 +481,88 @@ static void update_pallette_colors() {
 
 static void paint_map_tiles() {
 	auto ps = gres(ICONS);
-	auto vo = get_area_origin();
-	auto xm = vo.x + (width + area_tile_width - 1) / area_tile_width;
-	auto ym = vo.y + (height + area_tile_height - 1) / area_tile_height;
-	if(ym > area.maximum.y)
-		ym = area.maximum.y;
-	if(xm > area.maximum.x)
-		xm = area.maximum.x;
-	point v;
-	for(v.y = vo.y; v.y < ym; v.y++) {
-		for(v.x = vo.x; v.x < xm; v.x++) {
-			auto ix = v.x * area_tile_width - camera.x + caret.x;
-			auto iy = v.y * area_tile_height - camera.y + caret.y;
-			image(ix, iy, ps, area.getframe(v), ImagePallette);
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
+			auto f = area.getframe(v); 
+			if(map_features[f] == BuildingHead || map_features[f] == BuildingLeft || map_features[f] == BuildingUp)
+				update_pallette_by_player(bsdata<playeri>::elements[area.control[v.y][v.x]].color_index);
+			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, area.getframe(v), ImagePallette);
 		}
 	}
 }
 
 static void paint_map_features() {
 	auto ps = gres(ICONS);
-	auto vo = get_area_origin();
-	auto xm = vo.x + (width + area_tile_width - 1) / area_tile_width;
-	auto ym = vo.y + (height + area_tile_height - 1) / area_tile_height;
-	if(ym > area.maximum.y)
-		ym = area.maximum.y;
-	if(xm > area.maximum.x)
-		xm = area.maximum.x;
-	point v;
-	for(v.y = vo.y; v.y < ym; v.y++) {
-		for(v.x = vo.x; v.x < xm; v.x++) {
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
 			if(!area.is(v, player_index, Visible))
 				continue;
 			auto i = area.getframefeature(v);
 			if(!i)
 				continue;
-			auto ix = v.x * area_tile_width - camera.x + caret.x;
-			auto iy = v.y * area_tile_height - camera.y + caret.y;
-			image(ix, iy, ps, i, 0);
+			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, i, 0);
 		}
 	}
+}
+
+static void paint_fow() {
+	pushrect push;
+	pushfore push_fore(colors::black);
+	auto ps = gres(ICONS);
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	width = area_tile_width; height = area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
+			if(!area.is(v, player_index, Explored)) {
+				caret.x = x * area_tile_width + push.caret.x;
+				caret.y = y * area_tile_height + push.caret.y;
+				rectf();
+			} else {
+				auto frame = area.getframefow(v, player_index, Explored);
+				frame ^= 0x0f;
+				if(frame == 0 || frame == 15)
+					continue;
+				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
+			}
+		}
+	}
+}
+
+static void paint_visibility() {
+	pushrect push;
+	pushfore push_fore(colors::black);
+	auto push_alpha = alpha; alpha = 32;
+	auto ps = gres(ICONS);
+	auto xm = (width + area_tile_width - 1) / area_tile_width;
+	auto ym = (height + area_tile_height - 1) / area_tile_height;
+	width = area_tile_width; height = area_tile_height;
+	for(auto y = 0; y < ym; y++) {
+		for(auto x = 0; x < xm; x++) {
+			auto v = area_origin; v.x += x; v.y += y;
+			if(!area.is(v, player_index, Explored))
+				continue;
+			if(!area.is(v, player_index, Visible)) {
+				caret.x = x * area_tile_width + push.caret.x;
+				caret.y = y * area_tile_height + push.caret.y;
+				rectf();
+			} else {
+				auto frame = area.getframefow(v, player_index, Visible);
+				frame ^= 0x0f;
+				if(frame == 0 || frame == 15)
+					continue;
+				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
+			}
+		}
+	}
+	alpha = push_alpha;
 }
 
 static void paint_foot(const sprite* ps, int frame, direction d) {
@@ -699,7 +717,7 @@ static void paint_effect_fix() {
 
 static void paint_radar_rect() {
 	pushrect push;
-	auto vo = get_area_origin();
+	auto vo = area_origin;
 	switch(area.sizetype) {
 	case SmallMap:
 		caret.x = getwidth() - 64 + vo.x * 2;
@@ -963,62 +981,6 @@ static void rectb_last_building() {
 	rectb_hilite();
 }
 
-static void paint_fow() {
-	pushrect push;
-	pushfore push_fore(colors::black);
-	auto ps = gres(ICONS);
-	auto vo = get_area_origin();
-	auto xm = (width + area_tile_width - 1) / area_tile_width;
-	auto ym = (height + area_tile_height - 1) / area_tile_height;
-	width = area_tile_width; height = area_tile_height;
-	for(auto y = 0; y < ym; y++) {
-		for(auto x = 0; x < xm; x++) {
-			auto v = vo; v.x += x; v.y += y;
-			if(!area.is(v, player_index, Explored)) {
-				caret.x = x * area_tile_width + push.caret.x;
-				caret.y = y * area_tile_height + push.caret.y;
-				rectf();
-			} else {
-				auto frame = area.getframefow(v, player_index, Explored);
-				frame ^= 0x0f;
-				if(frame == 0 || frame == 15)
-					continue;
-				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
-			}
-		}
-	}
-}
-
-static void paint_visibility() {
-	pushrect push;
-	pushfore push_fore(colors::black);
-	auto push_alpha = alpha; alpha = 32;
-	auto ps = gres(ICONS);
-	auto vo = get_area_origin();
-	auto xm = (width + area_tile_width - 1) / area_tile_width;
-	auto ym = (height + area_tile_height - 1) / area_tile_height;
-	width = area_tile_width; height = area_tile_height;
-	for(auto y = 0; y < ym; y++) {
-		for(auto x = 0; x < xm; x++) {
-			auto v = vo; v.x += x; v.y += y;
-			if(!area.is(v, player_index, Explored))
-				continue;
-			if(!area.is(v, player_index, Visible)) {
-				caret.x = x * area_tile_width + push.caret.x;
-				caret.y = y * area_tile_height + push.caret.y;
-				rectf();
-			} else {
-				auto frame = area.getframefow(v, player_index, Visible);
-				frame ^= 0x0f;
-				if(frame == 0 || frame == 15)
-					continue;
-				image(x * area_tile_width + push.caret.x, y * area_tile_height + push.caret.y, ps, 108 + frame, 0);
-			}
-		}
-	}
-	alpha = push_alpha;
-}
-
 static void paint_selected_units() {
 	if(!human_selected)
 		return;
@@ -1057,15 +1019,14 @@ static void paint_move_order() {
 
 static void paint_game_map() {
 	auto push_clip = clipping; setclip(area_screen);
-	correct_camera();
 	if(hot.mouse.in(area_screen)) {
-		area_spot.x = (camera.x + (hot.mouse.x - area_screen.x1)) / area_tile_width;
-		area_spot.y = (camera.y + (hot.mouse.y - area_screen.y1)) / area_tile_height;
+		area_spot.x = (area_origin.x * area_tile_width + (hot.mouse.x - area_screen.x1)) / area_tile_width;
+		area_spot.y = (area_origin.y * area_tile_height + (hot.mouse.y - area_screen.y1)) / area_tile_height;
 	} else
 		area_spot = {-10000, -10000};
 	paint_map_tiles();
 	paint_map_features();
-	paint_objects();
+	paint_objects(m2s(area_origin));
 	rectb_last_building();
 	paint_selected_units();
 	paint_visibility();
