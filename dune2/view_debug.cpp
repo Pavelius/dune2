@@ -8,7 +8,7 @@
 #include "resid.h"
 #include "slice.h"
 #include "unit.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_focus.h"
 #include "view_theme.h"
 

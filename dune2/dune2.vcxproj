@@ -269,7 +269,7 @@
     <ClInclude Include="unit.h" />
     <ClInclude Include="unita.h" />
     <ClInclude Include="video.h" />
-    <ClInclude Include="view.h" />
+    <ClInclude Include="view_map.h" />
     <ClInclude Include="view_focus.h" />
     <ClInclude Include="view_list.h" />
     <ClInclude Include="win.h" />

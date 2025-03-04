@@ -1,7 +1,7 @@
 #include "area.h"
 #include "bsdata.h"
 #include "unita.h"
-#include "view.h"
+#include "view_map.h"
 
 unita human_selected;
 

@@ -6,7 +6,7 @@
 #include "stringbuilder.h"
 #include "textscript.h"
 #include "timer.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_theme.h"
 
 #ifdef _DEBUG

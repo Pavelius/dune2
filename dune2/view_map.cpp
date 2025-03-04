@@ -23,7 +23,7 @@
 #include "unit.h"
 #include "unita.h"
 #include "video.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_focus.h"
 #include "view_indicator.h"
 #include "view_list.h"

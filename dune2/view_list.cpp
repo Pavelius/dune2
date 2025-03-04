@@ -1,8 +1,8 @@
 #include "draw.h"
 #include "math.h"
-#include "view.h"
-#include "view_theme.h"
 #include "view_list.h"
+#include "view_map.h"
+#include "view_theme.h"
 
 using namespace draw;
 

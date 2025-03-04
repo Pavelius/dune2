@@ -4,7 +4,7 @@
 #include "resid.h"
 #include "objecta.h"
 #include "shape.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_list.h"
 #include "view_theme.h"
 

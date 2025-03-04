@@ -8,7 +8,7 @@
 #include "objecta.h"
 #include "timer.h"
 #include "music.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_list.h"
 #include "view_theme.h"
 

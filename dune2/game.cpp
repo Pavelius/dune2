@@ -14,7 +14,7 @@
 #include "rand.h"
 #include "textscript.h"
 #include "unit.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_theme.h"
 #include "view_menu.h"
 #include "video.h"

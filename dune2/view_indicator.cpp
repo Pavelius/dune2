@@ -1,6 +1,6 @@
 #include "draw.h"
 #include "resid.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_indicator.h"
 
 const int indicator_change_time = 300;

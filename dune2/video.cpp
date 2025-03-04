@@ -5,7 +5,7 @@
 #include "log_file.h"
 #include "music.h"
 #include "video.h"
-#include "view.h"
+#include "view_map.h"
 #include "view_theme.h"
 
 const unsigned long time_appear = 1 * 1000;

@@ -7,7 +7,7 @@
 #include "game.h"
 #include "resid.h"
 #include "unit.h"
-#include "view.h"
+#include "view_map.h"
 
 using namespace draw;
 

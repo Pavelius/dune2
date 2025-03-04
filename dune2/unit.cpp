@@ -12,7 +12,7 @@
 #include "squad.h"
 #include "unit.h"
 #include "unita.h"
-#include "view.h"
+#include "view_map.h"
 
 BSDATAC(unit, 2048)
 
