@@ -1,15 +1,16 @@
-#include "airunit.h"
+#include "aircraft.h"
 #include "area.h"
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
+#include "unit.h"
 
-BSDATAC(airunit, 64)
+BSDATAC(aircraft, 64)
 
 void add_air_unit(point pt, objectn id, direction d, unsigned char player) {
 	if(!area.isvalid(pt))
 		return;
-	auto p = bsdata<airunit>::addz();
+	auto p = bsdata<aircraft>::addz();
 	p->render = p->renderindex();
 	p->screen = m2sc(pt);
 	p->position = pt;
@@ -29,18 +30,33 @@ static building* find_base(unsigned char player) {
 	return p;
 }
 
-void airunit::clear() {
+static unit* get_unit(short unsigned n) {
+	return bsdata<unit>::elements + n;
+}
+
+void aircraft::clear() {
 	memset(this, 0, sizeof(*this));
 }
 
-void airunit::cleanup() {
+void aircraft::destroy() {
+	cleanup(true);
+	clear();
 }
 
-int	airunit::getindex() const {
-	return this - bsdata<airunit>::elements;
+void aircraft::cleanup(bool destroying) {
+	for(auto n : load) {
+		auto p = get_unit(n);
+		if(destroying)
+			p->position = position;
+		p->destroy();
+	}
 }
 
-void airunit::update() {
+int	aircraft::getindex() const {
+	return this - bsdata<aircraft>::elements;
+}
+
+void aircraft::update() {
 	const auto move = Flying;
 	auto speed = getspeedfp(getstat(type, Speed));
 	if(moving(move, speed, 0))
@@ -80,12 +96,12 @@ static point get_star_base(point v, int seed) {
 	return v;
 }
 
-void airunit::leave() {
-	cleanup();
+void aircraft::leave() {
+	cleanup(false);
 	clear();
 }
 
-void airunit::returnbase() {
+void aircraft::returnbase() {
 	auto pb = find_base(player);
 	if(!pb)
 		return;
@@ -96,7 +112,7 @@ void airunit::returnbase() {
 		order = pt;
 }
 
-void airunit::patrol() {
+void aircraft::patrol() {
 	auto pb = find_base(player);
 	if(!pb)
 		return;

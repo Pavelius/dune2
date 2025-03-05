@@ -1,5 +1,5 @@
 #include "archive.h"
-#include "airunit.h"
+#include "aircraft.h"
 #include "area.h"
 #include "draw.h"
 #include "game.h"
@@ -19,7 +19,7 @@ static bool serial_game_url(const char* url, bool writemode) {
 	e.set(area_origin);
 	e.set(bsdata<playeri>::source);
 	e.set(bsdata<unit>::source);
-	e.set(bsdata<airunit>::source);
+	e.set(bsdata<aircraft>::source);
 	e.set(bsdata<building>::source);
 	e.set(bsdata<draweffect>::source);
 	return true;

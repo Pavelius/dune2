@@ -1,17 +1,20 @@
 #pragma once
 
+#include "adat.h"
 #include "moveable.h"
 #include "object.h"
 
-struct airunit : moveable, objectable {
+struct aircraft : moveable, objectable {
+	adat<short unsigned, 6> load;
 	explicit operator bool() const { return type != NoObject; }
 	void		clear();
-	void		cleanup();
+	void		destroy();
 	int			getindex() const;
 	void		leave();
 	void		returnbase();
 	void		update();
 private:
+	void		cleanup(bool destroying);
 	void		patrol();
 };
 void add_air_unit(point pt, objectn id, direction d, unsigned char player);

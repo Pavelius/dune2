@@ -133,7 +133,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="airunit.cpp" />
+    <ClCompile Include="aircraft.cpp" />
     <ClCompile Include="game_ai.cpp" />
     <ClCompile Include="objecta.cpp" />
     <ClCompile Include="stat.cpp" />
@@ -207,7 +207,7 @@
     <ClCompile Include="win_time.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="airunit.h" />
+    <ClInclude Include="aircraft.h" />
     <ClInclude Include="my_initialize_list.h" />
     <ClInclude Include="objecta.h" />
     <ClInclude Include="storeable.h" />

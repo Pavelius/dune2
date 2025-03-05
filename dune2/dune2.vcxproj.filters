@@ -234,7 +234,7 @@
     <ClCompile Include="game_ai.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="airunit.cpp">
+    <ClCompile Include="aircraft.cpp">
       <Filter>logic</Filter>
     </ClCompile>
   </ItemGroup>
@@ -434,7 +434,7 @@
     <ClInclude Include="my_initialize_list.h">
       <Filter>support</Filter>
     </ClInclude>
-    <ClInclude Include="airunit.h">
+    <ClInclude Include="aircraft.h">
       <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>

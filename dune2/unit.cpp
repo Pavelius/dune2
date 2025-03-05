@@ -46,13 +46,15 @@ void unit::fixstate(const char* id) const {
 }
 
 void unit::destroy() {
-	fixstate("UnitDestroyed");
 	cleanup();
-	switch(getmove(type)) {
-	case Wheeled: add_effect(m2sc(position), FixBikeExplosion); break;
-	case Tracked: add_effect(m2sc(position), FixExplosion); break;
-	case Footed: area.set(position, Bodies); break;
-	default: break;
+	if(area.isvalid(position)) {
+		fixstate("UnitDestroyed");
+		switch(getmove(type)) {
+		case Wheeled: add_effect(m2sc(position), FixBikeExplosion); break;
+		case Tracked: add_effect(m2sc(position), FixExplosion); break;
+		case Footed: area.set(position, Bodies); break;
+		default: break;
+		}
 	}
 	clear();
 }

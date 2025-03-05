@@ -1,4 +1,4 @@
-#include "airunit.h"
+#include "aircraft.h"
 #include "area.h"
 #include "answers.h"
 #include "bsdata.h"
@@ -47,7 +47,7 @@ static void update_unit_time() {
 }
 
 static void update_airunit_time() {
-	for(auto& e : bsdata<airunit>()) {
+	for(auto& e : bsdata<aircraft>()) {
 		if(!e)
 			continue;
 		while(e.start_time < game.time) {

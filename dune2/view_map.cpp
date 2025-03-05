@@ -1,5 +1,5 @@
 #include "area.h"
-#include "airunit.h"
+#include "aircraft.h"
 #include "answers.h"
 #include "bsdata.h"
 #include "building.h"
@@ -690,7 +690,7 @@ static void paint_air_unit(objectn type, direction move_direction, unsigned char
 }
 
 static void paint_air_unit() {
-	auto p = static_cast<airunit*>(last_object);
+	auto p = static_cast<aircraft*>(last_object);
 	if(!p->operator bool())
 		return;
 	if(!area.is(p->position, player_index, Explored))
@@ -1577,6 +1577,6 @@ void initialize_view(const char* title, fnevent main_scene) {
 BSDATA(drawrenderi) = {
 	{"PaintUnit", bsdata<unit>::source, bsdata<unit>::elements, paint_unit},
 	{"PaintEffectFix", bsdata<draweffect>::source, bsdata<draweffect>::elements, paint_effect_fix},
-	{"PaintAirUnit", bsdata<airunit>::source, bsdata<airunit>::elements, paint_air_unit},
+	{"PaintAirUnit", bsdata<aircraft>::source, bsdata<aircraft>::elements, paint_air_unit},
 };
 BSDATAF(drawrenderi)
