@@ -10,6 +10,7 @@ struct aircraft : moveable, objectable {
 	void		clear();
 	void		destroy();
 	int			getindex() const;
+	point		getstarbase(point v) const;
 	void		leave();
 	void		returnbase();
 	void		update();

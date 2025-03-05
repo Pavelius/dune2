@@ -81,8 +81,8 @@ static rect area_correct(rect rc) {
 	return rc;
 }
 
-static point get_star_base(point v, int seed) {
-	if(seed % 2) {
+point aircraft::getstarbase(point v) const {
+	if(getindex() % 2) {
 		if(v.x < area.maximum.x / 2)
 			v.x = 0;
 		else
@@ -105,7 +105,7 @@ void aircraft::returnbase() {
 	auto pb = find_base(player);
 	if(!pb)
 		return;
-	auto pt = get_star_base(pb->position, getindex());
+	auto pt = getstarbase(pb->position);
 	if(position == pt)
 		leave();
 	else
