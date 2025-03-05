@@ -30,7 +30,7 @@ BSDATA(objecti) = {
 	{"Starport", Building, STARPORT, 63, ICONS, {309, 310, 311, 314, 315, 316, 319, 320, 321}},
 	{"Windtrap", Building, WINDTRAP, 61, ICONS, {304, 305, 306, 307}},
 	{"Refinery", Building, REFINERY, 64, ICONS, {332, 333, 334, 337, 338, 339}},
-	{"RadarOutpost", Building, HEADQRTS, 70, ICONS, {379, 380, 386, 387}},
+	{"Outpost", Building, HEADQRTS, 70, ICONS, {379, 380, 386, 387}},
 	{"RepairFacility", Building, REPAIR, 65, ICONS, {345, 346, 347, 349, 350, 351}},
 	{"HouseOfIX", Building, IX, 58, ICONS, {280, 281, 282, 283}},
 	{"Palace", Building, PALACE, 54, ICONS, {216, 217, 218, 226, 227, 228, 235, 236, 237}},
@@ -39,13 +39,13 @@ BSDATA(objecti) = {
 	{"LightVehicleFactory", Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}},
 	{"HeavyVehicleFactory", Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}},
 	{"HighTechFactory", Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}},
-	{"Slab", Building, SLAB, 53, ICONS, {126}},
+	{"ConcreteSlab", Building, SLAB, 53, ICONS, {126}},
 	{"Slab4", Building, SLAB4, 71, ICONS},
 	{"Turret", Building, TURRET, 67, ICONS, {356}},
 	{"RocketTurret", Building, RTURRET, 68, ICONS, {364}},
 	{"Harvester", Unit, HARVEST, 88, UNITS, {10}},
 	{"LightInfantry", Unit, INFANTRY, 81, UNITS, {91}},
-	{"HeavyInfantry", Unit, HYINFY, 91, UNITS, {103}},
+	{"HeavyTroopers", Unit, HYINFY, 91, UNITS, {103}},
 	{"Trike", Unit, TRIKE, 80, UNITS, {5}},
 	{"Quad", Unit, QUAD, 74, UNITS, {0}},
 	{"CombatTank", Unit, LTANK, 78, UNITS2, {0, 5}},
@@ -87,7 +87,7 @@ int getcreditscost(objectn type) {
 	case Windtrap: return 150;
 		// Units
 	case LightInfantry: return 40;
-	case HeavyInfantry: return 70;
+	case HeavyTroopers: return 70;
 	case Trike: return 150;
 	case Quad: return 250;
 	case CombatTank: return 350;
@@ -157,7 +157,7 @@ shapen getshape(objectn type) {
 fixn getweapon(objectn type) {
 	switch(type) {
 	case LightInfantry: return ShootAssaultRifle;
-	case HeavyInfantry: return ShootRotaryCannon;
+	case HeavyTroopers: return ShootRotaryCannon;
 	case Quad: return Shoot30mm;
 	case Trike: return Shoot20mm;
 	case RocketTank: return FireRocket;
@@ -170,7 +170,7 @@ fixn getweapon(objectn type) {
 
 fixn getheavyweapon(objectn type) {
 	switch(type) {
-	case HeavyInfantry: return HandRocket;
+	case HeavyTroopers: return HandRocket;
 	default: return NoEffect;
 	}
 }
@@ -179,7 +179,7 @@ int getstat(objectn type, statn i) {
 	switch(i) {
 	case Hits:
 		switch(type) {
-		case LightInfantry: case HeavyInfantry: return 4;
+		case LightInfantry: case HeavyTroopers: return 4;
 		case Trike: case RocketTank: return 5;
 		case Quad: case CombatTank: case SiegeTank: return 6;
 		case Harvester: return 8;
@@ -189,7 +189,7 @@ int getstat(objectn type, statn i) {
 	case Armor:
 		switch(type) {
 		case LightInfantry: return 0;
-		case HeavyInfantry: case Quad: case Trike: return 1;
+		case HeavyTroopers: case Quad: case Trike: return 1;
 		case CombatTank: case RocketTank: case Harvester: return 2;
 		case SiegeTank: return 3;
 		case SandWorm: return 4;
@@ -200,7 +200,7 @@ int getstat(objectn type, statn i) {
 		case Turret: return 1;
 		case RocketTurret: return 2;
 		case CombatTank: return 1;
-		case LightInfantry: case HeavyInfantry: return 2;
+		case LightInfantry: case HeavyTroopers: return 2;
 		case SiegeTank: return 2;
 		case RocketTank: return 2;
 		case Trike: case Quad: return 2;
@@ -215,7 +215,7 @@ int getstat(objectn type, statn i) {
 		}
 	case Range:
 		switch(type) {
-		case LightInfantry: case HeavyInfantry: return 2;
+		case LightInfantry: case HeavyTroopers: return 2;
 		case Trike: case Quad: return 2;
 		case CombatTank: case SiegeTank: return 4;
 		case Turret: return 5;
@@ -229,7 +229,7 @@ int getstat(objectn type, statn i) {
 		case Quad: return 8;
 		case RocketTank: case CombatTank: return 5;
 		case SiegeTank: return 4;
-		case HeavyInfantry: return 3;
+		case HeavyTroopers: return 3;
 		case LightInfantry: return 2;
 		case SandWorm: return 6;
 		case Carryall: return 12;
@@ -258,7 +258,7 @@ objectn getparent(objectn type) {
 objectn getbuild(objectn type) {
 	switch(type) {
 	case LightInfantry: return Barracks;
-	case HeavyInfantry: return Wor;
+	case HeavyTroopers: return Wor;
 	case Trike: case Quad:
 		return LightVehicleFactory;
 	case Carryall: case Ornithopter:
@@ -318,7 +318,7 @@ unsigned short* getframes(objectn type) {
 
 movementn getmove(objectn type) {
 	switch(type) {
-	case LightInfantry: case HeavyInfantry:
+	case LightInfantry: case HeavyTroopers:
 		return Footed;
 	case Quad: case Trike:
 		return Wheeled;

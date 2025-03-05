@@ -12,7 +12,7 @@ enum objectn : unsigned char {
 	ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
 	Slab, Slab4, Turret, RocketTurret,
-	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, CombatTank, SiegeTank, RocketTank,
+	Harvester, LightInfantry, HeavyTroopers, Trike, Quad, CombatTank, SiegeTank, RocketTank,
 	SandWorm, Carryall, Fregate, Ornithopter,
 	BuildStructure, BuildUnit,
 	EarnCredits, FindSpiceField, ExploreArea,

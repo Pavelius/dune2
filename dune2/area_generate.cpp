@@ -141,7 +141,7 @@ static void player_base(rect rc) {
 	add_random(rc, set_terrain_big_circle, Rock, 6);
 	add_building(v, ConstructionYard);
 	add_unit(v, LightInfantry);
-	add_unit(v, HeavyInfantry);
+	add_unit(v, HeavyTroopers);
 	add_air_unit(v, Fregate);
 	add_air_unit(v, Carryall);
 	add_air_unit(v, Ornithopter);

@@ -163,133 +163,145 @@ These enormous creatures are attracted by vibrations on the surface and will oft
 #SonicTankAtreidesInfo
 The Sonic Tank is one of our unique weapons. It fires a blast of sonic energy rather than projectile weapons. An excellent weapon for defensive missions, it is especially effective against enemy infantry.
 
-#BarracksHarkonensInfo
+#BarracksHarkonnenInfo
 These simple little buildings train infantry units. The building itself has fair armor and is relatively cheap to maintain. We Harkonnen, however, do not have use for such weak forces.
 
-#ConcreteSlabHarkonensInfo
+#ConcreteSlabHarkonnenInfo
 Slabs are used to provide stable building foundations. We have found that anything built on bare rock will deteriorate rapidly.
 
-#ConstructionYardHarkonensInfo
+#ConstructionYardHarkonnenInfo
 You must have a construction yard. It will give you the means to construct other buildings.
 
-#HeavyFactoryHarkonensInfo
+#HeavyFactoryHarkonnenInfo
 You must have a Heavy factory in order to construct our heavy tanks.
 
-#HighTechFactoryHarkonensInfo
+#HighTechFactoryHarkonnenInfo
 The High-Tech factory produces our carryalls.
 
-#IXHarkonensInfo
+#IXHarkonnenInfo
 IX will provide you with a source of militarily advanced weapons.
 
-#LightFactoryHarkonensInfo
+#LightFactoryHarkonnenInfo
 The light factory produces only lightly armored vehicles, and is only a beginning step towards your goal of military superiority.
 
-#OutpostHarkonensInfo
+#OutpostHarkonnenInfo
 The outpost houses radar equipment. The radar will help you to keep an eye on your own domain as well as nearby enemy activity.
 
-#PalaceHarkonensInfo
+#PalaceHarkonnenInfo
 House Harkonnen may grant a Palace to those who have proved themselves worthy of such an honor. If you lose a Palace, that was given to you, you will have failed your mission.
 
-#RefineryHarkonensInfo
+#RefineryHarkonnenInfo
 The refinery converts harvested spice into credits.
 
-#RepairFacilityHarkonensInfo
+#RepairFacilityHarkonnenInfo
 It is impossible to operate machinery in this desert without causing damage. You must have a repair facility to take care of your damaged vehicles.
 
-#RocketTurretHarkonensInfo
+#RocketTurretHarkonnenInfo
 The Rocket Turret is an excellent weapon. Although they cannot be moved, they can be utilized for long and short range defense.
 
-#SpiceSilosHarkonensInfo
+#SpiceSilosHarkonnenInfo
 Spice silos must be built to be able to store the harvested spice.
 Unfortunately, they are weak structures, and must be repaired frequently.
 
-#StarportHarkonensInfo
+#StarportHarkonnenInfo
 The Starport is your link to the storehouses beyond the surface of the planet.
 With a Starport at your disposal, you can purchase powerful weapons and vehicles.
 
-#TurretHarkonensInfo
+#TurretHarkonnenInfo
 Turrets are accurate and effective weapons.
 Although they are immobile, you should consider them as required enhancements to your forces.
 
-#WallHarkonensInfo
+#WallHarkonnenInfo
 Walls are an excellent choice for defensive reinforcement.
 Like the concrete slabs, walls are inexpensive to produce.
 
-#WindtrapHarkonensInfo
+#WindtrapHarkonnenInfo
 These are the structures that provide power and water to your installation.
 They are a bit fragile, and you are well advised to construct more than one.
 
-#WorHarkonensInfo
+#WorHarkonnenInfo
 WOR will train the Heavy Troopers.
 
-#CarryallHarkonensInfo
+#CarryallHarkonnenInfo
 This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own.
 
-#CombatTankHarkonensInfo
+#CombatTankHarkonnenInfo
 The combat tank will be your first tank, and it has adequate armor and fire power.
 However, remember that there are more powerful weapons at your disposal.
 
-#HarvesterHarkonensInfo
+#HarvesterHarkonnenInfo
 This large, slow, and barely maneuverable vehicle is used to harvest raw spice and convey it to the refinery.
 Although unarmed, the iron clad harvesters can be used effectively against small groups of infantry by crushing them beneath their treads.
 
-#HeavyTroopersHarkonensInfo
+#HeavyTroopersHarkonnenInfo
 The Heavy Troopers are superior fighting units.
 They are well armored and have powerful weapons.
 
-#LightInfantryHarkonensInfo
+#LightInfantryHarkonnenInfo
 The Light Infantry will hardly suit your needs.
 They are slow, poorly armored, and have a tendency to miss their targets. You should depend upon the more massive troopers.
 
-#MCVHarkonensInfo
+#MCVHarkonnenInfo
 The Mobile Construction Vehicle will allow you to expand your territories. By using an MCV you will be able to construct distant buildings that need not be adjacent to your principal location.
 
-#OrdosRaiderHarkonensInfo
-This is a pitiful little machine. For some reason the Ordos believe that this overblown Trike can out maneuver and out fire our Quads.
+#OrdosRaiderHarkonnenInfo
+This is a pitiful little machine.
+For some reason the Ordos believe that this overblown Trike can out maneuver and out fire our Quads.
 
-#OrnithopterHarkonensInfo
-This fragile little aircraft is merely an annoyance. Their delicate armor is no match for our weapons of war.
+#OrnithopterHarkonnenInfo
+This fragile little aircraft is merely an annoyance.
+Their delicate armor is no match for our weapons of war.
 
-#QuadHarkonensInfo
-The Quad is a much better vehicle than the smaller trike. It has far superior armor and is much more powerful.
+#QuadHarkonnenInfo
+The Quad is a much better vehicle than the smaller trike.
+It has far superior armor and is much more powerful.
 
-#RocketTankHarkonensInfo
+#RocketTankHarkonnenInfo
 The rocket tank is effective for long range attacks.
 Guard these well, for they are ineffective at close range.
 
-#SiegeTankHarkonensInfo
+#SiegeTankHarkonnenInfo
 The Siege Tank is superior to the Combat tank.
 It's armor and weaponry has the power you will need to complete your conquest of this planet.
 
-#TrikeHarkonensInfo
+#TrikeHarkonnenInfo
 Although these three-wheeled, lightly armored vehicles are functional, we strongly suggest utilizing the larger, more powerful vehicles.
 
-#DeathHandHarkonensInfo
-Our Death Hand is a lovely weapon capable of being targeted for long range strikes. Just prior to impact it releases a series of explosive fingers that spread destruction over a wide area.
+#DeathHandHarkonnenInfo
+Our Death Hand is a lovely weapon capable of being targeted for long range strikes.
+Just prior to impact it releases a series of explosive fingers that spread destruction over a wide area.
 
-#DevastatorHarkonensInfo
-The Devastator is another of the unique and powerful weapons in our awesome arsenal. It's armor and weapons are unequaled. The Devastator need not fear other lesser tanks on the battlefield.
+#DevastatorHarkonnenInfo
+The Devastator is another of the unique and powerful weapons in our awesome arsenal.
+It's armor and weapons are unequaled. The Devastator need not fear other lesser tanks on the battlefield.
 
-#FremenHarkonensInfo
-The Fremen are little more than slaves to the Atreides. Ignorant and aboriginal, they occasionally fight for the Atreides, and are provided food and supplies in return.
+#FremenHarkonnenInfo
+The Fremen are little more than slaves to the Atreides.
+Ignorant and aboriginal, they occasionally fight for the Atreides, and are provided food and supplies in return.
 
-#OrdosDeviatorHarkonensInfo
+#OrdosDeviatorHarkonnenInfo
 This tank fires a powerful nerve gas that can cause your weaker-willed soldiers to turn against you.
 
-#SaboteurHarkonensInfo
-The Ordos depend upon a band of terrorists called Saboteurs. If uncontrolled, these cunning little pests will inflict a great deal of damage to your buildings. I suggest eliminating Saboteurs immediately whenever they are encountered.
+#SaboteurHarkonnenInfo
+The Ordos depend upon a band of terrorists called Saboteurs.
+If uncontrolled, these cunning little pests will inflict a great deal of damage to your buildings.
+I suggest eliminating Saboteurs immediately whenever they are encountered.
 
-#SandWormHarkonensInfo
-These huge native worms are almost impossible to kill. They are attracted by surface vibrations, and all ground based units are at risk of being devoured.  Rock is the only sure defense against these creatures.
+#SandWormHarkonnenInfo
+These huge native worms are almost impossible to kill.
+They are attracted by surface vibrations, and all ground based units are at risk of being devoured.
+Rock is the only sure defense against these creatures.
 
-#SonicTankHarkonensInfo
-The Atreides believe that they have found a humane way of eliminating their enemies. Their Sonic Tank fires shock waves instead of rockets.
+#SonicTankHarkonnenInfo
+The Atreides believe that they have found a humane way of eliminating their enemies.
+Their Sonic Tank fires shock waves instead of rockets.
 
 #BarracksOrdosInfo
 These buildings produce the light infantry, which are some of the most important fighting units in our military system.
 
 #ConcreteSlabOrdosInfo
-Concrete slabs are an effective and inexpensive foundation material. Structures without foundations will require frequent repair, and waste valuable time and money.
+Concrete slabs are an effective and inexpensive foundation material.
+Structures without foundations will require frequent repair, and waste valuable time and money.
 
 #ConstructionYardOrdosInfo
 The construction yard will allow you to erect other buildings.
@@ -396,7 +408,7 @@ Indigenous to the sands of Dune, these monsters are attracted by vibrations, and
 #SonicTankOrdosInfo
 The Atreides have developed a Sonic Tank that fires sonic blasts instead of projectiles. Be careful around these, their blasts have long range effects.
 
-#AssaultTankCapacity
+#SiegeTankCapacity
 Type: Main Battle Tank
 Armament: Daul 155mm cannons
 Speed: 32 km/h (tracked)
@@ -417,9 +429,10 @@ Speed: 32 km/h
 Armor: Medium
 Crew: 4
 
-#HeavyInfantryCapacity
+#HeavyTroopersCapacity
 Type: Ground Based Military Units
-Armament: 10mm Rotary Cannons; FS Rockets
+Armament: 10mm Rotary Cannons
+Heavy weapon: FS Rockets
 Speed: 12 km/h (foot)
 Armor: Light
 Crew: 1 to 3
@@ -445,7 +458,7 @@ Speed: 340 km/h (airborne)
 Armor: Light
 Crew: 2
 
-#TankCapacity
+#CombatTankCapacity
 Type: Medium Battle Tank
 Armament: 155mm gun
 Speed: 40 km/h (tracked)
@@ -475,7 +488,7 @@ Type: Industrial Facility
 Armor: Medium
 Capacity: 1000 spice units
 
-#SlabCapacity
+#ConcreteSlabCapacity
 Type: Foundation
 Material: Gravel/Sand base mix
 Weight: 1,469 kg
@@ -490,3 +503,6 @@ Capacity: 1000 spice units
 Type: Power Plant
 Armor: Light
 Generators: ESkort 650 hp EL-2A DT
+
+#SandWormCapacity
+No Known Weakness

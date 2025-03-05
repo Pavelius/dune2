@@ -9,11 +9,11 @@ HeavyVehicleFactory: Heavy Vehicle Factory
 HighTechFactory: High-tech Factory
 HouseOfIX: House of IX
 Palace: Palace
-RadarOutpost: Radar Outpost 
+Outpost: Radar Outpost 
 Refinery: Refinery
 RepairFacility: Repair Facility
 RocketTurret: Rocket Turret
-Slab: Slab
+ConcreteSlab: Concrete Slab
 Slab4: Slab blocks
 SpiceSilos: Spice Silos
 Starport: Starport

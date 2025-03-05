@@ -6,7 +6,7 @@ Units: Units
 Harvester: Harvester
 
 CombatTank: Tank
-HeavyInfantry: Heavy Infantry
+HeavyTroopers: Troopers
 LightInfantry: Infantry
 Quad: Quad
 RocketTank: Rocket
@@ -19,4 +19,4 @@ Ornithopter: Ornithopter
 
 Special: Special
 
-SandWorm: Sand Worm
+SandWorm: Shai-Hulud
