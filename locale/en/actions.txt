@@ -8,7 +8,7 @@ Stop: Stop
 Houses: Houses 
 NoFraction: None of House
 Atreides: Atreides
-Harkonens: Harkonens
+Harkonnen: Harkonens
 Ordos: Ordos
 
 BuildIt: Build It

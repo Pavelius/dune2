@@ -15,7 +15,7 @@ struct objectunit {
 static pointa points;
 static playeri* player_active;
 static int explore_demand;
-static objectn build_order[] = {Refinery, Windtrap, SpiceSilo, Barracks, Windtrap, RadarOutpost, Wor, Windtrap, Windtrap, LightVehicleFactory, Windtrap, HeavyVehicleFactory};
+static objectn build_order[] = {Refinery, Windtrap, SpiceSilos, Barracks, Windtrap, RadarOutpost, Wor, Windtrap, Windtrap, LightVehicleFactory, Windtrap, HeavyVehicleFactory};
 static objectunit build_units[] = {{LightInfantry, 5}, {HeavyInfantry, 5}, {Quad, 10}, {CombatTank, 5}, {SiegeTank, 5}, {RocketTank, 5}};
 
 static bool isexploredspice(point v) {

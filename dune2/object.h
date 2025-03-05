@@ -9,11 +9,11 @@ enum statn : unsigned char;
 enum objectn : unsigned char {
 	NoObject, House, Building, Unit, Special, Objective,
 	Atreides, Harkonens, Ordos,
-	ConstructionYard, SpiceSilo, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
+	ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
 	Slab, Slab4, Turret, RocketTurret,
 	Harvester, LightInfantry, HeavyInfantry, Trike, Quad, CombatTank, SiegeTank, RocketTank,
-	SandWorm, Carryall, Fregate, Ornitopter,
+	SandWorm, Carryall, Fregate, Ornithopter,
 	BuildStructure, BuildUnit,
 	EarnCredits, FindSpiceField, ExploreArea,
 	EngageEnemyArmy, EngageEnemyHarvesters, EngageEnemyBase,

@@ -1340,7 +1340,7 @@ static void paint_building_info() {
 	} else {
 		paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), 0, 0);
 		switch(last_building->type) {
-		case SpiceSilo: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
+		case SpiceSilos: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
 		case Windtrap: paint_stats_info(0, Energy); break;
 		}
 	}

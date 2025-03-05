@@ -1,3 +1,57 @@
+#AtreidesAtreidesInfo
+Our ancestral home is the lush planet of Caladan.
+We have created a civilized society and we respect the lives and rights of all people.
+We do not believe in the use of unnecessary violence, and have crafted a defensive alliance with the native Fremen of Dune.
+
+#HarkonnenAtreidesInfo
+The Harkonnen come from the dark planet of Giedi Prime.
+They are cruel and vicious individuals, and do not assign much value to fair play or even human life.
+Their goal is obviously the military conquest of Dune.
+
+#OrdosAtreidesInfo
+House Ordos was originally formed by a group of insecure wealthy families.
+It has evolved into a powerful cartel that is driven by a lust for credits and the desire to control and manipulate.
+They often support themselves by stealing rather than working.
+
+#AtreidesHarkonnenInfo
+The Atreides are spawned from the humid tropical planet of Caladan.
+They are best known for their weaknesses of honesty and kindness.
+They do not seem to believe in war and will usually avoid military conflicts.
+They have befriended the natives of Dune, and may be expected to involve the local patriot Fremen in their defensive plans.
+
+#HarkonnenHarkonnenInfo
+We Harkonnen have come from the planet Giedi Prime.
+We want now to possess Dune. Our weapons are powerful enough to deflect any attacks from our enemies.
+All of House Harkonnen is concentrating on this task, and only a disaster could stop us now.
+
+#OrdosHarkonnenInfo
+This cartel of greedy families has been thrown together by the lust for power.
+They will most likely be too busy bickering among themselves to be overly concerned with our forces.
+
+#AtreidesOrdosInfo
+The Atreides come from Caladan, a planet whose warm climate and over-productive agriculture undoubtedly make the citizens kind and non-violent.
+This is their weakness.
+
+#HarkonnenOrdosInfo
+Giedi Prime is the home to the Harkonnen.
+Do not be fooled by their blind hatred and bloodlust.
+They are devious, shrewd, and must be watched carefully!
+
+#OrdosOrdosInfo
+The Ordos come from many different homes.
+Because of this diversity, we are strong and highly organized.
+We know when it is necessary to utilize resources and when to appropriate the required materials.
+Our organization is highly efficient and effective.
+
+#AtreidesCapacity
+Home Planet: Caladan
+
+#HarkonnenCapacity
+Home Planet: Giedi Prime
+
+#OrdosCapacity
+Home Planet: Unknown
+
 #BarracksAtreidesInfo
 The Barracks is the building that trains our courageous light infantry. The structures are quite durable and will provide you with ample means to defend your spice harvesting operations.
 
@@ -146,19 +200,24 @@ It is impossible to operate machinery in this desert without causing damage. You
 The Rocket Turret is an excellent weapon. Although they cannot be moved, they can be utilized for long and short range defense.
 
 #SpiceSilosHarkonensInfo
-Spice silos must be built to be able to store the harvested spice. Unfortunately, they are weak structures, and must be repaired frequently.
+Spice silos must be built to be able to store the harvested spice.
+Unfortunately, they are weak structures, and must be repaired frequently.
 
 #StarportHarkonensInfo
-The Starport is your link to the storehouses beyond the surface of the planet. With a Starport at your disposal, you can purchase powerful weapons and vehicles.
+The Starport is your link to the storehouses beyond the surface of the planet.
+With a Starport at your disposal, you can purchase powerful weapons and vehicles.
 
 #TurretHarkonensInfo
-Turrets are accurate and effective weapons. Although they are immobile, you should consider them as required enhancements to your forces.
+Turrets are accurate and effective weapons.
+Although they are immobile, you should consider them as required enhancements to your forces.
 
 #WallHarkonensInfo
-Walls are an excellent choice for defensive reinforcement. Like the concrete slabs, walls are inexpensive to produce.
+Walls are an excellent choice for defensive reinforcement.
+Like the concrete slabs, walls are inexpensive to produce.
 
 #WindtrapHarkonensInfo
-These are the structures that provide power and water to your installation. They are a bit fragile, and you are well advised to construct more than one.
+These are the structures that provide power and water to your installation.
+They are a bit fragile, and you are well advised to construct more than one.
 
 #WorHarkonensInfo
 WOR will train the Heavy Troopers.
@@ -167,16 +226,20 @@ WOR will train the Heavy Troopers.
 This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own.
 
 #CombatTankHarkonensInfo
-The combat tank will be your first tank, and it has adequate armor and fire power. However, remember that there are more powerful weapons at your disposal.
+The combat tank will be your first tank, and it has adequate armor and fire power.
+However, remember that there are more powerful weapons at your disposal.
 
 #HarvesterHarkonensInfo
-This large, slow, and barely maneuverable vehicle is used to harvest raw spice and convey it to the refinery. Although unarmed, the iron clad harvesters can be used effectively against small groups of infantry by crushing them beneath their treads.
+This large, slow, and barely maneuverable vehicle is used to harvest raw spice and convey it to the refinery.
+Although unarmed, the iron clad harvesters can be used effectively against small groups of infantry by crushing them beneath their treads.
 
 #HeavyTroopersHarkonensInfo
-The Heavy Troopers are superior fighting units. They are well armored and have powerful weapons.
+The Heavy Troopers are superior fighting units.
+They are well armored and have powerful weapons.
 
 #LightInfantryHarkonensInfo
-The Light Infantry will hardly suit your needs. They are slow, poorly armored, and have a tendency to miss their targets. You should depend upon the more massive troopers.
+The Light Infantry will hardly suit your needs.
+They are slow, poorly armored, and have a tendency to miss their targets. You should depend upon the more massive troopers.
 
 #MCVHarkonensInfo
 The Mobile Construction Vehicle will allow you to expand your territories. By using an MCV you will be able to construct distant buildings that need not be adjacent to your principal location.
@@ -191,10 +254,12 @@ This fragile little aircraft is merely an annoyance. Their delicate armor is no 
 The Quad is a much better vehicle than the smaller trike. It has far superior armor and is much more powerful.
 
 #RocketTankHarkonensInfo
-The rocket tank is effective for long range attacks. Guard these well, for they are ineffective at close range.
+The rocket tank is effective for long range attacks.
+Guard these well, for they are ineffective at close range.
 
 #SiegeTankHarkonensInfo
-The Siege Tank is superior to the Combat tank. It's armor and weaponry has the power you will need to complete your conquest of this planet.
+The Siege Tank is superior to the Combat tank.
+It's armor and weaponry has the power you will need to complete your conquest of this planet.
 
 #TrikeHarkonensInfo
 Although these three-wheeled, lightly armored vehicles are functional, we strongly suggest utilizing the larger, more powerful vehicles.

@@ -23,10 +23,10 @@ BSDATA(objecti) = {
 	{"Special"},
 	{"Objectives"},
 	{"Atreides", House, FARTR, 0, MENSHPA},
-	{"Harkonens", House, FHARK, 1, MENSHPH},
+	{"Harkonnen", House, FHARK, 1, MENSHPH},
 	{"Ordos", House, FORDOS, 2, MENSHPO},
 	{"ConstructionYard", Building, CONSTRUC, 60, ICONS, {292, 293, 295, 296}},
-	{"SpiceSilo", Building, STORAGE, 69, ICONS, {372, 373, 375, 376}},
+	{"SpiceSilos", Building, STORAGE, 69, ICONS, {372, 373, 375, 376}},
 	{"Starport", Building, STARPORT, 63, ICONS, {309, 310, 311, 314, 315, 316, 319, 320, 321}},
 	{"Windtrap", Building, WINDTRAP, 61, ICONS, {304, 305, 306, 307}},
 	{"Refinery", Building, REFINERY, 64, ICONS, {332, 333, 334, 337, 338, 339}},
@@ -35,7 +35,7 @@ BSDATA(objecti) = {
 	{"HouseOfIX", Building, IX, 58, ICONS, {280, 281, 282, 283}},
 	{"Palace", Building, PALACE, 54, ICONS, {216, 217, 218, 226, 227, 228, 235, 236, 237}},
 	{"Barracks", Building, BARRAC, 62, ICONS, {299, 300, 301, 302}},
-	{"WOR", Building, WOR, 59, ICONS, {285, 286, 288, 289}},
+	{"Wor", Building, WOR, 59, ICONS, {285, 286, 288, 289}},
 	{"LightVehicleFactory", Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}},
 	{"HeavyVehicleFactory", Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}},
 	{"HighTechFactory", Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}},
@@ -54,7 +54,7 @@ BSDATA(objecti) = {
 	{"SandWorm", Special, WORM, 93},
 	{"Carryall", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Fregate", Unit, CARRYALL, 77, UNITS, {60}},
-	{"Ornitopter", Unit, ORNI, 85, UNITS, {51, 3}},
+	{"Ornithopter", Unit, ORNI, 85, UNITS, {51, 3}},
 	{"BuildStructure", Objective},
 	{"BuildUnit", Objective, LITEFTRY},
 	{"EarnCredits", Objective, REFINERY},
@@ -81,7 +81,7 @@ int getcreditscost(objectn type) {
 	case RocketTurret: return 500;
 	case Slab: return 2;
 	case Slab4: return 5;
-	case SpiceSilo: return 100;
+	case SpiceSilos: return 100;
 	case Turret: return 300;
 	case Wor: return 500;
 	case Windtrap: return 150;
@@ -124,7 +124,7 @@ int getenergyprofit(objectn type) {
 int getspicecap(objectn type) {
 	switch(type) {
 	case Refinery: return 1000;
-	case SpiceSilo: return 1500;
+	case SpiceSilos: return 1500;
 	default: return 0;
 	}
 }
@@ -135,7 +135,7 @@ shapen getshape(objectn type) {
 	case ConstructionYard:
 	case LightVehicleFactory:
 	case RadarOutpost:
-	case SpiceSilo:
+	case SpiceSilos:
 	case Windtrap:
 	case Wor:
 	case Slab4:
@@ -233,7 +233,7 @@ int getstat(objectn type, statn i) {
 		case LightInfantry: return 2;
 		case SandWorm: return 6;
 		case Carryall: return 12;
-		case Ornitopter: return 20;
+		case Ornithopter: return 20;
 		case Fregate: return 6;
 		default: return 4;
 		}
@@ -261,11 +261,11 @@ objectn getbuild(objectn type) {
 	case HeavyInfantry: return Wor;
 	case Trike: case Quad:
 		return LightVehicleFactory;
-	case Carryall: case Ornitopter:
+	case Carryall: case Ornithopter:
 		return HighTechFactory;
 	case CombatTank: case RocketTank: case SiegeTank: case Harvester:
 		return HeavyVehicleFactory;
-	case SpiceSilo: case Starport: case Windtrap: case Refinery: case RadarOutpost:
+	case SpiceSilos: case Starport: case Windtrap: case Refinery: case RadarOutpost:
 	case RepairFacility: case HouseOfIX: case Palace: case Barracks: case Wor:
 	case LightVehicleFactory: case HeavyVehicleFactory: case HighTechFactory:
 	case Slab: case Slab4: case Turret: case RocketTurret:
@@ -287,7 +287,7 @@ objectn getrequired(objectn type) {
 	case Starport: return HighTechFactory;
 	case HouseOfIX: return Starport;
 	case Wor: return Barracks;
-	case SpiceSilo: return Refinery;
+	case SpiceSilos: return Refinery;
 	default: return NoObject;
 	}
 }
