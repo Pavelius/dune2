@@ -29,6 +29,17 @@ static building* find_base(unsigned char player) {
 	return p;
 }
 
+void airunit::clear() {
+	memset(this, 0, sizeof(*this));
+}
+
+void airunit::cleanup() {
+}
+
+int	airunit::getindex() const {
+	return this - bsdata<airunit>::elements;
+}
+
 void airunit::update() {
 	const auto move = Flying;
 	auto speed = getspeedfp(getstat(type, Speed));
@@ -54,10 +65,55 @@ static rect area_correct(rect rc) {
 	return rc;
 }
 
+static point get_star_base(point v, int seed) {
+	if(seed % 2) {
+		if(v.x < area.maximum.x / 2)
+			v.x = 0;
+		else
+			v.x = area.maximum.x - 1;
+	} else {
+		if(v.y < area.maximum.y / 2)
+			v.y = 0;
+		else
+			v.y = area.maximum.y - 1;
+	}
+	return v;
+}
+
+void airunit::leave() {
+	cleanup();
+	clear();
+}
+
+void airunit::returnbase() {
+	auto pb = find_base(player);
+	if(!pb)
+		return;
+	auto pt = get_star_base(pb->position, getindex());
+	if(position == pt)
+		leave();
+	else
+		order = pt;
+}
+
 void airunit::patrol() {
 	auto pb = find_base(player);
+	if(!pb)
+		return;
 	auto pt = pb->position;
 	rect rc = {pt.x - 8, pt.y - 8, pt.x + 8, pt.y + 8};
-	//order = area.random(area.regions[getplayer().region]);
-	order = area.random(area_correct(rc));
+	switch(type) {
+	case Fregate:
+		returnbase();
+		break;
+	case Carrier:
+		if(action++ >= 4)
+			returnbase();
+		else
+			order = area.random(area_correct(rc));
+		break;
+	default:
+		order = area.random(area_correct(rc));
+		break;
+	}
 }

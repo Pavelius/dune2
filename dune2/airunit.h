@@ -5,6 +5,11 @@
 
 struct airunit : moveable, objectable {
 	explicit operator bool() const { return type != NoObject; }
+	void		clear();
+	void		cleanup();
+	int			getindex() const;
+	void		leave();
+	void		returnbase();
 	void		update();
 private:
 	void		patrol();
