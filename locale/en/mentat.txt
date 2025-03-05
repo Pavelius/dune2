@@ -481,7 +481,7 @@ Material: Gravel/Sand base mix
 Weight: 1,469 kg
 Armor: Medium
 
-#SpiceSiloCapacity
+#SpiceSilosCapacity
 Type: Storehouse
 Armor: Light
 Capacity: 1000 spice units

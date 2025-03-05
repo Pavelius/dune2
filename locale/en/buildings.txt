@@ -15,7 +15,7 @@ RepairFacility: Repair Facility
 RocketTurret: Rocket Turret
 Slab: Slab
 Slab4: Slab blocks
-SpiceSilo: Spice Silo
+SpiceSilos: Spice Silos
 Starport: Starport
 Turret: Turret
 Wor: Wor
