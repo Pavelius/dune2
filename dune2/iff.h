@@ -20,7 +20,7 @@ inline iffit iff_child(iffit p) { return p + 4 * 3; }
 // Get data of chunk
 inline iffit iff_data(iffit p) { return p + 4 * 2; }
 // Get next chunk
-inline iffit iff_next(iffit p) { auto n = iff_lenght(p); return iff_data(p) + n + (n % 1); }
+inline iffit iff_next(iffit p) { auto n = iff_lenght(p); return iff_data(p) + n + (n % 2); }
 
 const char* iff_name(iffit p); // Get name of chunk
 const char* iff_type_name(iffit p); // Get type name of chunk

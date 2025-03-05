@@ -24,7 +24,7 @@ void add_air_unit(point pt, objectn id, direction d, unsigned char player) {
 }
 
 static building* find_base(unsigned char player) {
-	auto p = find_base(HighTechFacility, player);
+	auto p = find_base(HighTechFactory, player);
 	if(!p)
 		p = find_base(ConstructionYard, player);
 	return p;
@@ -122,7 +122,7 @@ void aircraft::patrol() {
 	case Fregate:
 		returnbase();
 		break;
-	case Carrier:
+	case Carryall:
 		if(action++ >= 4)
 			returnbase();
 		else

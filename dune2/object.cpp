@@ -38,7 +38,7 @@ BSDATA(objecti) = {
 	{"WOR", Building, WOR, 59, ICONS, {285, 286, 288, 289}},
 	{"LightVehicleFactory", Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}},
 	{"HeavyVehicleFactory", Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}},
-	{"HighTechFacility", Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}},
+	{"HighTechFactory", Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}},
 	{"Slab", Building, SLAB, 53, ICONS, {126}},
 	{"Slab4", Building, SLAB4, 71, ICONS},
 	{"Turret", Building, TURRET, 67, ICONS, {356}},
@@ -48,11 +48,11 @@ BSDATA(objecti) = {
 	{"HeavyInfantry", Unit, HYINFY, 91, UNITS, {103}},
 	{"Trike", Unit, TRIKE, 80, UNITS, {5}},
 	{"Quad", Unit, QUAD, 74, UNITS, {0}},
-	{"Tank", Unit, LTANK, 78, UNITS2, {0, 5}},
-	{"AssaultTank", Unit, HTANK, 72, UNITS2, {10, 15}},
+	{"CombatTank", Unit, LTANK, 78, UNITS2, {0, 5}},
+	{"SiegeTank", Unit, HTANK, 72, UNITS2, {10, 15}},
 	{"RocketTank", Unit, RTANK, 73, UNITS2, {0, 35}},
 	{"SandWorm", Special, WORM, 93},
-	{"Carrier", Unit, CARRYALL, 77, UNITS, {45}},
+	{"Carryall", Unit, CARRYALL, 77, UNITS, {45}},
 	{"Fregate", Unit, CARRYALL, 77, UNITS, {60}},
 	{"Ornitopter", Unit, ORNI, 85, UNITS, {51, 3}},
 	{"BuildStructure", Objective},
@@ -71,7 +71,7 @@ int getcreditscost(objectn type) {
 		// Buildings
 	case Barracks: return 300;
 	case HeavyVehicleFactory: return 2000;
-	case HighTechFacility: return 2500;
+	case HighTechFactory: return 2500;
 	case Starport: return 2000;
 	case HouseOfIX: return 2000;
 	case Palace: return 3000;
@@ -90,8 +90,8 @@ int getcreditscost(objectn type) {
 	case HeavyInfantry: return 70;
 	case Trike: return 150;
 	case Quad: return 250;
-	case Tank: return 350;
-	case AssaultTank: return 600;
+	case CombatTank: return 350;
+	case SiegeTank: return 600;
 	case RocketTank: return 500;
 	default: return 0;
 	}
@@ -101,7 +101,7 @@ int getenergycost(objectn type) {
 	switch(type) {
 	case LightVehicleFactory: return 1500;
 	case HeavyVehicleFactory: return 1500;
-	case HighTechFacility: return 1000;
+	case HighTechFactory: return 1000;
 	case Starport: return 1500;
 	case RocketTurret: return 500;
 	case Turret: return 300;
@@ -143,7 +143,7 @@ shapen getshape(objectn type) {
 		return Shape2x2;
 	case Refinery:
 	case HeavyVehicleFactory:
-	case HighTechFacility:
+	case HighTechFactory:
 	case RepairFacility:
 		return Shape3x2;
 	case Starport:
@@ -161,7 +161,7 @@ fixn getweapon(objectn type) {
 	case Quad: return Shoot30mm;
 	case Trike: return Shoot20mm;
 	case RocketTank: return FireRocket;
-	case AssaultTank: case Tank: return Shoot155mm;
+	case SiegeTank: case CombatTank: return Shoot155mm;
 	case Turret: return Shoot20mm;
 	case RocketTurret: return FireRocket;
 	default: return NoEffect;
@@ -181,7 +181,7 @@ int getstat(objectn type, statn i) {
 		switch(type) {
 		case LightInfantry: case HeavyInfantry: return 4;
 		case Trike: case RocketTank: return 5;
-		case Quad: case Tank: case AssaultTank: return 6;
+		case Quad: case CombatTank: case SiegeTank: return 6;
 		case Harvester: return 8;
 		case SandWorm: return 10;
 		default: return 20;
@@ -190,8 +190,8 @@ int getstat(objectn type, statn i) {
 		switch(type) {
 		case LightInfantry: return 0;
 		case HeavyInfantry: case Quad: case Trike: return 1;
-		case Tank: case RocketTank: case Harvester: return 2;
-		case AssaultTank: return 3;
+		case CombatTank: case RocketTank: case Harvester: return 2;
+		case SiegeTank: return 3;
 		case SandWorm: return 4;
 		default: return 1;
 		}
@@ -199,9 +199,9 @@ int getstat(objectn type, statn i) {
 		switch(type) {
 		case Turret: return 1;
 		case RocketTurret: return 2;
-		case Tank: return 1;
+		case CombatTank: return 1;
 		case LightInfantry: case HeavyInfantry: return 2;
-		case AssaultTank: return 2;
+		case SiegeTank: return 2;
 		case RocketTank: return 2;
 		case Trike: case Quad: return 2;
 		default: return 0;
@@ -217,7 +217,7 @@ int getstat(objectn type, statn i) {
 		switch(type) {
 		case LightInfantry: case HeavyInfantry: return 2;
 		case Trike: case Quad: return 2;
-		case Tank: case AssaultTank: return 4;
+		case CombatTank: case SiegeTank: return 4;
 		case Turret: return 5;
 		case RocketTurret: return 6;
 		case RocketTank: return 6;
@@ -227,12 +227,12 @@ int getstat(objectn type, statn i) {
 		switch(type) {
 		case Trike: return 10;
 		case Quad: return 8;
-		case RocketTank: case Tank: return 5;
-		case AssaultTank: return 4;
+		case RocketTank: case CombatTank: return 5;
+		case SiegeTank: return 4;
 		case HeavyInfantry: return 3;
 		case LightInfantry: return 2;
 		case SandWorm: return 6;
-		case Carrier: return 12;
+		case Carryall: return 12;
 		case Ornitopter: return 20;
 		case Fregate: return 6;
 		default: return 4;
@@ -261,13 +261,13 @@ objectn getbuild(objectn type) {
 	case HeavyInfantry: return Wor;
 	case Trike: case Quad:
 		return LightVehicleFactory;
-	case Carrier: case Ornitopter:
-		return HighTechFacility;
-	case Tank: case RocketTank: case AssaultTank: case Harvester:
+	case Carryall: case Ornitopter:
+		return HighTechFactory;
+	case CombatTank: case RocketTank: case SiegeTank: case Harvester:
 		return HeavyVehicleFactory;
 	case SpiceSilo: case Starport: case Windtrap: case Refinery: case RadarOutpost:
 	case RepairFacility: case HouseOfIX: case Palace: case Barracks: case Wor:
-	case LightVehicleFactory: case HeavyVehicleFactory: case HighTechFacility:
+	case LightVehicleFactory: case HeavyVehicleFactory: case HighTechFactory:
 	case Slab: case Slab4: case Turret: case RocketTurret:
 		return ConstructionYard;
 	default:
@@ -279,12 +279,12 @@ objectn getrequired(objectn type) {
 	switch(type) {
 	case LightVehicleFactory: return RadarOutpost;
 	case HeavyVehicleFactory: return LightVehicleFactory;
-	case HighTechFacility: return HeavyVehicleFactory;
+	case HighTechFactory: return HeavyVehicleFactory;
 	case RepairFacility: return LightVehicleFactory;
 	case Palace: return HouseOfIX;
 	case RadarOutpost: return Refinery;
 	case Turret: case RocketTurret: return RadarOutpost;
-	case Starport: return HighTechFacility;
+	case Starport: return HighTechFactory;
 	case HouseOfIX: return Starport;
 	case Wor: return Barracks;
 	case SpiceSilo: return Refinery;
@@ -322,7 +322,7 @@ movementn getmove(objectn type) {
 		return Footed;
 	case Quad: case Trike:
 		return Wheeled;
-	case Tank: case Harvester: case AssaultTank: case RocketTank:
+	case CombatTank: case Harvester: case SiegeTank: case RocketTank:
 		return Tracked;
 	case SandWorm:
 		return Undersand;

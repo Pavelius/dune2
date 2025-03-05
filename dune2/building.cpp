@@ -282,7 +282,7 @@ bool building::canbuild() const {
 	case Barracks:
 	case Wor:
 	case Starport:
-	case HighTechFacility:
+	case HighTechFactory:
 		return true;
 	default:
 		return false;

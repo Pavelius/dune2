@@ -4,8 +4,8 @@ ChooseTargetInfo: Choose move target
 Units: Units
 Special: Special
 
-AssaultTank: Assault Tank
-Carrier: Carrier
+Carryall: Carrier
+CombatTank: Tank
 Fregate: Fregate
 Harvester: Harvester
 HeavyInfantry: Heavy Infantry
@@ -14,5 +14,5 @@ Ornitopter: Ornitopter
 Quad: Quad
 RocketTank: Rocket
 SandWorm: Sand Worm
-Tank: Tank
+SiegeTank: Siege Tank
 Trike: Trike

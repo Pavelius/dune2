@@ -1,3 +1,0 @@
-﻿FORM:MENT
-  NAME size 861
-   size 1124073494

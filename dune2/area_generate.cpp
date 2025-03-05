@@ -143,7 +143,7 @@ static void player_base(rect rc) {
 	add_unit(v, LightInfantry);
 	add_unit(v, HeavyInfantry);
 	add_air_unit(v, Fregate);
-	add_air_unit(v, Carrier);
+	add_air_unit(v, Carryall);
 	add_air_unit(v, Ornitopter);
 	// add_unit(v, Trike);
 	// add_unit(v, Quad);

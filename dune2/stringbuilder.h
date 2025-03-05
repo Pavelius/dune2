@@ -122,6 +122,7 @@ const char* skipsp(const char* p);
 const char* skipspcr(const char* p);
 const char* skipline(const char* p);
 const char* szfind(const char* text, const char* value);
+const char* szfind(const char* text, char value);
 const char* szdup(const char* text);
 const char* szdupz(const char* text);
 
