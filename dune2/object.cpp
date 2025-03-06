@@ -17,11 +17,14 @@ struct objecti : nameable {
 
 BSDATA(objecti) = {
 	{"NoObject"},
+	{"Briefing"},
 	{"Houses"},
 	{"Buildings"},
 	{"Units"},
 	{"Special"},
 	{"Objectives"},
+	{"Advice", Briefing},
+	{"Orders", Briefing},
 	{"Atreides", House, FARTR, 0, MENSHPA},
 	{"Harkonnen", House, FHARK, 1, MENSHPH},
 	{"Ordos", House, FORDOS, 2, MENSHPO},
@@ -52,19 +55,11 @@ BSDATA(objecti) = {
 	{"SiegeTank", Unit, HTANK, 72, UNITS2, {10, 15}},
 	{"RocketTank", Unit, RTANK, 73, UNITS2, {0, 35}},
 	{"SandWorm", Special, WORM, 93},
-	{"Carryall", Unit, CARRYALL, 77, UNITS, {45}},
-	{"Fregate", Unit, CARRYALL, 77, UNITS, {60}},
-	{"Ornithopter", Unit, ORNI, 85, UNITS, {51, 3}},
-	{"BuildStructure", Objective},
-	{"BuildUnit", Objective, LITEFTRY},
-	{"EarnCredits", Objective, REFINERY},
-	{"FindSpiceField", Objective, TRIKE},
-	{"ExploreArea", Objective, TRIKE},
-	{"EngageEnemyArmy", Objective, INFANTRY},
-	{"EngageEnemyHarvesters", Objective, HARVEST},
-	{"EngageEnemyBase", Objective, WIN1},
+	{"Carryall", Special, CARRYALL, 77, UNITS, {45}},
+	{"Fregate", Special, CARRYALL, 77, UNITS, {60}},
+	{"Ornithopter", Special, ORNI, 85, UNITS, {51, 3}},
 };
-assert_enum(objecti, EngageEnemyBase)
+assert_enum(objecti, Ornithopter)
 
 int getcreditscost(objectn type) {
 	switch(type) {
@@ -335,4 +330,11 @@ int getspeedfp(int n) {
 	if(n <= 0)
 		return 64 * 4;
 	return 64 * 4 / n;
+}
+
+bool ismentat(objectn type) {
+	switch(type) {
+	case Fregate: return false;
+	default: return true;
+	}
 }

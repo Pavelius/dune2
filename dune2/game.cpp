@@ -7,7 +7,6 @@
 #include "game.h"
 #include "math.h"
 #include "music.h"
-#include "objective.h"
 #include "print.h"
 #include "pointa.h"
 #include "player.h"
@@ -313,6 +312,7 @@ void main_menu() {
 //	music_disabled = true;
 //	show_introdution();
 	game.starting_credits = 1000;
+	game.scenario = 1;
 	area_generate(SmallMap, 2);
 //	show_scenario_prompt("Brief", HARVEST, 1);
 	camera_to_base();

@@ -36,6 +36,9 @@ UnitDevoured: %Unit is devoured by worm.
 UnitCantDoThis: %Unit can't execute order.
 ReachSpiceMaximum: There is no room for spice - build more Spice Silos.
 
+Advice: Advice
+Briefing: Briefing
 Cancel: Cancel
 No: No
+Orders: Orders
 Yes: Yes

@@ -1,6 +1,6 @@
 NoObject: No Object
 
-Buildings: Buildings
+Buildings: Structures
 
 Barracks: Barracks
 ConstructionYard: Base

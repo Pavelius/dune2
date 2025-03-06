@@ -7,18 +7,18 @@ enum shapen	: unsigned char;
 enum statn : unsigned char;
 
 enum objectn : unsigned char {
-	NoObject, House, Building, Unit, Special, Objective,
+	NoObject, Briefing, House, Building, Unit, Special, Objective,
+	Advice, Orders,
 	Atreides, Harkonens, Ordos,
 	ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
 	Slab, Slab4, Turret, RocketTurret,
 	Harvester, LightInfantry, HeavyTroopers, Trike, Quad, CombatTank, SiegeTank, RocketTank,
 	SandWorm, Carryall, Fregate, Ornithopter,
-	BuildStructure, BuildUnit,
-	EarnCredits, FindSpiceField, ExploreArea,
-	EngageEnemyArmy, EngageEnemyHarvesters, EngageEnemyBase,
 	LastObject,
 };
+
+bool ismentat(objectn type);
 
 int getcreditscost(objectn type);
 int getdefaultcolor(objectn type);

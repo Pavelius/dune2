@@ -1,6 +1,7 @@
 #include "bsdata.h"
 #include "draw.h"
 #include "fraction.h"
+#include "game.h"
 #include "player.h"
 #include "pushvalue.h"
 #include "resid.h"
@@ -19,6 +20,17 @@ static unsigned long eye_clapping, eye_show_cursor, first_action;
 static fnevent paint_mentat_proc;
 
 void paint_build_shape(int x, int y, shapen shape);
+
+//static const char* get_house_info(objectn subject, objectn fraction) {
+//	static char temp[1024];
+//	stringbuilder sb(temp);
+//	auto id = getido(subject);
+//	auto pi = getnme(ids(id, getido(fraction), "Capacity"));
+//	if(!pi)
+//		pi = getnme(ids(id, "Capacity"));
+//	sb.clear();
+//	sb.add(pi);
+//}
 
 static void paint_eyes() {
 	auto rid = getres(last_fraction);
@@ -232,7 +244,7 @@ static void add_group(objectn parent) {
 	auto i0 = subjects.count;
 	subjects.add(parent);
 	auto i1 = subjects.count;
-	subjects.addchild(parent);
+	subjects.addchild(parent, ismentat);
 	auto i2 = subjects.count;
 	if(i1 == i2) {
 		subjects.count = i0;
@@ -243,6 +255,7 @@ static void add_group(objectn parent) {
 
 static void update_topics() {
 	subjects.clear();
+	add_group(Briefing);
 	add_group(House);
 	add_group(Unit);
 	add_group(Building);
@@ -264,6 +277,8 @@ static void show_mentat_subject(const char* id, resid rid) {
 	auto pi = getnme(ids(id, getido(mainplayer().fraction), "Info"));
 	if(!pi)
 		pi = getnme(ids(id, "Info"));
+	if(!pi)
+		pi = getnme(id);
 	reset_form_animation();
 	if(pi) {
 		while(pi[0]) {
@@ -305,6 +320,21 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 	music_play(0);
 }
 
+static resid getscenarioavatar(int level) {
+	switch(level) {
+	case 1: return HARVEST;
+	default: return NONE;
+	}
+}
+
+static const char* get_scenario_id(const char* id, int level) {
+	static char temp[32]; stringbuilder sb(temp);
+	sb.add(mainplayer().getfractionid());
+	sb.add(id);
+	sb.add("%1.2i", level);
+	return temp;
+}
+
 void open_mentat() {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
@@ -313,7 +343,12 @@ void open_mentat() {
 		if(!line)
 			break;
 		auto subject = *line;
-		show_mentat_subject(getido(subject), getavatar(subject));
+		if(subject==Orders)
+			show_mentat_subject(get_scenario_id("Brief", game.scenario), getscenarioavatar(game.scenario));
+		else if(subject == Advice)
+			show_mentat_subject(get_scenario_id("Advice", game.scenario), getscenarioavatar(game.scenario));
+		else
+			show_mentat_subject(getido(subject), getavatar(subject));
 	}
 	music_play(0);
 }

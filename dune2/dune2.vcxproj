@@ -156,7 +156,6 @@
     <ClCompile Include="game.cpp" />
     <ClCompile Include="iff.cpp" />
     <ClCompile Include="moveable.cpp" />
-    <ClCompile Include="objective.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
     <ClCompile Include="textscript.cpp" />
@@ -205,6 +204,7 @@
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />
     <ClCompile Include="win_time.cpp" />
+    <ClCompile Include="xmi_util.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aircraft.h" />
@@ -230,7 +230,6 @@
     <ClInclude Include="fraction.h" />
     <ClInclude Include="game.h" />
     <ClInclude Include="moveable.h" />
-    <ClInclude Include="objective.h" />
     <ClInclude Include="pointa.h" />
     <ClInclude Include="stat.h" />
     <ClInclude Include="textscript.h" />

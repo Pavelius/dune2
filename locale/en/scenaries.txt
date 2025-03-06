@@ -2,3 +2,31 @@
 Greetings, I am your Mentat Cyril.
 Together we will purge this planet of the foulness of the other Houses.
 The High Command wishes you to produce 1000 credits. You may earn credits by building a refinery and harvesting spice.
+
+#AtreidesAdvice01
+First build a two by two group of concrete slabs.
+Then build a windtrap and place it upon the concrete.
+Do the same for a refinery so that you can reach your quota of 1000 credits.
+
+#HarkonnenBrief01
+I am the Mentat, Radnor.
+With my guidance, you may be able to assist us in conquering this dusty, little planet.
+For your first test you will be expected to produce 1000 credits, and not a granule less.
+You may earn credits by harvesting spice, and will need to build a refinery to convert spice to credits.
+If any of our foolish enemies attempt to attack your base you will have the pleasure of seeing the invincible Harkonnen troops in action.
+
+#HarkonnenAdvice01
+First build a two by two group of concrete slabs.
+Then build a windtrap and place it upon the concrete.
+Do the same for a refinery so that you can reach your quota of 1000 credits.
+
+#OrdosBrief01
+Welcome. I am your Mentat, and you may call me Ammon.
+To be of any value to the Cartel, you must provide us with credits.
+As a test, we will assign you to a region, and ask that you meet a production quota of 1000 credits.
+Build a refinery and harvest the spice in the area. I am very busy, but you may call upon me if you have further questions.
+
+#OrdosAdvice01
+First build a two by two group of concrete slabs.
+Then build a windtrap and place it upon the concrete.
+Do the same for a refinery so that you can reach your quota of 1000 credits.

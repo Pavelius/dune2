@@ -1,3 +1,4 @@
+#include "bsdata.h"
 #include "fraction.h"
 #include "object.h"
 
@@ -10,4 +11,8 @@ const char* fractionable::getfractionsuffix() const {
 	case Ordos: return "o";
 	default: return 0;
 	}
+}
+
+const char* fractionable::getfractionid() const {
+	return getido(fraction);
 }

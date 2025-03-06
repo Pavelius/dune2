@@ -53,7 +53,8 @@ Home Planet: Giedi Prime
 Home Planet: Unknown
 
 #BarracksAtreidesInfo
-The Barracks is the building that trains our courageous light infantry. The structures are quite durable and will provide you with ample means to defend your spice harvesting operations.
+The Barracks is the building that trains our courageous light infantry.
+The structures are quite durable and will provide you with ample means to defend your spice harvesting operations.
 
 #ConcreteSlabAtreidesInfo
 Concrete slabs provide the stable foundations for our buildings that allow them to operate at maximum efficiency.
@@ -62,22 +63,26 @@ Concrete slabs provide the stable foundations for our buildings that allow them 
 A Construction Yard is required to build any buildings.
 
 #HeavyFactoryAtreidesInfo
-The Heavy Factory produces all large vehicles, like the harvester and the heavier machines used for defensive purposes. The building itself is extremely well armored.
+The Heavy Factory produces all large vehicles, like the harvester and the heavier machines used for defensive purposes.
+The building itself is extremely well armored.
 
 #HighTechFactoryAtreidesInfo
 The High-Tech Factory produces high technology aircraft like the carryall.
 
 #IXAtreidesInfo
-IX is the technology center of the world. It is the ultimate source of new, wonderful technology that will help us reach our goals.
+IX is the technology center of the world.
+It is the ultimate source of new, wonderful technology that will help us reach our goals.
 
 #LightFactoryAtreidesInfo
 The Light Factory produces lightly armored three and four wheeled vehicles, which are used for the defense of our refineries and silos.
 
 #OutpostAtreidesInfo
-The Outpost should be utilized for its radar capability. The radar will allow you to keep a watchful eye on your harvesters and any enemies in the area.
+The Outpost should be utilized for its radar capability.
+The radar will allow you to keep a watchful eye on your harvesters and any enemies in the area.
 
 #PalaceAtreidesInfo
-Receiving a Palace is an honor, bestowed only upon those who have displayed bravery and diligence in the completion of their missions. A Palace is the most finely crafted and well-armored structure you may possess.
+Receiving a Palace is an honor, bestowed only upon those who have displayed bravery and diligence in the completion of their missions.
+A Palace is the most finely crafted and well-armored structure you may possess.
 
 #RefineryAtreidesInfo
 The refinery converts spice into credits. Without the refinery you cannot produce new credits by harvesting spice.
@@ -86,10 +91,12 @@ The refinery converts spice into credits. Without the refinery you cannot produc
 The Repair facility is used for the repairs of all harvesting and defense vehicles.
 
 #RocketTurretAtreidesInfo
-The Rocket turret is an improvement on the regular turret. Long range rockets have been added to provide for a better perimeter defense system.
+The Rocket turret is an improvement on the regular turret.
+Long range rockets have been added to provide for a better perimeter defense system.
 
 #SpiceSilosAtreidesInfo
-The Silos are used to store harvested spice. They are not as strong as some of our other structures, and frequent repairs are advised.
+The Silos are used to store harvested spice.
+They are not as strong as some of our other structures, and frequent repairs are advised.
 
 #StarportAtreidesInfo
 A Starport will provide us with the ability to trade and deal through intergalactic trading channels. This will allow us to enhance our fleets and structures.
@@ -98,22 +105,28 @@ A Starport will provide us with the ability to trade and deal through intergalac
 Turrets are stationary base defenses that are exceptionally accurate at close range.
 
 #WallAtreidesInfo
-Walls are the perfect passive defense system. They should be used to fortify silos and other weak structures.
+Walls are the perfect passive defense system.
+They should be used to fortify silos and other weak structures.
 
 #WindTrapAtreidesInfo
-The Windtraps are an elegant and efficient means of harnessing the wind's awesome power and extracting precious moisture. Although they are fairly sturdy, you should make sure that you have backup wind traps in case of accidents or sabotage.
+The Windtraps are an elegant and efficient means of harnessing the wind's awesome power and extracting precious moisture.
+Although they are fairly sturdy, you should make sure that you have backup wind traps in case of accidents or sabotage.
 
 #WorAtreidesInfo
-WOR is capable of training heavy troopers. Unlike the other houses, we do not believe in unnecessary violence to achieve our goals, and therefore  I do not believe that we will require the use of such technology.
+WOR is capable of training heavy troopers.
+Unlike the other houses, we do not believe in unnecessary violence to achieve our goals, and therefore I do not believe that we will require the use of such technology.
 
 #CarryallAtreidesInfo
-The Carryall is capable of transporting the harvester between spice fields and the refinery. It has no offensive capabilities or weapons, and only light armor.
+The Carryall is capable of transporting the harvester between spice fields and the refinery.
+It has no offensive capabilities or weapons, and only light armor.
 
 #CombatTankAtreidesInfo
-The Combat Tank is adequately armed and good for defense. It can be used for perimeter defense and protection of the harvesters.
+The Combat Tank is adequately armed and good for defense.
+It can be used for perimeter defense and protection of the harvesters.
 
 #HarvesterAtreidesInfo
-Harvesters are large and well armored, and can be produced by a heavy factory. Vital to your spice harvesting missions, they are the only means of collecting and transporting spice from the field to the refinery.
+Harvesters are large and well armored, and can be produced by a heavy factory.
+Vital to your spice harvesting missions, they are the only means of collecting and transporting spice from the field to the refinery.
 
 #HeavyTroopersAtreidesInfo
 The Heavy troopers are armed with powerful weapons and strong armor.
@@ -122,52 +135,69 @@ The Heavy troopers are armed with powerful weapons and strong armor.
 The light infantry is satisfactorily protected and adequately armed, and is capable of defending our installations.
 
 #MCVAtreidesInfo
-The Mobile Construction Vehicle can be employed to erect new structures that need not be connected to the other buildings in your area. Additional refineries in outlying areas, for example, would allow you to harvest more effectively.
+The Mobile Construction Vehicle can be employed to erect new structures that need not be connected to the other buildings in your area.
+Additional refineries in outlying areas, for example, would allow you to harvest more effectively.
 
 #OrdosRaiderAtreidesInfo
-The Ordos produce a Trike that they call the "Raider".  The "Raider" is much like our own Trike, only it is faster, more maneuverable, and highly agile, yet it has less armor.
+The Ordos produce a Trike that they call the "Raider".
+The "Raider" is much like our own Trike, only it is faster, more maneuverable, and highly agile, yet it has less armor.
 
 #OrnithopterAtreidesInfo
 The Ornithopter, a lightly armored, highly maneuverable aircraft, is excellent for defensive air support of your harvesters, trikes, and quads.
 
 #QuadAtreidesInfo
-Quads are four wheeled vehicles with strong armor and powerful weapons. Like the Trike, they are an efficient defense system. With quads and trikes, you should be able to defend against most attacks.
+Quads are four wheeled vehicles with strong armor and powerful weapons.
+Like the Trike, they are an efficient defense system. With quads and trikes, you should be able to defend against most attacks.
 
 #RocketTankAtreidesInfo
-The Rocket Tank has good armor, is faster than normal tanks, and has long range strike capabilities. It is excellent for defensive support of the light infantry and your squadrons of trikes and quads.
+The Rocket Tank has good armor, is faster than normal tanks, and has long range strike capabilities.
+It is excellent for defensive support of the light infantry and your squadrons of trikes and quads.
 
 #SiegeTankAtreidesInfo
-The Siege Tank is heavily armored and has very powerful weapons. It is more than adequate to defend your harvesters and installations.
+The Siege Tank is heavily armored and has very powerful weapons.
+It is more than adequate to defend your harvesters and installations.
 
 #TrikeAtreidesInfo
-The Trike is a three wheeled vehicle produced by the light factory. It is fast, well armored, and carries light weapons for defense. Trikes may be utilized for protection against enemy raids and scouting for spice fields.
+The Trike is a three wheeled vehicle produced by the light factory.
+It is fast, well armored, and carries light weapons for defense.
+Trikes may be utilized for protection against enemy raids and scouting for spice fields.
 
 #DeathHandAtreidesInfo
-One of the most destructive weapons on Dune is the Harkonnen missile called the Death Hand. This multiple explosive warhead affects a wide area and can cause much greater damage than a conventional missile.
+One of the most destructive weapons on Dune is the Harkonnen missile called the Death Hand.
+This multiple explosive warhead affects a wide area and can cause much greater damage than a conventional missile.
 
 #DevastatorAtreidesInfo
-This massive tank is one of the newest war machines developed by the Harkonnen. It has nearly impenetrable armor, enormous firepower, and is capable of destroying nearly any obstacle in its path.
+This massive tank is one of the newest war machines developed by the Harkonnen.
+It has nearly impenetrable armor, enormous firepower, and is capable of destroying nearly any obstacle in its path.
 
 #DeviatorAtreidesInfo
 The Deviator fires missiles containing dangerous nerve gas that can seriously distort the perceptions of affected personnel, and may even incite full scale mutinies.
 
 #FremenAtreidesInfo
-The native peoples of this planet are excellent guerrilla fighters. The Fremen are friendly toward us because House Atreides has always dealt with them fairly, and as equals.
+The native peoples of this planet are excellent guerrilla fighters.
+The Fremen are friendly toward us because House Atreides has always dealt with them fairly, and as equals.
 
 #SaboteurAtreidesInfo
-The Ordos often employ a band of local terrorist fighters called Saboteurs. These men are well versed in sabotage, and can easily penetrate defensive perimeters en route to the buildings they intend to destroy. They should be attacked and killed promptly whenever discovered.
+The Ordos often employ a band of local terrorist fighters called Saboteurs.
+These men are well versed in sabotage, and can easily penetrate defensive perimeters en route to the buildings they intend to destroy.
+They should be attacked and killed promptly whenever discovered.
 
 #SandWormAtreidesInfo
-These enormous creatures are attracted by vibrations on the surface and will often attack and devour both personnel and vehicles. Rock is the only sure defense against these creatures.
+These enormous creatures are attracted by vibrations on the surface and will often attack and devour both personnel and vehicles.
+Rock is the only sure defense against these creatures.
 
 #SonicTankAtreidesInfo
-The Sonic Tank is one of our unique weapons. It fires a blast of sonic energy rather than projectile weapons. An excellent weapon for defensive missions, it is especially effective against enemy infantry.
+The Sonic Tank is one of our unique weapons.
+It fires a blast of sonic energy rather than projectile weapons.
+An excellent weapon for defensive missions, it is especially effective against enemy infantry.
 
 #BarracksHarkonnenInfo
-These simple little buildings train infantry units. The building itself has fair armor and is relatively cheap to maintain. We Harkonnen, however, do not have use for such weak forces.
+These simple little buildings train infantry units.
+The building itself has fair armor and is relatively cheap to maintain. We Harkonnen, however, do not have use for such weak forces.
 
 #ConcreteSlabHarkonnenInfo
-Slabs are used to provide stable building foundations. We have found that anything built on bare rock will deteriorate rapidly.
+Slabs are used to provide stable building foundations.
+We have found that anything built on bare rock will deteriorate rapidly.
 
 #ConstructionYardHarkonnenInfo
 You must have a construction yard. It will give you the means to construct other buildings.
@@ -185,19 +215,23 @@ IX will provide you with a source of militarily advanced weapons.
 The light factory produces only lightly armored vehicles, and is only a beginning step towards your goal of military superiority.
 
 #OutpostHarkonnenInfo
-The outpost houses radar equipment. The radar will help you to keep an eye on your own domain as well as nearby enemy activity.
+The outpost houses radar equipment.
+The radar will help you to keep an eye on your own domain as well as nearby enemy activity.
 
 #PalaceHarkonnenInfo
-House Harkonnen may grant a Palace to those who have proved themselves worthy of such an honor. If you lose a Palace, that was given to you, you will have failed your mission.
+House Harkonnen may grant a Palace to those who have proved themselves worthy of such an honor.
+If you lose a Palace, that was given to you, you will have failed your mission.
 
 #RefineryHarkonnenInfo
 The refinery converts harvested spice into credits.
 
 #RepairFacilityHarkonnenInfo
-It is impossible to operate machinery in this desert without causing damage. You must have a repair facility to take care of your damaged vehicles.
+It is impossible to operate machinery in this desert without causing damage.
+You must have a repair facility to take care of your damaged vehicles.
 
 #RocketTurretHarkonnenInfo
-The Rocket Turret is an excellent weapon. Although they cannot be moved, they can be utilized for long and short range defense.
+The Rocket Turret is an excellent weapon.
+Although they cannot be moved, they can be utilized for long and short range defense.
 
 #SpiceSilosHarkonnenInfo
 Spice silos must be built to be able to store the harvested spice.
@@ -239,10 +273,12 @@ They are well armored and have powerful weapons.
 
 #LightInfantryHarkonnenInfo
 The Light Infantry will hardly suit your needs.
-They are slow, poorly armored, and have a tendency to miss their targets. You should depend upon the more massive troopers.
+They are slow, poorly armored, and have a tendency to miss their targets.
+You should depend upon the more massive troopers.
 
 #MCVHarkonnenInfo
-The Mobile Construction Vehicle will allow you to expand your territories. By using an MCV you will be able to construct distant buildings that need not be adjacent to your principal location.
+The Mobile Construction Vehicle will allow you to expand your territories.
+By using an MCV you will be able to construct distant buildings that need not be adjacent to your principal location.
 
 #OrdosRaiderHarkonnenInfo
 This is a pitiful little machine.
@@ -273,7 +309,8 @@ Just prior to impact it releases a series of explosive fingers that spread destr
 
 #DevastatorHarkonnenInfo
 The Devastator is another of the unique and powerful weapons in our awesome arsenal.
-It's armor and weapons are unequaled. The Devastator need not fear other lesser tanks on the battlefield.
+It's armor and weapons are unequaled.
+The Devastator need not fear other lesser tanks on the battlefield.
 
 #FremenHarkonnenInfo
 The Fremen are little more than slaves to the Atreides.
@@ -313,107 +350,133 @@ The heavy factory produces all large tracked vehicles, like tanks and Harvesters
 The High-Tech Factory utilizes technology to produce advanced aircraft.
 
 #IXOrdosInfo
-IX will allow you to create better, faster, and more efficient machines. It will provide the means to produce some of our most special vehicles.
+IX will allow you to create better, faster, and more efficient machines.
+It will provide the means to produce some of our most special vehicles.
 
 #LightFactoryOrdosInfo
 The light factory produces our Raider Trikes as well as Quads.
 
 #OutpostOrdosInfo
-The radar capabilities of the outpost are vital to your operations. With radar, you will be able to monitor the movements of the other Houses and prepare defensive and attack strategies.
+The radar capabilities of the outpost are vital to your operations.
+With radar, you will be able to monitor the movements of the other Houses and prepare defensive and attack strategies.
 
 #PalaceOrdosInfo
-When the House grants you a Palace, you will know that you have pleased them. If you are ever to lose your Palace to the enemy, your mission will surely be lost.
+When the House grants you a Palace, you will know that you have pleased them.
+If you are ever to lose your Palace to the enemy, your mission will surely be lost.
 
 #RefineryOrdosInfo
-The refinery is necessary for the conversion of spice into credits. Without a refinery, there is no way for you to obtain new credits by harvesting spice.
+The refinery is necessary for the conversion of spice into credits.
+Without a refinery, there is no way for you to obtain new credits by harvesting spice.
 
 #RepairFacilityOrdosInfo
-If you do not have a repair facility, it will not be possible for you to fix damaged vehicles. If your damaged vehicles do not receive repairs, you will lose them completely.
+If you do not have a repair facility, it will not be possible for you to fix damaged vehicles.
+If your damaged vehicles do not receive repairs, you will lose them completely.
 
 #RocketTurretOrdosInfo
-The Rocket turret, like the regular turret, cannot be moved. However, it has greater range capabilities than the regular turret. Together, these should provide excellent long and short range firing capabilities.
+The Rocket turret, like the regular turret, cannot be moved.
+However, it has greater range capabilities than the regular turret.
+Together, these should provide excellent long and short range firing capabilities.
 
 #SpiceSilosOrdosInfo
-Silos are used for the storage of spice. They are weaker and more easily destroyed than harvesters or refineries. Use this knowledge to your advantage.
+Silos are used for the storage of spice.
+They are weaker and more easily destroyed than harvesters or refineries.
+Use this knowledge to your advantage.
 
 #StarportOrdosInfo
 The intergalactic purchasing network accessible through the starport will allow you to acquire weaponry in bulk orders.
 
 #TurretOrdosInfo
-The turrets are highly accurate weapons. Their only drawback is that once established, they cannot be moved.
+The turrets are highly accurate weapons.
+Their only drawback is that once established, they cannot be moved.
 
 #WallOrdosInfo
 Walls may provide for a fair defense around the perimeter of a compound.
 
 #WindtrapOrdosInfo
-Windtraps are the only effective source of power on Dune. Although the traps are fairly strong, they tend to be easily damaged, and it would be wise to always keep more than one wind trap in operation.
+Windtraps are the only effective source of power on Dune.
+Although the traps are fairly strong, they tend to be easily damaged, and it would be wise to always keep more than one wind trap in operation.
 
 #WorOrdosInfo
 WOR is the means of producing the heavy troopers.
 
 #CarryallOrdosInfo
-The carryall is capable of deploying and retrieving the large tracked vehicles like harvesters. Using carryalls is far quicker than waiting for the harvester to return on its own.
+The carryall is capable of deploying and retrieving the large tracked vehicles like harvesters.
+Using carryalls is far quicker than waiting for the harvester to return on its own.
 
 #CombatTankOrdosInfo
-This slow, single barreled tank is adequate in its performance. However, there are much faster and more efficient tanks available.
+This slow, single barreled tank is adequate in its performance.
+However, there are much faster and more efficient tanks available.
 
 #HarvesterOrdosInfo
-Harvesters are large, slow vehicles that scout for spice fields and begin harvesting whenever raw spice is found. Obviously this is a highly inefficient process. We encourage our field commanders to also appropriate previously harvested materials, which is certainly a faster and more efficient method of spice acquisition.
+Harvesters are large, slow vehicles that scout for spice fields and begin harvesting whenever raw spice is found.
+Obviously this is a highly inefficient process. We encourage our field commanders to also appropriate previously harvested materials, which is certainly a faster and more efficient method of spice acquisition.
 
 #HeavyTroopersOrdosInfo
-The heavy troopers carry more armor and yet are still faster than the light infantry. Their abilities are well suited for ground assaults and reconnaissance missions.
+The heavy troopers carry more armor and yet are still faster than the light infantry.
+Their abilities are well suited for ground assaults and reconnaissance missions.
 
 #LightInfantryOrdosInfo
-The light infantry allows for an expendable force of men. If used in large numbers, they are almost unbeatable.
+The light infantry allows for an expendable force of men.
+If used in large numbers, they are almost unbeatable.
 
 #MCVOrdosInfo
-The Mobile Construction Vehicle offers an efficient means of expanding the territory under your control. It can provide support for the construction of new facilities at some distance from your existing structures.
+The Mobile Construction Vehicle offers an efficient means of expanding the territory under your control.
+It can provide support for the construction of new facilities at some distance from your existing structures.
 
 #OrdosRaiderOrdosInfo
-The Raider is far better than a standard trike. It is faster and has excellent weapons. Because of its maneuverability, it is the best vehicle for those missions where you must rely on swiftness and agility.
+The Raider is far better than a standard trike.
+It is faster and has excellent weapons.
+Because of its maneuverability, it is the best vehicle for those missions where you must rely on swiftness and agility.
 
 #OrnithopterOrdosInfo
-The ornithopter is a fast and maneuverable, aircraft. It is effective for strategic strikes, but armor has been sacrificed for speed and agility.
+The ornithopter is a fast and maneuverable, aircraft.
+It is effective for strategic strikes, but armor has been sacrificed for speed and agility.
 
 #QuadOrdosInfo
-This four-wheeled vehicle is not well suited to our purposes. Although it has good armor, it is not maneuverable enough and it lacks the speeds we require.
+This four-wheeled vehicle is not well suited to our purposes.
+Although it has good armor, it is not maneuverable enough and it lacks the speeds we require.
 
 #RocketTankOrdosInfo
-Although the Rocket Tank is faster than the combat tank and has long range firing capabilities, we prefer more useful tanks. I suggest sending your "Raiders" against rocket tanks.
+Although the Rocket Tank is faster than the combat tank and has long range firing capabilities, we prefer more useful tanks.
+I suggest sending your "Raiders" against rocket tanks.
 
 #SiegeTankOrdosInfo
-The Siege Tank possesses more than twice the firepower of the combat tank. Yet, despite all the power and armor, it is quite slow.
+The Siege Tank possesses more than twice the firepower of the combat tank.
+Yet, despite all the power and armor, it is quite slow.
 
 #TrikeOrdosInfo
-The three wheeled vehicles that other Houses use is lacking in many aspects. Unlike our Raider, Trikes are unable to maintain the speeds that we demand. Unfortunately, we had to sacrifice armor for this increase of speed.
+The three wheeled vehicles that other Houses use is lacking in many aspects.
+Unlike our Raider, Trikes are unable to maintain the speeds that we demand.
+Unfortunately, we had to sacrifice armor for this increase of speed.
 
 #DeathHandOrdosInfo
-The Harkonnen possess these missiles that are capable of delivering multiple warheads to a single strike area. Although fearfully named, fortunately they are also highly inaccurate.
+The Harkonnen possess these missiles that are capable of delivering multiple warheads to a single strike area.
+Although fearfully named, fortunately they are also highly inaccurate.
 
 #DevastatorOrdosInfo
-The Harkonnen have created this new tank that is capable of inflicting severe damage to even the most well protected vehicles and buildings. For all its firepower and armor, however, it is extremely slow and may be easily outmaneuvered.
+The Harkonnen have created this new tank that is capable of inflicting severe damage to even the most well protected vehicles and buildings.
+For all its firepower and armor, however, it is extremely slow and may be easily outmaneuvered.
 
 #DeviatorOrdosInfo
-Our Deviator fires a nerve gas that is capable of twisting the minds of enemy soldiers. Some of our best regiments are primarily composed of formerly hostile military personnel who have been reprogrammed by exposure to this gaseous argument.
+Our Deviator fires a nerve gas that is capable of twisting the minds of enemy soldiers.
+Some of our best regiments are primarily composed of formerly hostile military personnel who have been reprogrammed by exposure to this gaseous argument.
 
 #FremenOrdosInfo
-The native Fremen of Dune are simple but skilled fighters. They are currently utilized by the Atreides for combat purposes. Perhaps, with the right incentives, they could be persuaded to join our forces instead.
+The native Fremen of Dune are simple but skilled fighters.
+They are currently utilized by the Atreides for combat purposes.
+Perhaps, with the right incentives, they could be persuaded to join our forces instead.
 
 #SaboteurOrdosInfo
-The Saboteur is the group name given to this unit of soldiers specializing in sabotage. They are effective for specific target destruction, and are based at all of our Palaces.
+The Saboteur is the group name given to this unit of soldiers specializing in sabotage.
+They are effective for specific target destruction, and are based at all of our Palaces.
 
 #SandWormOrdosInfo
-Indigenous to the sands of Dune, these monsters are attracted by vibrations, and can destroy large vehicles in a single bite.  Rock is the only sure defense against these creatures.
+Indigenous to the sands of Dune, these monsters are attracted by vibrations, and can destroy large vehicles in a single bite.
+Rock is the only sure defense against these creatures.
 
 #SonicTankOrdosInfo
-The Atreides have developed a Sonic Tank that fires sonic blasts instead of projectiles. Be careful around these, their blasts have long range effects.
-
-#SiegeTankCapacity
-Type: Main Battle Tank
-Armament: Daul 155mm cannons
-Speed: 32 km/h (tracked)
-Armor: Heavy
-Crew: 3
+The Atreides have developed a Sonic Tank that fires sonic blasts instead of projectiles.
+Be careful around these, their blasts have long range effects.
 
 #CarryallCapacity
 Type: Airborne Unit
@@ -429,13 +492,12 @@ Speed: 32 km/h
 Armor: Medium
 Crew: 4
 
-#HeavyTroopersCapacity
-Type: Ground Based Military Units
-Armament: 10mm Rotary Cannons
-Heavy weapon: FS Rockets
-Speed: 12 km/h (foot)
-Armor: Light
-Crew: 1 to 3
+#MCVCapacity
+Type: Base Deployment Vehicle
+Armament: none
+Speed: 36 km/h (tracked)
+Armor: Medium
+Crew: 15
 
 #LightInfantryCapacity
 Type: Ground Based Military Units
@@ -444,26 +506,13 @@ Speed: 5 km/h (foot)
 Armor: Light
 Crew: 1 to 3
 
-#MCVCapacity
-Type: Base Deployment Vehicle
-Armament: none
-Speed: 36 km/h (tracked)
-Armor: Medium
-Crew: 15
-
-#OrnithopterCapacity
-Type: Close Support Attack Aircraft
-Armament: Battle Support Rockets
-Speed: 340 km/h (airborne)
+#HeavyTroopersCapacity
+Type: Ground Based Military Units
+Armament: 10mm Rotary Cannons
+Heavy weapon: FS Rockets
+Speed: 12 km/h (foot)
 Armor: Light
-Crew: 2
-
-#CombatTankCapacity
-Type: Medium Battle Tank
-Armament: 155mm gun
-Speed: 40 km/h (tracked)
-Armor: Medium
-Crew: 2
+Crew: 1 to 3
 
 #TrikeCapacity
 Type: Light Recon/Strike Vehicle
@@ -479,6 +528,26 @@ Speed: 59km/h (wheel)
 Armor: Light
 Crew: 2
 
+#CombatTankCapacity
+Type: Medium Battle Tank
+Armament: 155mm gun
+Speed: 40 km/h (tracked)
+Armor: Medium
+Crew: 2
+
+#SiegeTankCapacity
+Type: Main Battle Tank
+Armament: Daul 155mm cannons
+Speed: 32 km/h (tracked)
+Armor: Heavy
+Crew: 3
+
+#ConcreteSlabCapacity
+Type: Foundation
+Material: Gravel/Sand base mix
+Weight: 1,469 kg
+Armor: Medium
+
 #BarracksCapacity
 Type: Production Facility
 Armor: Medium
@@ -487,12 +556,6 @@ Armor: Medium
 Type: Industrial Facility
 Armor: Medium
 Capacity: 1000 spice units
-
-#ConcreteSlabCapacity
-Type: Foundation
-Material: Gravel/Sand base mix
-Weight: 1,469 kg
-Armor: Medium
 
 #SpiceSilosCapacity
 Type: Storehouse
@@ -506,3 +569,10 @@ Generators: ESkort 650 hp EL-2A DT
 
 #SandWormCapacity
 No Known Weakness
+
+#OrnithopterCapacity
+Type: Close Support Attack Aircraft
+Armament: Battle Support Rockets
+Speed: 340 km/h (airborne)
+Armor: Light
+Crew: 2

@@ -6,6 +6,7 @@ struct gamei {
 	unsigned long	start_turn;
 	unsigned		turn;
 	unsigned		starting_credits;
+	int				scenario;
 };
 extern gamei game;
 

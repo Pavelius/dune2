@@ -4,7 +4,6 @@
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
-#include "objective.h"
 #include "terrain.h"
 #include "unit.h"
 
@@ -150,8 +149,6 @@ static void player_base(rect rc) {
 	// add_unit(v, AssaultTank);
 	// add_unit(v, RocketTank);
 	auto region = r2i(area.m2r(v));
-	auto p1 = add_objective(ExploreArea, player_index, region);
-	auto p2 = add_objective(ExploreArea, player_index, center_expanse(region));
 	// p2->setparent(p1);
 }
 
