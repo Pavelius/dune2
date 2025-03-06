@@ -46,6 +46,7 @@ private:
 extern unit *last_unit;
 
 void add_unit(point pt, objectn id, direction d, unsigned char player);
+void add_unit_by_air(point pt, objectn id, direction d, unsigned char player);
 bool isnonblocked(point v);
 bool isfreetrack(point v);
 bool isfreefoot(point v);

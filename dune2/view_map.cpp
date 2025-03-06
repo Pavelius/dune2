@@ -317,7 +317,7 @@ static void check_played_music() {
 	} else if(new_type != music_type) {
 		if(!music_changed)
 			music_changed = game.turn;
-		else if((game.turn - music_changed) > 4) {
+		else if((game.turn - music_changed) > 6) {
 			music_type = new_type;
 			music_changed = 0;
 			play_music(music_type);
@@ -706,12 +706,15 @@ static void paint_unit() {
 	paint_unit_effect(p);
 }
 
-static void paint_air_unit(objectn type, direction move_direction, unsigned char color_index, int animation) {
+static void paint_air_unit(objectn type, direction move_direction, unsigned char color_index, int animation, bool cargo) {
 	update_pallette_by_player(color_index);
 	auto ps = gres(getres(type));
 	auto pf = getframes(type);
+	auto fb = pf[0];
 	auto step = pf[1] ? pf[1] : 1;
-	paint_air_platform(ps, pf[0] + animation % step, move_direction, step);
+	if(cargo)
+		fb += 3;
+	paint_air_platform(ps, fb + animation % step, move_direction, step);
 }
 
 static void paint_air_unit() {
@@ -721,8 +724,10 @@ static void paint_air_unit() {
 	if(!area.is(p->position, player_index, Explored))
 		return;
 	auto pf = getframes(p->type);
+	auto fr = pf[0];
 	auto step = pf[1] ? 1 : pf[1];
-	paint_air_unit(p->type, p->move_direction, p->getplayer().color_index, get_animation_frame(p->screen, m2sc(p->position)) / 2);
+	paint_air_unit(p->type, p->move_direction, p->getplayer().color_index,
+		get_animation_frame(p->screen, m2sc(p->position)) / 2, p->type == Carryall && p->iscargo());
 }
 
 static void paint_effect_fix() {

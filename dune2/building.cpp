@@ -63,7 +63,7 @@ void add_building(point pt, objectn type) {
 	area.set(last_building->getrect(), setnofeature, 0);
 	area.set(last_building->getrect(), setcontrol, player_index);
 	if(type == Refinery)
-		add_unit(pt, Harvester, to(pt, area.center()), player_index);
+		add_unit_by_air(pt, Harvester, to(pt, area.center()), player_index);
 }
 
 static const tilepatch* find_patch(objectn id, int action) {

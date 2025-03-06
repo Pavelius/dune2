@@ -116,11 +116,7 @@ static void add_unit(point v, objectn u) {
 	area.blockland(Tracked, 0);
 	blockunits();
 	auto v1 = area.nearest(v, isfreetrack, 5);
-	add_unit(v1, u, Down, player_index);
-}
-
-static void add_air_unit(point v, objectn u) {
-	add_air_unit(v, u, Down, player_index);
+	add_unit_by_air(v1, u, Down, player_index);
 }
 
 static int center_expanse(int r) {
@@ -141,9 +137,6 @@ static void player_base(rect rc) {
 	add_building(v, ConstructionYard);
 	add_unit(v, LightInfantry);
 	add_unit(v, HeavyTroopers);
-	add_air_unit(v, Fregate);
-	add_air_unit(v, Carryall);
-	add_air_unit(v, Ornithopter);
 	// add_unit(v, Trike);
 	// add_unit(v, Quad);
 	// add_unit(v, AssaultTank);
