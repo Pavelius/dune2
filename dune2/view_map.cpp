@@ -293,12 +293,35 @@ static void music_play(const char* id, int index) {
 	song_play(str("%1%2.2i", id, index));
 }
 
+static bool is_enemy_attack() {
+	auto& e = mainplayer();
+	return e.enemy_units_spotted > 0 || e.enemy_buildings_spotted > 0;
+}
+
+static void play_music(int type) {
+	switch(type) {
+	case 1: music_play("ambient", xrand(1, 10)); break;
+	case 2: music_play("attack", xrand(1, 6)); break;
+	}
+}
+
 static void check_played_music() {
+	static unsigned music_changed;
+	static unsigned music_type;
 	if(music_disabled)
 		return;
+	auto new_type = is_enemy_attack() ? 2 : 1;
 	if(!music_played()) {
-		music_play("ambient", xrand(1, 10));
-		// music_play("attack", xrand(1, 6));
+		music_type = new_type;
+		play_music(new_type);
+	} else if(new_type != music_type) {
+		if(!music_changed)
+			music_changed = game.turn;
+		else if((game.turn - music_changed) > 4) {
+			music_type = new_type;
+			music_changed = 0;
+			play_music(music_type);
+		}
 	}
 }
 
@@ -493,7 +516,7 @@ static void paint_map_tiles() {
 	for(auto y = 0; y < ym; y++) {
 		for(auto x = 0; x < xm; x++) {
 			auto v = area_origin; v.x += x; v.y += y;
-			auto f = area.getframe(v); 
+			auto f = area.getframe(v);
 			if(map_features[f] == BuildingHead || map_features[f] == BuildingLeft || map_features[f] == BuildingUp)
 				update_pallette_by_player(bsdata<playeri>::elements[area.control[v.y][v.x]].color_index);
 			image(x * area_tile_width + caret.x, y * area_tile_height + caret.y, ps, area.getframe(v), ImagePallette);

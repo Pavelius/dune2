@@ -63,6 +63,34 @@ static void add_abilities(unsigned int* v1, const unsigned int* v2) {
 		v1[i] += v2[i];
 }
 
+static void update_player_enemies() {
+	for(auto& e : bsdata<playeri>()) {
+		auto player_index = e.getindex();
+		if(!player_index)
+			continue;
+		// Spotted units
+		e.enemy_units_spotted = 0;
+		for(auto& u : bsdata<unit>()) {
+			if(!u || u.isboard() || u.player == player_index)
+				continue;
+			if(!area.is(u.position, player_index, Visible))
+				continue;
+			e.enemy_units_spotted++;
+		}
+		// Spotted control area
+		e.enemy_buildings_spotted = 0;
+		for(auto y = 0; y < area.maximum.y; y++) {
+			for(auto x = 0; x < area.maximum.x; x++) {
+				if(!area.control[y][x] || area.control[y][x] == player_index)
+					continue;
+				if(!area.is(point(x, y), player_index, Visible))
+					continue;
+				e.enemy_buildings_spotted++;
+			}
+		}
+	}
+}
+
 static void update_player_time() {
 	// Remove all calculable ability
 	for(auto& e : bsdata<playeri>())
@@ -162,6 +190,7 @@ static void update_game_turn() {
 		case 1: update_scouting(); break;
 		case 2: update_unit_recovery(); break;
 		case 3: update_worm_sand_sence(); break;
+		case 4: update_player_enemies(); break;
 		}
 	}
 }
@@ -309,12 +338,12 @@ void camera_to_base() {
 }
 
 void main_menu() {
-//	music_disabled = true;
-//	show_introdution();
+	//	music_disabled = true;
+	//	show_introdution();
 	game.starting_credits = 1000;
 	game.scenario = 1;
 	area_generate(SmallMap, 2);
-//	show_scenario_prompt("Brief", HARVEST, 1);
+	//	show_scenario_prompt("Brief", HARVEST, 1);
 	camera_to_base();
 	show_scene(paint_main_map, 0, 0);
 }
