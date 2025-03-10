@@ -85,7 +85,7 @@ static void mouse_input_scroll(int& origin, int maximum, int per_page, int slide
 	rect ru = {caret.x, caret.y, caret.x + width, caret.y + bar_position - 1};
 	rect rb = {caret.x, caret.y + bar_position, caret.x + width, caret.y + bar_position + bar_height - 1};
 	rect rd = {caret.x, caret.y + bar_position + bar_height, caret.x + width, caret.y + slider_height};
-	if(dragactive(mouse_input_scroll)) {
+	if(dragactive(&origin)) {
 		if(mouse_drag_change()) {
 			auto new_origin = (bar_position_start + (hot.mouse.y - mouse_start.y)) * maximum / slider_height;
 			execute(cbsetint, new_origin, 0, &origin);
@@ -98,7 +98,7 @@ static void mouse_input_scroll(int& origin, int maximum, int per_page, int slide
 			if(!hot.pressed)
 				execute(cbsetint, origin + per_page - 1, 0, &origin);
 		} else if(hot.mouse.in(rb)) {
-			if(dragbegin(mouse_input_scroll)) {
+			if(dragbegin(&origin)) {
 				mouse_start = hot.mouse;
 				bar_position_start = bar_position;
 			}
