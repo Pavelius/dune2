@@ -57,13 +57,13 @@ static unit* find_free_explorer(point near) {
 	return result;
 }
 
-static short unsigned find_executor(statn best) {
+static short unsigned find_executor(fngeto proc) {
 	auto result_value = 0;
 	unit* result = 0;
 	for(auto& e : bsdata<unit>()) {
 		if(!e || e.type == Harvester || e.isboard() || e.player != player_index)
 			continue;
-		auto value = e.get(best);
+		auto value = proc(e.type);
 		if(result_value < value) {
 			result_value = value;
 			result = &e;
@@ -74,7 +74,7 @@ static short unsigned find_executor(statn best) {
 
 static unit* find_scout() {
 	if(player_active->scout == 0xFFFF)
-		player_active->scout = find_executor(Speed);
+		player_active->scout = find_executor(getspeed);
 	if(player_active->scout == 0xFFFF)
 		return 0;
 	auto p = bsdata<unit>::elements + player_active->scout;
@@ -212,8 +212,7 @@ static bool build_structrure(objectn t) {
 		return false;
 	if(pb->isworking())
 		return false;
-	auto energy = getenergycost(t) + mainplayer().abilities[Energy];
-	if(energy > mainplayer().maximum[Energy])
+	if(!mainplayer().canafford(Energy, getenergycost(t)))
 		t = Windtrap;
 	if(t != Slab && t != Slab4) {
 		auto v = choose_placement(pb->position, t, true);
@@ -250,7 +249,7 @@ static void build_unit(objectn t) {
 	if(!player_own(build))
 		return;
 	for(auto& e : bsdata<building>()) {
-		if(!e || e.player != player_index || e.type!=build || e.isworking())
+		if(!e || e.player != player_index || e.type != build || e.isworking())
 			continue;
 		e.build = t;
 		e.progress();
@@ -287,7 +286,7 @@ static void give_order_army(point v) {
 	if(!area.isvalid(v))
 		return;
 	for(auto& e : bsdata<unit>()) {
-		if(!e || e.player != player_index || e.isorder() || getweapon(e.type)==NoEffect)
+		if(!e || e.player != player_index || e.isorder() || getweapon(e.type) == NoEffect)
 			continue;
 		e.order = get_near(e.type, v);
 	}
@@ -315,8 +314,8 @@ static void active_player_update() {
 void update_ai_commands(unsigned char player) {
 	if(player >= bsdata<playeri>::source.count)
 		return;
-//	if(player_human && player_human == player)
-//		return;
+	//	if(player_human && player_human == player)
+	//		return;
 	pushvalue push_active(player_active, bsdata<playeri>::elements + player);
 	pushvalue push_player(player_index, player);
 	active_player_update();

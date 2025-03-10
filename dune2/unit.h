@@ -5,7 +5,6 @@
 #include "order.h"
 #include "resid.h"
 #include "object.h"
-#include "stat.h"
 
 enum squadn : unsigned char;
 enum movementn : unsigned char;
@@ -18,11 +17,11 @@ struct unit : moveable, fixable, objectable {
 	void		destroy();
 	bool		devour();
 	void		fixstate(const char* id) const;
-	short unsigned gethitsmax() const { return get(Hits) * 10; }
+	short unsigned gethitsmax() const { return gethits(type) * 10; }
 	short unsigned getindex() const;
-	int			getlos() const { return get(LoS); }
+	int			getlos() const { return ::getlos(type); }
 	ordern		getpurpose() const;
-	int			getshootrange() const { return get(Range); }
+	int			getshootrange() const { return getrange(type); }
 	int			getspeed() const;
 	bool		isturret() const { return getframes(type)[1] != 0; }
 	bool		isharvest() const;

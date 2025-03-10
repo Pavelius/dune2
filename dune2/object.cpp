@@ -3,7 +3,6 @@
 #include "resid.h"
 #include "movement.h"
 #include "shape.h"
-#include "stat.h"
 #include "stringbuilder.h"
 #include "object.h"
 
@@ -170,70 +169,75 @@ fixn getheavyweapon(objectn type) {
 	}
 }
 
-int getstat(objectn type, statn i) {
-	switch(i) {
-	case Hits:
-		switch(type) {
-		case LightInfantry: case HeavyTroopers: return 4;
-		case Trike: case RocketTank: return 5;
-		case Quad: case CombatTank: case SiegeTank: return 6;
-		case Harvester: return 8;
-		case SandWorm: return 10;
-		default: return 20;
-		}
-	case Armor:
-		switch(type) {
-		case LightInfantry: return 0;
-		case HeavyTroopers: case Quad: case Trike: return 1;
-		case CombatTank: case RocketTank: case Harvester: return 2;
-		case SiegeTank: return 3;
-		case SandWorm: return 4;
-		default: return 1;
-		}
-	case Attacks:
-		switch(type) {
-		case Turret: return 1;
-		case RocketTurret: return 2;
-		case CombatTank: return 1;
-		case LightInfantry: case HeavyTroopers: return 2;
-		case SiegeTank: return 2;
-		case RocketTank: return 2;
-		case Trike: case Quad: return 2;
-		default: return 0;
-		}
-	case LoS:
-		switch(type) {
-		case RadarOutpost: return 8;
-		case Trike: return 3;
-		case SandWorm: return 3;
-		default: return 2;
-		}
-	case Range:
-		switch(type) {
-		case LightInfantry: case HeavyTroopers: return 2;
-		case Trike: case Quad: return 2;
-		case CombatTank: case SiegeTank: return 4;
-		case Turret: return 5;
-		case RocketTurret: return 6;
-		case RocketTank: return 6;
-		default: return 0;
-		}
-	case Speed:
-		switch(type) {
-		case Trike: return 10;
-		case Quad: return 8;
-		case RocketTank: case CombatTank: return 5;
-		case SiegeTank: return 4;
-		case HeavyTroopers: return 3;
-		case LightInfantry: return 2;
-		case SandWorm: return 6;
-		case Carryall: return 12;
-		case Ornithopter: return 20;
-		case Fregate: return 6;
-		default: return 4;
-		}
-	default:
-		return 0;
+int gethits(objectn type) {
+	switch(type) {
+	case LightInfantry: case HeavyTroopers: return 4;
+	case Trike: case RocketTank: return 5;
+	case Quad: case CombatTank: case SiegeTank: return 6;
+	case Harvester: return 8;
+	case SandWorm: return 10;
+	default: return 20;
+	}
+}
+
+int getarmor(objectn type) {
+	switch(type) {
+	case LightInfantry: return 0;
+	case HeavyTroopers: case Quad: case Trike: return 1;
+	case CombatTank: case RocketTank: case Harvester: return 2;
+	case SiegeTank: return 3;
+	case SandWorm: return 4;
+	default: return 1;
+	}
+}
+
+int getattacks(objectn type) {
+	switch(type) {
+	case Turret: return 1;
+	case RocketTurret: return 2;
+	case CombatTank: return 1;
+	case LightInfantry: case HeavyTroopers: return 2;
+	case SiegeTank: return 2;
+	case RocketTank: return 2;
+	case Trike: case Quad: return 2;
+	default: return 0;
+	}
+}
+
+int getlos(objectn type) {
+	switch(type) {
+	case RadarOutpost: return 8;
+	case Trike: return 3;
+	case SandWorm: return 3;
+	default: return 2;
+	}
+}
+
+int getrange(objectn type) {
+	switch(type) {
+	case LightInfantry: case HeavyTroopers: return 2;
+	case Trike: case Quad: return 2;
+	case CombatTank: case SiegeTank: return 4;
+	case Turret: return 5;
+	case RocketTurret: return 6;
+	case RocketTank: return 6;
+	default: return 0;
+	}
+}
+
+int getspeed(objectn type) {
+	switch(type) {
+	case Trike: return 10;
+	case Quad: return 8;
+	case RocketTank: case CombatTank: return 5;
+	case SiegeTank: return 4;
+	case HeavyTroopers: return 3;
+	case LightInfantry: return 2;
+	case SandWorm: return 6;
+	case Carryall: return 12;
+	case Ornithopter: return 20;
+	case Fregate: return 6;
+	default: return 4;
 	}
 }
 

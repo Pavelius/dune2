@@ -99,7 +99,7 @@ int	aircraft::getindex() const {
 
 void aircraft::update() {
 	const auto move = Flying;
-	auto speed = getspeedfp(getstat(type, Speed));
+	auto speed = getspeedfp(getspeed(type));
 	if(moving(move, speed, 0))
 		return;
 	else if(nextmoving(move, speed))

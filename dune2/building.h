@@ -29,7 +29,7 @@ struct building : actable, objectable {
 	void			construct(point v);
 	void			damage(int value);
 	void			destroy();
-	int				getlos() const { return get(LoS); }
+	int				getlos() const { return ::getlos(type); }
 	int				getprogress() const;
 	point			getbuildsize() const;
 	int				gethitsmax() const;

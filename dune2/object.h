@@ -4,7 +4,6 @@ enum fixn : unsigned char;
 enum movementn : unsigned char;
 enum resid : unsigned short;
 enum shapen	: unsigned char;
-enum statn : unsigned char;
 
 enum objectn : unsigned char {
 	NoObject, Briefing, House, Building, Unit, Special, Objective,
@@ -18,15 +17,23 @@ enum objectn : unsigned char {
 	LastObject,
 };
 
+typedef int(*fngeto)(objectn type);
+
 bool ismentat(objectn type);
 
+int getarmor(objectn type);
+int getattacks(objectn type);
 int getcreditscost(objectn type);
 int getdefaultcolor(objectn type);
 int getenergycost(objectn type);
 int getenergyprofit(objectn type);
+int gethits(objectn type);
 int geticonavatar(objectn type);
+int getlos(objectn type);
+int getrange(objectn type);
+int getspeed(objectn type);
 int getspicecap(objectn type);
-int getstat(objectn type, statn i);
+// int getstat(objectn type, statn i);
 int getspeedfp(int v);
 
 shapen getshape(objectn type);
@@ -52,5 +59,4 @@ struct objectable {
 	objectn		type;
 	explicit operator bool() const { return type != NoObject; }
 	const char*	getname() const { return getnmo(type); }
-	int			get(statn i) const { return getstat(type, i); }
 };

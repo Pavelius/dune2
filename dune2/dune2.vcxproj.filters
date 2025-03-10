@@ -219,9 +219,6 @@
     <ClCompile Include="area_initialization.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="stat.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
     <ClCompile Include="object.cpp">
       <Filter>logic</Filter>
     </ClCompile>
@@ -236,6 +233,9 @@
     </ClCompile>
     <ClCompile Include="xmi_util.cpp">
       <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="storeable.cpp">
+      <Filter>logic</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -421,9 +421,6 @@
     </ClInclude>
     <ClInclude Include="flagset.h">
       <Filter>support</Filter>
-    </ClInclude>
-    <ClInclude Include="stat.h">
-      <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="objecta.h">
       <Filter>logic</Filter>

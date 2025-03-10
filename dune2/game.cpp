@@ -35,7 +35,7 @@ static void update_unit_time() {
 		if(!e)
 			continue;
 		if(e.shoot_time)
-			e.shooting(e.screen, getweapon(e.type), e.get(Attacks));
+			e.shooting(e.screen, getweapon(e.type), getattacks(e.type));
 		while(e.start_time < game.time) {
 			auto n = e.start_time;
 			e.update();
@@ -56,11 +56,6 @@ static void update_airunit_time() {
 				e.start_time += look_duration; // Pause to think
 		}
 	}
-}
-
-static void add_abilities(unsigned int* v1, const unsigned int* v2) {
-	for(auto i = Credits; i <= Supply; i = (statn)(i + 1))
-		v1[i] += v2[i];
 }
 
 static void update_player_enemies() {

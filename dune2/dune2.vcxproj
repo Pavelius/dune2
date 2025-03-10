@@ -136,7 +136,6 @@
     <ClCompile Include="aircraft.cpp" />
     <ClCompile Include="game_ai.cpp" />
     <ClCompile Include="objecta.cpp" />
-    <ClCompile Include="stat.cpp" />
     <ClCompile Include="actable.cpp" />
     <ClCompile Include="answers.cpp" />
     <ClCompile Include="archive.cpp" />
@@ -158,6 +157,7 @@
     <ClCompile Include="moveable.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
+    <ClCompile Include="storeable.cpp" />
     <ClCompile Include="textscript.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="view_build.cpp" />
@@ -231,7 +231,6 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="moveable.h" />
     <ClInclude Include="pointa.h" />
-    <ClInclude Include="stat.h" />
     <ClInclude Include="textscript.h" />
     <ClInclude Include="view_menu.h" />
     <ClInclude Include="view_theme.h" />

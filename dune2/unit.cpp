@@ -60,7 +60,7 @@ void unit::destroy() {
 }
 
 void unit::damage(int value) {
-	value -= get(Armor);
+	value -= getarmor(type);
 	if(value <= 0) {
 		if(game_chance(50))
 			value = 1;
@@ -162,7 +162,7 @@ void blockunits() {
 }
 
 int unit::getspeed() const {
-	auto n = get(Speed);
+	auto n = ::getspeed(type);
 	if(getmove(type) == Wheeled) {
 		auto t = area.get(position);
 		if(t == Rock)
@@ -491,7 +491,7 @@ bool unit::usecrushing() {
 }
 
 bool unit::shoot() {
-	return actable::shoot(screen, getweapon(type), get(Attacks), getshootrange());
+	return actable::shoot(screen, getweapon(type), getattacks(type), getshootrange());
 }
 
 void unit::update() {

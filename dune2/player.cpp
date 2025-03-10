@@ -31,11 +31,6 @@ void playerable::setplayer(const playeri* v) {
 		player = v - bsdata<playeri>::elements;
 }
 
-static void add_abilities(unsigned int* v1, const unsigned int* v2, int multiplier) {
-	for(auto i = Credits; i <= Supply; i = (statn)(i + 1))
-		v1[i] += v2[i] * multiplier;
-}
-
 void playeri::update() {
 	abilities[Energy] = 0;
 	memset(maximum, 0, sizeof(maximum));
