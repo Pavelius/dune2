@@ -15,7 +15,7 @@ struct objectunit {
 static pointa points;
 static playeri* player_active;
 static int explore_demand;
-static objectn build_order[] = {Refinery, Windtrap, SpiceSilos, Barracks, Windtrap, RadarOutpost, Wor, Windtrap, Windtrap, LightVehicleFactory, Windtrap, HeavyVehicleFactory};
+static objectn build_order[] = {Refinery, SpiceSilos, Barracks, RadarOutpost, Wor, LightVehicleFactory, HeavyVehicleFactory};
 static objectunit build_units[] = {{LightInfantry, 5}, {HeavyTroopers, 5}, {Quad, 10}, {CombatTank, 5}, {SiegeTank, 5}, {RocketTank, 5}};
 
 static bool isexploredspice(point v) {
@@ -212,6 +212,9 @@ static bool build_structrure(objectn t) {
 		return false;
 	if(pb->isworking())
 		return false;
+	auto energy = getenergycost(t) + mainplayer().abilities[Energy];
+	if(energy > mainplayer().maximum[Energy])
+		t = Windtrap;
 	if(t != Slab && t != Slab4) {
 		auto v = choose_placement(pb->position, t, true);
 		if(!area.isvalid(v)) {
