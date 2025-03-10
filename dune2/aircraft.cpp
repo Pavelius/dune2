@@ -76,6 +76,7 @@ void aircraft::unboard() {
 		return;
 	cargo = 0xFFFF;
 	p->position = position;
+	p->screen = m2sc(p->position);
 	p->stop();
 }
 
