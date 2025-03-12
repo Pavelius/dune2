@@ -48,3 +48,14 @@ void pointa::select(const rect& rc, areaf id, unsigned char player, bool value) 
 		}
 	}
 }
+
+void pointa::filter(unsigned char player, areaf f, bool keep) {
+	auto ps = begin();
+	auto pe = end();
+	for(auto pb = begin(); pb < pe; pb++) {
+		if(area.is(*pb, player, f) != keep)
+			continue;
+		*ps++ = *pb;
+	}
+	count = ps - begin();
+}

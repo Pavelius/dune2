@@ -208,7 +208,6 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="aircraft.h" />
-    <ClInclude Include="my_initialize_list.h" />
     <ClInclude Include="objecta.h" />
     <ClInclude Include="storeable.h" />
     <ClInclude Include="actable.h" />

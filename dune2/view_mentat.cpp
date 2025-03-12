@@ -21,17 +21,6 @@ static fnevent paint_mentat_proc;
 
 void paint_build_shape(int x, int y, shapen shape);
 
-//static const char* get_house_info(objectn subject, objectn fraction) {
-//	static char temp[1024];
-//	stringbuilder sb(temp);
-//	auto id = getido(subject);
-//	auto pi = getnme(ids(id, getido(fraction), "Capacity"));
-//	if(!pi)
-//		pi = getnme(ids(id, "Capacity"));
-//	sb.clear();
-//	sb.add(pi);
-//}
-
 static void paint_eyes() {
 	auto rid = getres(last_fraction);
 	auto frame = 0;
@@ -351,4 +340,30 @@ void open_mentat() {
 			show_mentat_subject(getido(subject), getavatar(subject));
 	}
 	music_play(0);
+}
+
+static void paint_house(int x, int y, objectn n, unsigned key) {
+	pushrect push;
+	pushfore push_fore(colors::white);
+	caret.x += x; width = 84;
+	caret.y += y; height = 64;
+	auto push_clip = clipping; setclip({caret.x, caret.y, caret.x + width, caret.y + height});
+	auto r = getavatar(n);
+	image(caret.x - 6, caret.y - 32, gres(r), 0, 0);
+	height = 80;
+	if(button(key, form_press_button_effect))
+		execute(buttonparam, n);
+	clipping = push_clip;
+}
+
+static void paint_houses() {
+	paint_background(colors::black);
+	paint_house(16, 48, Atreides, 'A');
+	paint_house(120, 48, Ordos, 'O');
+	paint_house(224, 48, Harkonens, 'H');
+}
+
+objectn choose_house() {
+	scene(paint_houses);
+	return (objectn)getresult();
 }

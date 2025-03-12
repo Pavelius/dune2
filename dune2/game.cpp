@@ -335,6 +335,7 @@ void camera_to_base() {
 void main_menu() {
 	//	music_disabled = true;
 	//	show_introdution();
+	choose_house();
 	game.starting_credits = 1000;
 	game.scenario = 1;
 	area_generate(SmallMap, 2);

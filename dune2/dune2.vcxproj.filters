@@ -425,9 +425,6 @@
     <ClInclude Include="objecta.h">
       <Filter>logic</Filter>
     </ClInclude>
-    <ClInclude Include="my_initialize_list.h">
-      <Filter>support</Filter>
-    </ClInclude>
     <ClInclude Include="aircraft.h">
       <Filter>logic</Filter>
     </ClInclude>

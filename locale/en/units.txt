@@ -4,6 +4,7 @@ ChooseTargetInfo: Choose move target
 Units: Units
 
 Harvester: Harvester
+MCV: MCV
 
 CombatTank: Tank
 HeavyTroopers: Troopers

@@ -45,6 +45,7 @@ BSDATA(objecti) = {
 	{"Slab4", Building, SLAB4, 71, ICONS},
 	{"Turret", Building, TURRET, 67, ICONS, {356}},
 	{"RocketTurret", Building, RTURRET, 68, ICONS, {364}},
+	{"MCV", Unit, MCV, 89, UNITS, {15}},
 	{"Harvester", Unit, HARVEST, 88, UNITS, {10}},
 	{"LightInfantry", Unit, INFANTRY, 81, UNITS, {91}},
 	{"HeavyTroopers", Unit, HYINFY, 91, UNITS, {103}},
@@ -174,7 +175,7 @@ int gethits(objectn type) {
 	case LightInfantry: case HeavyTroopers: return 4;
 	case Trike: case RocketTank: return 5;
 	case Quad: case CombatTank: case SiegeTank: return 6;
-	case Harvester: return 8;
+	case Harvester: case MCVehicle: return 8;
 	case SandWorm: return 10;
 	default: return 20;
 	}
@@ -183,7 +184,7 @@ int gethits(objectn type) {
 int getarmor(objectn type) {
 	switch(type) {
 	case LightInfantry: return 0;
-	case HeavyTroopers: case Quad: case Trike: return 1;
+	case HeavyTroopers: case Quad: case Trike: case MCVehicle: return 1;
 	case CombatTank: case RocketTank: case Harvester: return 2;
 	case SiegeTank: return 3;
 	case SandWorm: return 4;
@@ -262,7 +263,7 @@ objectn getbuild(objectn type) {
 		return LightVehicleFactory;
 	case Carryall: case Ornithopter:
 		return HighTechFactory;
-	case CombatTank: case RocketTank: case SiegeTank: case Harvester:
+	case CombatTank: case RocketTank: case SiegeTank: case Harvester: case MCVehicle:
 		return HeavyVehicleFactory;
 	case SpiceSilos: case Starport: case Windtrap: case Refinery: case RadarOutpost:
 	case RepairFacility: case HouseOfIX: case Palace: case Barracks: case Wor:

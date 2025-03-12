@@ -34,6 +34,26 @@ static bool isnotexploredborder(point v) {
 	return false;
 }
 
+static int get_frame_count(point v, terrainn t) {
+	auto result = 0;
+	for(auto d : all_strait_directions) {
+		if(area.isn(v + getpoint(d), t))
+			result++;
+	}
+	return result;
+}
+
+static bool isguardposition(point v) {
+	auto t = area.get(v);
+	if(t != Rock)
+		return false;
+	auto f = area.getfeature(v);
+	if(f == SlabFeature)
+		return false;
+	auto i = get_frame_count(v, Rock);
+	return i >= 1 && i <= 3;
+}
+
 static bool player_own(objectn t, int count = 1) {
 	if(!player_active)
 		return false;
@@ -298,6 +318,25 @@ static void check_army() {
 	give_order_army(player_active->enemy_base);
 }
 
+static point find_nearest_guard(point v) {
+	pointa points;
+	points.select(allarea(), isguardposition);
+	points.filter(player_index, Explored, true);
+	return points.nearest(v);
+}
+
+static void check_guard_postition() {
+	for(auto& e : bsdata<unit>()) {
+		if(!e || e.player != player_index || e.type == Harvester || e.type == MCVehicle)
+			continue;
+		if(isguardposition(e.position))
+			continue;
+		if(e.isorder() || area.isvalid(e.target_position))
+			continue;
+		e.order = find_nearest_guard(e.position);
+	}
+}
+
 static void active_player_update() {
 	explore_demand = 0;
 	check_spice_area();
@@ -309,6 +348,7 @@ static void active_player_update() {
 	check_build_placement();
 	check_build_units();
 	check_army();
+	check_guard_postition();
 }
 
 void update_ai_commands(unsigned char player) {
