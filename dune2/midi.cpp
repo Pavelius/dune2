@@ -354,7 +354,7 @@ static void midi_close() {
 	}
 }
 
-void midi_open() {
+static void midi_open() {
 	unsigned int device = 0;
 	if(!stream_out) {
 		midiStreamOpen(&stream_out, &device, 1, (DWORD)midi_play_callback, 0, CALLBACK_FUNCTION);

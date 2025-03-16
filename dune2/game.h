@@ -1,12 +1,15 @@
 #pragma once
 
 enum resid : unsigned short;
+enum objectn : unsigned char;
+
 struct gamei {
 	unsigned long	time;
 	unsigned long	start_turn;
 	unsigned		turn;
 	unsigned		starting_credits;
 	int				scenario;
+	objectn			house;
 };
 extern gamei game;
 
@@ -21,3 +24,4 @@ void save_game(const char* id);
 void show_scenario_prompt(const char* id, resid rid, int level);
 void update_ai_commands(unsigned char player);
 void update_game_time();
+void choose_game_house();

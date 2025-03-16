@@ -335,7 +335,7 @@ void camera_to_base() {
 void main_menu() {
 	//	music_disabled = true;
 	//	show_introdution();
-	choose_house();
+	choose_game_house();
 	game.starting_credits = 1000;
 	game.scenario = 1;
 	area_generate(SmallMap, 2);
@@ -352,6 +352,10 @@ static void unit_name(stringbuilder& sb) {
 
 static void unit_thrall_loading(stringbuilder& sb) {
 	sb.add("%1i", last_unit->action * 10);
+}
+
+void choose_game_house() {
+	game.house = choose_house();
 }
 
 BSDATA(textscript) = {

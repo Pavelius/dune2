@@ -41,4 +41,5 @@ Briefing: Briefing
 Cancel: Cancel
 No: No
 Orders: Orders
+SelectHouse: Select your house
 Yes: Yes

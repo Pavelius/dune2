@@ -343,24 +343,36 @@ void open_mentat() {
 }
 
 static void paint_house(int x, int y, objectn n, unsigned key) {
-	pushrect push;
-	pushfore push_fore(colors::white);
+	pushrect	push;
+	pushfore	push_fore(colors::white);
+	pushfont	push_font(gres(FONT16));
+	pushfontb	push_font_color(ButtonYellow);
 	caret.x += x; width = 84;
 	caret.y += y; height = 64;
 	auto push_clip = clipping; setclip({caret.x, caret.y, caret.x + width, caret.y + height});
 	auto r = getavatar(n);
 	image(caret.x - 6, caret.y - 32, gres(r), 0, 0);
-	height = 80;
+	clipping = push_clip;
+	height = 86;
+	texta(getnmo(n), AlignCenterBottom | ImagePallette);
 	if(button(key, form_press_button_effect))
 		execute(buttonparam, n);
-	clipping = push_clip;
+}
+
+static void textheader(const char* name) {
+	pushrect push;
+	pushfont push_font(gres(FONT16));
+	pushfontb push_font_color(ButtonYellow);
+	caret.y += 16;
+	texta(name, AlignCenter | ImagePallette);
 }
 
 static void paint_houses() {
 	paint_background(colors::black);
-	paint_house(16, 48, Atreides, 'A');
-	paint_house(120, 48, Ordos, 'O');
-	paint_house(224, 48, Harkonens, 'H');
+	textheader(getnm("SelectHouse"));
+	paint_house(16, 64, Atreides, 'A');
+	paint_house(120, 64, Ordos, 'O');
+	paint_house(224, 64, Harkonens, 'H');
 }
 
 objectn choose_house() {
