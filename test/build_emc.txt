@@ -1,4 +1,0 @@
-﻿FORM:EMC2
-  ORDR size 38
-  DATA size 1004
-  ээээ size 0

@@ -1,47 +1,0 @@
-﻿Briefing
- Advice: 3*No desc 
- Orders: 0*No desc 
-Houses
- House Atreides: FARTR.WSA*House Atreides The Atreides are spawned from the humid tropical planet of Caladan. They are best known for their weaknesses of honesty and kindness. They do not seem to believe in war and will usually avoid military conflicts. They have befriended the natives of Dune, and may be expected to involve the local patriot Fremen in their defensive plans. 
- House Harkonnen: FHARK.WSA*House Harkonnen We Harkonnen have come from the planet Giedi Prime. We want now to possess Dune. Our weapons are powerful enough to deflect any attacks from our enemies. All of House Harkonnen is concentrating on this task, and only a disaster could stop us now. 
- House Ordos: FORDOS.WSA*House Ordos This cartel of greedy families has been thrown together by the lust for power. They will most likely be too busy bickering among themselves to be overly concerned with our forces. 
-Structures
- Barracks: barrac.wsa*Infantry BarracksPower Needs: 20 These simple little buildings train infantry units. The building itself has fair armor and is relatively cheap to maintain. We Harkonnen, however, do not have use for such weak forces. 
- Concrete Slab: slab.wsa*Concrete Slab Slabs are used to provide stable building foundations. We have found that anything built on bare rock will deteriorate rapidly. 
- Construction Yard: Construc.wsa*Construction Yard(Harsh climate model)Self-Powered You must have a construction yard. It will give you the means to construct other buildings. 
- Heavy Factory: hvyftry.wsa*Heavy Vehicle FactoryPower Needs: 35 You must have a Heavy factory in order to construct our heavy tanks. 
- High-Tech Factory: hitcftry.wsa*High-Tech FactoryPower Needs: 35 The High-Tech factory produces our carryalls. 
- IX: ix.wsa*IX Research CenterPower Needs: 40 IX will provide you with a source of militarily advanced weapons. 
- Light Factory: liteftry.wsa*Light Vehicle FactoryPower Needs: 20 The light factory produces only lightly armored vehicles, and is only a beginning step towards your goal of military superiority. 
- Outpost: headqrts.wsa*Radar OutpostPower Needs: 30 The outpost houses radar equipment. The radar will help you to keep an eye on your own domain as well as nearby enemy activity. 
- Palace: palace.wsa*PalacePower Needs: 80 House Harkonnen may grant a Palace to those who have proved themselves worthy of such an honor. If you lose a Palace, that was given to you, you will have failed your mission. 
- Refinery: refinery.wsa*Spice RefineryPower Needs: 30 The refinery converts harvested spice into credits. 
- Repair Facility: repair.wsa*Vehicle Repair FacilityPower Needs: 20 It is impossible to operate machinery in this desert without causing damage. You must have a repair facility to take care of your damaged vehicles. 
- Rocket Turret: rturret.wsa*Rocket TurretPower Needs: 25 The Rocket Turret is an excellent weapon. Although they cannot be moved, they can be utilized for long and short range defense. 
- Spice Silos: storage.wsa*Spice Storage SiloPower Needs: 5 Spice silos must be built to be able to store the harvested spice. Unfortunately, they are weak structures, and must be repaired frequently. 
- Starport: Starport.wsa*StarportPower Needs: 80 The Starport is your link to the storehouses beyond the surface of the planet. With a Starport at your disposal, you can purchase powerful weapons and vehicles. 
- Turret: turret.wsa*Base Defense TurretPower Needs: 10 Turrets are accurate and effective weapons. Although they are immobile, you should consider them as required enhancements to your forces. 
- Wall: wall.wsa*Wall Walls are an excellent choice for defensive reinforcement. Like the concrete slabs, walls are inexpensive to produce. 
- Windtrap: windtrap.wsa*Power GeneratorPower Output: 100 These are the structures that provide power and water to your installation. They are a bit fragile, and you are well advised to construct more than one. 
- Wor: wor.wsa*Trooper BarracksPower Needs: 20 WOR will train the Heavy Troopers. 
-Vehicles
- Carryall: carryall.wsa*CarryallMobility: JetFirepower: none This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own. 
- Combat Tank: LTANK.WSA*Combat TankMobility: TrackedFirepower: heavy The combat tank will be your first tank, and it has adequate armor and fire power. However, remember that there are more powerful weapons at your disposal. 
- Harvester: harvest.wsa*HarvesterMobility: TrackedFirepower: none This large, slow, and barely maneuverable vehicle is used to harvest raw spice and convey it to the refinery. Although unarmed, the iron clad harvesters can be used effectively against small groups of infantry by crushing them beneath their treads. 
- Heavy Troopers: hyinfy.wsa*Heavy TroopersMobility: FootFirepower: medium The Heavy Troopers are superior fighting units. They are well armored and have powerful weapons. 
- Light Infantry: infantry.wsa*Light InfantryMobility: FootFirepower: light The Light Infantry will hardly suit your needs. They are slow, poorly armored, and have a tendency to miss their targets. You should depend upon the more massive troopers. 
- MCV: mcv.wsa*MCVMobility: WheeledFirepower: none The Mobile Construction Vehicle will allow you to expand your territories. By using an MCV you will be able to construct distant buildings that need not be adjacent to your principal location. 
- Ordos Raider: otrike.wsa*Ordos Raider TrikeMobility: WheeledFirepower: Light This is a pitiful little machine. For some reason the Ordos believe that this overblown Trike can out maneuver and out fire our Quads. 
- Ornithopter: orni.wsa*OrnithopterMobility: WingedFirepower: Medium This fragile little aircraft is merely an annoyance. Their delicate armor is no match for our weapons of war. 
- Quad: quad.wsa*Combat Quad(Desert model)Mobility: WheeledFirepower: medium The Quad is a much better vehicle than the smaller trike. It has far superior armor and is much more powerful. 
- Rocket Tank: rtank.wsa*Rocket TankMobility: TrackedFirepower: Heavy The rocket tank is effective for long range attacks. Guard these well, for they are ineffective at close range. 
- Siege Tank: htank.wsa*Siege TankMobility: TrackedFirepower: Very Heavy The Siege Tank is superior to the Combat tank. It's armor and weaponry has the power you will need to complete your conquest of this planet. 
- Trike: trike.wsa*Combat Trike(Desert model)Mobility: WheeledFirepower: medium Although these three-wheeled, lightly armored vehicles are functional, we strongly suggest utilizing the larger, more powerful vehicles. 
-Specials
- Death Hand: Gold-bb.wsa*Death HandMobility: FlightFirepower: Very Heavy Our Death Hand is a lovely weapon capable of being targeted for long range strikes. Just prior to impact it releases a series of explosive fingers that spread destruction over a wide area. 
- Devastator: harktank.wsa*DevastatorMobility: TrackedFirepower: Very Heavy The Devastator is another of the unique and powerful weapons in our awesome arsenal. It's armor and weapons are unequaled. The Devastator need not fear other lesser tanks on the battlefield. 
- Fremen: Fremen.wsa*FremenMobility: FootFirepower: unknown The Fremen are little more than slaves to the Atreides. Ignorant and aboriginal, they occasionally fight for the Atreides, and are provided food and supplies in return. 
- Ordos Deviator: ordrtank.wsa*DeviatorMobility: TrackedFirepower: Unknown This tank fires a powerful nerve gas that can cause your weaker-willed soldiers to turn against you. 
- Saboteur: saboture.wsa*SaboteurMobility: FootFirepower: Unknown The Ordos depend upon a band of terrorists called Saboteurs. If uncontrolled, these cunning little pests will inflict a great deal of damage to your buildings. I suggest eliminating Saboteurs immediately whenever they are encountered. 
- Sand Worm: Worm.wsa*Shai-HuludNo Known Weakness These huge native worms are almost impossible to kill. They are attracted by surface vibrations, and all ground based units are at risk of being devoured.  Rock is the only sure defense against these creatures. 
- Sonic Tank: stank.wsa*Sonic TankMobility: TrackedFirepower: Unknown The Atreides believe that they have found a humane way of eliminating their enemies. Their Sonic Tank fires shock waves instead of rockets. 

@@ -1,47 +1,0 @@
-﻿Briefing
- Advice: 3*No desc 
- Orders: 0*No desc 
-Houses
- House Atreides: FARTR.WSA*Caladan: Our ancestral home is the lush planet of Caladan. We have created a civilized society and we respect the lives and rights of all people. We do not believe in the use of unnecessary violence, and have crafted a defensive alliance with the native Fremen of Dune. 
- House Harkonnen: FHARK.WSA*Giedi Prime: The Harkonnen come from the dark planet of Giedi Prime. They are cruel and vicious individuals, and do not assign much value to fair play or even human life. Their goal is obviously the military conquest of Dune. 
- House Ordos: FORDOS.WSA*Name: Unknown House Ordos was originally formed by a group of insecure wealthy families. It has evolved into a powerful cartel that is driven by a lust for credits and the desire to control and manipulate. They often support themselves by stealing rather than working. 
-Structures
- Barracks: barrac.wsa*Infantry BarracksPower Needs: 20 The Barracks is the building that trains our courageous light infantry. The structures are quite durable and will provide you with ample means to defend your spice harvesting operations. 
- Concrete Slab: slab.wsa*Concrete Slab Concrete slabs provide the stable foundations for our buildings that allow them to operate at maximum efficiency. 
- Construction Yard: Construc.wsa*Construction Yard(Harsh climate model)Self-Powered A Construction Yard is required to build any buildings. 
- Heavy Factory: hvyftry.wsa*Heavy Vehicle FactoryPower Needs: 35 The Heavy Factory produces all large vehicles, like the harvester and the heavier machines used for defensive purposes. The building itself is extremely well armored. 
- High-Tech Factory: hitcftry.wsa*High-Tech FactoryPower Needs: 35 The High-Tech Factory produces high technology aircraft like the carryall. 
- IX: ix.wsa*IX Research CenterPower Needs: 40 IX is the technology center of the world. It is the ultimate source of new, wonderful technology that will help us reach our goals. 
- Light Factory: liteftry.wsa*Light Vehicle FactoryPower Needs: 20 The Light Factory produces lightly armored three and four wheeled vehicles, which are used for the defense of our refineries and silos. 
- Outpost: headqrts.wsa*Radar OutpostPower Needs: 30 The Outpost should be utilized for its radar capability. The radar will allow you to keep a watchful eye on your harvesters and any enemies in the area. 
- Palace: palace.wsa*PalacePower Needs: 80 Receiving a Palace is an honor, bestowed only upon those who have displayed bravery and diligence in the completion of their missions. A Palace is the most finely crafted and well-armored structure you may possess. 
- Refinery: refinery.wsa*Spice RefineryPower Needs: 30 The refinery converts spice into credits. Without the refinery you cannot produce new credits by harvesting spice. 
- Repair Facility: repair.wsa*Vehicle Repair FacilityPower Needs: 20 The Repair facility is used for the repairs of all harvesting and defense vehicles. 
- Rocket Turret: rturret.wsa*Rocket TurretPower Needs: 25 The Rocket turret is an improvement on the regular turret. Long range rockets have been added to provide for a better perimeter defense system. 
- Spice Silos: storage.wsa*Spice Storage SiloPower Needs: 5 The Silos are used to store harvested spice. They are not as strong as some of our other structures, and frequent repairs are advised. 
- Starport: Starport.wsa*StarportPower Needs: 80 A Starport will provide us with the ability to trade and deal through intergalactic trading channels. This will allow us to enhance our fleets and structures. 
- Turret: turret.wsa*Base Defense TurretPower Needs: 10 Turrets are stationary base defenses that are exceptionally accurate at close range. 
- Wall: wall.wsa*Hardened Wall Walls are the perfect passive defense system. They should be used to fortify silos and other weak structures. 
- Wind Trap: Windtrap.wsa*Power GeneratorPower Output: 100 The Windtraps are an elegant and efficient means of harnessing the wind's awesome power and extracting precious moisture. Although they are fairly sturdy, you should make sure that you have backup wind traps in case of accidents or sabotage. 
- Wor: wor.wsa*Trooper BarracksPower Needs: 20 WOR is capable of training heavy troopers. Unlike the other houses, we do not believe in unnecessary violence to achieve our goals, and therefore  I do not believe that we will require the use of such technology. 
-Vehicles
- Carryall: carryall.wsa*CarryallMobility: JetFirepower: none The Carryall is capable of transporting the harvester between spice fields and the refinery. It has no offensive capabilities or weapons, and only light armor. 
- Combat Tank: ltank.wsa*Combat TankMobility: TrackedFirepower: heavy The Combat Tank is adequately armed and good for defense. It can be used for perimeter defense and protection of the harvesters. 
- Harvester: Harvest.wsa*HarvesterMobility: TrackedFirepower: none Harvesters are large and well armored, and can be produced by a heavy factory. Vital to your spice harvesting missions, they are the only means of collecting and transporting spice from the field to the refinery. 
- Heavy Troopers: hyinfy.wsa*Heavy TroopersMobility: FootFirepower: medium The Heavy troopers are armed with powerful weapons and strong armor. 
- Light Infantry: infantry.wsa*Light InfantryMobility: FootFirepower: light The light infantry is satisfactorily protected and adequately armed, and is capable of defending our installations. 
- MCV: mcv.wsa*MCVMobility: WheeledFirepower: none The Mobile Construction Vehicle can be employed to erect new structures that need not be connected to the other buildings in your area. Additional refineries in outlying areas, for example, would allow you to harvest more effectively. 
- Ordos Raider: otrike.wsa*Ordos Raider TrikeMobility: WheeledFirepower: Light The Ordos produce a Trike that they call the "Raider".  The "Raider" is much like our own Trike, only it is faster, more maneuverable, and highly agile, yet it has less armor. 
- Ornithopter: orni.wsa*OrnithopterMobility: WingedFirepower: Medium The Ornithopter, a lightly armored, highly maneuverable aircraft, is excellent for defensive air support of your harvesters, trikes, and quads. 
- Quad: Quad.wsa*Combat Quad(Desert model)Mobility: WheeledFirepower: medium Quads are four wheeled vehicles with strong armor and powerful weapons. Like the Trike, they are an efficient defense system. With quads and trikes, you should be able to defend against most attacks. 
- Rocket Tank: rtank.wsa*Rocket TankMobility: TrackedFirepower: Heavy The Rocket Tank has good armor, is faster than normal tanks, and has long range strike capabilities. It is excellent for defensive support of the light infantry and your squadrons of trikes and quads. 
- Siege Tank: htank.wsa*Siege TankMobility: TrackedFirepower: Very Heavy The Siege Tank is heavily armored and has very powerful weapons. It is more than adequate to defend your harvesters and installations. 
- Trike: Trike.wsa*Combat Trike(Desert model)Mobility: WheeledFirepower: medium The Trike is a three wheeled vehicle produced by the light factory. It is fast, well armored, and carries light weapons for defense. Trikes may be utilized for protection against enemy raids and scouting for spice fields. 
-Specials
- Death Hand: Gold-bb.wsa*Death HandMobility: FlightFirepower: Unknown One of the most destructive weapons on Dune is the Harkonnen missile called the Death Hand. This multiple explosive warhead affects a wide area and can cause much greater damage than a conventional missile. 
- Devastator: harktank.wsa*DevastatorMobility: TrackedFirepower: Very Heavy This massive tank is one of the newest war machines developed by the Harkonnen. It has nearly impenetrable armor, enormous firepower, and is capable of destroying nearly any obstacle in its path. 
- Deviator: ordrtank.wsa*DeviatorMobility: TrackedFirepower: Unknown The Deviator fires missiles containing dangerous nerve gas that can seriously distort the perceptions of affected personnel, and may even incite full scale mutinies. 
- Fremen: Fremen.wsa*FremenMobility: FootFirepower: Medium The native peoples of this planet are excellent guerrilla fighters. The Fremen are friendly toward us because House Atreides has always dealt with them fairly, and as equals. 
- Saboteur: saboture.wsa*SaboteurMobility: FootFirepower: Unknown The Ordos often employ a band of local terrorist fighters called Saboteurs. These men are well versed in sabotage, and can easily penetrate defensive perimeters en route to the buildings they intend to destroy. They should be attacked and killed promptly whenever discovered. 
- Sand Worm: Worm.wsa*Shai-HuludNo Known Weakness These enormous creatures are attracted by vibrations on the surface and will often attack and devour both personnel and vehicles. Rock is the only sure defense against these creatures. 
- Sonic Tank: stank.wsa*Sonic TankMobility: TrackedFirepower: Heavy The Sonic Tank is one of our unique weapons. It fires a blast of sonic energy rather than projectile weapons. An excellent weapon for defensive missions, it is especially effective against enemy infantry. 
