@@ -10,6 +10,7 @@ struct gamei {
 	unsigned		starting_credits;
 	int				scenario;
 	objectn			house;
+	bool			music_disabled;
 };
 extern gamei game;
 

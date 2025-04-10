@@ -11,6 +11,7 @@
 #include "game.h"
 #include "io_stream.h"
 #include "math.h"
+#include "midi.h"
 #include "music.h"
 #include "order.h"
 #include "pushvalue.h"
@@ -308,10 +309,10 @@ static void play_music(int type) {
 static void check_played_music() {
 	static unsigned music_changed;
 	static unsigned music_type;
-	if(music_disabled)
+	if(game.music_disabled)
 		return;
 	auto new_type = is_enemy_attack() ? 2 : 1;
-	if(!music_played()) {
+	if(!midi_busy()) {
 		music_type = new_type;
 		play_music(new_type);
 	} else if(new_type != music_type) {
