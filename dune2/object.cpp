@@ -232,7 +232,7 @@ int getspeed(objectn type) {
 	case Quad: return 8;
 	case RocketTank: case CombatTank: return 5;
 	case SiegeTank: return 4;
-	case HeavyTroopers: return 3;
+	case HeavyTroopers: return 2;
 	case LightInfantry: return 2;
 	case SandWorm: return 6;
 	case Carryall: return 12;
