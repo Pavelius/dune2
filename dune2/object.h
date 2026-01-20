@@ -33,7 +33,6 @@ int getlos(objectn type);
 int getrange(objectn type);
 int getspeed(objectn type);
 int getspicecap(objectn type);
-// int getstat(objectn type, statn i);
 int getspeedfp(int v);
 
 shapen getshape(objectn type);

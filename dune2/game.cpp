@@ -334,7 +334,7 @@ void camera_to_base() {
 
 void main_menu() {
 	//	music_disabled = true;
-	//	show_introdution();
+	show_introdution();
 	choose_game_house();
 	game.starting_credits = 1000;
 	game.scenario = 1;

@@ -18,7 +18,7 @@ struct actable : playerable {
 	short unsigned	hits;
 	unsigned char	action; // Sequence action in a row
 	direction		shoot_direction;
-	unsigned long	shoot_time, heavy_shoot_time; // Start shoot game time
+	unsigned long	shoot_time; // Start shoot game time
 	explicit operator bool() const { return hits > 0; }
 	bool			canshoot(int maximum_range) const;
 	void			fixstate(const char* id) const;

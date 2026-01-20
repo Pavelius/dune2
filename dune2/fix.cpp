@@ -26,7 +26,7 @@ static int get_damage(fixn v) {
 	case Shoot20mm: case Shoot30mm: return 4;
 	case Shoot155mm: return 6;
 	case FireRocket: return 8;
-	case HandRocket: return 6;
+	case HandRocket: return 5;
 	default: return 0;
 	}
 }

@@ -14,6 +14,7 @@ struct playeri : fractionable, storeable {
 	unsigned long	enemy_spot_turn;
 	unsigned short	scout;
 	int				enemy_units_spotted, enemy_buildings_spotted;
+	unsigned		heavy_shoot_time;
 	bool			cansupportenergy(objectn type) const;
 	void			clear();
 	unsigned char	getindex() const;
