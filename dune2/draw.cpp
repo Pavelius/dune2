@@ -2067,15 +2067,6 @@ int pma::find(const char* name) const {
 	return 0;
 }
 
-int sprite::ganim(int index, int tick) const {
-	if(!cicles)
-		return 0;
-	cicle* c = gcicle(index);
-	if(!c->count)
-		return 0;
-	return c->start + tick % c->count;
-}
-
 rect sprite::frame::getrect(int x, int y, unsigned flags) const {
 	int x2, y2;
 	if(!offset)

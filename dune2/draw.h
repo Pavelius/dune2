@@ -70,7 +70,7 @@ enum window_flag_s {
 };
 struct pma {
 	char				name[4]; // Identifier of current block
-	int					size; // Size of all block
+	unsigned			size; // Size of all block
 	int					count; // Count of records in this block
 	int					find(const char* name) const;
 	const pma*			getheader(const char* name) const;
@@ -98,9 +98,7 @@ struct sprite : pma {
 	frame				frames[1];
 	int					esize() const { return frames[0].offset - (sizeof(sprite) + sizeof(frame) * (count - 1)); }
 	const unsigned char* edata() const { return (const unsigned char*)this + sizeof(sprite) + sizeof(frame) * (count - 1); }
-	int					ganim(int index, int tick) const;
 	const frame&		get(int id) const { return frames[(id >= count) ? 0 : id]; }
-	cicle*				gcicle(int index) const { return (cicle*)ptr(cicles_offset) + index; }
 	const unsigned char* ptr(unsigned o) const { return (unsigned char*)this + o; }
 };
 namespace colors {
