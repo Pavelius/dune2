@@ -287,7 +287,7 @@ static void show_introdution() {
 }
 
 static void load_game() {
-	if(confirm("Do you really want to load game?", "Yes", "No"))
+	if(confirm(getnm(ConfirmLoadGame), getnm(Yes), getnm(No)))
 		load_game("autosave");
 }
 
@@ -302,12 +302,12 @@ static void restart_scenario() {
 }
 
 static void pick_house() {
-	if(!confirm(getnm("PickAnotherHouseConfirm"), getnm("Yes"), getnm("No")))
+	if(!confirm(getnm(ConfirmPickAnotherHouse), getnm(Yes), getnm(No)))
 		return;
 }
 
 static void quit_game() {
-	if(!confirm(getnm("QuitGameConfirm"), getnm("Yes"), getnm("No")))
+	if(!confirm(getnm(ConfirmQuitGame), getnm(Yes), getnm(No)))
 		return;
 }
 
@@ -323,7 +323,7 @@ void open_options() {
 		{"RestartScenario", restart_scenario},
 		{"PickAnotherHouse", pick_house},
 		{}};
-	execute_menu(getnm("GameTitle"), 200, getnm("Cancel"), getnm("QuitGame"), quit_game, elements);
+	execute_menu(getnm("GameTitle"), 200, getnm(Cancel), getnm(QuitGame), quit_game, elements);
 }
 
 void camera_to_base() {

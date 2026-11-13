@@ -135,6 +135,7 @@
   <ItemGroup>
     <ClCompile Include="aircraft.cpp" />
     <ClCompile Include="game_ai.cpp" />
+    <ClCompile Include="locale_en.cpp" />
     <ClCompile Include="midi_util.cpp" />
     <ClCompile Include="mid_music.cpp" />
     <ClCompile Include="objecta.cpp" />

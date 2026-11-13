@@ -293,7 +293,7 @@ objectn getrequired(objectn type) {
 }
 
 const char* getnmo(objectn type) {
-	return getnm(bsdata<objecti>::elements[type].id);
+	return object_names[type];
 }
 
 const char* getido(objectn type) {

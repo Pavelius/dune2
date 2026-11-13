@@ -1134,25 +1134,25 @@ static void paint_unit_panel(int frame, int hits, int hits_maximum, fnevent proc
 	caret.y += 25;
 }
 
-static void paint_choose_panel(const char* id, int avatar, long cancel_result) {
+static void paint_choose_panel(messagen id, messagen idinf, int avatar, long cancel_result) {
 	auto y2 = caret.y + height;
 	texta(getnm(id), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	image(gres(SHAPES), avatar, 0);
 	caret.y += 32; height = y2 - caret.y - texth() - 4;
 	// rectb_black();
-	texta(getnm(ids(id, "Info")), AlignCenterCenter);
+	texta(getnm(idinf), AlignCenterCenter);
 	caret.y += height;
 	setoffset(-1, -1);
-	button(getnm("Cancel"), KeyEscape, AlignCenterCenter, buttonparam, cancel_result);
+	button(getnm(Cancel), KeyEscape, AlignCenterCenter, buttonparam, cancel_result);
 }
 
 static void paint_choose_terrain() {
-	paint_choose_panel("ChooseTarget", 17, (long)point(-1000, -1000));
+	paint_choose_panel(ChooseTarget, ChooseTargetInfo, 17, (long)point(-1000, -1000));
 	paint_cursor(5, {8, 8}, true);
 }
 
 static void paint_choose_terrain_placement() {
-	paint_choose_panel("ChoosePlacement", 17, (long)point(-1000, -1000));
+	paint_choose_panel(ChoosePlacement, ChoosePlacementInfo, 17, (long)point(-1000, -1000));
 	auto disabled = path_map_copy[area_spot.y][area_spot.x] == BlockArea;
 	paint_cursor(placement_size, !disabled, disabled);
 }
@@ -1259,7 +1259,7 @@ static bool can_support_energy(objectn build) {
 	if(!player_index)
 		return true;
 	if(!bsdata<playeri>::elements[player_index].cansupportenergy(build)) {
-		print(getnm("CantSupportEnergy"));
+		print(getnm(CantSupportEnergy));
 		return false;
 	}
 	return true;

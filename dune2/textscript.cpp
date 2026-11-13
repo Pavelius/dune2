@@ -14,7 +14,7 @@ static bool parse_script(stringbuilder& sb, const char* id) {
 static void custom_string(stringbuilder& sb, const char* id) {
 	if(parse_script(sb, id))
 		return;
-	sb.add(getnm(id));
+	sb.add(id); // Default String
 }
 
 void initialize_strings() {

@@ -16,6 +16,16 @@ enum soundn : unsigned char {
 };
 extern soundn current_music;
 
+enum messagen : unsigned char {
+	ProgramTitle, Cancel, Yes, No, ChooseTarget, ChoosePlacement,
+	QuitGame,
+	ChooseTargetInfo, ChoosePlacementInfo,
+	ConfirmLoadGame, ConfirmPickAnotherHouse, ConfirmQuitGame,
+	CantSupportEnergy,
+	LastMessage = CantSupportEnergy,
+};
+extern const char* message_names[LastMessage + 1];
+
 struct gamei {
 	unsigned long	time;
 	unsigned long	start_turn;
@@ -38,3 +48,5 @@ void show_scenario_prompt(const char* id, resid rid, int level);
 void update_ai_commands(unsigned char player);
 void update_game_time();
 void choose_game_house();
+
+inline const char* getnm(messagen v) { return message_names[v]; }

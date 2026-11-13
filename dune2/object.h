@@ -15,8 +15,9 @@ enum objectn : unsigned char {
 	Slab, Slab4, Turret, RocketTurret,
 	MCVehicle, Harvester, LightInfantry, HeavyTroopers, Trike, Quad, CombatTank, SiegeTank, RocketTank,
 	SandWorm, Carryall, Fregate, Ornithopter,
-	LastObject,
+	LastObject = Ornithopter,
 };
+extern const char* object_names[LastObject + 1];
 
 typedef int(*fngeto)(objectn type);
 

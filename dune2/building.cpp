@@ -395,7 +395,7 @@ bool building::progress() {
 
 void building::buildlist() const {
 	subjects.clear();
-	for(auto i = ConstructionYard; i < LastObject; i = (objectn)(i+1)) {
+	for(auto i = ConstructionYard; i <= LastObject; i = (objectn)(i+1)) {
 		if(!getplayer().cansupportenergy(i))
 			continue;
 		if(canbuild(i))

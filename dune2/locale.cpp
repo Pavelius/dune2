@@ -187,13 +187,6 @@ const char* getnme(const char* id) {
 	return p ? p->name : 0;
 }
 
-const char* getnme(const char* id, const char* p1) {
-	char temp[128]; stringbuilder sb(temp);
-	sb.addv(id, 0);
-	sb.addv(p1, 0);
-	return getnme(temp);
-}
-
 const char* getnm(const char* id) {
 	if(!id || id[0] == 0)
 		return "";

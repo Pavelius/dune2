@@ -106,7 +106,6 @@ unsigned char upper_symbol(unsigned char sym);
 
 const char* getnm(const char* id);
 const char*	getnme(const char* id);
-const char* getnme(const char* id, const char* p1);
 
 const char* ids(const char* p1, const char* p2);
 const char* ids(const char* p1, const char* p2, const char* p3);

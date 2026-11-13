@@ -237,6 +237,9 @@
     <ClCompile Include="iff.cpp">
       <Filter>utils</Filter>
     </ClCompile>
+    <ClCompile Include="locale_en.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

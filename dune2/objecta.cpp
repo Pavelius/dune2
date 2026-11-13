@@ -6,7 +6,7 @@
 objecta subjects;
 
 void objecta::addchild(objectn parent) {
-	for(auto i = NoObject; i < LastObject; i = (objectn)(i+1)) {
+	for(auto i = NoObject; i <= LastObject; i = (objectn)(i + 1)) {
 		if(getparent(i) != parent)
 			continue;
 		add(i);
@@ -14,7 +14,7 @@ void objecta::addchild(objectn parent) {
 }
 
 void objecta::addchild(objectn parent, fnallow proc) {
-	for(auto i = NoObject; i < LastObject; i = (objectn)(i + 1)) {
+	for(auto i = NoObject; i <= LastObject; i = (objectn)(i + 1)) {
 		if(getparent(i) != parent)
 			continue;
 		if(!proc(i))
