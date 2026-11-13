@@ -2,9 +2,23 @@
 
 #include "fraction.h"
 #include "point.h"
-#include "storeable.h"
 
 const int player_maximum = 6; // 0 - neutral and 1-5 for player humans/ai.
+
+enum statn : unsigned char {
+	Credits, Energy,
+	LastStat = Energy,
+};
+extern const char* stat_names[LastStat + 1];
+
+struct storeable {
+	unsigned int abilities[LastStat + 1];
+	unsigned int maximum[LastStat + 1];
+	void add(statn v, int i) { abilities[v] += i; }
+	bool canafford(statn v, unsigned int i) const { return abilities[v] + i <= maximum[v]; }
+	unsigned int get(statn v) const { return abilities[v]; }
+	unsigned int getmaximum(statn v) const { return maximum[v]; }
+};
 
 struct playeri : fractionable, storeable {
 	unsigned char	color_index;
@@ -20,11 +34,14 @@ struct playeri : fractionable, storeable {
 	unsigned char	getindex() const;
 	void			update();
 };
+
 struct playerable {
 	unsigned char	player;
 	playeri&		getplayer() const;
 	void			setplayer(const playeri* v);
 };
 extern unsigned char player_index, player_human;
+
+inline const char* getnm(statn n) { return stat_names[n]; }
 
 playeri& mainplayer();

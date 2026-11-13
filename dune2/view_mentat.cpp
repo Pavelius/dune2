@@ -135,7 +135,7 @@ static void paint_mentat_list() {
 	caret.x += 16; width -= 16 + 8;
 	auto header_height = texth();
 	auto push_fore = fore; fore = color(180, 228, 252);
-	text(str("%1:", getnm("ChooseSubject"))); caret.y += header_height; height -= header_height;
+	text(str("%1:", getnm(ChooseSubject))); caret.y += header_height; height -= header_height;
 	fore = push_fore;
 	font = gres(FONT6);
 	setoffset(1, 1);
@@ -175,7 +175,7 @@ static void paint_exit() {
 	pushfontb theme_font(TextYellow);
 	pushfont push_font(gres(FONT16));
 	caret.x += 198; caret.y += 169; width = 52;
-	if(button(getnm("Exit"), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+	if(button(getnm(Exit), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
 		execute(update_buttonparam, 0);
 }
 
@@ -185,10 +185,10 @@ static void paint_proceed_repeat() {
 	pushfontb theme_font(TextYellow);
 	pushfont push_font(gres(FONT16));
 	caret.x += 168; caret.y += 169; width = 68;
-	if(button(getnm("Proceed"), KeyEnter, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+	if(button(getnm(Proceed), KeyEnter, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
 		execute(update_buttonparam, 1);
 	caret.x += 72;
-	if(button(getnm("Repeat"), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+	if(button(getnm(Repeat), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
 		execute(update_buttonparam, 0);
 }
 
@@ -376,7 +376,7 @@ static void textheader(const char* name) {
 
 static void paint_houses() {
 	paint_background(colors::black);
-	textheader(getnm("SelectHouse"));
+	textheader(getnm(SelectHouse));
 	paint_house(16, 64, Atreides, 'A');
 	paint_house(120, 64, Ordos, 'O');
 	paint_house(224, 64, Harkonens, 'H');

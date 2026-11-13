@@ -1332,7 +1332,7 @@ static void paint_build_button() {
 	if(last_building->isworking())
 		format = str(getnm("CompleteProgress"), last_building->getprogress());
 	else
-		format = getnm("BuildIt");
+		format = getnm(BuildIt);
 	paint_build_button(format, geticonavatar(build), build, 'B', last_building->build_count + 1, bsdata<playeri>::elements[player_index].objects[build]);
 	height = push_height;
 }
@@ -1349,11 +1349,10 @@ static void paint_bold(const char* title) {
 	fore_stroke = push_stroke;
 }
 
-static void paint_stats_info(const char* title, statn n) {
+static void paint_stats_info(statn n) {
 	pushrect push;
 	caret.y += 2;
-	if(!title)
-		title = bsdata<stati>::elements[n].getname();
+	auto title = getnm(n);
 	paint_bold(title);
 	paint_field("Used", mainplayer().abilities[n]);
 	paint_field("Max", mainplayer().maximum[n]);
@@ -1367,8 +1366,8 @@ static void paint_building_info() {
 	} else {
 		paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), 0, 0);
 		switch(last_building->type) {
-		case SpiceSilos: case Refinery: paint_stats_info(getnm("Spice"), Credits); break;
-		case Windtrap: paint_stats_info(0, Energy); break;
+		case SpiceSilos: case Refinery: paint_stats_info(Credits); break;
+		case Windtrap: paint_stats_info(Energy); break;
 		}
 	}
 }

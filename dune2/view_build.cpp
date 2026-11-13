@@ -1,6 +1,7 @@
 #include "bsdata.h"
 #include "building.h"
 #include "draw.h"
+#include "game.h"
 #include "resid.h"
 #include "objecta.h"
 #include "shape.h"
@@ -80,13 +81,13 @@ static void paint_buttons(objectn subject) {
 	caret.y += 168;
 	width = 119;
 	height = (getheight() - caret.y) / 2;
-	if(button(getnm("BuildIt"), KeyEnter, AlignCenterCenter, true, height - 1, form_press_button_effect))
+	if(button(getnm(BuildIt), KeyEnter, AlignCenterCenter, true, height - 1, form_press_button_effect))
 		execute(buttonok);
 	paint_shadow_border();
 	caret.y += height;
 	//if(caret.y + height != getheight())
 	height = getheight() - caret.y;
-	if(button(getnm("ResumeGame"), KeyEscape, AlignCenterCenter, true, height - 1, form_press_button_effect))
+	if(button(getnm(ResumeGame), KeyEscape, AlignCenterCenter, true, height - 1, form_press_button_effect))
 		execute(buttoncancel);
 	paint_shadow_border();
 }

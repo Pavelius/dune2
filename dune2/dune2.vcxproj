@@ -160,7 +160,6 @@
     <ClCompile Include="moveable.cpp" />
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="serial.cpp" />
-    <ClCompile Include="storeable.cpp" />
     <ClCompile Include="textscript.cpp" />
     <ClCompile Include="object.cpp" />
     <ClCompile Include="view_build.cpp" />
@@ -210,7 +209,6 @@
   <ItemGroup>
     <ClInclude Include="aircraft.h" />
     <ClInclude Include="objecta.h" />
-    <ClInclude Include="storeable.h" />
     <ClInclude Include="actable.h" />
     <ClInclude Include="adat.h" />
     <ClInclude Include="answers.h" />
