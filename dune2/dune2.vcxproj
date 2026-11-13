@@ -193,7 +193,6 @@
     <ClCompile Include="surface_serial.cpp" />
     <ClCompile Include="szdup.cpp" />
     <ClCompile Include="terrain.cpp" />
-    <ClCompile Include="thread.cpp" />
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="unita.cpp" />
     <ClCompile Include="video.cpp" />
@@ -261,7 +260,6 @@
     <ClInclude Include="squad.h" />
     <ClInclude Include="stringbuilder.h" />
     <ClInclude Include="terrain.h" />
-    <ClInclude Include="thread.h" />
     <ClInclude Include="timer.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="unita.h" />
@@ -272,7 +270,6 @@
     <ClInclude Include="win.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\doc\music_dump.txt" />
     <Text Include="..\errors.txt" />
     <Text Include="..\locale\en\actions.txt" />
     <Text Include="..\locale\en\buildings.txt" />

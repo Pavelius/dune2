@@ -6,7 +6,8 @@ enum resid : unsigned short;
 enum shapen	: unsigned char;
 
 enum objectn : unsigned char {
-	NoObject, Briefing, House, Building, Unit, Special, Objective,
+	NoObject,
+	Briefing, House, Building, Unit, Special, Objective,
 	Advice, Orders,
 	Atreides, Harkonens, Ordos,
 	ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
@@ -55,7 +56,7 @@ const char* getnmo(objectn type);
 const char* getido(objectn type);
 
 struct objectable {
-	objectn		type;
+	objectn	type;
 	explicit operator bool() const { return type != NoObject; }
 	const char*	getname() const { return getnmo(type); }
 };

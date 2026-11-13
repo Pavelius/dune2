@@ -10,9 +10,6 @@
     <Filter Include="utils">
       <UniqueIdentifier>{bf177795-c600-4931-a308-d31809e5d46a}</UniqueIdentifier>
     </Filter>
-    <Filter Include="doc">
-      <UniqueIdentifier>{5cd25357-f75d-4f05-9ef0-4ee41b8f789b}</UniqueIdentifier>
-    </Filter>
     <Filter Include="locale">
       <UniqueIdentifier>{38766d70-5434-4b29-ada1-8c316fe7f192}</UniqueIdentifier>
     </Filter>
@@ -93,9 +90,6 @@
     <ClCompile Include="surface_serial.cpp">
       <Filter>support</Filter>
     </ClCompile>
-    <ClCompile Include="iff.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="log_file.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -112,9 +106,6 @@
       <Filter>support</Filter>
     </ClCompile>
     <ClCompile Include="midi.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
-    <ClCompile Include="thread.cpp">
       <Filter>support</Filter>
     </ClCompile>
     <ClCompile Include="game.cpp">
@@ -243,6 +234,9 @@
     <ClCompile Include="mid_music.cpp">
       <Filter>resources</Filter>
     </ClCompile>
+    <ClCompile Include="iff.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -311,9 +305,6 @@
     <ClInclude Include="nameable.h">
       <Filter>support</Filter>
     </ClInclude>
-    <ClInclude Include="iff.h">
-      <Filter>support</Filter>
-    </ClInclude>
     <ClInclude Include="log_file.h">
       <Filter>support</Filter>
     </ClInclude>
@@ -336,9 +327,6 @@
       <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="midi.h">
-      <Filter>support</Filter>
-    </ClInclude>
-    <ClInclude Include="thread.h">
       <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="game.h">
@@ -431,11 +419,11 @@
     <ClInclude Include="aircraft.h">
       <Filter>logic</Filter>
     </ClInclude>
+    <ClInclude Include="iff.h">
+      <Filter>utils</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\doc\music_dump.txt">
-      <Filter>doc</Filter>
-    </Text>
     <Text Include="..\locale\en\units.txt">
       <Filter>locale</Filter>
     </Text>
@@ -465,11 +453,11 @@
     </Text>
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\README.md">
-      <Filter>doc</Filter>
-    </None>
     <None Include="cpp.hint">
       <Filter>support</Filter>
+    </None>
+    <None Include="..\README.md">
+      <Filter>locale</Filter>
     </None>
   </ItemGroup>
 </Project>
