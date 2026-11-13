@@ -99,9 +99,6 @@
     <ClCompile Include="feature.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="manager.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="midi.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -316,9 +313,6 @@
     </ClInclude>
     <ClInclude Include="feature.h">
       <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="manager.h">
-      <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="midi.h">
       <Filter>support</Filter>

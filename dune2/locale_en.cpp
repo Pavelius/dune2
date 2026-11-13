@@ -17,7 +17,7 @@ const char* object_names[LastObject + 1] = {
 const char* message_names[LastMessage + 1] = {
 	"Dune II: Building Dinasty", "Cancel", "Yes", "No",
 	"Target", "Placement", "Select Subject", "Select your house",
-	"Load game", "Save game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
+	"Load game", "Save this game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
 	"Game controls", "Restart scenario", "Pick another house", "Cost",
 	"Done %1i%%", "%Unit is destroyed.", "%Unit is devoured by worm.",
 	"There is no room for spice - build more Spice Silos.",

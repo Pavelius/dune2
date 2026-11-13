@@ -173,7 +173,6 @@
     <ClCompile Include="log_file.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_util.cpp" />
-    <ClCompile Include="manager.cpp" />
     <ClCompile Include="math.cpp" />
     <ClCompile Include="midi.cpp" />
     <ClCompile Include="movement.cpp" />
@@ -238,7 +237,6 @@
     <ClInclude Include="io_stream.h" />
     <ClInclude Include="log.h" />
     <ClInclude Include="log_file.h" />
-    <ClInclude Include="manager.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="midi.h" />
     <ClInclude Include="nameable.h" />
