@@ -132,49 +132,10 @@ static void read_names(const char* url) {
 	update_elements();
 }
 
-static void save_names(const char* url) {
-	io::file file(url, StreamText | StreamWrite);
-	if(!file)
-		return;
-	auto records_write = 0;
-	for(auto& e : source_name.records<translate>()) {
-		if(e.name)
-			continue;
-		file << e.id << ": ";
-		if(e.name) {
-			file << e.name;
-			records_write++;
-		}
-		file << "\r\n";
-	}
-}
-
-#ifdef _DEBUG
-static void deinitialize() {
-	char temp[260]; stringbuilder sb(temp);
-	sb.add("locale/%1/UnknownNames.txt", current_locale);
-	save_names(temp);
-}
-#endif
-
-static void check_translation() {
-	log::context.url = "UnknownNames.txt";
-	for(auto& e : source_name.records<translate>()) {
-		if(e.name && e.name[0])
-			continue;
-		log::errorp(0, " Define translation for `%1`", e.id);
-	}
-}
-
 void initialize_translation() {
 	char temp[260]; stringbuilder sb(temp);
 	sb.add("locale/%1", current_locale);
 	log::readf(read_names, temp, "*.txt");
-#ifdef _DEBUG
-	check_translation();
-	if(!log::errors)
-		atexit(deinitialize);
-#endif
 }
 
 const char* getnme(const char* id) {
@@ -186,27 +147,6 @@ const char* getnme(const char* id) {
 	auto p = (translate*)bsearch(&key, source_name.data, source_name.getcount(), source_name.size(), compare);
 	return p ? p->name : 0;
 }
-
-//const char* getnm(const char* id) {
-//	if(!id || id[0] == 0)
-//		return "";
-//	if(!ischa(id[0]))
-//		return id;
-//	translate key = {id, 0};
-//	auto p = (translate*)bsearch(&key, source_name.data, source_name.getcount(), source_name.size(), compare);
-//	if(!p) {
-//#ifdef _DEBUG
-//		p = (translate*)source_name.add();
-//		p->id = szdup(id);
-//		p->name = 0;
-//		update_elements();
-//#endif
-//		return id;
-//	}
-//	if(!p->name || !p->name[0])
-//		return id;
-//	return p->name;
-//}
 
 void check_description(const char* id, const char** psuffix) {
 	if(!getnme(id))

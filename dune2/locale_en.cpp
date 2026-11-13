@@ -14,6 +14,12 @@ const char* object_names[LastObject + 1] = {
 	"MCV", "Harvester", "Infantry", "Troopers", "Trike", "Quad", "Combat Tank", "Siege Tank", "Rocket Tank",
 	"Shai-Hulud", "Carrier", "Fregate", "Ornithopter",
 };
+const char* mentata_info[LastObject + 1] = {
+	"", "", "", "", "", "", "", "", "",
+	"Our ancestral home is the lush planet of Caladan.\nWe have created a civilized society and we respect the lives and rights of all people.\nWe do not believe in the use of unnecessary violence, and have crafted a defensive alliance with the native Fremen of Dune.",
+	"The Harkonnen come from the dark planet of Giedi Prime.\nThey are cruel and vicious individuals, and do not assign much value to fair play or even human life.\nTheir goal is obviously the military conquest of Dune.",
+	"House Ordos was originally formed by a group of insecure wealthy families.\nIt has evolved into a powerful cartel that is driven by a lust for credits and the desire to control and manipulate.\nThey often support themselves by stealing rather than working.",
+};
 const char* message_names[LastMessage + 1] = {
 	"Dune II: Building Dinasty", "Cancel", "Yes", "No",
 	"Target", "Placement", "Select Subject", "Select your house",
