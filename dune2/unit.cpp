@@ -39,16 +39,16 @@ static bool turn(direction& result, direction new_direction) {
 	return result == new_direction;
 }
 
-void unit::fixstate(const char* id) const {
+void unit::fixstate(messagen v) const {
 	auto push = last_unit; last_unit = const_cast<unit*>(this);
-	actable::fixstate(id);
+	actable::fixstate(v);
 	last_unit = push;
 }
 
 void unit::destroy() {
 	cleanup();
 	if(area.isvalid(position)) {
-		fixstate("UnitDestroyed");
+		fixstate(UnitDestroyed);
 		switch(getmove(type)) {
 		case Wheeled: add_effect(m2sc(position), FixBikeExplosion); break;
 		case Tracked: add_effect(m2sc(position), FixExplosion); break;
@@ -87,7 +87,7 @@ bool unit::devour() {
 		auto pu = find_unit(position, this);
 		if(!pu)
 			return false;
-		pu->fixstate("UnitDevoured");
+		pu->fixstate(UnitDevoured);
 		pu->cleanup();
 		pu->clear();
 		add_effect(screen, WormDevour);
@@ -228,7 +228,7 @@ bool unit::harvest() {
 			return false;
 		if(action) {
 			if(!pb->getplayer().canafford(Credits, 100)) {
-				fixstate("ReachSpiceMaximum");
+				fixstate(ReachSpiceMaximum);
 				start_time += 5 * 1000;
 				return true;
 			}
@@ -271,7 +271,7 @@ bool unit::harvest() {
 		case Spice: area.set(position, Sand); break;
 		case SpiceRich: area.set(position, Spice); action++; break;
 		}
-		fixstate("HarvesterWork");
+		fixstate(HarvesterWork);
 	}
 	return true;
 }
@@ -375,7 +375,7 @@ void unit::clear() {
 
 void unit::cantdothis() {
 	start_time += game_rand(4, 8) * 1000;
-	fixstate("UnitCantDoThis");
+	fixstate(UnitCantDoThis);
 }
 
 static building* get_main_base(unsigned char player) {
@@ -405,10 +405,10 @@ bool unit::retreat() {
 			return false;
 		}
 		if(position == v) {
-			fixstate("HarvesterUnload");
+			fixstate(HarvesterUnload);
 			pb->board(this);
 		} else {
-			fixstate("HarvesterReturn");
+			fixstate(HarvesterReturn);
 			order = v;
 		}
 		return true;

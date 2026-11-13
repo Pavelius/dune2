@@ -25,13 +25,13 @@ const char* actable::getfractionname() const {
 	return getnm(getplayer().fraction);
 }
 
-void actable::fixstate(const char* id) const {
+void actable::fixstate(messagen v) const {
 	if(isboard()) {
 		if(player != player_index)
 			return;
 	} else if(!area.is(position, player_index, Visible))
 		return;
-	print(getnm(id));
+	print(getnm(v));
 }
 
 unit* actable::getenemy() const {

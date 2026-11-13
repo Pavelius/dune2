@@ -1,6 +1,7 @@
 #include "game.h"
 #include "object.h"
 #include "player.h"
+#include "terrain.h"
 
 const char* object_names[LastObject + 1] = {
 	"No object",
@@ -18,7 +19,12 @@ const char* message_names[LastMessage + 1] = {
 	"Target", "Placement", "Select Subject", "Select your house",
 	"Load game", "Save game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
 	"Game controls", "Restart scenario", "Pick another house", "Cost",
-	"Done %1i%%",
+	"Done %1i%%", "%Unit is destroyed.", "%Unit is devoured by worm.",
+	"There is no room for spice - build more Spice Silos.",
+	"%Unit is %UnitThrall percent full.",
+	"%Unit can't execute order.",
+	"%Unit is unloading spice.",
+	"%Unit is return with %UnitThrall percent full.",
 	"Choose move target",
 	"Place buidling on rock",
 	"Do you really want to load game?",
@@ -31,4 +37,7 @@ const char* stat_names[LastStat + 1] = {
 };
 const char* order_names[LastOrder + 1] = {
 	"Stop", "Move", "Move", "Attack", "Retreat", "Harvest",
+};
+const char* terrain_names[LastTerrain + 1] = {
+	"Sand", "Dune", "Spice", "Spice", "Spice Blow", "Rock", "Mountain",
 };

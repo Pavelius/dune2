@@ -187,26 +187,26 @@ const char* getnme(const char* id) {
 	return p ? p->name : 0;
 }
 
-const char* getnm(const char* id) {
-	if(!id || id[0] == 0)
-		return "";
-	if(!ischa(id[0]))
-		return id;
-	translate key = {id, 0};
-	auto p = (translate*)bsearch(&key, source_name.data, source_name.getcount(), source_name.size(), compare);
-	if(!p) {
-#ifdef _DEBUG
-		p = (translate*)source_name.add();
-		p->id = szdup(id);
-		p->name = 0;
-		update_elements();
-#endif
-		return id;
-	}
-	if(!p->name || !p->name[0])
-		return id;
-	return p->name;
-}
+//const char* getnm(const char* id) {
+//	if(!id || id[0] == 0)
+//		return "";
+//	if(!ischa(id[0]))
+//		return id;
+//	translate key = {id, 0};
+//	auto p = (translate*)bsearch(&key, source_name.data, source_name.getcount(), source_name.size(), compare);
+//	if(!p) {
+//#ifdef _DEBUG
+//		p = (translate*)source_name.add();
+//		p->id = szdup(id);
+//		p->name = 0;
+//		update_elements();
+//#endif
+//		return id;
+//	}
+//	if(!p->name || !p->name[0])
+//		return id;
+//	return p->name;
+//}
 
 void check_description(const char* id, const char** psuffix) {
 	if(!getnme(id))

@@ -97,7 +97,7 @@ static void debug_map_message() {
 	auto t = area.get(area_spot);
 	string sb;
 	if(area.isvalid(area_spot)) {
-		sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
+		sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, getnm(t));
 		auto pb = find_building(area.getcorner(area_spot));
 		if(pb)
 			sb.adds(pb->name());

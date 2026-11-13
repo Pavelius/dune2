@@ -6,7 +6,7 @@
 #include "stringbuilder.h"
 #include "object.h"
 
-struct objecti : nameable {
+struct objecti {
 	objectn			parent;
 	resid			mentat_avatar;
 	short unsigned	icon_avatar;
@@ -15,49 +15,49 @@ struct objecti : nameable {
 };
 
 BSDATA(objecti) = {
-	{"NoObject"},
-	{"Briefing"},
-	{"Houses"},
-	{"Buildings"},
-	{"Units"},
-	{"Special"},
-	{"Objectives"},
-	{"Advice", Briefing},
-	{"Orders", Briefing},
-	{"Atreides", House, FARTR, 0, MENSHPA},
-	{"Harkonnen", House, FHARK, 1, MENSHPH},
-	{"Ordos", House, FORDOS, 2, MENSHPO},
-	{"ConstructionYard", Building, CONSTRUC, 60, ICONS, {292, 293, 295, 296}},
-	{"SpiceSilos", Building, STORAGE, 69, ICONS, {372, 373, 375, 376}},
-	{"Starport", Building, STARPORT, 63, ICONS, {309, 310, 311, 314, 315, 316, 319, 320, 321}},
-	{"Windtrap", Building, WINDTRAP, 61, ICONS, {304, 305, 306, 307}},
-	{"Refinery", Building, REFINERY, 64, ICONS, {332, 333, 334, 337, 338, 339}},
-	{"Outpost", Building, HEADQRTS, 70, ICONS, {379, 380, 386, 387}},
-	{"RepairFacility", Building, REPAIR, 65, ICONS, {345, 346, 347, 349, 350, 351}},
-	{"HouseOfIX", Building, IX, 58, ICONS, {280, 281, 282, 283}},
-	{"Palace", Building, PALACE, 54, ICONS, {216, 217, 218, 226, 227, 228, 235, 236, 237}},
-	{"Barracks", Building, BARRAC, 62, ICONS, {299, 300, 301, 302}},
-	{"Wor", Building, WOR, 59, ICONS, {285, 286, 288, 289}},
-	{"LightVehicleFactory", Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}},
-	{"HeavyVehicleFactory", Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}},
-	{"HighTechFactory", Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}},
-	{"ConcreteSlab", Building, SLAB, 53, ICONS, {126}},
-	{"Slab4", Building, SLAB4, 71, ICONS},
-	{"Turret", Building, TURRET, 67, ICONS, {356}},
-	{"RocketTurret", Building, RTURRET, 68, ICONS, {364}},
-	{"MCV", Unit, MCV, 89, UNITS, {15}},
-	{"Harvester", Unit, HARVEST, 88, UNITS, {10}},
-	{"LightInfantry", Unit, INFANTRY, 81, UNITS, {91}},
-	{"HeavyTroopers", Unit, HYINFY, 91, UNITS, {103}},
-	{"Trike", Unit, TRIKE, 80, UNITS, {5}},
-	{"Quad", Unit, QUAD, 74, UNITS, {0}},
-	{"CombatTank", Unit, LTANK, 78, UNITS2, {0, 5}},
-	{"SiegeTank", Unit, HTANK, 72, UNITS2, {10, 15}},
-	{"RocketTank", Unit, RTANK, 73, UNITS2, {0, 35}},
-	{"SandWorm", Special, WORM, 93},
-	{"Carryall", Special, CARRYALL, 77, UNITS, {45}},
-	{"Fregate", Special, CARRYALL, 77, UNITS, {60}},
-	{"Ornithopter", Special, ORNI, 85, UNITS, {51, 3}},
+	{}, //NoObject
+	{}, //Briefing
+	{}, //Houses
+	{}, //Buildings
+	{}, //Units
+	{}, //Special
+	{}, //Objectives
+	{Briefing}, //Advice
+	{Briefing}, // Orders
+	{House, FARTR, 0, MENSHPA}, //Atreides
+	{House, FHARK, 1, MENSHPH}, // Harkonnen
+	{House, FORDOS, 2, MENSHPO}, // Ordos
+	{Building, CONSTRUC, 60, ICONS, {292, 293, 295, 296}}, // ConstructionYard
+	{Building, STORAGE, 69, ICONS, {372, 373, 375, 376}}, // SpiceSilos
+	{Building, STARPORT, 63, ICONS, {309, 310, 311, 314, 315, 316, 319, 320, 321}}, // Starport
+	{Building, WINDTRAP, 61, ICONS, {304, 305, 306, 307}}, // Windtrap
+	{Building, REFINERY, 64, ICONS, {332, 333, 334, 337, 338, 339}}, // Refinery
+	{Building, HEADQRTS, 70, ICONS, {379, 380, 386, 387}}, // Outpost
+	{Building, REPAIR, 65, ICONS, {345, 346, 347, 349, 350, 351}}, // RepairFacility
+	{Building, IX, 58, ICONS, {280, 281, 282, 283}}, // HouseOfIX
+	{Building, PALACE, 54, ICONS, {216, 217, 218, 226, 227, 228, 235, 236, 237}}, // Palace
+	{Building, BARRAC, 62, ICONS, {299, 300, 301, 302}}, // Barracks
+	{Building, WOR, 59, ICONS, {285, 286, 288, 289}}, // Wor
+	{Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}}, // LightVehicleFactory
+	{Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}}, // HeavyVehicleFactory
+	{Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}}, // HighTechFactory
+	{Building, SLAB, 53, ICONS, {126}}, // ConcreteSlab
+	{Building, SLAB4, 71, ICONS}, // Slab4
+	{Building, TURRET, 67, ICONS, {356}}, // Turret
+	{Building, RTURRET, 68, ICONS, {364}}, // RocketTurret
+	{Unit, MCV, 89, UNITS, {15}}, // MCV
+	{Unit, HARVEST, 88, UNITS, {10}}, // Harvester
+	{Unit, INFANTRY, 81, UNITS, {91}}, // LightInfantry
+	{Unit, HYINFY, 91, UNITS, {103}}, // HeavyTroopers
+	{Unit, TRIKE, 80, UNITS, {5}}, // Trike
+	{Unit, QUAD, 74, UNITS, {0}}, // Quad
+	{Unit, LTANK, 78, UNITS2, {0, 5}}, // CombatTank
+	{Unit, HTANK, 72, UNITS2, {10, 15}}, // SiegeTank
+	{Unit, RTANK, 73, UNITS2, {0, 35}}, // RocketTank
+	{Special, WORM, 93}, // SandWorm
+	{Special, CARRYALL, 77, UNITS, {45}}, // Carryall
+	{Special, CARRYALL, 77, UNITS, {60}}, // Fregate
+	{Special, ORNI, 85, UNITS, {51, 3}}, // Ornithopter
 };
 assert_enum(objecti, Ornithopter)
 
@@ -292,12 +292,8 @@ objectn getrequired(objectn type) {
 	}
 }
 
-const char* getnmo(objectn type) {
-	return object_names[type];
-}
-
 const char* getido(objectn type) {
-	return bsdata<objecti>::elements[type].id;
+	return "NoObject";
 }
 
 resid getavatar(objectn type) {

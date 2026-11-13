@@ -104,7 +104,7 @@ typedef void (*fnoutput)(const char* format);
 unsigned char lower_symbol(unsigned char sym);
 unsigned char upper_symbol(unsigned char sym);
 
-const char* getnm(const char* id);
+//const char* getnm(const char* id);
 const char*	getnme(const char* id);
 
 const char* ids(const char* p1, const char* p2);

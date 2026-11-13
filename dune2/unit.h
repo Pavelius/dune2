@@ -17,7 +17,7 @@ struct unit : moveable, fixable, objectable {
 	void		damage(int value);
 	void		destroy();
 	bool		devour();
-	void		fixstate(const char* id) const;
+	void		fixstate(messagen v) const;
 	short unsigned gethitsmax() const { return gethits(type) * 10; }
 	short unsigned getindex() const;
 	int			getlos() const { return ::getlos(type); }
