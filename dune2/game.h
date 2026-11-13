@@ -19,7 +19,9 @@ extern soundn current_music;
 enum messagen : unsigned char {
 	ProgramTitle, Cancel, Yes, No,
 	ChooseTarget, ChoosePlacement, ChooseSubject, SelectHouse,
-	QuitGame, ResumeGame, Exit, Proceed, Repeat, BuildIt,
+	LoadGame, SaveGame, QuitGame, ResumeGame, Exit, Proceed, Repeat, BuildIt,
+	GameControls, RestartScenario, PickAnotherHouse, Cost,
+	CompleteProgress,
 	ChooseTargetInfo, ChoosePlacementInfo,
 	ConfirmLoadGame, ConfirmPickAnotherHouse, ConfirmQuitGame,
 	CantSupportEnergy,

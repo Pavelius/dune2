@@ -14,9 +14,11 @@ const char* object_names[LastObject + 1] = {
 	"Shai-Hulud", "Carrier", "Fregate", "Ornithopter",
 };
 const char* message_names[LastMessage + 1] = {
-	"Dune 2 (Remake)", "Cancel", "Yes", "No",
+	"Dune II: Building Dinasty", "Cancel", "Yes", "No",
 	"Target", "Placement", "Select Subject", "Select your house",
-	"Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
+	"Load game", "Save game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
+	"Game controls", "Restart scenario", "Pick another house", "Cost",
+	"Done %1i%%",
 	"Choose move target",
 	"Place buidling on rock",
 	"Do you really want to load game?",

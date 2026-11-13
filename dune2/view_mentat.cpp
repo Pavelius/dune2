@@ -122,7 +122,7 @@ static void paint_brief_row(int index, void* data) {
 		width -= 12;
 	} else
 		fore = color(80, 120, 212);
-	text(getnmo(type), -1, 0);
+	text(getnm(type), -1, 0);
 	fore_stroke = push_fore_stroke;
 	fore = push_fore;
 }
@@ -226,7 +226,7 @@ void paint_mentat_silent() {
 static int compare_topic_by_name(const void* v1, const void* v2) {
 	auto i1 = *((objectn*)v1);
 	auto i2 = *((objectn*)v2);
-	return szcmp(getnmo(i1), getnmo(i2));
+	return szcmp(getnm(i1), getnm(i2));
 }
 
 static void add_group(objectn parent) {
@@ -361,7 +361,7 @@ static void paint_house(int x, int y, objectn n, unsigned key) {
 	image(caret.x - 6, caret.y - 32, gres(r), 0, 0);
 	clipping = push_clip;
 	height = 86;
-	texta(getnmo(n), AlignCenterBottom | ImagePallette);
+	texta(getnm(n), AlignCenterBottom | ImagePallette);
 	if(button(key, form_press_button_effect))
 		execute(buttonparam, n);
 }

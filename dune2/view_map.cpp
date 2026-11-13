@@ -100,7 +100,7 @@ static void debug_map_message() {
 		sb.add("Area %1i,%2i %3", area_spot.x, area_spot.y, bsdata<terraini>::elements[t].getname());
 		auto pb = find_building(area.getcorner(area_spot));
 		if(pb)
-			sb.adds(pb->getname());
+			sb.adds(pb->name());
 		text(sb.text, -1, TextStroke); caret.y += texth();
 		sb.clear(); sb.add("Frame %1i", area.getframe(area_spot));
 		auto cost = path_map[area_spot.y][area_spot.x];
@@ -1329,7 +1329,7 @@ static void paint_build_button() {
 	setoffset(-1, 0);
 	const char* format = 0;
 	if(last_building->isworking())
-		format = str(getnm("CompleteProgress"), last_building->getprogress());
+		format = str(getnm(CompleteProgress), last_building->getprogress());
 	else
 		format = getnm(BuildIt);
 	paint_build_button(format, geticonavatar(build), build, 'B', last_building->build_count + 1, bsdata<playeri>::elements[player_index].objects[build]);
@@ -1358,7 +1358,7 @@ static void paint_stats_info(statn n) {
 }
 
 static void paint_building_info() {
-	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
+	texta(last_building->name(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	if(last_building->canbuild()) {
 		paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), open_building, (long)last_building);
 		paint_build_button();
@@ -1392,7 +1392,7 @@ static void human_order_building() {
 
 static void paint_turret_info() {
 	pushrect push;
-	texta(last_building->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
+	texta(last_building->name(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 	paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), 0, 0);
 	setoffset(-1, 0);
 	height = 12;
@@ -1413,7 +1413,7 @@ static void paint_unit_info() {
 	} else if(human_selected.count == 1) {
 		auto push_unit = last_unit;
 		last_unit = human_selected[0];
-		texta(last_unit->getname(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
+		texta(last_unit->name(), AlignCenter | TextSingleLine); caret.y += texth() - 1;
 		paint_unit_panel(geticonavatar(last_unit->type), last_unit->hits, last_unit->gethitsmax(), 0, 0);
 		paint_unit_orders();
 		last_unit = push_unit;

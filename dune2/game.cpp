@@ -317,13 +317,13 @@ static point choose_terrain() {
 
 void open_options() {
 	static menui elements[] = {
-		{"LoadGame", load_game},
-		{"SaveGame", save_game},
-		{"GameControls", controls_game},
-		{"RestartScenario", restart_scenario},
-		{"PickAnotherHouse", pick_house},
+		{LoadGame, load_game},
+		{SaveGame, save_game},
+		{GameControls, controls_game},
+		{RestartScenario, restart_scenario},
+		{PickAnotherHouse, pick_house},
 		{}};
-	execute_menu(getnm("GameTitle"), 200, getnm(Cancel), getnm(QuitGame), quit_game, elements);
+	execute_menu(getnm(ProgramTitle), 200, getnm(Cancel), getnm(QuitGame), quit_game, elements);
 }
 
 void camera_to_base() {
@@ -347,7 +347,7 @@ void main_menu() {
 static void unit_name(stringbuilder& sb) {
 	if(last_unit->getplayer().fraction)
 		sb.adds(last_unit->getfractionname());
-	sb.adds(last_unit->getname());
+	sb.adds(last_unit->name());
 }
 
 static void unit_thrall_loading(stringbuilder& sb) {

@@ -38,7 +38,7 @@ static int compare_object_priority(const void* v1, const void* v2) {
 	auto p2 = getpriority(o2);
 	if(p1 != p2)
 		return p1 - p2;
-	return szcmp(getnmo(o1), getnmo(o2));
+	return szcmp(getnm(o1), getnm(o2));
 }
 
 

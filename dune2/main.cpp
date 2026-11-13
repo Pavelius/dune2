@@ -1,5 +1,6 @@
 #include "area.h"
 #include "log.h"
+#include "game.h"
 #include "rand.h"
 #include "stringbuilder.h"
 #include "textscript.h"
@@ -26,7 +27,7 @@ int main() {
 #endif // _DEBUG
 	initialize_strings();
 	pushtheme push(ButtonLight);
-	initialize_view("Dune 2 (Remake)", main_menu);
+	initialize_view(getnm(ProgramTitle), main_menu);
 }
 
 #ifdef _MSC_VER

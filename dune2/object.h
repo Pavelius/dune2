@@ -53,11 +53,11 @@ fixn getheavyweapon(objectn type);
 
 unsigned short* getframes(objectn type);
 
-const char* getnmo(objectn type);
+inline const char* getnm(objectn type) { return object_names[type]; }
 const char* getido(objectn type);
 
 struct objectable {
 	objectn	type;
 	explicit operator bool() const { return type != NoObject; }
-	const char*	getname() const { return getnmo(type); }
+	const char*	name() const { return object_names[type]; }
 };

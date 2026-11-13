@@ -37,17 +37,17 @@ static void paint_background() {
 	}
 }
 
-static void paint_field(const char* id, int value) {
-	texta(str("%1:", getnm(id)), AlignLeft);
+static void paint_field(const char* title, int value) {
+	texta(str("%1:", title), AlignLeft);
 	texta(str("%1i", value), AlignRight);
 }
 
 static void paint_name_and_info(objectn subject) {
 	pushrect push;
 	caret.x = width - 190; caret.y += 24; width = 180;
-	text(getnmo(subject));
+	text(getnm(subject));
 	caret.x += 120; width -= 120;
-	paint_field("Cost", getcreditscost(subject));
+	paint_field(getnm(Cost), getcreditscost(subject));
 }
 
 static void paint_building_subject(objectn subject) {
