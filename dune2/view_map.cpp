@@ -12,7 +12,6 @@
 #include "io_stream.h"
 #include "math.h"
 #include "midi.h"
-#include "music.h"
 #include "order.h"
 #include "pushvalue.h"
 #include "print.h"
@@ -127,6 +126,7 @@ static void mouse_cancel(rect rc) {
 
 static void update_tick() {
 	animate_time = getcputime();
+	music_update();
 }
 
 static int calculate(int v1, int v2, int n, int m) {
@@ -290,40 +290,38 @@ static bool mouse_hower(unsigned long duration = 1000, bool single_time = true) 
 	}
 }
 
-static void music_play(const char* id, int index) {
-	song_play(str("%1%2.2i", id, index));
-}
-
 static bool is_enemy_attack() {
 	auto& e = mainplayer();
 	return e.enemy_units_spotted > 0 || e.enemy_buildings_spotted > 0;
 }
 
-static void play_music(int type) {
+/*static void play_music(int type) {
 	switch(type) {
 	case 1: music_play("ambient", xrand(1, 10)); break;
 	case 2: music_play("attack", xrand(1, 6)); break;
 	}
-}
+}*/
 
 static void check_played_music() {
-	static unsigned music_changed;
+	static soundn music_attack[] = {
+		MusicAttack01, MusicAttack02, MusicAttack03, MusicAttack04, MusicAttack05, MusicAttack06
+	};
+	static soundn music_ambient[] = {
+		MusicAblient01, MusicAblient02, MusicAblient03, MusicAblient04, MusicAblient05,
+		MusicAblient06, MusicAblient07, MusicAblient08, MusicAblient09, MusicAblient10,
+	};
 	static unsigned music_type;
-	if(game.music_disabled)
+	if(!music_enable)
 		return;
 	auto new_type = is_enemy_attack() ? 2 : 1;
-	if(!midi_busy()) {
-		music_type = new_type;
-		play_music(new_type);
-	} else if(new_type != music_type) {
-		if(!music_changed)
-			music_changed = game.turn;
-		else if((game.turn - music_changed) > 6) {
-			music_type = new_type;
-			music_changed = 0;
-			play_music(music_type);
-		}
+	if(music_type == new_type)
+		return;
+	switch(new_type) {
+	case 1: current_music = maprnd(music_ambient); break;
+	case 2: current_music = maprnd(music_attack); break;
+	default: break;
 	}
+	music_type = new_type;
 }
 
 static void make_screenshoot() {
@@ -336,7 +334,6 @@ static void make_screenshoot() {
 
 static void common_input() {
 	update_tick();
-	check_played_music();
 	switch(hot.key) {
 	case Ctrl + F5: make_screenshoot(); break;
 	}
@@ -1061,6 +1058,7 @@ static void paint_game_map() {
 		area_spot.y = (area_origin.y * area_tile_height + (hot.mouse.y - area_screen.y1)) / area_tile_height;
 	} else
 		area_spot = {-10000, -10000};
+	check_played_music();
 	paint_map_tiles();
 	paint_map_features();
 	paint_objects(m2s(area_origin));

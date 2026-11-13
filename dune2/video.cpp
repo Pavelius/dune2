@@ -3,7 +3,6 @@
 #include "print.h"
 #include "pushvalue.h"
 #include "log_file.h"
-#include "music.h"
 #include "video.h"
 #include "view_map.h"
 #include "view_theme.h"

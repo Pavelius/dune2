@@ -114,9 +114,6 @@
     <ClCompile Include="midi.cpp">
       <Filter>support</Filter>
     </ClCompile>
-    <ClCompile Include="music.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="thread.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -341,9 +338,6 @@
     <ClInclude Include="midi.h">
       <Filter>support</Filter>
     </ClInclude>
-    <ClInclude Include="music.h">
-      <Filter>support</Filter>
-    </ClInclude>
     <ClInclude Include="thread.h">
       <Filter>support</Filter>
     </ClInclude>
@@ -436,9 +430,6 @@
     </ClInclude>
     <ClInclude Include="aircraft.h">
       <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="sound.h">
-      <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

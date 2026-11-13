@@ -177,7 +177,6 @@
     <ClCompile Include="math.cpp" />
     <ClCompile Include="midi.cpp" />
     <ClCompile Include="movement.cpp" />
-    <ClCompile Include="music.cpp" />
     <ClCompile Include="nameable.cpp" />
     <ClCompile Include="order.cpp" />
     <ClCompile Include="player.cpp" />
@@ -211,7 +210,6 @@
   <ItemGroup>
     <ClInclude Include="aircraft.h" />
     <ClInclude Include="objecta.h" />
-    <ClInclude Include="sound.h" />
     <ClInclude Include="storeable.h" />
     <ClInclude Include="actable.h" />
     <ClInclude Include="adat.h" />
@@ -248,7 +246,6 @@
     <ClInclude Include="manager.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="midi.h" />
-    <ClInclude Include="music.h" />
     <ClInclude Include="nameable.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="print.h" />

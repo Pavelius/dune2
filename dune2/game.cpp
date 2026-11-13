@@ -6,7 +6,7 @@
 #include "draw.h"
 #include "game.h"
 #include "math.h"
-#include "music.h"
+#include "midi.h"
 #include "print.h"
 #include "pointa.h"
 #include "player.h"
@@ -273,17 +273,17 @@ static void show_introdution() {
 		{NONE, 3 * 1000, 0, FG(Disappearing), "Intro17"},
 	};
 	// Logo theme
-	song_play("westwood");
+	current_music = MusicWestwood;
 	reset_form_animation();
 	reset_video_time();
 	video_play(main_logo);
 	// Main intro video
-	song_play("intro");
+	current_music = MusicIntro;
 	reset_form_animation();
 	reset_video_time();
 	video_play(main_intro);
 	// Change music
-	music_play(0);
+	current_music = NoMusic;
 }
 
 static void load_game() {

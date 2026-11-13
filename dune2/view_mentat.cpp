@@ -2,13 +2,13 @@
 #include "draw.h"
 #include "fraction.h"
 #include "game.h"
+#include "midi.h"
 #include "player.h"
 #include "pushvalue.h"
 #include "resid.h"
 #include "object.h"
 #include "objecta.h"
 #include "timer.h"
-#include "music.h"
 #include "view_map.h"
 #include "view_list.h"
 #include "view_theme.h"
@@ -282,6 +282,15 @@ static void show_mentat_subject(const char* id, resid rid) {
 	show_scene_raw(paint_mentat_silent, paint_exit, 0);
 }
 
+static soundn get_mentat_music() {
+	switch(mainplayer().fraction) {
+	case Ordos: return MusicMentatO;
+	case Atreides: return MusicMentatA;
+	case Harkonens: return MusicMentatH;
+	default: return MusicEmperor;
+	}
+}
+
 void show_scenario_prompt(const char* id, resid rid, int level) {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	pushvalue push_header(form_header);
@@ -290,7 +299,7 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 	auto pi = getnme(str("%1%2%3.2i", getido(mainplayer().fraction), id, level));
 	if(!pi)
 		return;
-	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
+	pushvalue push_music(current_music, get_mentat_music());
 	reset_form_animation();
 	string sb;
 	while(true) {
@@ -306,7 +315,6 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 		if(show_scene_raw(paint_mentat_silent, paint_proceed_repeat, 0))
 			break;
 	}
-	music_play(0);
 }
 
 static resid getscenarioavatar(int level) {
@@ -326,7 +334,7 @@ static const char* get_scenario_id(const char* id, int level) {
 
 void open_mentat() {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	song_play(str("mentat%1", mainplayer().getfractionsuffix()));
+	pushvalue push_music(current_music, get_mentat_music());
 	while(true) {
 		auto line = (objectn*)choose_mentat_topic();
 		if(!line)
@@ -339,7 +347,6 @@ void open_mentat() {
 		else
 			show_mentat_subject(getido(subject), getavatar(subject));
 	}
-	music_play(0);
 }
 
 static void paint_house(int x, int y, objectn n, unsigned key) {

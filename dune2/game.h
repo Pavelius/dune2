@@ -9,11 +9,12 @@ enum soundn : unsigned char {
 	MusicAblient06, MusicAblient07, MusicAblient08, MusicAblient09, MusicAblient10,
 	MusicAttack01, MusicAttack02, MusicAttack03, MusicAttack04, MusicAttack05, MusicAttack06,
 	MusicWestwood, MusicIntro, MusicTitle, MusicConquest, MusicCredites, MusicEmperor,
+	MusicMentatA, MusicMentatH, MusicMentatO,
 	MusicDefeatA, MusicDefeatH, MusicDefeatO,
 	MusicEndingA, MusicEndingH, MusicEndingO,
 	MusicVictoryA, MusicVictoryH, MusicVictoryO,
 };
-// extern soundn current_music;
+extern soundn current_music;
 
 struct gamei {
 	unsigned long	time;
@@ -22,7 +23,6 @@ struct gamei {
 	unsigned		starting_credits;
 	int				scenario;
 	objectn			house;
-	bool			music_disabled;
 };
 extern gamei game;
 

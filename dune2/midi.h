@@ -1,8 +1,17 @@
 #pragma once
 
-bool midi_busy();
-// void midi_close();
-void midi_music_stop();
-void midi_open();
-void midi_play_raw(void* mid_data);
-void midi_sleep(unsigned milliseconds);
+enum soundn : unsigned char;
+
+struct soundi {
+	unsigned*		data;
+	unsigned		size;
+	short unsigned	division;
+};
+extern soundi songs[];
+
+extern bool music_enable;
+extern soundn current_music;
+
+void music_setvolume(short unsigned v);
+void music_stop();
+void music_update();
