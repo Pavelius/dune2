@@ -3,6 +3,18 @@
 enum resid : unsigned short;
 enum objectn : unsigned char;
 
+enum soundn : unsigned char {
+	NoMusic,
+	MusicAblient01, MusicAblient02, MusicAblient03, MusicAblient04, MusicAblient05,
+	MusicAblient06, MusicAblient07, MusicAblient08, MusicAblient09, MusicAblient10,
+	MusicAttack01, MusicAttack02, MusicAttack03, MusicAttack04, MusicAttack05, MusicAttack06,
+	MusicWestwood, MusicIntro, MusicTitle, MusicConquest, MusicCredites, MusicEmperor,
+	MusicDefeatA, MusicDefeatH, MusicDefeatO,
+	MusicEndingA, MusicEndingH, MusicEndingO,
+	MusicVictoryA, MusicVictoryH, MusicVictoryO,
+};
+// extern soundn current_music;
+
 struct gamei {
 	unsigned long	time;
 	unsigned long	start_turn;

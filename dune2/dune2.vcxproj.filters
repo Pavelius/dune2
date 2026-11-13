@@ -19,6 +19,9 @@
     <Filter Include="support">
       <UniqueIdentifier>{96d04262-89cf-4a1d-805e-48af539fba52}</UniqueIdentifier>
     </Filter>
+    <Filter Include="resources">
+      <UniqueIdentifier>{4dba04cb-7e29-4b4d-a6e5-780d15ea9d9c}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="draw.cpp">
@@ -237,6 +240,12 @@
     <ClCompile Include="storeable.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="midi_util.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="mid_music.cpp">
+      <Filter>resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -427,6 +436,9 @@
     </ClInclude>
     <ClInclude Include="aircraft.h">
       <Filter>logic</Filter>
+    </ClInclude>
+    <ClInclude Include="sound.h">
+      <Filter>support</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

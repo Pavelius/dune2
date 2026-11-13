@@ -2,11 +2,6 @@
 #include "math.h"
 #include "stringbuilder.h"
 
-extern "C" void exit(int exit_code);
-extern "C" void* malloc(size_t size);
-extern "C" void* realloc(void *ptr, size_t size);
-extern "C" void	free(void* pointer);
-
 size_t rmoptimal(size_t need_count) {
 	const unsigned mc = 4 * 256 * 256;
 	unsigned m = 8;

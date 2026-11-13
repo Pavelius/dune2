@@ -135,6 +135,8 @@
   <ItemGroup>
     <ClCompile Include="aircraft.cpp" />
     <ClCompile Include="game_ai.cpp" />
+    <ClCompile Include="midi_util.cpp" />
+    <ClCompile Include="mid_music.cpp" />
     <ClCompile Include="objecta.cpp" />
     <ClCompile Include="actable.cpp" />
     <ClCompile Include="answers.cpp" />
@@ -209,6 +211,7 @@
   <ItemGroup>
     <ClInclude Include="aircraft.h" />
     <ClInclude Include="objecta.h" />
+    <ClInclude Include="sound.h" />
     <ClInclude Include="storeable.h" />
     <ClInclude Include="actable.h" />
     <ClInclude Include="adat.h" />
