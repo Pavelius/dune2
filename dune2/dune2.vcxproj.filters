@@ -156,9 +156,6 @@
     <ClCompile Include="view_debug.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="order.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
     <ClCompile Include="view_indicator.cpp">
       <Filter>logic</Filter>
     </ClCompile>
@@ -370,9 +367,6 @@
     </ClInclude>
     <ClInclude Include="screenshoot.h">
       <Filter>support</Filter>
-    </ClInclude>
-    <ClInclude Include="order.h">
-      <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="view_indicator.h">
       <Filter>logic</Filter>

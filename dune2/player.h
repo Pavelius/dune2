@@ -11,6 +11,12 @@ enum statn : unsigned char {
 };
 extern const char* stat_names[LastStat + 1];
 
+enum ordern : unsigned char {
+	Stop, Move, MoveAndAttack, Attack, Retreat, Harvest,
+	LastOrder = Harvest
+};
+extern const char* order_names[LastOrder + 1];
+
 struct storeable {
 	unsigned int abilities[LastStat + 1];
 	unsigned int maximum[LastStat + 1];
@@ -43,5 +49,6 @@ struct playerable {
 extern unsigned char player_index, player_human;
 
 inline const char* getnm(statn n) { return stat_names[n]; }
+inline const char* getnm(ordern n) { return order_names[n]; }
 
 playeri& mainplayer();

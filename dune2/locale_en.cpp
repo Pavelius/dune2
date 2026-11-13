@@ -27,3 +27,6 @@ const char* message_names[LastMessage + 1] = {
 const char* stat_names[LastStat + 1] = {
 	"Spice", "Energy",
 };
+const char* order_names[LastOrder + 1] = {
+	"Stop", "Move", "Move", "Attack", "Retreat", "Harvest",
+};

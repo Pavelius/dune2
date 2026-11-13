@@ -178,7 +178,6 @@
     <ClCompile Include="midi.cpp" />
     <ClCompile Include="movement.cpp" />
     <ClCompile Include="nameable.cpp" />
-    <ClCompile Include="order.cpp" />
     <ClCompile Include="player.cpp" />
     <ClCompile Include="point.cpp" />
     <ClCompile Include="print.cpp" />
@@ -235,7 +234,6 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="view_indicator.h" />
     <ClInclude Include="movement.h" />
-    <ClInclude Include="order.h" />
     <ClInclude Include="player.h" />
     <ClInclude Include="iff.h" />
     <ClInclude Include="io_stream.h" />

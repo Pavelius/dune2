@@ -1,7 +1,6 @@
 #pragma once
 
 #include "player.h"
-#include "order.h"
 #include "point.h"
 
 enum direction : unsigned char;

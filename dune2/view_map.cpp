@@ -12,7 +12,6 @@
 #include "io_stream.h"
 #include "math.h"
 #include "midi.h"
-#include "order.h"
 #include "pushvalue.h"
 #include "print.h"
 #include "rand.h"
@@ -1163,7 +1162,7 @@ static void human_order() {
 }
 
 static void button(ordern order, int key) {
-	button(bsdata<orderi>::elements[order].getname(), key, AlignCenter, human_order, order);
+	button(getnm(order), key, AlignCenter, human_order, order);
 }
 
 void paint_spice() {
@@ -1397,8 +1396,8 @@ static void paint_turret_info() {
 	paint_unit_panel(geticonavatar(last_building->type), last_building->hits, last_building->gethitsmax(), 0, 0);
 	setoffset(-1, 0);
 	height = 12;
-	button(bsdata<orderi>::elements[Attack].getname(), 'A', AlignCenter, human_order_building, Attack);
-	button(bsdata<orderi>::elements[Stop].getname(), 'Stop', AlignCenter, human_order_building, Stop);
+	button(getnm(Attack), 'A', AlignCenter, human_order_building, Attack);
+	button(getnm(Stop), 'Stop', AlignCenter, human_order_building, Stop);
 }
 
 static void paint_unit_info() {

@@ -2,12 +2,13 @@
 
 #include "moveable.h"
 #include "fix.h"
-#include "order.h"
 #include "resid.h"
 #include "object.h"
 
 enum squadn : unsigned char;
+enum ordern : unsigned char;
 enum movementn : unsigned char;
+
 struct unit : moveable, fixable, objectable {
 	squadn		squad;
 	explicit operator bool() const { return hits > 0; }
