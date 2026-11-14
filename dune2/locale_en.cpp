@@ -10,7 +10,7 @@ const char* object_names[LastObject + 1] = {
 	"Atreides", "Harkonens", "Ordos",
 	"Base", "SpiceSilos", "Starport", "Wind Trap", "Refinery", "Radar Outpost", "Repair Facility", "House of IX", "Palace",
 	"Barracks", "Wor", "Light Vehicle Factory", "Heavy Vehicle Factory", "High-tech Factory",
-	"Concrete Slab", "Concrete Slab Blocks", "Turret", "Rocket Turret",
+	"Wall", "Concrete Slab", "Concrete Slab Blocks", "Turret", "Rocket Turret",
 	"MCV", "Harvester", "Infantry", "Troopers", "Trike", "Quad", "Combat Tank", "Siege Tank", "Rocket Tank",
 	"Raider", "Nuclear Rocket", "Devastator", "Fremens", "Deviator", "Saboteur", "Sonic Tank",
 	"Shai-Hulud", "Carrier", "Fregate", "Ornithopter",
@@ -34,6 +34,7 @@ const char* object_a_info[LastObject + 1] = {
 	"The Light Factory produces lightly armored three and four wheeled vehicles, which are used for the defense of our refineries and silos.",
 	"The Heavy Factory produces all large vehicles, like the harvester and the heavier machines used for defensive purposes.\nThe building itself is extremely well armored.",
 	"The High-Tech Factory produces high technology aircraft like the carryall.",
+	"Walls are the perfect passive defense system.\nThey should be used to fortify silos and other weak structures.", // Wall
 	"Concrete slabs provide the stable foundations for our buildings that allow them to operate at maximum efficiency.",
 	"Concrete slabs provide the stable foundations for our buildings that allow them to operate at maximum efficiency.",
 	"Turrets are stationary base defenses that are exceptionally accurate at close range.",
@@ -47,13 +48,13 @@ const char* object_a_info[LastObject + 1] = {
 	"The Combat Tank is adequately armed and good for defense.\nIt can be used for perimeter defense and protection of the harvesters.",
 	"The Siege Tank is heavily armored and has very powerful weapons.\nIt is more than adequate to defend your harvesters and installations.",
 	"The Rocket Tank has good armor, is faster than normal tanks, and has long range strike capabilities.\nIt is excellent for defensive support of the light infantry and your squadrons of trikes and quads.",
-	"", // Raider
-	"", // Death Hand
-	"", // Devastator
-	"", // Fremens
-	"", // Deviator
-	"", // Saboteur
-	"", // SonicTank
+	"The Ordos produce a Trike that they call the \"Raider\".\n The \"Raider\" is much like our own Trike, only it is faster, more maneuverable, and highly agile, yet it has less armor.", // Raider
+	"One of the most destructive weapons on Dune is the Harkonnen missile called the Death Hand.\nThis multiple explosive warhead affects a wide area and can cause much greater damage than a conventional missile.", // Death Hand
+	"This massive tank is one of the newest war machines developed by the Harkonnen.\nIt has nearly impenetrable armor, enormous firepower, and is capable of destroying nearly any obstacle in its path.", // Devastator
+	"The native peoples of this planet are excellent guerrilla fighters.\nThe Fremen are friendly toward us because House Atreides has always dealt with them fairly, and as equals.", // Fremens
+	"The Deviator fires missiles containing dangerous nerve gas that can seriously distort the perceptions of affected personnel, and may even incite full scale mutinies.", // Deviator
+	"The Ordos often employ a band of local terrorist fighters called Saboteurs.\nThese men are well versed in sabotage, and can easily penetrate defensive perimeters en route to the buildings they intend to destroy.\nThey should be attacked and killed promptly whenever discovered.", // Saboteur
+	"The Sonic Tank is one of our unique weapons.\nIt fires a blast of sonic energy rather than projectile weapons.\nAn excellent weapon for defensive missions, it is especially effective against enemy infantry.", // SonicTank
 	"These enormous creatures are attracted by vibrations on the surface and will often attack and devour both personnel and vehicles.\nRock is the only sure defense against these creatures.",
 	"The Carryall is capable of transporting the harvester between spice fields and the refinery.\nIt has no offensive capabilities or weapons, and only light armor.",
 	"The Carryall is capable of transporting the harvester between spice fields and the refinery.\nIt has no offensive capabilities or weapons, and only light armor.",
@@ -78,6 +79,7 @@ const char* object_h_info[LastObject + 1] = {
 	"The light factory produces only lightly armored vehicles, and is only a beginning step towards your goal of military superiority.", // LightVehicleFactory
 	"You must have a Heavy factory in order to construct our heavy tanks.", // HeavyVehicleFactory
 	"The High-Tech factory produces our carryalls.", // HighTechFactory
+	"Walls are an excellent choice for defensive reinforcement.\nLike the concrete slabs, walls are inexpensive to produce.", // Wall
 	"Slabs are used to provide stable building foundations.\nWe have found that anything built on bare rock will deteriorate rapidly.", // Slab
 	"Slabs are used to provide stable building foundations.\nWe have found that anything built on bare rock will deteriorate rapidly.", // Slab4
 	"Turrets are accurate and effective weapons.\nAlthough they are immobile, you should consider them as required enhancements to your forces.", // Turret
@@ -122,6 +124,7 @@ const char* object_o_info[LastObject + 1] = {
 	"The light factory produces our Raider Trikes as well as Quads.", // LightVehicleFactory
 	"The heavy factory produces all large tracked vehicles, like tanks and Harvesters.", // HeavyVehicleFactory
 	"The High-Tech Factory utilizes technology to produce advanced aircraft.", // HighTechFactory
+	"Walls may provide for a fair defense around the perimeter of a compound.", // Wall
 	"Concrete slabs are an effective and inexpensive foundation material.\nStructures without foundations will require frequent repair, and waste valuable time and money.", // Slab
 	"Concrete slabs are an effective and inexpensive foundation material.\nStructures without foundations will require frequent repair, and waste valuable time and money.", // Slab4
 	"The turrets are highly accurate weapons.\nTheir only drawback is that once established, they cannot be moved.", // Turret
@@ -164,6 +167,7 @@ const char* object_capacity[LastObject + 1] = {
 	"", // LightVehicleFactory
 	"", // HeavyVehicleFactory
 	"", // HighTechFactory
+	"", // Wall
 	"Type: Foundation\nMaterial: Gravel/Sand base mix\nWeight: 1,469 kg\nArmor: Medium", // Slab
 	"Type: Foundation\nMaterial: Gravel/Sand base mix\nWeight: 1,469 kg\nArmor: Medium", // Slab4
 	"", // Turret
@@ -215,4 +219,26 @@ const char* order_names[LastOrder + 1] = {
 };
 const char* terrain_names[LastTerrain + 1] = {
 	"Sand", "Dune", "Spice", "Spice", "Spice Blow", "Rock", "Mountain",
+};
+const char* intro_subtitle[] = {
+	"The planet Arrakis, known as Dune.",
+	"Land of sand.",
+	"Home of the Spice Melange.",
+	"The Spice controls the Empire.",
+	"Whoever controls Dune",
+	"controls the Spice.",
+	"The Emperor has proposed a challenge",
+	"to each of the Houses.",
+	"The House that produces the most Spice",
+	"will control Dune.",
+	"There are no set territories.",
+	"And no rules of engagement.",
+	"Vast armies have arrived.",
+	"Now three Houses fight for control of Dune.",
+	"The noble Atreides.",
+	"The insidious Ordos.",
+	"And the evil Harkonnen.",
+	"Only one House will prevail.",
+	"Your battle for Dune begins",
+	"NOW",
 };

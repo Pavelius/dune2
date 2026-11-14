@@ -266,16 +266,7 @@
   <ItemGroup>
     <Text Include="..\errors.txt" />
     <Text Include="..\locale\en\actions.txt" />
-    <Text Include="..\locale\en\buildings.txt" />
-    <Text Include="..\locale\en\intro.txt" />
-    <Text Include="..\locale\en\mentat.txt" />
     <Text Include="..\locale\en\scenaries.txt" />
-    <Text Include="..\locale\en\terrains.txt" />
-    <Text Include="..\locale\en\units.txt" />
-    <Text Include="..\locale\en\UnknownNames.txt" />
-    <Text Include="..\test\mentat_h_new.txt" />
-    <Text Include="..\test\mentat_new.txt" />
-    <Text Include="..\test\mentat_o_new.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

@@ -11,12 +11,12 @@ struct videoi {
 	resid			id;
 	unsigned long	time_lenght, frame_rate;
 	flag8			flags;
-	const char*		text;
+	unsigned		subtitle = - 1;
 	constexpr explicit operator bool() const { return id != NONE; }
 	bool			is(videof v) const { return flags.is(v); }
 };
 extern unsigned long start_video;
 
 void reset_video_time();
-void video_play(const slice<videoi>& source);
+void video_play(const slice<videoi>& source, const char** subtitles);
 void video_dump(const char* url, const slice<videoi>& source, unsigned long time);

@@ -41,6 +41,7 @@ static objecti objects[LastObject + 1] = {
 	{Building, LITEFTRY, 55, ICONS, {241, 242, 248, 249}}, // LightVehicleFactory
 	{Building, HVYFTRY, 56, ICONS, {254, 255, 256, 261, 262, 263}}, // HeavyVehicleFactory
 	{Building, HITCFTRY, 57, ICONS, {270, 271, 272, 276, 277, 278}}, // HighTechFactory
+	{Building, WALL, 34, ICONS, {126}}, // Wall
 	{Building, SLAB, 53, ICONS, {126}}, // ConcreteSlab
 	{Building, SLAB4, 71, ICONS}, // Slab4
 	{Building, TURRET, 67, ICONS, {356}}, // Turret

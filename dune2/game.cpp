@@ -248,40 +248,40 @@ static void show_introdution() {
 	};
 	static videoi main_intro[] = {
 		{INTRO1, 9 * 1000, 110, FG(Disappearing)},
-		{INTRO2, 8 * 1000, 150, FG(Appearing) | FG(Disappearing), "Intro1"},
-		{INTRO3, 7 * 1000, 240, FG(Appearing), "Intro2"},
-		{INTRO3, 7 * 1000, 240, FG(ContinueToNext), "Intro3"},
-		{INTRO9, 7 * 1000, 230, FG(Appearing), "Intro4"},
-		{INTRO9, 7 * 1000, 230, FG(ContinueToNext), "Intro5"},
-		{INTRO9, 5 * 1000, 230, FG(ContinueToNext) | FG(Disappearing), "Intro6"},
-		{INTRO10, 3 * 1000, 0, FG(Appearing), "Intro7"},
-		{INTRO10, 3 * 1000, 0, FG(ContinueToNext), "Intro8"},
-		{INTRO11, 3 * 1000, 180, 0, "Intro9"},
-		{INTRO11, 3 * 1000, 180, FG(ContinueToNext), "Intro10"},
-		{INTRO11, 3 * 1000, 180, 0, "Intro11"},
-		{INTRO11, 3 * 1000, 180, FG(ContinueToNext) | FG(Disappearing), "Intro12"},
-		{INTRO4, 0, 240, FG(Appearing), "Intro13"},
-		{NONE, 6 * 1000, 0, 0, "Intro14"},
-		{INTRO6, 10 * 1000, 140, 0, "IntroBattleA"},
-		{INTRO7A, 0, 0, 0, "IntroBattleO"},
-		{INTRO7B, 0, 0, 0, "IntroBattleO"},
-		{INTRO8A, 0, 0, 0, "IntroBattleH"},
-		{INTRO8B, 3 * 1000 + 500, 0, FG(Repeated), "IntroBattleH"},
-		{INTRO8C, 0, 0, 0, "IntroBattleH"},
-		{INTRO5, 8 * 1000, 0, FG(Repeated) | FG(Appearing) | FG(Disappearing), "Intro15"},
-		{NONE, 4 * 1000, 0, FG(Appearing), "Intro16"},
-		{NONE, 3 * 1000, 0, FG(Disappearing), "Intro17"},
+		{INTRO2, 8 * 1000, 150, FG(Appearing) | FG(Disappearing), 0},
+		{INTRO3, 7 * 1000, 240, FG(Appearing), 1},
+		{INTRO3, 7 * 1000, 240, FG(ContinueToNext), 2},
+		{INTRO9, 7 * 1000, 230, FG(Appearing), 3},
+		{INTRO9, 7 * 1000, 230, FG(ContinueToNext), 4},
+		{INTRO9, 5 * 1000, 230, FG(ContinueToNext) | FG(Disappearing), 5},
+		{INTRO10, 3 * 1000, 0, FG(Appearing), 6},
+		{INTRO10, 3 * 1000, 0, FG(ContinueToNext), 7},
+		{INTRO11, 3 * 1000, 180, 0, 8},
+		{INTRO11, 3 * 1000, 180, FG(ContinueToNext), 9},
+		{INTRO11, 3 * 1000, 180, 0, 10},
+		{INTRO11, 3 * 1000, 180, FG(ContinueToNext) | FG(Disappearing), 11},
+		{INTRO4, 0, 240, FG(Appearing), 12},
+		{NONE, 6 * 1000, 0, 0, 13},
+		{INTRO6, 10 * 1000, 140, 0, 14},
+		{INTRO7A, 0, 0, 0, 15},
+		{INTRO7B, 0, 0, 0, 15},
+		{INTRO8A, 0, 0, 0, 16},
+		{INTRO8B, 3 * 1000 + 500, 0, FG(Repeated), 16},
+		{INTRO8C, 0, 0, 0, 16},
+		{INTRO5, 8 * 1000, 0, FG(Repeated) | FG(Appearing) | FG(Disappearing), 17},
+		{NONE, 4 * 1000, 0, FG(Appearing), 18},
+		{NONE, 3 * 1000, 0, FG(Disappearing), 19},
 	};
 	// Logo theme
 	current_music = MusicWestwood;
 	reset_form_animation();
 	reset_video_time();
-	video_play(main_logo);
+	video_play(main_logo, 0);
 	// Main intro video
 	current_music = MusicIntro;
 	reset_form_animation();
 	reset_video_time();
-	video_play(main_intro);
+	video_play(main_intro, intro_subtitle);
 	// Change music
 	current_music = NoMusic;
 }

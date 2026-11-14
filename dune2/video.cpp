@@ -15,7 +15,7 @@ void reset_video_time() {
 	start_video = animate_time;
 }
 
-void video_play(const slice<videoi>& source) {
+void video_play(const slice<videoi>& source, const char** subtitles) {
 	pushfontb push_theme(TextRed); draw::font = gres(FONT16);
 	pushvalue push_id(animate_id);
 	pushvalue push_header(form_header);
@@ -27,7 +27,9 @@ void video_play(const slice<videoi>& source) {
 		animate_stop = 0;
 		animate_once = true;
 		animate_delay = e.frame_rate;
-		form_header = getnme(e.text);
+		form_header = 0;
+		if(subtitles && e.subtitle!=-1)
+			form_header = subtitles[e.subtitle];
 		if(e.is(Appearing)) {
 			if(!e.is(ContinueToNext))
 				reset_form_animation();

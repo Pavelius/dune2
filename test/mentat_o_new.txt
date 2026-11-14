@@ -1,3 +1,0 @@
-﻿#WallOrdosInfo
-"Walls may provide for a fair defense around the perimeter of a compound.",
-

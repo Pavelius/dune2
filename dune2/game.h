@@ -30,6 +30,8 @@ enum messagen : unsigned char {
 };
 extern const char* message_names[LastMessage + 1];
 
+extern const char* intro_subtitle[];
+
 struct gamei {
 	unsigned long	time;
 	unsigned long	start_turn;

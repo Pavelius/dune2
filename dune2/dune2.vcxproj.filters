@@ -406,40 +406,13 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\locale\en\units.txt">
-      <Filter>locale</Filter>
-    </Text>
     <Text Include="..\errors.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\locale\en\UnknownNames.txt">
       <Filter>locale</Filter>
     </Text>
     <Text Include="..\locale\en\actions.txt">
       <Filter>locale</Filter>
     </Text>
-    <Text Include="..\locale\en\terrains.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\locale\en\intro.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\locale\en\buildings.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\locale\en\mentat.txt">
-      <Filter>locale</Filter>
-    </Text>
     <Text Include="..\locale\en\scenaries.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\test\mentat_new.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\test\mentat_h_new.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\test\mentat_o_new.txt">
       <Filter>locale</Filter>
     </Text>
   </ItemGroup>
