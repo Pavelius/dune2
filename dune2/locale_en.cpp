@@ -12,6 +12,7 @@ const char* object_names[LastObject + 1] = {
 	"Barracks", "Wor", "Light Vehicle Factory", "Heavy Vehicle Factory", "High-tech Factory",
 	"Concrete Slab", "Concrete Slab Blocks", "Turret", "Rocket Turret",
 	"MCV", "Harvester", "Infantry", "Troopers", "Trike", "Quad", "Combat Tank", "Siege Tank", "Rocket Tank",
+	"Raider", "Death Hand", "Devastator", "Fremens", "Deviator", "Saboteur", "SonicTank",
 	"Shai-Hulud", "Carrier", "Fregate", "Ornithopter",
 };
 const char* object_a_info[LastObject + 1] = {
@@ -46,6 +47,13 @@ const char* object_a_info[LastObject + 1] = {
 	"The Combat Tank is adequately armed and good for defense.\nIt can be used for perimeter defense and protection of the harvesters.",
 	"The Siege Tank is heavily armored and has very powerful weapons.\nIt is more than adequate to defend your harvesters and installations.",
 	"The Rocket Tank has good armor, is faster than normal tanks, and has long range strike capabilities.\nIt is excellent for defensive support of the light infantry and your squadrons of trikes and quads.",
+	"", // Raider
+	"", // Death Hand
+	"", // Devastator
+	"", // Fremens
+	"", // Deviator
+	"", // Saboteur
+	"", // SonicTank
 	"These enormous creatures are attracted by vibrations on the surface and will often attack and devour both personnel and vehicles.\nRock is the only sure defense against these creatures.",
 	"The Carryall is capable of transporting the harvester between spice fields and the refinery.\nIt has no offensive capabilities or weapons, and only light armor.",
 	"The Carryall is capable of transporting the harvester between spice fields and the refinery.\nIt has no offensive capabilities or weapons, and only light armor.",
@@ -83,6 +91,13 @@ const char* object_h_info[LastObject + 1] = {
 	"The combat tank will be your first tank, and it has adequate armor and fire power.\nHowever, remember that there are more powerful weapons at your disposal.", // CombatTank
 	"The Siege Tank is superior to the Combat tank.\nIt's armor and weaponry has the power you will need to complete your conquest of this planet.", // SiegeTank
 	"The rocket tank is effective for long range attacks.\nGuard these well, for they are ineffective at close range.", // RocketTank
+	"This is a pitiful little machine.\nFor some reason the Ordos believe that this overblown Trike can out maneuver and out fire our Quads.", // Raider
+	"Our Death Hand is a lovely weapon capable of being targeted for long range strikes.\nJust prior to impact it releases a series of explosive fingers that spread destruction over a wide area.", // Death Hand
+	"The Devastator is another of the unique and powerful weapons in our awesome arsenal.\nIt's armor and weapons are unequaled.\nThe Devastator need not fear other lesser tanks on the battlefield.", // Devastator
+	"The Fremen are little more than slaves to the Atreides.\nIgnorant and aboriginal, they occasionally fight for the Atreides, and are provided food and supplies in return.", // Fremens
+	"This tank fires a powerful nerve gas that can cause your weaker-willed soldiers to turn against you.", // Deviator
+	"The Ordos depend upon a band of terrorists called Saboteurs.\nIf uncontrolled, these cunning little pests will inflict a great deal of damage to your buildings.\nI suggest eliminating Saboteurs immediately whenever they are encountered.", // Saboteur
+	"The Atreides believe that they have found a humane way of eliminating their enemies.\nTheir Sonic Tank fires shock waves instead of rockets.", // SonicTank
 	"These huge native worms are almost impossible to kill.\nThey are attracted by surface vibrations, and all ground based units are at risk of being devoured.\n Rock is the only sure defense against these creatures.", //SandWorm
 	"This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own.", // Carryall
 	"This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own.", // Fregate
@@ -127,6 +142,13 @@ const char* object_capacity[LastObject + 1] = {
 	"Type: Medium Battle Tank\nArmament: 155mm gun\nSpeed: 40 km/h (tracked)\nArmor: Medium\nCrew: 2", // CombatTank
 	"Type: Main Battle Tank\nArmament: Daul 155mm cannons\nSpeed: 32 km/h (tracked)\nArmor: Heavy\nCrew: 3", // SiegeTank
 	"", // RocketTank
+	"", // Raider
+	"", // Death Hand
+	"", // Devastator
+	"", // Fremens
+	"", // Deviator
+	"", // Saboteur
+	"", // SonicTank
 	"No Known Weakness", // SandWorm
 	"Type: Airborne Unit\nArmament: none\nSpeed: 160 km/h (airborne)\nArmor: Light\nCrew: 4", // Carryall
 	"Type: Airborne Unit\nArmament: none\nSpeed: 160 km/h (airborne)\nArmor: Light\nCrew: 4", // Fregate

@@ -14,6 +14,7 @@ enum objectn : unsigned char {
 	Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
 	Slab, Slab4, Turret, RocketTurret,
 	MCVehicle, Harvester, LightInfantry, HeavyTroopers, Trike, Quad, CombatTank, SiegeTank, RocketTank,
+	Raider, DeathHand, Devastator, Fremens, Deviator, Saboteur, SonicTank,
 	SandWorm, Carryall, Fregate, Ornithopter,
 	LastObject = Ornithopter,
 };

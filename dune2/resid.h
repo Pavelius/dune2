@@ -35,4 +35,3 @@ struct residi {
 void clear_sprites();
 void save_sprite(resid id);
 const sprite* gres(resid i);
-// const sprite* gres(const char* id);

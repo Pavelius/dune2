@@ -14,7 +14,7 @@ struct objecti {
 	short unsigned	frames[16];
 };
 
-BSDATA(objecti) = {
+static objecti objects[LastObject + 1] = {
 	{}, //NoObject
 	{}, //Briefing
 	{}, //Houses
@@ -54,12 +54,18 @@ BSDATA(objecti) = {
 	{Unit, LTANK, 78, UNITS2, {0, 5}}, // CombatTank
 	{Unit, HTANK, 72, UNITS2, {10, 15}}, // SiegeTank
 	{Unit, RTANK, 73, UNITS2, {0, 35}}, // RocketTank
+	{Unit, OTRIKE, 87, UNITS, {5}}, // Raider
+	{Special, GOLDBB, 18}, // Death Hand
+	{Unit, HARKTANK, 75, UNITS2, {20, 25}}, // Devastator
+	{Unit, FREMEN, 92, UNITS, {91}}, // Fremens
+	{Unit, ORDRTANK, 86, UNITS2, {0, 35}}, // Deviator
+	{Unit, SABOTURE, 84, UNITS, {63}}, // Saboteur
+	{Unit, STANK, 79, UNITS2, {0, 30}}, // SonicTank
 	{Special, WORM, 93}, // SandWorm
 	{Special, CARRYALL, 77, UNITS, {45}}, // Carryall
 	{Special, CARRYALL, 77, UNITS, {60}}, // Fregate
 	{Special, ORNI, 85, UNITS, {51, 3}}, // Ornithopter
 };
-assert_enum(objecti, Ornithopter)
 
 const char*	getinfo(objectn type, objectn fraction) {
 	switch(fraction) {
@@ -261,7 +267,7 @@ int getdefaultcolor(objectn type) {
 }
 
 objectn getparent(objectn type) {
-	return bsdata<objecti>::elements[type].parent;
+	return objects[type].parent;
 }
 
 objectn getbuild(objectn type) {
@@ -306,19 +312,19 @@ const char* getido(objectn type) {
 }
 
 resid getavatar(objectn type) {
-	return bsdata<objecti>::elements[type].mentat_avatar;
+	return objects[type].mentat_avatar;
 }
 
 resid getres(objectn type) {
-	return bsdata<objecti>::elements[type].res;
+	return objects[type].res;
 }
 
 int geticonavatar(objectn type) {
-	return bsdata<objecti>::elements[type].icon_avatar;
+	return objects[type].icon_avatar;
 }
 
 unsigned short* getframes(objectn type) {
-	return bsdata<objecti>::elements[type].frames;
+	return objects[type].frames;
 }
 
 movementn getmove(objectn type) {

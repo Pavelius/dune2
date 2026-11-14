@@ -1,0 +1,2 @@
+﻿#WallHarkonensInfo
+"Walls are an excellent choice for defensive reinforcement.\nLike the concrete slabs, walls are inexpensive to produce.",
