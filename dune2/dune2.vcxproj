@@ -275,6 +275,7 @@
     <Text Include="..\locale\en\UnknownNames.txt" />
     <Text Include="..\test\mentat_h_new.txt" />
     <Text Include="..\test\mentat_new.txt" />
+    <Text Include="..\test\mentat_o_new.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

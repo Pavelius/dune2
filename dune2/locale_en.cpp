@@ -108,11 +108,44 @@ const char* object_o_info[LastObject + 1] = {
 	"The Atreides come from Caladan, a planet whose warm climate and over - productive agriculture undoubtedly make the citizens kind and non - violent.\nThis is their weakness.", // Atreides
 	"Giedi Prime is the home to the Harkonnen.\nDo not be fooled by their blind hatred and bloodlust.\nThey are devious, shrewd, and must be watched carefully!", // Harkonens
 	"The Ordos come from many different homes.\nBecause of this diversity, we are strong and highly organized.\nWe know when it is necessary to utilize resources and when to appropriate the required materials.\nOur organization is highly efficient and effective.", // Ordos
-	//ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
-	//Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
-	//Slab, Slab4, Turret, RocketTurret,
-	//MCVehicle, Harvester, LightInfantry, HeavyTroopers, Trike, Quad, CombatTank, SiegeTank, RocketTank,
-	//SandWorm, Carryall, Fregate, Ornithopter,
+	"The construction yard will allow you to erect other buildings.", // ConstructionYard
+	"Silos are used for the storage of spice.\nThey are weaker and more easily destroyed than harvesters or refineries.\nUse this knowledge to your advantage.", // SpiceSilos
+	"The intergalactic purchasing network accessible through the starport will allow you to acquire weaponry in bulk orders.", // Starport
+	"Windtraps are the only effective source of power on Dune.\nAlthough the traps are fairly strong, they tend to be easily damaged, and it would be wise to always keep more than one wind trap in operation.", // Windtrap
+	"The refinery is necessary for the conversion of spice into credits.\nWithout a refinery, there is no way for you to obtain new credits by harvesting spice.", // Refinery
+	"The radar capabilities of the outpost are vital to your operations.\nWith radar, you will be able to monitor the movements of the other Houses and prepare defensive and attack strategies.", // RadarOutpost
+	"If you do not have a repair facility, it will not be possible for you to fix damaged vehicles.\nIf your damaged vehicles do not receive repairs, you will lose them completely.", // RepairFacility
+	"IX will allow you to create better, faster, and more efficient machines.\nIt will provide the means to produce some of our most special vehicles.", // HouseOfIX
+	"When the House grants you a Palace, you will know that you have pleased them.\nIf you are ever to lose your Palace to the enemy, your mission will surely be lost.", // Palace
+	"These buildings produce the light infantry, which are some of the most important fighting units in our military system.", // Barracks
+	"WOR is the means of producing the heavy troopers.", // Wor
+	"The light factory produces our Raider Trikes as well as Quads.", // LightVehicleFactory
+	"The heavy factory produces all large tracked vehicles, like tanks and Harvesters.", // HeavyVehicleFactory
+	"The High-Tech Factory utilizes technology to produce advanced aircraft.", // HighTechFactory
+	"Concrete slabs are an effective and inexpensive foundation material.\nStructures without foundations will require frequent repair, and waste valuable time and money.", // Slab
+	"Concrete slabs are an effective and inexpensive foundation material.\nStructures without foundations will require frequent repair, and waste valuable time and money.", // Slab4
+	"The turrets are highly accurate weapons.\nTheir only drawback is that once established, they cannot be moved.", // Turret
+	"The Rocket turret, like the regular turret, cannot be moved.\nHowever, it has greater range capabilities than the regular turret.\nTogether, these should provide excellent long and short range firing capabilities.", // RocketTurret
+	"The Mobile Construction Vehicle offers an efficient means of expanding the territory under your control.\nIt can provide support for the construction of new facilities at some distance from your existing structures.", // MCVehicle
+	"Harvesters are large, slow vehicles that scout for spice fields and begin harvesting whenever raw spice is found.\nObviously this is a highly inefficient process.\nWe encourage our field commanders to also appropriate previously harvested materials, which is certainly a faster and more efficient method of spice acquisition.", // Harvester
+	"The light infantry allows for an expendable force of men.\nIf used in large numbers, they are almost unbeatable.", // LightInfantry
+	"The heavy troopers carry more armor and yet are still faster than the light infantry.\nTheir abilities are well suited for ground assaults and reconnaissance missions.", // HeavyTroopers
+	"The three wheeled vehicles that other Houses use is lacking in many aspects.\nUnlike our Raider, Trikes are unable to maintain the speeds that we demand.\nUnfortunately, we had to sacrifice armor for this increase of speed.", // Trike
+	"This four-wheeled vehicle is not well suited to our purposes.\nAlthough it has good armor, it is not maneuverable enough and it lacks the speeds we require.", // Quad
+	"This slow, single barreled tank is adequate in its performance.\nHowever, there are much faster and more efficient tanks available.", // CombatTank
+	"The Siege Tank possesses more than twice the firepower of the combat tank.\nYet, despite all the power and armor, it is quite slow.", // SiegeTank
+	"Although the Rocket Tank is faster than the combat tank and has long range firing capabilities, we prefer more useful tanks.\nI suggest sending your \"Raiders\" against rocket tanks.", // RocketTank
+	"The Raider is far better than a standard trike.\nIt is faster and has excellent weapons.\nBecause of its maneuverability, it is the best vehicle for those missions where you must rely on swiftness and agility.", // Raider
+	"The Harkonnen possess these missiles that are capable of delivering multiple warheads to a single strike area.\nAlthough fearfully named, fortunately they are also highly inaccurate.", // DeathHand
+	"The Harkonnen have created this new tank that is capable of inflicting severe damage to even the most well protected vehicles and buildings.\nFor all its firepower and armor, however, it is extremely slow and may be easily outmaneuvered.", // Devastator
+	"The native Fremen of Dune are simple but skilled fighters.\nThey are currently utilized by the Atreides for combat purposes.\nPerhaps, with the right incentives, they could be persuaded to join our forces instead.", // Fremens
+	"Our Deviator fires a nerve gas that is capable of twisting the minds of enemy soldiers.\nSome of our best regiments are primarily composed of formerly hostile military personnel who have been reprogrammed by exposure to this gaseous argument.", // Deviator
+	"The Saboteur is the group name given to this unit of soldiers specializing in sabotage.\nThey are effective for specific target destruction, and are based at all of our Palaces.", // Saboteur
+	"The Atreides have developed a Sonic Tank that fires sonic blasts instead of projectiles.\nBe careful around these, their blasts have long range effects.", // SonicTank
+	"Indigenous to the sands of Dune, these monsters are attracted by vibrations, and can destroy large vehicles in a single bite.\n Rock is the only sure defense against these creatures.", // SandWorm
+	"The carryall is capable of deploying and retrieving the large tracked vehicles like harvesters.\nUsing carryalls is far quicker than waiting for the harvester to return on its own.", // Carryall
+	"The carryall is capable of deploying and retrieving the large tracked vehicles like harvesters.\nUsing carryalls is far quicker than waiting for the harvester to return on its own.", // Fregate
+	"The ornithopter is a fast and maneuverable, aircraft.\nIt is effective for strategic strikes, but armor has been sacrificed for speed and agility.", // Ornithopter
 };
 const char* object_capacity[LastObject + 1] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
