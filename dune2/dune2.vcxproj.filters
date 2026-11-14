@@ -126,9 +126,6 @@
     <ClCompile Include="unita.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="movement.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
     <ClCompile Include="direction.cpp">
       <Filter>logic</Filter>
     </ClCompile>
@@ -330,9 +327,6 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="squad.h">
-      <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="movement.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="video.h">

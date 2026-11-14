@@ -1,9 +1,8 @@
-#include "bsdata.h"
 #include "fix.h"
 #include "resid.h"
-#include "movement.h"
 #include "shape.h"
 #include "stringbuilder.h"
+#include "terrain.h"
 #include "object.h"
 
 struct objecti {

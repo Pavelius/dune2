@@ -2,7 +2,7 @@
 
 #include "actable.h"
 #include "drawable.h"
-#include "movement.h"
+#include "terrain.h"
 
 struct moveable : drawable, actable {
 	point			order, guard;
