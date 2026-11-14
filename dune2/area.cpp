@@ -439,7 +439,7 @@ void areai::set(point v, shapen t, const short unsigned* frame_list) {
 bool areai::isblocked(point v, movementn move) const {
 	if(!area.isvalid(v))
 		return true;
-	auto md = bsdata<movementi>::elements[move].cost;
+	auto md = move_cost[move];
 	auto t = get(v);
 	auto f = map_features[frames[v.y][v.x]];
 	if(f == BuildingHead || f == BuildingLeft || f == BuildingUp)
@@ -460,7 +460,7 @@ void areai::blockland(terrainn v) const {
 }
 
 void areai::blockland(movementn mv) const {
-	auto md = bsdata<movementi>::elements[mv].cost;
+	auto md = move_cost[mv];
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++) {
 			auto t = get(point(x, y));
@@ -528,7 +528,7 @@ void areai::blockbuildings(unsigned char player) const {
 }
 
 void areai::blockland(movementn mv, unsigned char player) const {
-	auto md = bsdata<movementi>::elements[mv].cost;
+	auto md = move_cost[mv];
 	for(auto y = 0; y < maximum.y; y++) {
 		for(auto x = 0; x < maximum.x; x++) {
 			auto t = get(point(x, y));
@@ -572,7 +572,7 @@ void areai::movewave(point start, movementn mv) const {
 		return;
 	path_map[start.y][start.x] = 1;
 	push_value(start);
-	auto cost_map = bsdata<movementi>::elements[mv].cost;
+	auto cost_map = move_cost[mv];
 	while(stack_valid()) {
 		auto vc = pop_value();
 		auto cost = path_map[vc.y][vc.x];
