@@ -48,12 +48,6 @@
     <ClCompile Include="stringbuilder.cpp">
       <Filter>support</Filter>
     </ClCompile>
-    <ClCompile Include="locale.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
-    <ClCompile Include="log.cpp">
-      <Filter>support</Filter>
-    </ClCompile>
     <ClCompile Include="point.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -251,9 +245,6 @@
     <ClInclude Include="win.h">
       <Filter>platform</Filter>
     </ClInclude>
-    <ClInclude Include="log.h">
-      <Filter>support</Filter>
-    </ClInclude>
     <ClInclude Include="point.h">
       <Filter>support</Filter>
     </ClInclude>
@@ -403,13 +394,7 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\errors.txt">
-      <Filter>locale</Filter>
-    </Text>
     <Text Include="..\locale\en\actions.txt">
-      <Filter>locale</Filter>
-    </Text>
-    <Text Include="..\locale\en\scenaries.txt">
       <Filter>locale</Filter>
     </Text>
   </ItemGroup>

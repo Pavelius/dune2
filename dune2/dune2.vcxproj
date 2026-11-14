@@ -168,8 +168,6 @@
     <ClCompile Include="view_theme.cpp" />
     <ClCompile Include="view_indicator.cpp" />
     <ClCompile Include="io_stream.cpp" />
-    <ClCompile Include="locale.cpp" />
-    <ClCompile Include="log.cpp" />
     <ClCompile Include="log_file.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="main_util.cpp" />
@@ -234,7 +232,6 @@
     <ClInclude Include="player.h" />
     <ClInclude Include="iff.h" />
     <ClInclude Include="io_stream.h" />
-    <ClInclude Include="log.h" />
     <ClInclude Include="log_file.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="midi.h" />
@@ -263,9 +260,7 @@
     <ClInclude Include="win.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\errors.txt" />
     <Text Include="..\locale\en\actions.txt" />
-    <Text Include="..\locale\en\scenaries.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

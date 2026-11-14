@@ -1,5 +1,4 @@
 #include "area.h"
-#include "log.h"
 #include "game.h"
 #include "rand.h"
 #include "stringbuilder.h"
@@ -18,9 +17,6 @@ int main() {
 	start_random_seed = getcputime();
 	//start_random_seed = 598697093;
 	srand(start_random_seed);
-	initialize_translation();
-	if(log::errors)
-		return -1;
 	area_initialization();
 #ifdef _DEBUG
 	util_main();
