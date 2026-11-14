@@ -53,12 +53,40 @@ const char* object_a_info[LastObject + 1] = {
 };
 const char* object_h_info[LastObject + 1] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
-	//Atreides, Harkonens, Ordos,
-	//ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
-	//Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
-	//Slab, Slab4, Turret, RocketTurret,
-	//MCVehicle, Harvester, LightInfantry, HeavyTroopers, Trike, Quad, CombatTank, SiegeTank, RocketTank,
-	//SandWorm, Carryall, Fregate, Ornithopter,
+	"The Atreides are spawned from the humid tropical planet of Caladan.\nThey are best known for their weaknesses of honesty and kindness.\nThey do not seem to believe in war and will usually avoid military conflicts.\nThey have befriended the natives of Dune, and may be expected to involve the local patriot Fremen in their defensive plans.", //Atreides
+	"We Harkonnen have come from the planet Giedi Prime.\nWe want now to possess Dune.Our weapons are powerful enough to deflect any attacks from our enemies.\nAll of House Harkonnen is concentrating on this task, and only a disaster could stop us now.", //Harkonens
+	"This cartel of greedy families has been thrown together by the lust for power.\nThey will most likely be too busy bickering among themselves to be overly concerned with our forces.", //Ordos
+	"You must have a construction yard.\nIt will give you the means to construct other buildings.", // ConstructionYard
+	"Spice silos must be built to be able to store the harvested spice.\nUnfortunately, they are weak structures, and must be repaired frequently.", // SpiceSilos
+	"The Starport is your link to the storehouses beyond the surface of the planet.\nWith a Starport at your disposal, you can purchase powerful weapons and vehicles.", // Starport
+	"These are the structures that provide power and water to your installation.\nThey are a bit fragile, and you are well advised to construct more than one.", // Windtrap
+	"The refinery converts harvested spice into credits.", // Refinery
+	"The outpost houses radar equipment.\nThe radar will help you to keep an eye on your own domain as well as nearby enemy activity.", // RadarOutpost
+	"It is impossible to operate machinery in this desert without causing damage.\nYou must have a repair facility to take care of your damaged vehicles.", // RepairFacility
+	"IX will provide you with a source of militarily advanced weapons.", // HouseOfIX
+	"House Harkonnen may grant a Palace to those who have proved themselves worthy of such an honor.\nIf you lose a Palace, that was given to you, you will have failed your mission.", // Palace
+	"These simple little buildings train infantry units.\nThe building itself has fair armor and is relatively cheap to maintain.\nWe Harkonnen, however, do not have use for such weak forces.", // Barracks
+	"WOR will train the Heavy Troopers.", // Wor
+	"The light factory produces only lightly armored vehicles, and is only a beginning step towards your goal of military superiority.", // LightVehicleFactory
+	"You must have a Heavy factory in order to construct our heavy tanks.", // HeavyVehicleFactory
+	"The High-Tech factory produces our carryalls.", // HighTechFactory
+	"Slabs are used to provide stable building foundations.\nWe have found that anything built on bare rock will deteriorate rapidly.", // Slab
+	"Slabs are used to provide stable building foundations.\nWe have found that anything built on bare rock will deteriorate rapidly.", // Slab4
+	"Turrets are accurate and effective weapons.\nAlthough they are immobile, you should consider them as required enhancements to your forces.", // Turret
+	"The Rocket Turret is an excellent weapon.\nAlthough they cannot be moved, they can be utilized for long and short range defense.", // RocketTurret
+	"The Mobile Construction Vehicle will allow you to expand your territories.\nBy using an MCV you will be able to construct distant buildings that need not be adjacent to your principal location.", // MCVehicle
+	"This large, slow, and barely maneuverable vehicle is used to harvest raw spice and convey it to the refinery.\nAlthough unarmed, the iron clad harvesters can be used effectively against small groups of infantry by crushing them beneath their treads.", // Harvester
+	"The Light Infantry will hardly suit your needs.\nThey are slow, poorly armored, and have a tendency to miss their targets.\nYou should depend upon the more massive troopers.", // LightInfantry
+	"The Heavy Troopers are superior fighting units.\nThey are well armored and have powerful weapons.", // HeavyTroopers
+	"Although these three-wheeled, lightly armored vehicles are functional, we strongly suggest utilizing the larger, more powerful vehicles.", // Trike
+	"The Quad is a much better vehicle than the smaller trike.\nIt has far superior armor and is much more powerful.", // Quad
+	"The combat tank will be your first tank, and it has adequate armor and fire power.\nHowever, remember that there are more powerful weapons at your disposal.", // CombatTank
+	"The Siege Tank is superior to the Combat tank.\nIt's armor and weaponry has the power you will need to complete your conquest of this planet.", // SiegeTank
+	"The rocket tank is effective for long range attacks.\nGuard these well, for they are ineffective at close range.", // RocketTank
+	"These huge native worms are almost impossible to kill.\nThey are attracted by surface vibrations, and all ground based units are at risk of being devoured.\n Rock is the only sure defense against these creatures.", //SandWorm
+	"This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own.", // Carryall
+	"This transport aircraft can carry large vehicles, such as harvesters, to their destinations more efficiently than letting them wander about on their own.", // Fregate
+	"This fragile little aircraft is merely an annoyance.\nTheir delicate armor is no match for our weapons of war.", // Ornithopter
 };
 const char* object_o_info[LastObject + 1] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
