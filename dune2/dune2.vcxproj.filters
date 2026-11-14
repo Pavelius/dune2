@@ -382,11 +382,6 @@
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\locale\en\actions.txt">
-      <Filter>locale</Filter>
-    </Text>
-  </ItemGroup>
-  <ItemGroup>
     <None Include="cpp.hint">
       <Filter>support</Filter>
     </None>

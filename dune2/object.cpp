@@ -14,7 +14,7 @@ struct objecti {
 };
 
 static objecti objects[LastObject + 1] = {
-	{}, //NoObject
+	{NoObject, FARTR, 0, MENSHPM}, // NoObject
 	{}, //Briefing
 	{}, //Houses
 	{}, //Buildings

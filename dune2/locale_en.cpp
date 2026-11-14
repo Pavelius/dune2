@@ -194,7 +194,7 @@ const char* object_capacity[LastObject + 1] = {
 	"Type: Close Support Attack Aircraft\nArmament: Battle Support Rockets\nSpeed: 340 km/h (airborne)\nArmor: Light\nCrew: 2", // Ornithopter
 };
 const char* message_names[LastMessage + 1] = {
-	"Dune II: Building Dinasty", "Cancel", "Yes", "No",
+	"Dune II: The Building of A Dynasty", "Cancel", "Yes", "No",
 	"Target", "Placement", "Select Subject", "Select your house",
 	"Load game", "Save this game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
 	"Game controls", "Restart scenario", "Pick another house", "Cost",
@@ -206,6 +206,7 @@ const char* message_names[LastMessage + 1] = {
 	"%Unit is return with %UnitThrall percent full.",
 	"Choose move target",
 	"Place buidling on rock",
+	"Do you want to join %1?",
 	"Do you really want to load game?",
 	"Do you really want to end this game and pick another house?",
 	"Do you really want to quit this game? All unsaved changes will be lost.",
@@ -364,4 +365,9 @@ const char* scenario_o_text[40] = {
 	"Good Morning, your lordship, and congratulations! You have served House Ordos well.\nWe will not soon forget our most noble warrior! I go now to relay the news of your most glorious victory, and deliver your terms to the Emperor.",
 	"Your defects must have been inherited.\nNobody could possibly learn the colossal stupidity that you have displayed.",
 	"Watch for sneak attacks, defend your installations well.\n",
+};
+const char* fraction_info[3] = {
+	"Caladan, home planet of the Atreides, has a warm, calm climate and the lands are lush and green.\nThe rich soils and mild weather supports an extensive variety of agricultural activities.\nIn recent centuries industrial and technological development has added to the prosperity of the Caladanian peoples.",
+	"From the dark world of Giedi Prime the savage House Harkonnen has spread across the universe.\nA cruel people, the Harkonnen are ruthless towards both friend and foe in their fanatical pursuit of power.",
+	"The home planet of the Ordos is a frigid and ice-covered world.\nWe presume the Ordos import their agricultural and technological goods from nearby star systems.\nActing as traders and brokers, the Ordos produce no physical products of their own and rely upon their merchandising skills to survive.",
 };

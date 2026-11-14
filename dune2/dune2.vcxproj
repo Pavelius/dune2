@@ -256,9 +256,6 @@
     <ClInclude Include="win.h" />
   </ItemGroup>
   <ItemGroup>
-    <Text Include="..\locale\en\actions.txt" />
-  </ItemGroup>
-  <ItemGroup>
     <None Include="..\README.md" />
     <None Include="cpp.hint" />
   </ItemGroup>

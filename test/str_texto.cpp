@@ -1,11 +1,12 @@
 ﻿const char* texto_names[40] = {
+	"House Ordos\nThe home planet of the Ordos is a frigid and ice-covered world.\nWe presume the Ordos import their agricultural and technological goods from nearby star systems.\nActing as traders and brokers, the Ordos produce no physical products of their own and rely upon their merchandising skills to survive.",
 	"Test scenario win text.",
 	"Test scenario lose text.",
 	"Test scenario advice text.",
 	"Welcome.\nI am your Mentat, and you may call me Ammon.\nTo be of any value to the Cartel, you must provide us with credits.\nAs a test, we will assign you to a region, and ask that you meet a production quota of 1000 credits.\nBuild a refinery and harvest the spice in the area.\nI am very busy, but you may call upon me if you have further questions.",
 	"You show potential.\nIf you continue to display good management skills we may find a permanent position for you in our organization.",
 	"It is beyond me how you were able to fail such an easy task.\nBecause you come so highly recommended, we may be able to overlook this episode if you are successful with your next assignment.",
-	"First build a two by two group of concrete slabs.\n Then build a windtrap and place it upon the concrete.\n Do the same for a refinery so that you can reach your quota of 1000 credits.",
+	"First build a two by two group of concrete slabs.\nThen build a windtrap and place it upon the concrete.\nDo the same for a refinery so that you can reach your quota of 1000 credits.",
 	"Your quota is now 2700 credits, and this spice accumulation is your primary objective.\nWe do not expect you to destroy the Harkonnen forces in the area, however you should consider the time that could be saved by appropriating their silos.",
 	"Congratulations.\nThe Cartel is beginning to notice you.\nI think you will definitely have a future with us if you can continue on this track.",
 	"Apparently, I was mistaken about your potential.\nIt will cost us a great deal to retake this region.\nOnly complete success with your next assignment could possibly resurrect your career.",

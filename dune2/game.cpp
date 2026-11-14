@@ -354,7 +354,16 @@ static void unit_thrall_loading(stringbuilder& sb) {
 }
 
 void choose_game_house() {
-	game.house = choose_house();
+	current_music = MusicTitle;
+	while(!is_next_scene()) {
+		auto house = choose_house();
+		if(!house)
+			break;
+		if(confirm_join_house(house)) {
+			game.house = house;
+			break;
+		}
+	}
 }
 
 BSDATA(textscript) = {

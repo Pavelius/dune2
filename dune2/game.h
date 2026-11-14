@@ -24,7 +24,7 @@ enum messagen : unsigned char {
 	CompleteProgress, UnitDestroyed, UnitDevoured, ReachSpiceMaximum,
 	HarvesterWork, UnitCantDoThis, HarvesterUnload, HarvesterReturn,
 	ChooseTargetInfo, ChoosePlacementInfo,
-	ConfirmLoadGame, ConfirmPickAnotherHouse, ConfirmQuitGame,
+	ConfirmJoinHouse, ConfirmLoadGame, ConfirmPickAnotherHouse, ConfirmQuitGame,
 	CantSupportEnergy,
 	LastMessage = CantSupportEnergy,
 };
@@ -36,6 +36,7 @@ enum scenariotextn : unsigned char {
 };
 
 extern const char* intro_subtitle[];
+extern const char* fraction_info[3];
 extern const char* scenario_a_text[40];
 extern const char* scenario_h_text[40];
 extern const char* scenario_o_text[40];
@@ -55,6 +56,7 @@ inline bool game_chance(unsigned int value) { return (game_rand() % 100) < value
 inline unsigned int game_rand(int from, int to) { return from + game_rand() % (to - from + 1); }
 
 void camera_to_base();
+bool confirm_join_house(objectn subject);
 void load_game(const char* id);
 void open_options();
 void save_game(const char* id);

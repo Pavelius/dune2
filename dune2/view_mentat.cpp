@@ -20,6 +20,14 @@ static fnevent paint_mentat_proc;
 
 void paint_build_shape(int x, int y, shapen shape);
 
+static const char* get_house_info(objectn v) {
+	switch(v) {
+	case Atreides: return fraction_info[0];
+	case Harkonens: return fraction_info[1];
+	default: return fraction_info[2];
+	}
+}
+
 static void paint_eyes() {
 	auto rid = getres(last_fraction);
 	auto frame = 0;
@@ -178,6 +186,32 @@ static void paint_exit() {
 		execute(update_buttonparam, 0);
 }
 
+static void paint_yes_no() {
+	pushrect push;
+	pushtheme theme(ButtonDark);
+	pushfontb theme_font(TextYellow);
+	pushfont push_font(gres(FONT16));
+	caret.x += 128 + (184 - 64 * 2 - 4) / 2; caret.y += 176; width = 64;
+	if(button(getnm(Yes), KeyEnter, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+		execute(update_buttonparam, 1);
+	caret.x += width + 4;
+	if(button(getnm(No), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+		execute(update_buttonparam, 0);
+}
+
+static void textheader(const char* name, int dy = 16) {
+	pushrect push;
+	pushfont push_font(gres(FONT16));
+	pushfontb push_font_color(ButtonYellow);
+	caret.y += dy;
+	texta(name, AlignCenter | ImagePallette);
+}
+
+static void paint_confirm_join() {
+	textheader(str(getnm(ConfirmJoinHouse), getnm(form_capacity)), 4);
+	paint_yes_no();
+}
+
 static void paint_proceed_repeat() {
 	pushrect push;
 	pushtheme theme(ButtonDark);
@@ -223,7 +257,7 @@ static void paint_mentat_silent_text() {
 	paint_action();
 }
 
-void paint_mentat_silent() {
+static void paint_mentat_silent() {
 	paint_background();
 	paint_eyes();
 	paint_mentat_back();
@@ -264,7 +298,7 @@ static void* choose_mentat_topic() {
 	return (void*)show_scene(paint_mentat_silent, paint_exit, 0);
 }
 
-static void show_mentat_string(const char* format, resid rid) {
+static void show_mentat_string(const char* format, resid rid, fnevent finale_paint) {
 	if(!format)
 		return;
 	string sb;
@@ -280,12 +314,20 @@ static void show_mentat_string(const char* format, resid rid) {
 		if(!show_scene_raw(paint_mentat_speaking, 0, 0))
 			return;
 	}
-	show_scene_raw(paint_mentat_silent_text, paint_exit, 0);
+	if(finale_paint)
+		show_scene_raw(paint_mentat_silent, finale_paint, 0);
 }
 
 static void show_mentat_subject(objectn subject) {
 	pushvalue push_id(form_capacity, subject);
-	show_mentat_string(getinfo(subject, last_fraction), getavatar(subject));
+	show_mentat_string(getinfo(subject, last_fraction), getavatar(subject), paint_exit);
+}
+
+ bool confirm_join_house(objectn subject) {
+	 pushvalue push_id(form_capacity, subject);
+	 pushvalue push_fraction(last_fraction, NoObject);
+	 show_mentat_string(get_house_info(subject), getavatar(subject), paint_confirm_join);
+	 return getresult() != 0;
 }
 
 static soundn get_mentat_music() {
@@ -359,10 +401,10 @@ void open_mentat() {
 		auto subject = *line;
 		if(subject == Orders)
 			show_mentat_string(get_scenario_text(last_fraction, game.scenario, ScenarioBrief),
-				get_scenario_avatar(game.scenario));
+				get_scenario_avatar(game.scenario), paint_exit);
 		else if(subject == Advice)
 			show_mentat_string(get_scenario_text(last_fraction, game.scenario, ScenarioAdvice),
-				get_scenario_avatar(game.scenario));
+				get_scenario_avatar(game.scenario), paint_exit);
 		else
 			show_mentat_subject(subject);
 	}
@@ -385,16 +427,9 @@ static void paint_house(int x, int y, objectn n, unsigned key) {
 		execute(buttonparam, n);
 }
 
-static void textheader(const char* name) {
-	pushrect push;
-	pushfont push_font(gres(FONT16));
-	pushfontb push_font_color(ButtonYellow);
-	caret.y += 16;
-	texta(name, AlignCenter | ImagePallette);
-}
-
 static void paint_houses() {
 	paint_background(colors::black);
+	music_update();
 	textheader(getnm(SelectHouse));
 	paint_house(16, 64, Atreides, 'A');
 	paint_house(120, 64, Ordos, 'O');
