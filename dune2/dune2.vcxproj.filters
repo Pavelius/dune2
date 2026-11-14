@@ -90,9 +90,6 @@
     <ClCompile Include="area.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="feature.cpp">
-      <Filter>logic</Filter>
-    </ClCompile>
     <ClCompile Include="midi.cpp">
       <Filter>support</Filter>
     </ClCompile>
@@ -297,9 +294,6 @@
       <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="direction.h">
-      <Filter>logic</Filter>
-    </ClInclude>
-    <ClInclude Include="feature.h">
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="midi.h">

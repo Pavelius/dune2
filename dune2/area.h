@@ -1,7 +1,6 @@
 #pragma once
 
 #include "direction.h"
-#include "feature.h"
 #include "movement.h"
 #include "point.h"
 #include "shape.h"
@@ -21,12 +20,28 @@ enum areaf : unsigned char {
 enum areasizen : unsigned char {
 	SmallMap, MediumMap, LargeMap,
 };
+enum featuren : unsigned char {
+	NoFeature,
+	Explosion, AircraftRemains, CarRemains, StructureRemains, Body, Bodies, Blood, Trail,
+	SlabFeature, WallFeature,
+	BuildingHead, BuildingLeft, BuildingUp,
+	FogOfWarFeature,
+	LastFeature = FogOfWarFeature,
+};
+
+struct featurei {
+	unsigned short	frame, count, random;
+	unsigned char	decoy;
+};
+extern featurei features[LastFeature + 1];
+
 struct tilepatch {
 	short unsigned	from;
 	short unsigned	to;
 	unsigned char	action;
 	unsigned char	id;
 };
+
 struct areai {
 	typedef void(*fnset)(point v, int value);
 	typedef bool(*fntest)(point v);

@@ -10,6 +10,24 @@ areai area;
 point area_spot, area_origin;
 rect area_screen = {0, 40, 240, 200};
 
+featurei features[LastFeature + 1] = {
+	{0}, // NoFeature
+	{1, 12, 2}, // Explosion
+	{13, 3, 0, 30}, // AircraftRemains
+	{16, 3, 0, 20}, // CarRemains
+	{125, 1}, // StructureRemains
+	{19, 2, 0, 40}, // Body
+	{21, 2, 0, 40}, // Bodies
+	{23, 2, 2, 10}, // Blood
+	{25, 8, 0, 30}, // Trail
+	{126, 1}, // Slab
+	{34, 75}, // Wall
+	{}, // BuildingHead
+	{}, // BuildingLeft
+	{}, // BuildingUp
+	{108, 16}, // FogOfWar
+};
+
 unsigned char region_player[16] = {
 	0, 0, 3, 3,
 	0, 0, 3, 3,
@@ -209,7 +227,7 @@ void areai::set(point v, featuren f, int param) {
 		return; // Frames overlay newer be on mountains
 	else if(ct >= Rock && f == Trail)
 		return; // Trails can be leaved only on sand (and like sand)
-	auto& e = bsdata<featurei>::elements[f];
+	auto& e = features[f];
 	auto cf = getfeature(v);
 	if(cf != f) {
 		if(e.random)
@@ -260,7 +278,7 @@ void areai::decoy(point v) {
 	auto cf = getfeature(v);
 	if(!cf)
 		return;
-	auto& e = bsdata<featurei>::elements[cf];
+	auto& e = features[cf];
 	if(e.decoy && game_chance(e.decoy)) {
 		auto n = get_next_decoy(get(v), frames_overlay[v.y][v.x]);
 		if(n <= 0)
@@ -381,7 +399,7 @@ void areai::set(point v, shapen t, featuren f) {
 	auto& e = bsdata<shapei>::elements[t];
 	if(!e.count)
 		return;
-	auto j = bsdata<featurei>::elements[f].frame;
+	auto j = features[f].frame;
 	for(auto i = 0; i < e.count; i++) {
 		auto n = v + e.points[i];
 		if(!isvalid(n))

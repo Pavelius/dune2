@@ -66,9 +66,9 @@ static int find_frame(const unsigned short* source, size_t count, unsigned short
 static featuren find_feature_by_frame(int frame) {
 	if(!frame)
 		return NoFeature;
-	for(auto& e : bsdata<featurei>()) {
+	for(auto& e : features) {
 		if(frame >= e.frame && frame < e.frame + e.count)
-			return (featuren)(&e - bsdata<featurei>::elements);
+			return (featuren)(&e - features);
 	}
 	for(auto n = ConstructionYard; n <= RocketTurret; n = (objectn)(n + 1)) {
 		auto& s = bsdata<shapei>::elements[getshape(n)];
