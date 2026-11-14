@@ -1,5 +1,5 @@
-#include "bsdata.h"
 #include "draw.h"
+#include "slice.h"
 #include "view_focus.h"
 #include "view_theme.h"
 
@@ -8,12 +8,20 @@ using namespace draw;
 color form_button, form_button_light, form_button_dark;
 color font_pallette[16];
 
+static themei themes[LastTheme + 1] = {
+	{color(178, 178, 199), color(255, 255, 255), color(85, 85, 121), color(68, 68, 96)}, // ButtonMenu
+	{color(186, 190, 150), color(251, 255, 203), color(101, 101, 77), color(69, 69, 52)}, // ButtonLight
+	{color(40, 40, 60), color(65, 65, 89), color(40, 40, 60), color(255, 215, 138)}, // ButtonDark
+	{color(203, 142, 16), color(255, 182, 44), color(154, 105, 0), color(60, 36, 0)}, // ButtonYellow
+	{color(215, 0, 0), color(89, 0, 0), color(65, 0, 0), color(20, 20, 40)}, // TextRed
+	{color(255, 215, 138), color(195, 154, 65), color(113, 89, 8), color(20, 20, 40)}, // TextYellow
+};
+
 pushtheme::pushtheme(themen id) : form(form_button), dark(form_button_dark), light(form_button_light), fore(draw::fore) {
-	auto& ei = bsdata<themei>::elements[id];
-	draw::fore = ei.fore;
-	form_button = ei.form;
-	form_button_dark = ei.dark;
-	form_button_light = ei.light;
+	draw::fore = themes[id].fore;
+	form_button = themes[id].form;
+	form_button_dark = themes[id].dark;
+	form_button_light = themes[id].light;
 }
 
 pushtheme::~pushtheme() {
@@ -24,11 +32,10 @@ pushtheme::~pushtheme() {
 }
 
 pushfontb::pushfontb(themen id) : font(draw::font), fpal1(font_pallette[1]), fpal5(font_pallette[5]), fpal6(font_pallette[6]), palt(draw::palt) {
-	auto& ei = bsdata<themei>::elements[id];
 	draw::palt = font_pallette;
-	font_pallette[1] = ei.form;
-	font_pallette[5] = ei.light;
-	font_pallette[6] = ei.dark;
+	font_pallette[1] = themes[id].form;
+	font_pallette[5] = themes[id].light;
+	font_pallette[6] = themes[id].dark;
 }
 
 pushfontb::~pushfontb() {
@@ -256,13 +263,3 @@ void update_buttonparam() {
 	updatewindow();
 	buttonparam();
 }
-
-BSDATA(themei) = {
-	{"ButtonMenu", color(178, 178, 199), color(255, 255, 255), color(85, 85, 121), color(68, 68, 96)},
-	{"ButtonLight", color(186, 190, 150), color(251, 255, 203), color(101, 101, 77), color(69, 69, 52)},
-	{"ButtonDark", color(40, 40, 60), color(65, 65, 89), color(40, 40, 60), color(255, 215, 138)},
-	{"ButtonYellow", color(203, 142, 16), color(255, 182, 44), color(154, 105, 0), color(60, 36, 0)},
-	{"TextRed", color(215, 0, 0), color(89, 0, 0), color(65, 0, 0), color(20, 20, 40)},
-	{"TextYellow", color(255, 215, 138), color(195, 154, 65), color(113, 89, 8), color(20, 20, 40)},
-};
-assert_enum(themei, TextYellow)

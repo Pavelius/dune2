@@ -1,24 +1,29 @@
 #pragma once
 
 #include "color.h"
-#include "nameable.h"
 #include "point.h"
 
 typedef void(*fnevent)();
 
+enum resid : unsigned short;
+
 enum themen : unsigned char {
 	ButtonMenu, ButtonLight, ButtonDark, ButtonYellow, TextRed, TextYellow,
+	LastTheme = TextYellow,
 };
-enum resid : unsigned short;
+
 struct sprite;
-struct themei : nameable {
+
+struct themei {
 	color form, light, dark, fore;
 };
+
 struct pushtheme {
 	color form, light, dark, fore;
 	pushtheme(themen id);
 	~pushtheme();
 };
+
 struct pushfontb {
 	const sprite* font;
 	color fpal1, fpal5, fpal6;
@@ -26,6 +31,7 @@ struct pushfontb {
 	pushfontb(themen id);
 	~pushfontb();
 };
+
 extern color form_button, form_button_light, form_button_dark;
 extern color font_pallette[16];
 

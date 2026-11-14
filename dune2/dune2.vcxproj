@@ -194,6 +194,8 @@
     <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="view_list.cpp" />
     <ClCompile Include="view_mentat.cpp" />
+    <ClCompile Include="voc_util.cpp" />
+    <ClCompile Include="win_audio.cpp" />
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />
     <ClCompile Include="win_time.cpp" />
@@ -231,7 +233,6 @@
     <ClInclude Include="log_file.h" />
     <ClInclude Include="math.h" />
     <ClInclude Include="midi.h" />
-    <ClInclude Include="nameable.h" />
     <ClInclude Include="point.h" />
     <ClInclude Include="print.h" />
     <ClInclude Include="pushvalue.h" />

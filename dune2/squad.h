@@ -1,14 +1,10 @@
 #pragma once
 
-#include "nameable.h"
-#include "rect.h"
-
 struct playeri;
+struct rect;
 
 enum squadn : unsigned char {
 	NoSquad, SelectedUnits, 
-};
-struct squadi : nameable {
 };
 
 bool squad_active(squadn index, const playeri* player);

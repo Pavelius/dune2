@@ -60,7 +60,6 @@ struct archive {
 	}
 	void setname(const char*& value);
 	void setpointer(void** value, array& source);
-	void setpointerbyname(void** value, array& source);
 	// Reference serialization (order in array is matters)
 	template<class T> void set(T*& value) {
 		setpointer((void**)&value, bsdata<T>::source);

@@ -216,6 +216,12 @@
     <ClCompile Include="locale_en.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="voc_util.cpp">
+      <Filter>utils</Filter>
+    </ClCompile>
+    <ClCompile Include="win_audio.cpp">
+      <Filter>platform</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -273,9 +279,6 @@
       <Filter>logic</Filter>
     </ClInclude>
     <ClInclude Include="pushvalue.h">
-      <Filter>support</Filter>
-    </ClInclude>
-    <ClInclude Include="nameable.h">
       <Filter>support</Filter>
     </ClInclude>
     <ClInclude Include="log_file.h">

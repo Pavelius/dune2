@@ -1,7 +1,6 @@
 #pragma once
 
 #include "flagable.h"
-#include "nameable.h"
 #include "point.h"
 
 enum drawprocn : unsigned char;

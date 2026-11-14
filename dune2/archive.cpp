@@ -15,7 +15,6 @@
 // limitations under the License.
 
 #include "archive.h"
-#include "nameable.h"
 #include "stringbuilder.h"
 
 bool archive::signature(const char* id) {
@@ -109,20 +108,6 @@ void archive::setpointer(void** value, array& source) {
 	} else {
 		set(v);
 		*value = (v==0xFFFF) ? 0 : source.ptr(v);
-	}
-}
-
-void archive::setpointerbyname(void** value, array& source) {
-	const char* p;
-	if(writemode) {
-		p = 0;
-		if(*value)
-			p = ((nameable*)(*value))->id;
-		setname(p);
-	} else {
-		setname(p);
-		if(value)
-			*value = source.findv(p, 0);
 	}
 }
 
