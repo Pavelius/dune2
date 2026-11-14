@@ -61,6 +61,15 @@ BSDATA(objecti) = {
 };
 assert_enum(objecti, Ornithopter)
 
+const char*	getinfo(objectn type, objectn fraction) {
+	switch(fraction) {
+	case Atreides: return object_a_info[type];
+	case Harkonens: return object_h_info[type];
+	case Ordos: return object_o_info[type];
+	default: return 0;
+	}
+}
+
 int getcreditscost(objectn type) {
 	switch(type) {
 		// Buildings

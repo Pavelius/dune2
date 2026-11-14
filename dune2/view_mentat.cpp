@@ -15,7 +15,7 @@
 
 using namespace draw;
 
-static const char* form_id;
+static objectn form_capacity;
 static unsigned long eye_clapping, eye_show_cursor, first_action;
 static fnevent paint_mentat_proc;
 
@@ -76,9 +76,9 @@ static void rectf_back() {
 }
 
 static void paint_stat_info() {
-	if(!form_id)
+	if(!form_capacity)
 		return;
-	auto pi = getnme(ids(form_id, "Capacity"));
+	auto pi = object_capacity[form_capacity];
 	if(!pi)
 		return;
 	pushrect push;
@@ -257,21 +257,15 @@ static void* choose_mentat_topic() {
 	return (void*)show_scene(paint_mentat_silent, paint_exit, 0);
 }
 
-static void show_mentat_subject(const char* id, resid rid) {
+static void show_mentat_string(const char* format, resid rid) {
 	string sb;
 	pushvalue push_header(form_header);
-	pushvalue push_id(form_id, id);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject);
-	auto pi = getnme(ids(id, getido(mainplayer().fraction), "Info"));
-	if(!pi)
-		pi = getnme(ids(id, "Info"));
-	if(!pi)
-		pi = getnme(id);
 	reset_form_animation();
-	if(pi) {
-		while(pi[0]) {
-			sb.clear(); pi = sb.psline(pi);
+	if(format) {
+		while(format[0]) {
+			sb.clear(); format = sb.psline(format);
 			if(!sb)
 				break;
 			form_header = sb;
@@ -280,6 +274,11 @@ static void show_mentat_subject(const char* id, resid rid) {
 		}
 	}
 	show_scene_raw(paint_mentat_silent, paint_exit, 0);
+}
+
+static void show_mentat_subject(objectn subject) {
+	pushvalue push_id(form_capacity, subject);
+	show_mentat_string(getinfo(subject, last_fraction), getavatar(subject));
 }
 
 static soundn get_mentat_music() {
@@ -324,7 +323,7 @@ static resid getscenarioavatar(int level) {
 	}
 }
 
-static const char* get_scenario_id(const char* id, int level) {
+static const char* get_scenario_info(const char* id, int level) {
 	static char temp[32]; stringbuilder sb(temp);
 	sb.add(mainplayer().getfractionid());
 	sb.add(id);
@@ -341,19 +340,19 @@ void open_mentat() {
 			break;
 		auto subject = *line;
 		if(subject==Orders)
-			show_mentat_subject(get_scenario_id("Brief", game.scenario), getscenarioavatar(game.scenario));
+			show_mentat_string(get_scenario_info("Brief", game.scenario), getscenarioavatar(game.scenario));
 		else if(subject == Advice)
-			show_mentat_subject(get_scenario_id("Advice", game.scenario), getscenarioavatar(game.scenario));
+			show_mentat_string(get_scenario_info("Advice", game.scenario), getscenarioavatar(game.scenario));
 		else
-			show_mentat_subject(getido(subject), getavatar(subject));
+			show_mentat_subject(subject);
 	}
 }
 
 static void paint_house(int x, int y, objectn n, unsigned key) {
-	pushrect	push;
-	pushfore	push_fore(colors::white);
-	pushfont	push_font(gres(FONT16));
-	pushfontb	push_font_color(ButtonYellow);
+	pushrect push;
+	pushfore push_fore(colors::white);
+	pushfont push_font(gres(FONT16));
+	pushfontb push_font_color(ButtonYellow);
 	caret.x += x; width = 84;
 	caret.y += y; height = 64;
 	auto push_clip = clipping; setclip({caret.x, caret.y, caret.x + width, caret.y + height});

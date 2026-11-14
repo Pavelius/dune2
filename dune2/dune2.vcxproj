@@ -273,6 +273,7 @@
     <Text Include="..\locale\en\terrains.txt" />
     <Text Include="..\locale\en\units.txt" />
     <Text Include="..\locale\en\UnknownNames.txt" />
+    <Text Include="..\test\mentat_new.txt" />
   </ItemGroup>
   <ItemGroup>
     <None Include="..\README.md" />

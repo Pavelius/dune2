@@ -18,6 +18,10 @@ enum objectn : unsigned char {
 	LastObject = Ornithopter,
 };
 extern const char* object_names[LastObject + 1];
+extern const char* object_a_info[LastObject + 1];
+extern const char* object_h_info[LastObject + 1];
+extern const char* object_o_info[LastObject + 1];
+extern const char* object_capacity[LastObject + 1];
 
 typedef int(*fngeto)(objectn type);
 
@@ -53,7 +57,6 @@ fixn getheavyweapon(objectn type);
 
 unsigned short* getframes(objectn type);
 
-inline const char* getnm(objectn type) { return object_names[type]; }
 const char* getido(objectn type);
 
 struct objectable {
@@ -61,3 +64,6 @@ struct objectable {
 	explicit operator bool() const { return type != NoObject; }
 	const char*	name() const { return object_names[type]; }
 };
+
+inline const char* getnm(objectn type) { return object_names[type]; }
+const char*	getinfo(objectn type, objectn fraction);
