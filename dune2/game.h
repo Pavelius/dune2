@@ -30,14 +30,22 @@ enum messagen : unsigned char {
 };
 extern const char* message_names[LastMessage + 1];
 
+enum scenariotextn : unsigned char {
+	ScenarioBrief, ScenarioWin, ScenarioLose, ScenarioAdvice,
+	LastScenatioText = ScenarioAdvice
+};
+
 extern const char* intro_subtitle[];
+extern const char* scenario_a_text[40];
+extern const char* scenario_h_text[40];
+extern const char* scenario_o_text[40];
 
 struct gamei {
 	unsigned long	time;
 	unsigned long	start_turn;
 	unsigned		turn;
 	unsigned		starting_credits;
-	int				scenario;
+	unsigned char	scenario; // 0...9
 	objectn			house;
 };
 extern gamei game;
@@ -50,7 +58,7 @@ void camera_to_base();
 void load_game(const char* id);
 void open_options();
 void save_game(const char* id);
-void show_scenario_prompt(const char* id, resid rid, int level);
+void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn type);
 void update_ai_commands(unsigned char player);
 void update_game_time();
 void choose_game_house();

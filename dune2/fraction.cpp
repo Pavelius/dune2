@@ -1,6 +1,5 @@
-#include "bsdata.h"
-#include "fraction.h"
 #include "object.h"
+#include "player.h"
 
 objectn last_fraction;
 

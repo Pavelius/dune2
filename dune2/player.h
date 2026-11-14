@@ -1,9 +1,10 @@
 #pragma once
 
-#include "fraction.h"
 #include "point.h"
 
 const int player_maximum = 6; // 0 - neutral and 1-5 for player humans/ai.
+
+enum objectn : unsigned char;
 
 enum statn : unsigned char {
 	Credits, Energy,
@@ -16,6 +17,13 @@ enum ordern : unsigned char {
 	LastOrder = Harvest
 };
 extern const char* order_names[LastOrder + 1];
+
+struct fractionable {
+	objectn		fraction;
+	const char*	getfractionsuffix() const;
+	const char* getfractionid() const;
+};
+extern objectn last_fraction;
 
 struct storeable {
 	unsigned int abilities[LastStat + 1];

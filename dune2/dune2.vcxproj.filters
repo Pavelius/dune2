@@ -290,9 +290,6 @@
     <ClInclude Include="pushvalue.h">
       <Filter>support</Filter>
     </ClInclude>
-    <ClInclude Include="fraction.h">
-      <Filter>logic</Filter>
-    </ClInclude>
     <ClInclude Include="nameable.h">
       <Filter>support</Filter>
     </ClInclude>

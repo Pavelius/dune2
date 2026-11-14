@@ -1,6 +1,5 @@
 #include "bsdata.h"
 #include "draw.h"
-#include "fraction.h"
 #include "game.h"
 #include "midi.h"
 #include "player.h"
@@ -216,6 +215,14 @@ static void paint_mentat_speaking() {
 	input_accept();
 }
 
+static void paint_mentat_silent_text() {
+	paint_background();
+	paint_eyes();
+	paint_mentat_back();
+	paint_form_header();
+	paint_action();
+}
+
 void paint_mentat_silent() {
 	paint_background();
 	paint_eyes();
@@ -258,22 +265,22 @@ static void* choose_mentat_topic() {
 }
 
 static void show_mentat_string(const char* format, resid rid) {
+	if(!format)
+		return;
 	string sb;
 	pushvalue push_header(form_header);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject);
 	reset_form_animation();
-	if(format) {
-		while(format[0]) {
-			sb.clear(); format = sb.psline(format);
-			if(!sb)
-				break;
-			form_header = sb;
-			if(!show_scene_raw(paint_mentat_speaking, 0, 0))
-				return;
-		}
+	while(format[0]) {
+		sb.clear(); format = sb.psline(format);
+		if(!sb)
+			break;
+		form_header = sb;
+		if(!show_scene_raw(paint_mentat_speaking, 0, 0))
+			return;
 	}
-	show_scene_raw(paint_mentat_silent, paint_exit, 0);
+	show_scene_raw(paint_mentat_silent_text, paint_exit, 0);
 }
 
 static void show_mentat_subject(objectn subject) {
@@ -290,20 +297,35 @@ static soundn get_mentat_music() {
 	}
 }
 
-void show_scenario_prompt(const char* id, resid rid, int level) {
+static const char** get_scenario_text_base(objectn fraction) {
+	switch(fraction) {
+	case Atreides: return scenario_a_text;
+	case Harkonens: return scenario_h_text;
+	case Ordos: return scenario_o_text;
+	default: return 0;
+	}
+}
+
+static const char* get_scenario_text(objectn fraction, unsigned char level, scenariotextn type) {
+	auto ps = get_scenario_text_base(fraction);
+	if(!ps)
+		return 0;
+	return ps[3 + level * (LastScenatioText + 1) + type];
+}
+
+static void show_scenario_prompt(const char* format, resid rid) {
+	if(!format)
+		return;
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	pushvalue push_header(form_header);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject_ni);
-	auto pi = getnme(str("%1%2%3.2i", getido(mainplayer().fraction), id, level));
-	if(!pi)
-		return;
 	pushvalue push_music(current_music, get_mentat_music());
 	reset_form_animation();
 	string sb;
 	while(true) {
-		auto ps = pi;
-		while(pi[0]) {
+		auto ps = format;
+		while(ps[0]) {
 			sb.clear(); ps = sb.psline(ps);
 			if(!sb)
 				break;
@@ -316,19 +338,15 @@ void show_scenario_prompt(const char* id, resid rid, int level) {
 	}
 }
 
-static resid getscenarioavatar(int level) {
+static resid get_scenario_avatar(int level) {
 	switch(level) {
 	case 1: return HARVEST;
-	default: return NONE;
+	default: return HEADQRTS;
 	}
 }
 
-static const char* get_scenario_info(const char* id, int level) {
-	static char temp[32]; stringbuilder sb(temp);
-	sb.add(mainplayer().getfractionid());
-	sb.add(id);
-	sb.add("%1.2i", level);
-	return temp;
+void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn type) {
+	show_scenario_prompt(get_scenario_text(fraction, level, type), get_scenario_avatar(level));
 }
 
 void open_mentat() {
@@ -339,10 +357,12 @@ void open_mentat() {
 		if(!line)
 			break;
 		auto subject = *line;
-		if(subject==Orders)
-			show_mentat_string(get_scenario_info("Brief", game.scenario), getscenarioavatar(game.scenario));
+		if(subject == Orders)
+			show_mentat_string(get_scenario_text(last_fraction, game.scenario, ScenarioBrief),
+				get_scenario_avatar(game.scenario));
 		else if(subject == Advice)
-			show_mentat_string(get_scenario_info("Advice", game.scenario), getscenarioavatar(game.scenario));
+			show_mentat_string(get_scenario_text(last_fraction, game.scenario, ScenarioAdvice),
+				get_scenario_avatar(game.scenario));
 		else
 			show_mentat_subject(subject);
 	}

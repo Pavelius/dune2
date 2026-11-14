@@ -1,0 +1,47 @@
+﻿Briefing
+ Advice: 3*No desc 
+ Orders: 0*No desc 
+Houses
+ House Atreides: FARTR.WSA*House Atreides The Atreides come from Caladan, a planet whose warm climate and over-productive agriculture undoubtedly make the citizens kind and non-violent. This is their weakness. 
+ House Harkonnen: FHARK.WSA*House Harkonnen Giedi Prime is the home to the Harkonnen. Do not be fooled by their blind hatred and bloodlust. They are devious, shrewd, and must be watched carefully! 
+ House Ordos: FORDOS.WSA*House Ordos The Ordos come from many different homes. Because of this diversity, we are strong and highly organized. We know when it is necessary to utilize resources and when to appropriate the required materials. Our organization is highly efficient and effective. 
+Structures
+ Barracks: barrac.wsa*Infantry BarracksPower Needs: 20 These buildings produce the light infantry, which are some of the most important fighting units in our military system. 
+ Concrete Slab: slab.wsa*Concrete Slab Concrete slabs are an effective and inexpensive foundation material. Structures without foundations will require frequent repair, and waste valuable time and money. 
+ Construction Yard: Construc.wsa*Construction Yard(Harsh climate model)Self-Powered The construction yard will allow you to erect other buildings. 
+ Heavy Factory: hvyftry.wsa*Heavy Vehicle FactoryPower Needs: 35 The heavy factory produces all large tracked vehicles, like tanks and Harvesters. 
+ High-Tech Factory: hitcftry.wsa*High-Tech FactoryPower Needs: 35 The High-Tech Factory utilizes technology to produce advanced aircraft. 
+ IX: ix.wsa*IX Research CenterPower Needs: 40 IX will allow you to create better, faster, and more efficient machines. It will provide the means to produce some of our most special vehicles. 
+ Light Factory: liteftry.wsa*Light Vehicle FactoryPower Needs: 20 The light factory produces our Raider Trikes as well as Quads. 
+ Outpost: headqrts.wsa*Radar OutpostPower Needs: 30 The radar capabilities of the outpost are vital to your operations. With radar, you will be able to monitor the movements of the other Houses and prepare defensive and attack strategies. 
+ Palace: palace.wsa*PalacePower Needs: 80 When the House grants you a Palace, you will know that you have pleased them. If you are ever to lose your Palace to the enemy, your mission will surely be lost. 
+ Refinery: refinery.wsa*Spice RefineryPower Needs: 30 The refinery is necessary for the conversion of spice into credits. Without a refinery, there is no way for you to obtain new credits by harvesting spice. 
+ Repair Facility: repair.wsa*Vehicle Repair FacilityPower Needs: 20 If you do not have a repair facility, it will not be possible for you to fix damaged vehicles. If your damaged vehicles do not receive repairs, you will lose them completely. 
+ Rocket Turret: rturret.wsa*Rocket TurretPower Needs: 25 The Rocket turret, like the regular turret, cannot be moved. However, it has greater range capabilities than the regular turret. Together, these should provide excellent long and short range firing capabilities. 
+ Spice Silos: storage.wsa*Spice Storage SiloPower Needs: 5 Silos are used for the storage of spice. They are weaker and more easily destroyed than harvesters or refineries. Use this knowledge to your advantage. 
+ Starport: Starport.wsa*StarportPower Needs: 80 The intergalactic purchasing network accessible through the starport will allow you to acquire weaponry in bulk orders. 
+ Turret: turret.wsa*Base Defense TurretPower Needs: 10 The turrets are highly accurate weapons. Their only drawback is that once established, they cannot be moved. 
+ Wall: wall.wsa*Wall Walls may provide for a fair defense around the perimeter of a compound. 
+ Windtrap: windtrap.wsa*Power GeneratorPower Output: 100 Windtraps are the only effective source of power on Dune. Although the traps are fairly strong, they tend to be easily damaged, and it would be wise to always keep more than one wind trap in operation. 
+ Wor: wor.wsa*Trooper BarracksPower Needs: 20 WOR is the means of producing the heavy troopers. 
+Vehicles
+ Carryall: carryall.wsa*CarryallMobility: JetFirepower: none The carryall is capable of deploying and retrieving the large tracked vehicles like harvesters. Using carryalls is far quicker than waiting for the harvester to return on its own. 
+ Combat Tank: ltank.wsa*Combat TankMobility: TrackedFirepower: heavy This slow, single barreled tank is adequate in its performance. However, there are much faster and more efficient tanks available. 
+ Harvester: harvest.wsa*HarvesterMobility: TrackedFirepower: none Harvesters are large, slow vehicles that scout for spice fields and begin harvesting whenever raw spice is found. Obviously this is a highly inefficient process. We encourage our field commanders to also appropriate previously harvested materials, which is certainly a faster and more efficient method of spice acquisition. 
+ Heavy Troopers: hyinfy.wsa*Heavy TroopersMobility: FootFirepower: medium The heavy troopers carry more armor and yet are still faster than the light infantry. Their abilities are well suited for ground assaults and reconnaissance missions. 
+ Light Infantry: infantry.wsa*Light InfantryMobility: FootFirepower: light The light infantry allows for an expendable force of men. If used in large numbers, they are almost unbeatable. 
+ MCV: mcv.wsa*MCVMobility: WheeledFirepower: none The Mobile Construction Vehicle offers an efficient means of expanding the territory under your control. It can provide support for the construction of new facilities at some distance from your existing structures. 
+ Ordos Raider: otrike.wsa*Ordos Raider TrikeMobility: WheeledFirepower: Light The Raider is far better than a standard trike. It is faster and has excellent weapons. Because of its maneuverability, it is the best vehicle for those missions where you must rely on swiftness and agility. 
+ Ornithopter: orni.wsa*OrnithopterMobility: WingedFirepower: Medium The ornithopter is a fast and maneuverable, aircraft. It is effective for strategic strikes, but armor has been sacrificed for speed and agility. 
+ Quad: quad.wsa*Combat Quad(Desert model)Mobility: WheeledFirepower: medium This four-wheeled vehicle is not well suited to our purposes. Although it has good armor, it is not maneuverable enough and it lacks the speeds we require. 
+ Rocket Tank: rtank.wsa*Rocket TankMobility: TrackedFirepower: Heavy Although the Rocket Tank is faster than the combat tank and has long range firing capabilities, we prefer more useful tanks. I suggest sending your "Raiders" against rocket tanks. 
+ Siege Tank: htank.wsa*Siege TankMobility: TrackedFirepower: Very Heavy The Siege Tank possesses more than twice the firepower of the combat tank. Yet, despite all the power and armor, it is quite slow. 
+ Trike: trike.wsa*Combat Trike(Desert model)Mobility: WheeledFirepower: medium The three wheeled vehicles that other Houses use is lacking in many aspects. Unlike our Raider, Trikes are unable to maintain the speeds that we demand. Unfortunately, we had to sacrifice armor for this increase of speed. 
+Specials
+ Death Hand: Gold-bb.wsa*Death HandMobility: FlightFirepower: Unknown The Harkonnen possess these missiles that are capable of delivering multiple warheads to a single strike area. Although fearfully named, fortunately they are also highly inaccurate. 
+ Devastator: harktank.wsa*DevastatorMobility: TrackedFirepower: Very Heavy The Harkonnen have created this new tank that is capable of inflicting severe damage to even the most well protected vehicles and buildings. For all its firepower and armor, however, it is extremely slow and may be easily outmaneuvered. 
+ Deviator: ordrtank.wsa*DeviatorMobility: TrackedFirepower: Brainwash Gas Our Deviator fires a nerve gas that is capable of twisting the minds of enemy soldiers. Some of our best regiments are primarily composed of formerly hostile military personnel who have been reprogrammed by exposure to this gaseous argument. 
+ Fremen: Fremen.wsa*FremenMobility: FootFirepower: unknown The native Fremen of Dune are simple but skilled fighters. They are currently utilized by the Atreides for combat purposes. Perhaps, with the right incentives, they could be persuaded to join our forces instead. 
+ Saboteur: saboture.wsa*SaboteurMobility: FootFirepower: Heavy The Saboteur is the group name given to this unit of soldiers specializing in sabotage. They are effective for specific target destruction, and are based at all of our Palaces. 
+ Sand Worm: Worm.wsa*Shai-HuludNo Known Weakness Indigenous to the sands of Dune, these monsters are attracted by vibrations, and can destroy large vehicles in a single bite.  Rock is the only sure defense against these creatures. 
+ Sonic Tank: stank.wsa*Sonic TankMobility: TrackedFirepower: Unknown The Atreides have developed a Sonic Tank that fires sonic blasts instead of projectiles. Be careful around these, their blasts have long range effects. 

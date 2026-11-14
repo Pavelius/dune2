@@ -7,7 +7,6 @@
 #include "draw.h"
 #include "drawable.h"
 #include "fix.h"
-#include "fraction.h"
 #include "game.h"
 #include "io_stream.h"
 #include "math.h"

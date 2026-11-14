@@ -333,13 +333,12 @@ void camera_to_base() {
 }
 
 void main_menu() {
-	//	music_disabled = true;
-	show_introdution();
+	// music_disabled = true;
+	// show_introdution();
 	choose_game_house();
 	game.starting_credits = 1000;
-	game.scenario = 1;
 	area_generate(SmallMap, 2);
-	//	show_scenario_prompt("Brief", HARVEST, 1);
+	show_scenario_prompt(mainplayer().fraction, 0, ScenarioBrief);
 	camera_to_base();
 	show_scene(paint_main_map, 0, 0);
 }
