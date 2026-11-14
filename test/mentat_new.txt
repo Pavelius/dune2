@@ -1,0 +1,111 @@
+﻿#BarracksOrdosInfo
+"These buildings produce the light infantry, which are some of the most important fighting units in our military system.",
+
+#ConcreteSlabOrdosInfo
+"Concrete slabs are an effective and inexpensive foundation material.\nStructures without foundations will require frequent repair, and waste valuable time and money.",
+
+#ConstructionYardOrdosInfo
+"The construction yard will allow you to erect other buildings.",
+
+#HeavyFactoryOrdosInfo
+"The heavy factory produces all large tracked vehicles, like tanks and Harvesters.",
+
+#HighTechFactoryOrdosInfo
+"The High-Tech Factory utilizes technology to produce advanced aircraft.",
+
+#IXOrdosInfo
+"IX will allow you to create better, faster, and more efficient machines.\nIt will provide the means to produce some of our most special vehicles.",
+
+#LightFactoryOrdosInfo
+"The light factory produces our Raider Trikes as well as Quads.",
+
+#OutpostOrdosInfo
+"The radar capabilities of the outpost are vital to your operations.\nWith radar, you will be able to monitor the movements of the other Houses and prepare defensive and attack strategies.",
+
+#PalaceOrdosInfo
+"When the House grants you a Palace, you will know that you have pleased them.\nIf you are ever to lose your Palace to the enemy, your mission will surely be lost.",
+
+#RefineryOrdosInfo
+"The refinery is necessary for the conversion of spice into credits.\nWithout a refinery, there is no way for you to obtain new credits by harvesting spice.",
+
+#RepairFacilityOrdosInfo
+"If you do not have a repair facility, it will not be possible for you to fix damaged vehicles.\nIf your damaged vehicles do not receive repairs, you will lose them completely.",
+
+#RocketTurretOrdosInfo
+"The Rocket turret, like the regular turret, cannot be moved.\nHowever, it has greater range capabilities than the regular turret.\nTogether, these should provide excellent long and short range firing capabilities.",
+
+#SpiceSilosOrdosInfo
+"Silos are used for the storage of spice.\nThey are weaker and more easily destroyed than harvesters or refineries.\nUse this knowledge to your advantage.",
+
+#StarportOrdosInfo
+"The intergalactic purchasing network accessible through the starport will allow you to acquire weaponry in bulk orders.",
+
+#TurretOrdosInfo
+"The turrets are highly accurate weapons.\nTheir only drawback is that once established, they cannot be moved.",
+
+#WallOrdosInfo
+"Walls may provide for a fair defense around the perimeter of a compound.",
+
+#WindtrapOrdosInfo
+"Windtraps are the only effective source of power on Dune.\nAlthough the traps are fairly strong, they tend to be easily damaged, and it would be wise to always keep more than one wind trap in operation.",
+
+#WorOrdosInfo
+"WOR is the means of producing the heavy troopers.",
+
+#CarryallOrdosInfo
+"The carryall is capable of deploying and retrieving the large tracked vehicles like harvesters.\nUsing carryalls is far quicker than waiting for the harvester to return on its own.",
+
+#CombatTankOrdosInfo
+"This slow, single barreled tank is adequate in its performance.\nHowever, there are much faster and more efficient tanks available.",
+
+#HarvesterOrdosInfo
+"Harvesters are large, slow vehicles that scout for spice fields and begin harvesting whenever raw spice is found.\nObviously this is a highly inefficient process.\nWe encourage our field commanders to also appropriate previously harvested materials, which is certainly a faster and more efficient method of spice acquisition.",
+
+#HeavyTroopersOrdosInfo
+"The heavy troopers carry more armor and yet are still faster than the light infantry.\nTheir abilities are well suited for ground assaults and reconnaissance missions.",
+
+#LightInfantryOrdosInfo
+"The light infantry allows for an expendable force of men.\nIf used in large numbers, they are almost unbeatable.",
+
+#MCVOrdosInfo
+"The Mobile Construction Vehicle offers an efficient means of expanding the territory under your control.\nIt can provide support for the construction of new facilities at some distance from your existing structures.",
+
+#OrdosRaiderOrdosInfo
+"The Raider is far better than a standard trike.\nIt is faster and has excellent weapons.\nBecause of its maneuverability, it is the best vehicle for those missions where you must rely on swiftness and agility.",
+
+#OrnithopterOrdosInfo
+"The ornithopter is a fast and maneuverable, aircraft.\nIt is effective for strategic strikes, but armor has been sacrificed for speed and agility.",
+
+#QuadOrdosInfo
+"This four-wheeled vehicle is not well suited to our purposes.\nAlthough it has good armor, it is not maneuverable enough and it lacks the speeds we require.",
+
+#RocketTankOrdosInfo
+"Although the Rocket Tank is faster than the combat tank and has long range firing capabilities, we prefer more useful tanks.\nI suggest sending your "Raiders" against rocket tanks.",
+
+#SiegeTankOrdosInfo
+"The Siege Tank possesses more than twice the firepower of the combat tank.\nYet, despite all the power and armor, it is quite slow.",
+
+#TrikeOrdosInfo
+"The three wheeled vehicles that other Houses use is lacking in many aspects.\nUnlike our Raider, Trikes are unable to maintain the speeds that we demand.\nUnfortunately, we had to sacrifice armor for this increase of speed.",
+
+#DeathHandOrdosInfo
+"The Harkonnen possess these missiles that are capable of delivering multiple warheads to a single strike area.\nAlthough fearfully named, fortunately they are also highly inaccurate.",
+
+#DevastatorOrdosInfo
+"The Harkonnen have created this new tank that is capable of inflicting severe damage to even the most well protected vehicles and buildings.\nFor all its firepower and armor, however, it is extremely slow and may be easily outmaneuvered.",
+
+#DeviatorOrdosInfo
+"Our Deviator fires a nerve gas that is capable of twisting the minds of enemy soldiers.\nSome of our best regiments are primarily composed of formerly hostile military personnel who have been reprogrammed by exposure to this gaseous argument.",
+
+#FremenOrdosInfo
+"The native Fremen of Dune are simple but skilled fighters.\nThey are currently utilized by the Atreides for combat purposes.\nPerhaps, with the right incentives, they could be persuaded to join our forces instead.",
+
+#SaboteurOrdosInfo
+"The Saboteur is the group name given to this unit of soldiers specializing in sabotage.\nThey are effective for specific target destruction, and are based at all of our Palaces.",
+
+#SandWormOrdosInfo
+"Indigenous to the sands of Dune, these monsters are attracted by vibrations, and can destroy large vehicles in a single bite.\n Rock is the only sure defense against these creatures.",
+
+#SonicTankOrdosInfo
+"The Atreides have developed a Sonic Tank that fires sonic blasts instead of projectiles.\nBe careful around these, their blasts have long range effects.",
+

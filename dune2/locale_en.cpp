@@ -12,7 +12,7 @@ const char* object_names[LastObject + 1] = {
 	"Barracks", "Wor", "Light Vehicle Factory", "Heavy Vehicle Factory", "High-tech Factory",
 	"Concrete Slab", "Concrete Slab Blocks", "Turret", "Rocket Turret",
 	"MCV", "Harvester", "Infantry", "Troopers", "Trike", "Quad", "Combat Tank", "Siege Tank", "Rocket Tank",
-	"Raider", "Death Hand", "Devastator", "Fremens", "Deviator", "Saboteur", "SonicTank",
+	"Raider", "Nuclear Rocket", "Devastator", "Fremens", "Deviator", "Saboteur", "Sonic Tank",
 	"Shai-Hulud", "Carrier", "Fregate", "Ornithopter",
 };
 const char* object_a_info[LastObject + 1] = {
@@ -105,7 +105,9 @@ const char* object_h_info[LastObject + 1] = {
 };
 const char* object_o_info[LastObject + 1] = {
 	0, 0, 0, 0, 0, 0, 0, 0, 0,
-	//Atreides, Harkonens, Ordos,
+	"The Atreides come from Caladan, a planet whose warm climate and over - productive agriculture undoubtedly make the citizens kind and non - violent.\nThis is their weakness.", // Atreides
+	"Giedi Prime is the home to the Harkonnen.\nDo not be fooled by their blind hatred and bloodlust.\nThey are devious, shrewd, and must be watched carefully!", // Harkonens
+	"The Ordos come from many different homes.\nBecause of this diversity, we are strong and highly organized.\nWe know when it is necessary to utilize resources and when to appropriate the required materials.\nOur organization is highly efficient and effective.", // Ordos
 	//ConstructionYard, SpiceSilos, Starport, Windtrap, Refinery, RadarOutpost, RepairFacility, HouseOfIX, Palace,
 	//Barracks, Wor, LightVehicleFactory, HeavyVehicleFactory, HighTechFactory,
 	//Slab, Slab4, Turret, RocketTurret,

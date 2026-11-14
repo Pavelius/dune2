@@ -279,10 +279,8 @@ bool building::canbuild() const {
 	case ConstructionYard:
 	case LightVehicleFactory:
 	case HeavyVehicleFactory:
-	case Barracks:
-	case Wor:
-	case Starport:
-	case HighTechFactory:
+	case Barracks: case Wor:
+	case Starport: case HighTechFactory:
 		return true;
 	default:
 		return false;
