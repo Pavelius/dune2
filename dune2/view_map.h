@@ -38,5 +38,5 @@ void paint_video();
 void reset_form_animation();
 void setcamera(point v, bool center_view);
 long show_scene(fnevent before_paint, fnevent input, void* focus);
-long show_scene_raw(fnevent before_paint, fnevent input, void* focus);
+long show_scene_raw(fnevent before_paint, fnevent input);
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20);

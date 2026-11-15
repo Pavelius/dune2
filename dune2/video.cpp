@@ -42,7 +42,7 @@ void video_play(const slice<videoi>& source, const char** subtitles) {
 			animate_once = false;
 		if(e.time_lenght)
 			animate_stop = animate_time + e.time_lenght;
-		if(!show_scene_raw(paint_video, 0, 0)) {
+		if(!show_scene_raw(paint_video, 0)) {
 			disappear_scene(time_appear);
 			break;
 		}

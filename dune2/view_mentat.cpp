@@ -320,11 +320,11 @@ static void show_mentat_string(const char* format, resid rid, fnevent finale_pai
 		if(!sb)
 			break;
 		form_header = sb;
-		if(!show_scene_raw(paint_mentat_speaking, 0, 0))
+		if(!show_scene_raw(paint_mentat_speaking, 0))
 			return;
 	}
 	if(finale_paint)
-		show_scene_raw(paint_mentat_silent, finale_paint, 0);
+		show_scene_raw(paint_mentat_silent, finale_paint);
 }
 
 static void show_mentat_subject(objectn subject) {
@@ -393,10 +393,10 @@ static void show_scenario_prompt(const char* format, resid rid) {
 			if(!sb)
 				break;
 			form_header = sb;
-			if(!show_scene_raw(paint_mentat_speaking, 0, 0))
+			if(!show_scene_raw(paint_mentat_speaking, 0))
 				return;
 		}
-		if(show_scene_raw(paint_mentat_silent, paint_proceed_repeat, 0))
+		if(show_scene_raw(paint_mentat_silent, paint_proceed_repeat))
 			break;
 	}
 }

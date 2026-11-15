@@ -1527,11 +1527,11 @@ void paint_video() {
 		paint_video_fps();
 }
 
-long show_scene_raw(fnevent before_paint, fnevent input, void* focus) {
+long show_scene_raw(fnevent paint_proc, fnevent after_paint) {
 	while(ismodal()) {
-		before_paint();
-		if(input)
-			input();
+		paint_proc();
+		if(after_paint)
+			after_paint();
 		domodal();
 		common_input();
 	}
@@ -1542,7 +1542,7 @@ long show_scene(fnevent before_paint, fnevent input, void* focus) {
 	pushrect push;
 	pushscene push_scene;
 	current_focus = focus;
-	return show_scene_raw(before_paint, input, focus);
+	return show_scene_raw(before_paint, input);
 }
 
 static void default_time(unsigned long& milliseconds) {
