@@ -282,9 +282,15 @@ static void show_introdution() {
 	current_music = NoMusic;
 }
 
-static void load_game() {
-	if(confirm(getnm(ConfirmLoadGame), getnm(Yes), getnm(No)))
+static void play_current_game() {
+	show_scene(paint_main_map, 0, 0);
+}
+
+static void load_game_menu() {
+	if(confirm(getnm(ConfirmLoadGame), getnm(Yes), getnm(No))) {
 		load_game("autosave");
+		set_next_scene(play_current_game);
+	}
 }
 
 static void save_game() {
@@ -313,7 +319,7 @@ static point choose_terrain() {
 
 void open_options() {
 	static menui elements[] = {
-		{LoadGame, load_game},
+		{LoadGame, load_game_menu},
 		{SaveGame, save_game},
 		{GameControls, controls_game},
 		{RestartScenario, restart_scenario},
@@ -328,17 +334,50 @@ void camera_to_base() {
 		setcamera(pb->position, true);
 }
 
-void main_menu() {
-	// music_disabled = true;
-	show_introdution();
-	// choose_game_house();
+static void play_game() {
+	choose_game_house();
 	game.scenario = 1;
-	game.house = Atreides;
 	game.starting_credits = 1000;
 	area_generate(SmallMap, 2);
 	show_scenario_prompt(mainplayer().fraction, game.scenario, ScenarioBrief);
 	camera_to_base();
-	show_scene(paint_main_map, 0, 0);
+	set_next_scene(play_current_game);
+}
+
+static void hall_of_fame() {
+	game.scenario = 1;
+	game.house = Atreides;
+	game.starting_credits = 1000;
+	area_generate(SmallMap, 2);
+	camera_to_base();
+	set_next_scene(play_current_game);
+}
+
+static void load_game_no_confirm() {
+	load_game("autosave");
+	set_next_scene(play_current_game);
+}
+
+static void play_main_menu() {
+	current_music = MusicTitle;
+	an.clear();
+	an.add(play_game, "Play Game");
+	an.add(show_introdution, "Replay Introdution");
+	an.add(load_game_no_confirm, "Load Game");
+	an.add(hall_of_fame, "Hall of Fame");
+	an.add(0, "Exit Game");
+	auto proc = (fnevent)choose_main_menu();
+	if(!proc)
+		return;
+	proc();
+	if(!is_next_scene())
+		set_next_scene(play_main_menu);
+}
+
+void main_menu() {
+	// music_disabled = true;
+	// show_introdution();
+	set_next_scene(play_main_menu);
 }
 
 static void unit_name(stringbuilder& sb) {

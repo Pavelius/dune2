@@ -10,6 +10,7 @@
 #include "unit.h"
 #include "view_map.h"
 #include "view_focus.h"
+#include "view_menu.h"
 #include "view_theme.h"
 
 using namespace draw;
@@ -354,12 +355,9 @@ static void change_debug() {
 	auto pb = find_building(area.getcorner(area_spot));
 	if(pb)
 		pb->set(BoardUnit, debug_toggle);
-	//if(debug_toggle) {
-	//	area.blockcontrol();
-	//	area.controlwave(area_spot, allowcontrol, 32);
-	//}
-	// blockarea(isunitpossible);
-	// blockunits(0);
+}
+
+static void debug_test() {
 }
 
 void view_debug_input() {
@@ -372,6 +370,7 @@ void view_debug_input() {
 	case Ctrl + 'F': show_font(FONT10, {4, 3}, {12, 12}); break;
 	case Ctrl + 'M': show_sprites(MOUSE, {0, 0}, {16, 16}); break;
 	case Ctrl + 'P': show_pallette(SHAPES, 8); break;
+	case Ctrl + 'T': debug_test(); break;
 	case 'B': area.set(area_spot, Blood); break;
 	case 'D': change_debug(); break;
 	case 'E': random_explosion(); break;

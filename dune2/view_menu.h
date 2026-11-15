@@ -10,6 +10,7 @@ struct menui {
 	explicit operator bool() const { return id != (messagen)0; }
 };
 
+long choose_main_menu();
 bool confirm(const char* header, const char* yes, const char* no);
 long show_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc);
 void execute_menu(const char* header, int menu_width, const char* cancel, const char* additional, fnevent additional_proc, const menui* elements);

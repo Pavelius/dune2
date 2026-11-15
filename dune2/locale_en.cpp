@@ -194,7 +194,7 @@ const char* object_capacity[LastObject + 1] = {
 	"Type: Close Support Attack Aircraft\nArmament: Battle Support Rockets\nSpeed: 340 km/h (airborne)\nArmor: Light\nCrew: 2", // Ornithopter
 };
 const char* message_names[LastMessage + 1] = {
-	"Dune II: The Building of A Dynasty", "Cancel", "Yes", "No",
+	"The Building of A Dynasty", "Cancel", "Yes", "No",
 	"Target", "Placement", "Select Subject", "Select your house",
 	"Load game", "Save this game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
 	"Game controls", "Restart scenario", "Pick another house", "Cost",

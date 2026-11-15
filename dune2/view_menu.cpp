@@ -2,8 +2,10 @@
 #include "draw.h"
 #include "game.h"
 #include "math.h"
+#include "midi.h"
 #include "screenshoot.h"
 #include "view_focus.h"
+#include "view_map.h"
 #include "view_menu.h"
 #include "view_theme.h"
 
@@ -19,7 +21,7 @@ static bool menu_button(int index, const void* data, const char* text, unsigned 
 		texta(text, AlignCenterCenter);
 	}
 	auto run = button_input(data, key, false);
-	if(pressed_focus==data)
+	if(pressed_focus == data)
 		form_press_effect();
 	return run;
 }
@@ -98,4 +100,34 @@ void execute_menu(const char* header, int menu_width, const char* cancel, const 
 	auto p = (fnevent)show_menu(header, menu_width, cancel, additional, additional_proc);
 	if(p)
 		p();
+}
+
+static void paint_main_menu() {
+	music_update();
+	paint_background(colors::black);
+	pushfore push_fore;
+	pushrect push;
+	auto ps = gres(INTRO1);
+	caret.x += (320 - ps->width) / 2;
+	image(ps, 0, 0);
+	image(ps, ps->count - 1, 0);
+	caret = push.caret;
+	caret.y += ps->height - 16; height = 24;
+	pushfontb push_theme(TextRed); font = gres(FONT16);
+	texta(getnm(ProgramTitle), AlignCenter | ImagePallette);
+	pushtheme push_button(ButtonMenu);
+	width = 136; height = 14;
+	caret.y += texth() + 1;
+	caret.x += (320 - width) / 2;
+	font = gres(FONT8);
+	auto index = 0;
+	for(auto& e : an) {
+		if(menu_button(index++, e.value, e.text, e.key))
+			execute(update_buttonparam, (long)e.value, 0, 0);
+		caret.y += height + 1;
+	}
+}
+
+long choose_main_menu() {
+	return show_scene_raw(paint_main_menu, 0);
 }
