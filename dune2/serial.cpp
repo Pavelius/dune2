@@ -7,6 +7,30 @@
 #include "stringbuilder.h"
 #include "unit.h"
 
+void game_file(char* result, const char* folder, const char* name, const char* ext, int index) {
+	io::file::home(result);
+	stringbuilder sb(result, result + 511); sb.setend();
+#ifdef _MSC_VER
+	sb.add("\\Dune II");
+#else
+	sb.add("/.local/share/dune2");
+#endif
+	io::file::makedir(result);
+	if(folder) {
+		sb.addv(FILE_SEP, 0);
+		sb.addv(folder, 0);
+		io::file::makedir(result);
+	}
+	if(name) {
+		sb.addv(FILE_SEP, 0);
+		sb.add(name, index);
+		if(ext) {
+			sb.addv(".", 0);
+			sb.addv(ext, 0);
+		}
+	}
+}
+
 static bool serial_game_url(const char* url, bool writemode) {
 	io::file file(url, writemode ? StreamWrite : StreamRead);
 	if(!file)
@@ -26,8 +50,8 @@ static bool serial_game_url(const char* url, bool writemode) {
 }
 
 static bool serial_game(const char* id, bool writemode) {
-	string sb; sb.add("saves/%1.sav", id);
-	return serial_game_url(sb, writemode);
+	char path[512]; game_file(path, "saves", id, "sav", -1);
+	return serial_game_url(path, writemode);
 }
 
 void save_game(const char* id) {

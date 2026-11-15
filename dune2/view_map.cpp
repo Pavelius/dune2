@@ -323,9 +323,11 @@ static void check_played_music() {
 }
 
 static void make_screenshoot() {
-	auto index = get_file_number("screenshoots", "scr*.bmp");
+	char path[512]; game_file(path, "screenshoots", 0, 0, 0);
+	auto index = get_file_number(path, "scr*.bmp");
 	char temp[260]; stringbuilder sb(temp);
-	sb.add("screenshoots/scr%1.5i.bmp", index);
+	sb.add(path);
+	sb.add("/scr%1.5i.bmp", index);
 	write(temp,
 		draw::canvas->ptr(0, 0), canvas->width, canvas->height, canvas->bpp, canvas->scanline, 0);
 }

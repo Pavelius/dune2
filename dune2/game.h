@@ -83,6 +83,7 @@ inline unsigned int game_rand(int from, int to) { return from + game_rand() % (t
 
 void camera_to_base();
 bool confirm_join_house(objectn subject);
+void game_file(char* result, const char* folder, const char* name, const char* ext, int index = 0);
 void load_game(const char* id);
 void open_options();
 void save_game(const char* id);

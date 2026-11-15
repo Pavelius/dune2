@@ -16,6 +16,8 @@
 
 #pragma once
 
+#define FILE_SEP "\\"
+
 enum seek_flags { SeekSet, SeekCur, SeekEnd };
 enum stream_flags {
 	StreamRead = 1,
@@ -63,6 +65,7 @@ struct file : stream {
 	static char*		getdir(char* url, int size);
 	static char*		getmodule(char* url, int size);
 	static bool			getfullurl(const char* short_url, char* url, int size);
+	static void			home(char* result);
 	static bool			makedir(const char* url);
 	int					read(void* result, int count) override;
 	static bool			remove(const char* url);

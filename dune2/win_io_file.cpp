@@ -133,3 +133,8 @@ bool io::file::makedir(const char* url) {
 bool io::file::getfullurl(const char* short_url, char* url, int size) {
 	return GetFullPathNameA(short_url, size, url, 0) != 0;
 }
+
+void io::file::home(char* result) {
+	result[0] = 0;
+	SHGetFolderPathA(0, CSIDL_PERSONAL, 0, SHGFP_TYPE_CURRENT, result);
+}

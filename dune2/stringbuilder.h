@@ -31,6 +31,12 @@ struct xva_gcc_list {
 	auto format_param = ((xva_gcc_list*)(&args))->reg_save_area + ((xva_gcc_list*)(&args))->gpr;
 #endif
 
+constexpr bool ischa(unsigned char s) { return (s >= 'A' && s <= 'Z') || (s >= 'a' && s <= 'z') || s >= 0xC0; }
+constexpr bool isnum(unsigned char s) { return s >= '0' && s <= '9'; }
+constexpr const char* zchr(const char* p, char e) { while(*p) { if(*p == e) return p; p++; } return 0; }
+constexpr const char* zend(const char* p) { while(*p) p++; return p; }
+constexpr size_t zlen(const char* p) { return zend(p) - p; }
+
 class stringbuilder {
 	struct grammar;
 	struct genderi;
@@ -88,6 +94,7 @@ public:
 	const char*		psstrlf(const char* p);
 	void			reset() { p = pb; }
 	void			set(char* v) { p = v; p[0] = 0; }
+	void			setend() { p = (char*)zend(pb); }
 	size_t			size() const { return p - pb; }
 	void			trimr();
 	void			upper();
@@ -134,12 +141,6 @@ bool szstart(const char* text, const char* value);
 bool szmatch(const char* text, const char* value);
 bool szpmatch(const char* text, const char* pattern);
 void szupper(char* p);
-
-constexpr bool ischa(unsigned char s) { return (s >= 'A' && s <= 'Z') || (s >= 'a' && s <= 'z') || s >= 0xC0; }
-constexpr bool isnum(unsigned char s) { return s >= '0' && s <= '9'; }
-constexpr const char* zchr(const char* p, char e) { while(*p) { if(*p == e) return p; p++; } return 0; }
-constexpr const char* zend(const char* p) { while(*p) p++; return p; }
-constexpr size_t zlen(const char* p) { return zend(p) - p; }
 
 template<class T> void ftinfo(const void* object, stringbuilder& sb);
 
