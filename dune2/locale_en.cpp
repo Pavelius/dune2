@@ -3,6 +3,25 @@
 #include "player.h"
 #include "terrain.h"
 
+const char* message_names[LastMessage + 1] = {
+	"The Building of A Dynasty", "Cancel", "Yes", "No",
+	"Target", "Placement", "Select Subject", "Select your house",
+	"Start new game", "Load game", "Save this game", "Hall of Fame", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
+	"Game controls", "Restart scenario", "Pick another house", "Cost",
+	"Done %1i%%", "%Unit is destroyed.", "%Unit is devoured by worm.",
+	"There is no room for spice - build more Spice Silos.",
+	"%Unit is %UnitThrall percent full.",
+	"%Unit can't execute order.",
+	"%Unit is unloading spice.",
+	"%Unit is return with %UnitThrall percent full.",
+	"Choose move target",
+	"Place buidling on rock",
+	"Do you want to join %1?",
+	"Do you really want to load game?",
+	"Do you really want to end this game and pick another house?",
+	"Do you really want to quit this game? All unsaved changes will be lost.",
+	"Not enought energy. Build more wind traps.",
+};
 const char* object_names[LastObject + 1] = {
 	"No object",
 	"Briefing", "House", "Building", "Unit", "Special", "Objective",
@@ -192,25 +211,6 @@ const char* object_capacity[LastObject + 1] = {
 	"Type: Airborne Unit\nArmament: none\nSpeed: 160 km/h (airborne)\nArmor: Light\nCrew: 4", // Carryall
 	"Type: Airborne Unit\nArmament: none\nSpeed: 160 km/h (airborne)\nArmor: Light\nCrew: 4", // Fregate
 	"Type: Close Support Attack Aircraft\nArmament: Battle Support Rockets\nSpeed: 340 km/h (airborne)\nArmor: Light\nCrew: 2", // Ornithopter
-};
-const char* message_names[LastMessage + 1] = {
-	"The Building of A Dynasty", "Cancel", "Yes", "No",
-	"Target", "Placement", "Select Subject", "Select your house",
-	"Load game", "Save this game", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
-	"Game controls", "Restart scenario", "Pick another house", "Cost",
-	"Done %1i%%", "%Unit is destroyed.", "%Unit is devoured by worm.",
-	"There is no room for spice - build more Spice Silos.",
-	"%Unit is %UnitThrall percent full.",
-	"%Unit can't execute order.",
-	"%Unit is unloading spice.",
-	"%Unit is return with %UnitThrall percent full.",
-	"Choose move target",
-	"Place buidling on rock",
-	"Do you want to join %1?",
-	"Do you really want to load game?",
-	"Do you really want to end this game and pick another house?",
-	"Do you really want to quit this game? All unsaved changes will be lost.",
-	"Not enought energy. Build more wind traps.",
 };
 const char* stat_names[LastStat + 1] = {
 	"Spice", "Energy",

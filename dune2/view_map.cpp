@@ -293,33 +293,23 @@ static bool is_enemy_attack() {
 	return e.enemy_units_spotted > 0 || e.enemy_buildings_spotted > 0;
 }
 
-/*static void play_music(int type) {
-	switch(type) {
-	case 1: music_play("ambient", xrand(1, 10)); break;
-	case 2: music_play("attack", xrand(1, 6)); break;
-	}
-}*/
-
 static void check_played_music() {
-	static soundn music_attack[] = {
+	static musicn music_attack[] = {
 		MusicAttack01, MusicAttack02, MusicAttack03, MusicAttack04, MusicAttack05, MusicAttack06
 	};
-	static soundn music_ambient[] = {
+	static musicn music_ambient[] = {
 		MusicAblient01, MusicAblient02, MusicAblient03, MusicAblient04, MusicAblient05,
 		MusicAblient06, MusicAblient07, MusicAblient08, MusicAblient09, MusicAblient10,
 	};
-	static unsigned music_type;
 	if(!music_enable)
 		return;
-	auto new_type = is_enemy_attack() ? 2 : 1;
-	if(music_type == new_type)
+	auto combat_music = is_enemy_attack();
+	if(is_map_music(current_music) && is_combat(current_music) == combat_music)
 		return;
-	switch(new_type) {
-	case 1: current_music = maprnd(music_ambient); break;
-	case 2: current_music = maprnd(music_attack); break;
-	default: break;
-	}
-	music_type = new_type;
+	if(combat_music)
+		current_music = maprnd(music_attack);
+	else
+		current_music = maprnd(music_ambient);
 }
 
 static void make_screenshoot() {

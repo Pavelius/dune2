@@ -21,6 +21,7 @@ int main() {
 #ifdef _DEBUG
 	make_pallette();
 	util_main();
+	apply_test();
 #endif // _DEBUG
 	make_pallette();
 	initialize_strings();

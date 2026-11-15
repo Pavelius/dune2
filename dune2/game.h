@@ -29,7 +29,7 @@ enum resid : unsigned char {
 };
 extern sprite* res_data[LastRes + 1];
 
-enum soundn : unsigned char {
+enum musicn : unsigned char {
 	NoMusic,
 	MusicAblient01, MusicAblient02, MusicAblient03, MusicAblient04, MusicAblient05,
 	MusicAblient06, MusicAblient07, MusicAblient08, MusicAblient09, MusicAblient10,
@@ -40,12 +40,12 @@ enum soundn : unsigned char {
 	MusicEndingA, MusicEndingH, MusicEndingO,
 	MusicVictoryA, MusicVictoryH, MusicVictoryO,
 };
-extern soundn current_music;
+extern musicn current_music;
 
 enum messagen : unsigned char {
 	ProgramTitle, Cancel, Yes, No,
 	ChooseTarget, ChoosePlacement, ChooseSubject, SelectHouse,
-	LoadGame, SaveGame, QuitGame, ResumeGame, Exit, Proceed, Repeat, BuildIt,
+	StartGame, LoadGame, SaveGame, HallOfFame, QuitGame, ResumeGame, Exit, Proceed, Repeat, BuildIt,
 	GameControls, RestartScenario, PickAnotherHouse, Cost,
 	CompleteProgress, UnitDestroyed, UnitDevoured, ReachSpiceMaximum,
 	HarvesterWork, UnitCantDoThis, HarvesterUnload, HarvesterReturn,
@@ -79,6 +79,8 @@ extern gamei game;
 void camera_to_base();
 bool confirm_join_house(objectn subject);
 void game_file(char* result, const char* folder, const char* name, const char* ext, int index = 0);
+bool is_combat(musicn v);
+bool is_map_music(musicn v);
 void load_game(const char* id);
 void open_options();
 void save_game(const char* id);

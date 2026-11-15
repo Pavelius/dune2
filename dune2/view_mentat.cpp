@@ -339,7 +339,7 @@ bool confirm_join_house(objectn subject) {
 	return getresult() != 0;
 }
 
-static soundn get_mentat_music() {
+static musicn get_mentat_music() {
 	switch(mainplayer().fraction) {
 	case Ordos: return MusicMentatO;
 	case Atreides: return MusicMentatA;
@@ -348,7 +348,7 @@ static soundn get_mentat_music() {
 	}
 }
 
-static soundn get_mentat_music(scenariotextn type) {
+static musicn get_mentat_music(scenariotextn type) {
 	switch(type) {
 	case ScenarioWin:
 		switch(mainplayer().fraction) {

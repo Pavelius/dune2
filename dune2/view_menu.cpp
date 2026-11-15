@@ -129,5 +129,8 @@ static void paint_main_menu() {
 }
 
 long choose_main_menu() {
-	return show_scene_raw(paint_main_menu, 0);
+	an.checkkeys();
+	auto result = show_scene_raw(paint_main_menu, 0);
+	an.clear();
+	return result;
 }

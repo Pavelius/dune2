@@ -36,6 +36,7 @@ struct answers {
 	void			addv(const void* value, const char* name, const char* format, unsigned key);
 	const element*	begin() const { return elements.data; }
 	element*		begin() { return elements.data; }
+	void			checkkeys();
 	void			clear();
 	static int		compare(const void* v1, const void* v2);
 	const element*	end() const { return elements.end(); }

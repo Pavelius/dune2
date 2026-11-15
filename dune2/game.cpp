@@ -20,6 +20,14 @@
 
 gamei game;
 
+bool is_combat(musicn v) {
+	return v >= MusicAttack01 && v <= MusicAttack06;
+}
+
+bool is_map_music(musicn v) {
+	return v >= MusicAblient01 && v <= MusicAttack06;
+}
+
 static void update_area_decoy() {
 	for(auto y = 0; y < area.maximum.y; y++)
 		for(auto x = 0; x < area.maximum.x; x++)
@@ -345,6 +353,9 @@ static void play_game() {
 }
 
 static void hall_of_fame() {
+}
+
+static void debug_game() {
 	game.scenario = 1;
 	game.house = Atreides;
 	game.starting_credits = 1000;
@@ -360,12 +371,15 @@ static void load_game_no_confirm() {
 
 static void play_main_menu() {
 	current_music = MusicTitle;
-	an.clear();
-	an.add(play_game, "Play Game");
+	an.add(play_game, getnm(StartGame));
 	an.add(show_introdution, "Replay Introdution");
-	an.add(load_game_no_confirm, "Load Game");
-	an.add(hall_of_fame, "Hall of Fame");
-	an.add(0, "Exit Game");
+	an.add(load_game_no_confirm, getnm(LoadGame));
+#ifdef _DEBUG
+	an.add(debug_game, "Debug Game");
+#else
+	an.add(hall_of_fame, getnm(HallOfFame));
+#endif // DEBUG	
+	an.add(0, getnm(QuitGame));
 	auto proc = (fnevent)choose_main_menu();
 	if(!proc)
 		return;
@@ -375,8 +389,8 @@ static void play_main_menu() {
 }
 
 void main_menu() {
+#ifdef _DEBUG
 	// music_disabled = true;
-#ifdef DEBUG
 	// In debug mode don't show introducion
 #else
 	show_introdution();

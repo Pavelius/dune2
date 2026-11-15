@@ -20,6 +20,18 @@
 bool show_interactive = true;
 answers an;
 
+static unsigned anhotkey(int index) {
+	static char hotkeys[] = {
+		'1', '2', '3', '4', '5', '6', '7', '8', '9', 'A',
+		'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J', 'K',
+		'L', 'M', 'N', 'O', 'P', 'Q', 'R', 'S', 'T', 'U',
+		'V', 'W', 'X', 'Y', 'Z'
+	};
+	if((size_t)index > sizeof(hotkeys) / sizeof(hotkeys[0]) - 1)
+		index = sizeof(hotkeys) / sizeof(hotkeys[0]) - 1;
+	return hotkeys[index];
+}
+
 int answers::compare(const void* v1, const void* v2) {
 	return szcmp(((answers::element*)v1)->text, ((answers::element*)v2)->text);
 }
@@ -62,4 +74,17 @@ size_t answers::findvalue(const void* pv) const {
 			return &e - elements.data;
 	}
 	return -1;
+}
+
+void answers::checkkeys() {
+	auto index = 0;
+	for(auto& e : elements) {
+		if(!e.key) {
+			if(!e.value)
+				e.key = 27;
+			else
+				e.key = anhotkey(index);
+		}
+		index++;
+	}
 }

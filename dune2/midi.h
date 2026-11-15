@@ -1,6 +1,6 @@
 #pragma once
 
-enum soundn : unsigned char;
+enum musicn : unsigned char;
 
 struct musici {
 	unsigned*		data;
@@ -10,7 +10,7 @@ struct musici {
 extern musici songs[];
 
 extern bool music_enable;
-extern soundn current_music;
+extern musicn current_music;
 
 void music_setvolume(short unsigned v);
 void music_stop();
