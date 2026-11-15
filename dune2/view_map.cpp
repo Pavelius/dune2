@@ -1580,13 +1580,16 @@ void print_console_proc(const char* string);
 void initialize_view(const char* title, fnevent main_scene) {
 	pbeforemodal = main_beforemodal;
 	draw::create(-1, -1, 320, 200, 0, 32, false);
+#ifdef _DEBUG
+	draw::setcaption(str("%1 (start seed %2i)", title, xrand_seed));
+#else
 	draw::setcaption(title);
+#endif
 	draw::settimer(40);
 	font = gres(FONT6);
 	fore = colors::white;
 	print_proc = print_console_proc;
 	set_next_scene(main_scene);
-	run_next_scene();
 }
 
 BSDATA(drawrenderi) = {

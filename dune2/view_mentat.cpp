@@ -423,7 +423,7 @@ void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn t
 
 void open_mentat() {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	pushvalue push_music(current_music, get_mentat_music());
+	current_music = get_mentat_music();
 	make_pallette();
 	while(true) {
 		auto line = (objectn*)choose_mentat_topic();
