@@ -2,12 +2,12 @@
 
 enum soundn : unsigned char;
 
-struct soundi {
+struct musici {
 	unsigned*		data;
 	unsigned		size;
 	short unsigned	division;
 };
-extern soundi songs[];
+extern musici songs[];
 
 extern bool music_enable;
 extern soundn current_music;
