@@ -376,7 +376,11 @@ static void play_main_menu() {
 
 void main_menu() {
 	// music_disabled = true;
-	// show_introdution();
+#ifdef DEBUG
+	// In debug mode don't show introducion
+#else
+	show_introdution();
+#endif // DEBUG
 	set_next_scene(play_main_menu);
 }
 
