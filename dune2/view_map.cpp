@@ -1588,10 +1588,10 @@ void make_pallette() {
 void print_console_proc(const char* string);
 
 void initialize_view(const char* title, fnevent main_scene) {
+	pbeforemodal = main_beforemodal;
 	draw::create(-1, -1, 320, 200, 0, 32, false);
 	draw::setcaption(title);
 	draw::settimer(40);
-	draw::pbeforemodal = main_beforemodal;
 	font = gres(FONT6);
 	fore = colors::white;
 	print_proc = print_console_proc;

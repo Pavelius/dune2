@@ -162,7 +162,6 @@ struct surface {
 };
 extern surface*			canvas;
 extern rect				clipping; // Clipping area
-extern fnevent			domodal;
 extern point			dragmouse, caret, tips_caret, tips_size;
 extern color			fore, fore_stroke;
 extern const void*		hilite_object;
@@ -177,8 +176,6 @@ extern double			linw;
 extern long				text_params[16];
 extern color*			palt;
 extern int				tab_pixels;
-extern fnevent          pbackground, ptips, pfinish, pinput;
-extern fnevent          pbeforemodal, pleavemodal, psetfocus;
 extern unsigned			text_flags;
 struct pushrect {
 	point caret;
@@ -230,7 +227,6 @@ void				imager(int x, int y, const sprite* p, int id, int radius);
 void				key2str(stringbuilder& sb, int key);
 void				line(int x, int y); // Draw line
 void				linet(int x, int y);
-void				paintstart();
 void				paintfinish();
 void				pixel(int x, int y);
 void				pixel(int x, int y, unsigned char alpha);
@@ -280,10 +276,12 @@ void fire(bool run, fnevent proc, long value = 0, long value2 = 0, const void* o
 long getresult();
 bool isclipped(int size);
 bool ismodal();
-void* scene(fnevent proc);
-void scene();
 void setneedupdate();
 }
+
+extern fnevent domodal, pbeforemodal;
+
+void* scene(fnevent proc);
 
 bool is_next_scene();
 void run_next_scene();

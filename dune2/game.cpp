@@ -330,8 +330,8 @@ void camera_to_base() {
 
 void main_menu() {
 	// music_disabled = true;
-	// show_introdution();
-	choose_game_house();
+	show_introdution();
+	// choose_game_house();
 	game.scenario = 1;
 	game.house = Atreides;
 	game.starting_credits = 1000;

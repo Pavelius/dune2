@@ -42,8 +42,7 @@ color colors::tips::back;
 color draw::fore;
 color draw::fore_stroke;
 // Color context and font context
-fnevent draw::domodal, draw::pbackground, draw::pfinish, draw::ptips;
-fnevent draw::pbeforemodal, draw::pleavemodal, draw::psetfocus;
+fnevent domodal, pbeforemodal;
 unsigned char	draw::alpha = 255;
 int				draw::width, draw::height, draw::dialog_width = 500;
 int				draw::fsize = 32;
@@ -2235,8 +2234,6 @@ void draw::execute(fnevent proc, long value, long value2, const void* object) {
 }
 
 static void standart_domodal() {
-	if(draw::ptips)
-		draw::ptips();
 	draw::hot.key = draw::rawinput();
 	if(!draw::hot.key)
 		exit(0);
@@ -2270,8 +2267,6 @@ bool draw::ismodal() {
 	if(!break_modal && !next_scene)
 		return true;
 	break_modal = false;
-	if(pleavemodal)
-		pleavemodal();
 	return break_modal;
 }
 
@@ -2338,29 +2333,12 @@ void draw::setneedupdate() {
 	hot.key = InputNeedUpdate;
 }
 
-void draw::paintstart() {
-	if(pbackground)
-		pbackground();
-}
-
-void draw::paintfinish() {
-	if(pfinish)
-		pfinish();
-}
-
-void* draw::scene(fnevent proc) {
+void* scene(fnevent proc) {
 	while(ismodal()) {
-		paintstart();
-		if(proc)
-			proc();
-		paintfinish();
+		proc();
 		domodal();
 	}
 	return (void*)getresult();
-}
-
-void draw::scene() {
-	scene(0);
 }
 
 void draw::fire(bool run, fnevent proc, long value, long value2, const void* object) {
