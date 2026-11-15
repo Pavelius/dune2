@@ -1,5 +1,5 @@
 #include "fix.h"
-#include "resid.h"
+#include "game.h"
 #include "shape.h"
 #include "stringbuilder.h"
 #include "terrain.h"

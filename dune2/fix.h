@@ -4,7 +4,7 @@
 #include "point.h"
 
 enum drawprocn : unsigned char;
-enum resid : unsigned short;
+enum resid : unsigned char;
 
 enum fixn : unsigned char {
 	NoEffect,

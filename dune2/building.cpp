@@ -6,7 +6,6 @@
 #include "objecta.h"
 #include "pointa.h"
 #include "pushvalue.h"
-#include "resid.h"
 
 BSDATA(tilepatch) = {
 	{334, 342, BoardUnit, Refinery},

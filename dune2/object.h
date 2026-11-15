@@ -2,7 +2,7 @@
 
 enum fixn : unsigned char;
 enum movementn : unsigned char;
-enum resid : unsigned short;
+enum resid : unsigned char;
 enum shapen	: unsigned char;
 
 enum objectn : unsigned char {

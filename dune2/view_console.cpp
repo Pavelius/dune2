@@ -1,6 +1,6 @@
 #include "stringbuilder.h"
 #include "draw.h"
-#include "resid.h"
+#include "game.h"
 #include "slice.h"
 #include "timer.h"
 

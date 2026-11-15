@@ -14,7 +14,6 @@
 #include "pushvalue.h"
 #include "print.h"
 #include "rand.h"
-#include "resid.h"
 #include "screenshoot.h"
 #include "squad.h"
 #include "timer.h"

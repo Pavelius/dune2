@@ -1,7 +1,33 @@
 #pragma once
 
-enum resid : unsigned short;
+struct sprite;
+
 enum objectn : unsigned char;
+
+enum resid : unsigned char {
+	NONE,
+	FONT6, FONT8, FONT10, FONT3, FONT16,
+	MENTATS, MENSHPA, MENSHPH, MENSHPO, MENSHPM,
+	SHAPES, ICONS, ARROWS, MOUSE, SCREEN, CHOAM,
+	UNITS, UNITS1, UNITS2,
+	SLAB4, AFINALA, AFINALB, BARRAC, CARRYALL,
+	CONSTRUC, EFINALA, EFINALB, FARTR, FHARK,
+	FORDOS, FREMEN, GOLDBB, HARKTANK, HARVEST,
+	HEADQRTS, HFINALA, HFINALB, HFINALC, HITCFTRY,
+	HTANK, HVYFTRY, HYINFY, INFANTRY, INTRO1,
+	INTRO10, INTRO11, INTRO2, INTRO3, INTRO4,
+	INTRO5, INTRO6, INTRO7A, INTRO7B, INTRO8A,
+	INTRO8B, INTRO8C, INTRO9, IX, LITEFTRY,
+	LOSTBILD, LOSTVEHC, LTANK, MCV, MEANWHIL,
+	OFINALA, OFINALB, OFINALC, OFINALD, ORDRTANK,
+	ORNI, OTRIKE, PALACE, QUAD, REFINERY,
+	REPAIR, RTANK, RTURRET, SABOTURE, SARDUKAR,
+	SLAB, STANK, STARPORT, STATIC, STORAGE,
+	TRIKE, TURRET, WALL, WESTWOOD, WIN1,
+	WIN2, WINDTRAP, WOR, WORM,
+	LastRes = WORM
+};
+extern sprite* res_data[LastRes + 1];
 
 enum soundn : unsigned char {
 	NoMusic,
@@ -65,4 +91,5 @@ void update_ai_commands(unsigned char player);
 void update_game_time();
 void choose_game_house();
 
+inline const sprite* gres(resid i) { return res_data[i]; }
 inline const char* getnm(messagen v) { return message_names[v]; }

@@ -5,7 +5,7 @@
 
 typedef void(*fnevent)();
 
-enum resid : unsigned short;
+enum resid : unsigned char;
 
 enum themen : unsigned char {
 	ButtonMenu, ButtonLight, ButtonDark, ButtonYellow, TextRed, TextYellow,

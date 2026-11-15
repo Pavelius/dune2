@@ -5,7 +5,6 @@
 #include "drawable.h"
 #include "fix.h"
 #include "game.h"
-#include "resid.h"
 #include "unit.h"
 #include "view_map.h"
 

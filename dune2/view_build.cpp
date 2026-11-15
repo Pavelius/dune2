@@ -2,7 +2,6 @@
 #include "building.h"
 #include "draw.h"
 #include "game.h"
-#include "resid.h"
 #include "objecta.h"
 #include "shape.h"
 #include "view_map.h"

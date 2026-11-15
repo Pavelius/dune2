@@ -1,5 +1,5 @@
 #include "draw.h"
-#include "resid.h"
+#include "game.h"
 #include "view_map.h"
 #include "view_indicator.h"
 

@@ -1,5 +1,6 @@
 #include "bsdata.h"
 #include "draw.h"
+#include "game.h"
 #include "print.h"
 #include "pushvalue.h"
 #include "log_file.h"
@@ -76,7 +77,6 @@ void video_dump(const char* url, const slice<videoi>& source, unsigned long vide
 		print("#%1.2i", index++);
 		add_time(" start ", video_time);
 		add_time(" lenght ", scene_time);
-		print(" show %1", bsdata<residi>::elements[e.id].id);
 		println();
 		video_time += scene_time;
 	}

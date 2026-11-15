@@ -5,7 +5,7 @@
 
 typedef void(*fnevent)();
 
-enum resid : short unsigned;
+enum resid : unsigned char;
 enum objectn : unsigned char;
 
 extern unsigned long animate_time, animate_delay, animate_stop;

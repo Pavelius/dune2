@@ -2,7 +2,7 @@
 
 #include "moveable.h"
 #include "fix.h"
-#include "resid.h"
+// #include "game.h"
 #include "object.h"
 
 enum squadn : unsigned char;

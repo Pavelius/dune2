@@ -2,7 +2,6 @@
 #include "draw.h"
 #include "game.h"
 #include "math.h"
-#include "resid.h"
 #include "screenshoot.h"
 #include "view_focus.h"
 #include "view_menu.h"

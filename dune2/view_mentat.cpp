@@ -4,7 +4,6 @@
 #include "midi.h"
 #include "player.h"
 #include "pushvalue.h"
-#include "resid.h"
 #include "object.h"
 #include "objecta.h"
 #include "timer.h"
@@ -419,12 +418,14 @@ static resid get_scenario_avatar(int level, scenariotextn type) {
 void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn type) {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	pushvalue push_music(current_music, get_mentat_music(type));
+	make_pallette();
 	show_scenario_prompt(get_scenario_text(fraction, level, type), get_scenario_avatar(level, type));
 }
 
 void open_mentat() {
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	pushvalue push_music(current_music, get_mentat_music());
+	make_pallette();
 	while(true) {
 		auto line = (objectn*)choose_mentat_topic();
 		if(!line)
@@ -468,6 +469,7 @@ static void paint_houses() {
 }
 
 objectn choose_house() {
+	make_pallette();
 	scene(paint_houses);
 	return (objectn)getresult();
 }

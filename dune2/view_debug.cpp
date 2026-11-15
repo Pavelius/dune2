@@ -5,7 +5,7 @@
 #include "fix.h"
 #include "pushvalue.h"
 #include "rand.h"
-#include "resid.h"
+#include "game.h"
 #include "slice.h"
 #include "unit.h"
 #include "view_map.h"
@@ -290,7 +290,6 @@ static void show_font(resid id, point start, point size) {
 		case KeyEscape: breakmodal(0); break;
 		case 'H': image_flags ^= TextBold; break;
 		case 'V': image_flags ^= TextStroke; break;
-		case Ctrl + 'S': save_sprite(id); break;
 		}
 		focus_input();
 	}
