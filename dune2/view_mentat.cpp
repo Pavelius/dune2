@@ -19,12 +19,20 @@ static fnevent paint_mentat_proc;
 
 void paint_build_shape(int x, int y, shapen shape);
 
-static const char* get_house_info(objectn v) {
-	switch(v) {
-	case Atreides: return fraction_info[0];
-	case Harkonens: return fraction_info[1];
-	default: return fraction_info[2];
+static const char** get_scenario_text_base(objectn fraction) {
+	switch(fraction) {
+	case Atreides: return scenario_a_text;
+	case Harkonens: return scenario_h_text;
+	case Ordos: return scenario_o_text;
+	default: return 0;
 	}
+}
+
+static const char* get_house_info(objectn fraction) {
+	auto ps = get_scenario_text_base(fraction);
+	if(ps)
+		return ps[0];
+	return 0;
 }
 
 static void paint_eyes() {
@@ -363,20 +371,11 @@ static soundn get_mentat_music(scenariotextn type) {
 	}
 }
 
-static const char** get_scenario_text_base(objectn fraction) {
-	switch(fraction) {
-	case Atreides: return scenario_a_text;
-	case Harkonens: return scenario_h_text;
-	case Ordos: return scenario_o_text;
-	default: return 0;
-	}
-}
-
 static const char* get_scenario_text(objectn fraction, unsigned char level, scenariotextn type) {
 	auto ps = get_scenario_text_base(fraction);
 	if(!ps)
 		return 0;
-	return ps[3 + level * (LastScenatioText + 1) + type];
+	return ps[level * (LastScenatioText + 1) + type];
 }
 
 static void show_scenario_prompt(const char* format, resid rid) {

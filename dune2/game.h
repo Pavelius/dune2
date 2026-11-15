@@ -62,7 +62,6 @@ enum scenariotextn : unsigned char {
 };
 
 extern const char* intro_subtitle[];
-extern const char* fraction_info[3];
 extern const char* scenario_a_text[40];
 extern const char* scenario_h_text[40];
 extern const char* scenario_o_text[40];
@@ -72,7 +71,7 @@ struct gamei {
 	unsigned long	start_turn;
 	unsigned		turn;
 	unsigned		starting_credits;
-	unsigned char	scenario; // 0...9
+	unsigned char	scenario; // 1...9
 	objectn			house;
 };
 extern gamei game;
