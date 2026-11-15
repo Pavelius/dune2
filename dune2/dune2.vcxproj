@@ -230,7 +230,9 @@
     <ClCompile Include="bin_worm.cpp" />
     <ClCompile Include="game_ai.cpp" />
     <ClCompile Include="locale_en.cpp" />
-    <ClCompile Include="midi_util.cpp" />
+    <ClCompile Include="midi_util.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="mid_music.cpp" />
     <ClCompile Include="objecta.cpp" />
     <ClCompile Include="actable.cpp" />
@@ -265,7 +267,9 @@
     <ClCompile Include="io_stream.cpp" />
     <ClCompile Include="log_file.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="main_util.cpp" />
+    <ClCompile Include="main_util.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="math.cpp" />
     <ClCompile Include="midi.cpp" />
     <ClCompile Include="player.cpp" />
@@ -275,7 +279,9 @@
     <ClCompile Include="scale.cpp" />
     <ClCompile Include="screenshoot.cpp" />
     <ClCompile Include="shape.cpp" />
-    <ClCompile Include="sprite_util.cpp" />
+    <ClCompile Include="sprite_util.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="squad.cpp" />
     <ClCompile Include="stringbuilder.cpp" />
     <ClCompile Include="surface_serial.cpp" />
@@ -289,7 +295,9 @@
     <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="view_list.cpp" />
     <ClCompile Include="view_mentat.cpp" />
-    <ClCompile Include="win_audio.cpp" />
+    <ClCompile Include="win_audio.cpp">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClCompile>
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />
     <ClCompile Include="win_time.cpp" />
@@ -321,7 +329,9 @@
     <ClInclude Include="object.h" />
     <ClInclude Include="view_indicator.h" />
     <ClInclude Include="player.h" />
-    <ClInclude Include="iff.h" />
+    <ClInclude Include="iff.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="io_stream.h" />
     <ClInclude Include="log_file.h" />
     <ClInclude Include="math.h" />
@@ -335,7 +345,9 @@
     <ClInclude Include="seqlink.h" />
     <ClInclude Include="shape.h" />
     <ClInclude Include="slice.h" />
-    <ClInclude Include="sprite_util.h" />
+    <ClInclude Include="sprite_util.h">
+      <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">true</ExcludedFromBuild>
+    </ClInclude>
     <ClInclude Include="squad.h" />
     <ClInclude Include="stringbuilder.h" />
     <ClInclude Include="terrain.h" />
