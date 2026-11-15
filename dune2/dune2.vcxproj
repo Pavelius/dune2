@@ -194,7 +194,6 @@
     <ClCompile Include="view_debug.cpp" />
     <ClCompile Include="view_list.cpp" />
     <ClCompile Include="view_mentat.cpp" />
-    <ClCompile Include="voc_util.cpp" />
     <ClCompile Include="win_audio.cpp" />
     <ClCompile Include="win_draw.cpp" />
     <ClCompile Include="win_io_file.cpp" />

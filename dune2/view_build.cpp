@@ -52,8 +52,12 @@ static void paint_name_and_info(objectn subject) {
 
 static void paint_building_subject(objectn subject) {
 	auto ps = gres(getavatar(subject));
-	if(ps && ps->count)
-		image(width - 192, caret.y + 48, ps, get_frame(400) % ps->count, 0);
+	if(ps && ps->count) {
+		auto index = get_frame(400) % ps->count;
+		image(width - 192, caret.y + 48, ps, 0, 0);
+		if(index)
+			image(width - 192, caret.y + 48, ps, index, 0);
+	}
 	if(getparent(subject)==Building)
 		paint_build_shape(width - 32, caret.y + 136, subject);
 	paint_name_and_info(subject);

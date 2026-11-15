@@ -216,9 +216,6 @@
     <ClCompile Include="locale_en.cpp">
       <Filter>logic</Filter>
     </ClCompile>
-    <ClCompile Include="voc_util.cpp">
-      <Filter>utils</Filter>
-    </ClCompile>
     <ClCompile Include="win_audio.cpp">
       <Filter>platform</Filter>
     </ClCompile>

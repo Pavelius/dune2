@@ -101,17 +101,19 @@ static void paint_stat_info() {
 	}
 }
 
-static void paint_mentat_subject() {
-	auto ps = gres(animate_id);
-	if(ps && ps->count)
-		image(caret.x, caret.y, ps, get_frame(400) % ps->count, 0);
-	paint_stat_info();
-}
-
 static void paint_mentat_subject_ni() {
 	auto ps = gres(animate_id);
-	if(ps && ps->count)
-		image(caret.x, caret.y, ps, get_frame(400) % ps->count, 0);
+	if(ps && ps->count) {
+		auto index = get_frame(400) % ps->count;
+		image(caret.x, caret.y, ps, 0, 0);
+		if(index)
+			image(caret.x, caret.y, ps, index, 0);
+	}
+}
+
+static void paint_mentat_subject() {
+	paint_mentat_subject_ni();
+	paint_stat_info();
 }
 
 static bool allow_brief_row(int index, void* data) {

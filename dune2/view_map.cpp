@@ -1505,7 +1505,9 @@ void paint_video() {
 			}
 		} else
 			frame = frame % ps->count;
-		image(ps, frame, 0);
+		image(ps, 0, 0);
+		if(frame)
+			image(ps, frame, 0);
 		caret.x = push_caret.x;
 		caret.y += ps->height + 8;
 		texta(form_header, AlignCenter | ImagePallette);
