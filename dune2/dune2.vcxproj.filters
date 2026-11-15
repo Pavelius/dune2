@@ -219,6 +219,9 @@
     <ClCompile Include="win_audio.cpp">
       <Filter>platform</Filter>
     </ClCompile>
+    <ClCompile Include="pal_ibm.cpp">
+      <Filter>resources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

@@ -25,6 +25,7 @@ void appear_scene(fnevent paint, unsigned long milliseconds = 0);
 void disappear_scene(unsigned long milliseconds = 0);
 void hilite_unit_orders();
 void initialize_view(const char* title, fnevent main_scene);
+void make_pallette();
 void open_mentat();
 void open_building();
 void paint_background(color v);

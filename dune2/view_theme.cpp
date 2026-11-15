@@ -32,14 +32,12 @@ pushtheme::~pushtheme() {
 }
 
 pushfontb::pushfontb(themen id) : font(draw::font), fpal1(font_pallette[1]), fpal5(font_pallette[5]), fpal6(font_pallette[6]), palt(draw::palt) {
-	draw::palt = font_pallette;
 	font_pallette[1] = themes[id].form;
 	font_pallette[5] = themes[id].light;
 	font_pallette[6] = themes[id].dark;
 }
 
 pushfontb::~pushfontb() {
-	draw::palt = palt;
 	draw::font = font;
 	font_pallette[1] = fpal1;
 	font_pallette[5] = fpal5;

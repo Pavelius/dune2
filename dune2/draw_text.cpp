@@ -15,6 +15,7 @@
 // limitations under the License.
 
 #include "draw.h"
+#include "view_theme.h"
 
 using namespace draw;
 
@@ -38,5 +39,7 @@ void draw::glyph(int sym, unsigned flags) {
 	// FONT6, FONT8  - Three colors: 1 - main, 2 - right shadow, 3 - left shadow
 	// FONT10 - Capital in other color. 15 - shadow, (12, 10, 8) Capital marked
 	// FONT16 - Two colors: 1 - main, 5 - second main, 6 - part shadow
+	auto push_palt = draw::palt; draw::palt = font_pallette;
 	image(caret.x, caret.y, font, sym, flags);
+	draw::palt = push_palt;
 }

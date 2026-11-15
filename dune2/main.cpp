@@ -19,8 +19,10 @@ int main() {
 	srand(start_random_seed);
 	area_initialization();
 #ifdef _DEBUG
+	make_pallette();
 	util_main();
 #endif // _DEBUG
+	make_pallette();
 	initialize_strings();
 	pushtheme push(ButtonLight);
 	initialize_view(getnm(ProgramTitle), main_menu);

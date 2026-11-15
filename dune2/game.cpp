@@ -334,11 +334,12 @@ void camera_to_base() {
 
 void main_menu() {
 	// music_disabled = true;
-	show_introdution();
-	choose_game_house();
+	// show_introdution();
+	// choose_game_house();
+	game.house = Ordos;
 	game.starting_credits = 1000;
 	area_generate(SmallMap, 2);
-	show_scenario_prompt(mainplayer().fraction, 0, ScenarioBrief);
+	show_scenario_prompt(mainplayer().fraction, 0, ScenarioLose);
 	camera_to_base();
 	show_scene(paint_main_map, 0, 0);
 }

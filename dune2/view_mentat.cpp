@@ -325,11 +325,11 @@ static void show_mentat_subject(objectn subject) {
 	show_mentat_string(getinfo(subject, last_fraction), getavatar(subject), paint_exit);
 }
 
- bool confirm_join_house(objectn subject) {
-	 pushvalue push_id(form_capacity, subject);
-	 pushvalue push_fraction(last_fraction, NoObject);
-	 show_mentat_string(get_house_info(subject), getavatar(subject), paint_confirm_join);
-	 return getresult() != 0;
+bool confirm_join_house(objectn subject) {
+	pushvalue push_id(form_capacity, subject);
+	pushvalue push_fraction(last_fraction, NoObject);
+	show_mentat_string(get_house_info(subject), getavatar(subject), paint_confirm_join);
+	return getresult() != 0;
 }
 
 static soundn get_mentat_music() {
@@ -338,6 +338,29 @@ static soundn get_mentat_music() {
 	case Atreides: return MusicMentatA;
 	case Harkonens: return MusicMentatH;
 	default: return MusicEmperor;
+	}
+}
+
+static soundn get_mentat_music(scenariotextn type) {
+	switch(type) {
+	case ScenarioWin:
+		switch(mainplayer().fraction) {
+		case Ordos: return MusicVictoryO;
+		case Atreides: return MusicVictoryA;
+		case Harkonens: return MusicVictoryH;
+		default: return MusicEmperor;
+		}
+		break;
+	case ScenarioLose:
+		switch(mainplayer().fraction) {
+		case Ordos: return MusicDefeatO;
+		case Atreides: return MusicDefeatA;
+		case Harkonens: return MusicDefeatH;
+		default: return MusicEmperor;
+		}
+		break;
+	default:
+		return get_mentat_music();
 	}
 }
 
@@ -360,11 +383,9 @@ static const char* get_scenario_text(objectn fraction, unsigned char level, scen
 static void show_scenario_prompt(const char* format, resid rid) {
 	if(!format)
 		return;
-	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	pushvalue push_header(form_header);
 	pushvalue push_animation(animate_id, rid);
 	pushvalue push_proc(paint_mentat_proc, paint_mentat_subject_ni);
-	pushvalue push_music(current_music, get_mentat_music());
 	reset_form_animation();
 	string sb;
 	while(true) {
@@ -382,15 +403,23 @@ static void show_scenario_prompt(const char* format, resid rid) {
 	}
 }
 
-static resid get_scenario_avatar(int level) {
-	switch(level) {
-	case 1: return HARVEST;
-	default: return HEADQRTS;
+static resid get_scenario_avatar(int level, scenariotextn type) {
+	switch(type) {
+	case ScenarioWin: return (level & 1) ? WIN2 : WIN1;
+	case ScenarioLose: return (level < 5) ? LOSTBILD : LOSTVEHC;
+	default:
+		switch(level) {
+		case 1: return HARVEST;
+		default: return HEADQRTS;
+		}
+		break;
 	}
 }
 
 void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn type) {
-	show_scenario_prompt(get_scenario_text(fraction, level, type), get_scenario_avatar(level));
+	pushvalue push_fraction(last_fraction, mainplayer().fraction);
+	pushvalue push_music(current_music, get_mentat_music(type));
+	show_scenario_prompt(get_scenario_text(fraction, level, type), get_scenario_avatar(level, type));
 }
 
 void open_mentat() {
@@ -401,13 +430,13 @@ void open_mentat() {
 		if(!line)
 			break;
 		auto subject = *line;
-		if(subject == Orders)
+		if(subject == Orders) {
 			show_mentat_string(get_scenario_text(last_fraction, game.scenario, ScenarioBrief),
-				get_scenario_avatar(game.scenario), paint_exit);
-		else if(subject == Advice)
+				get_scenario_avatar(game.scenario, ScenarioBrief), paint_exit);
+		} else if(subject == Advice) {
 			show_mentat_string(get_scenario_text(last_fraction, game.scenario, ScenarioAdvice),
-				get_scenario_avatar(game.scenario), paint_exit);
-		else
+				get_scenario_avatar(game.scenario, ScenarioAdvice), paint_exit);
+		} else
 			show_mentat_subject(subject);
 	}
 }

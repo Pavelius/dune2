@@ -31,7 +31,8 @@ using namespace draw;
 
 static indicator spice;
 
-color pallette[256], pallette_original[256];
+extern color pal_ibm[256];
+color pallette[256];
 
 void paint_console();
 
@@ -493,7 +494,7 @@ static void paint_main_map_debug() {
 static void update_pallette_by_player(int index) {
 	auto j = 128 + index * 16;
 	for(auto i = 0; i < 6; i++)
-		pallette[144 + i] = pallette_original[j + i];
+		pallette[144 + i] = pal_ibm[j + i];
 }
 
 static void update_pallette_by_player() {
@@ -767,7 +768,7 @@ static void paint_radar_rect() {
 }
 
 static color get_color_by_index(int index) {
-	return pallette_original[128 + index * 16 + 2];
+	return pal_ibm[128 + index * 16 + 2];
 }
 
 static void radar_pixel(int x, int y) {
@@ -1578,12 +1579,8 @@ static void main_beforemodal() {
 	clear_focus_data();
 }
 
-static void make_pallette() {
-	auto p = gres(ICONS);
-	if(!p)
-		return;
-	memcpy(pallette, p->ptr(p->get(0).pallette), sizeof(pallette));
-	memcpy(pallette_original, pallette, sizeof(pallette));
+void make_pallette() {
+	memcpy(pallette, pal_ibm, sizeof(pallette));
 	palt = pallette;
 }
 
@@ -1597,7 +1594,6 @@ void initialize_view(const char* title, fnevent main_scene) {
 	font = gres(FONT6);
 	fore = colors::white;
 	print_proc = print_console_proc;
-	make_pallette();
 	set_next_scene(main_scene);
 	run_next_scene();
 }
