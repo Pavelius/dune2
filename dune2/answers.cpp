@@ -40,7 +40,7 @@ void answers::sort() {
 void* answers::random() const {
 	if(!elements.count)
 		return 0;
-	return (void*)elements.data[rand() % elements.count].value;
+	return (void*)elements.data[xrand() % elements.count].value;
 }
 
 const char* answers::getname(void* v) {

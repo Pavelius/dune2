@@ -6,6 +6,7 @@
 #include "game.h"
 #include "player.h"
 #include "print.h"
+#include "rand.h"
 #include "stringbuilder.h"
 #include "unit.h"
 
@@ -18,7 +19,7 @@ bool turn(direction& result, direction new_direction) {
 }
 
 point random_near(point v) {
-	return to(v, all_directions[game_rand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
+	return to(v, all_directions[xrand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
 }
 
 const char* actable::getfractionname() const {
@@ -47,7 +48,7 @@ void actable::tracking() {
 }
 
 void actable::fixshoot(point screen, point to, fixn weapon, int chance_miss) {
-	if(chance_miss && game_chance(chance_miss)) {
+	if(chance_miss && chance(chance_miss)) {
 		auto miss = random_near(s2m(to));
 		auto current = s2m(screen);
 		if(miss == current)

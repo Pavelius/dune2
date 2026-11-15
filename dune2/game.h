@@ -76,10 +76,6 @@ struct gamei {
 };
 extern gamei game;
 
-unsigned int game_rand();
-inline bool game_chance(unsigned int value) { return (game_rand() % 100) < value; }
-inline unsigned int game_rand(int from, int to) { return from + game_rand() % (to - from + 1); }
-
 void camera_to_base();
 bool confirm_join_house(objectn subject);
 void game_file(char* result, const char* folder, const char* name, const char* ext, int index = 0);

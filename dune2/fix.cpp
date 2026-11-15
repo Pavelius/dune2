@@ -5,6 +5,7 @@
 #include "drawable.h"
 #include "fix.h"
 #include "game.h"
+#include "rand.h"
 #include "unit.h"
 #include "view_map.h"
 
@@ -12,7 +13,7 @@ using namespace draw;
 
 static fixn lasting_effect() {
 	auto p = (draweffect*)last_object;
-	if(game_chance(60))
+	if(chance(60))
 		return (fixn)p->param;
 	auto pf = bsdata<fixeffecti>::elements + p->param;
 	return pf->next;
@@ -46,7 +47,7 @@ static bool is_resist(fixn v, movementn m) {
 }
 
 static void add_explosion_tile() {
-	if(game_chance(30))
+	if(chance(30))
 		area.set(s2m(last_object->screen), Explosion);
 }
 

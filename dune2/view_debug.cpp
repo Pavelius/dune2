@@ -299,7 +299,7 @@ static void show_font(resid id, point start, point size) {
 
 static void random_explosion() {
 	static fixn source[] = {FixBikeExplosion, FixExplosion, FixBigExplosion};
-	auto n = source[rand() % sizeof(source) / sizeof(source[0])];
+	auto n = source[xrand() % sizeof(source) / sizeof(source[0])];
 	// auto n = FixHitSand;
 	add_effect(m2sc(area_spot), n);
 }

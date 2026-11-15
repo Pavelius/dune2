@@ -20,10 +20,6 @@
 
 gamei game;
 
-unsigned int game_rand() {
-	return rand();
-}
-
 static void update_area_decoy() {
 	for(auto y = 0; y < area.maximum.y; y++)
 		for(auto x = 0; x < area.maximum.x; x++)

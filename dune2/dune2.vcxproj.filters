@@ -498,6 +498,9 @@
     <ClCompile Include="resources.cpp">
       <Filter>resources</Filter>
     </ClCompile>
+    <ClCompile Include="rand.cpp">
+      <Filter>support</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

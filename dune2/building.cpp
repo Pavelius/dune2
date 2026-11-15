@@ -181,7 +181,7 @@ static void set_terrain(point v, int value) {
 }
 
 static void set_explosion(point v, int value) {
-	if(game_chance(20))
+	if(chance(20))
 		add_effect(m2sc(v), FixBigExplosion);
 	else
 		add_effect(m2sc(v), FixExplosion);
@@ -216,10 +216,10 @@ void building::damage(int value) {
 	}
 	hits -= value;
 	if(hits <= gethitsmax() / 2) {
-		if(game_chance(30))
+		if(chance(30))
 			add_effect(random_point(this), BurningFire);
 	}
-	if(game_chance(20))
+	if(chance(20))
 		add_effect(random_point(this), Smoke);
 }
 

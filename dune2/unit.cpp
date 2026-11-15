@@ -61,7 +61,7 @@ void unit::destroy() {
 void unit::damage(int value) {
 	value -= getarmor(type);
 	if(value <= 0) {
-		if(game_chance(50))
+		if(chance(50))
 			value = 1;
 	}
 	if(value <= 0)
@@ -178,7 +178,7 @@ ordern unit::getpurpose() const {
 }
 
 static point random_near(point v) {
-	return to(v, all_directions[game_rand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
+	return to(v, all_directions[xrand() % (sizeof(all_directions) / sizeof(all_directions[0]))]);
 }
 
 bool unit::isharvest() const {
@@ -373,7 +373,7 @@ void unit::clear() {
 }
 
 void unit::cantdothis() {
-	start_time += game_rand(4, 8) * 1000;
+	start_time += xrand(4, 8) * 1000;
 	fixstate(UnitCantDoThis);
 }
 
@@ -454,19 +454,19 @@ void unit::setorder(point v) {
 
 void unit::recovery() {
 	for(auto i = Smoke; i <= BurningFire; i = (fixn)(i + 1)) {
-		if(is(i) && game_chance(20))
+		if(is(i) && chance(20))
 			remove(i);
 	}
 }
 
 bool unit::relax() {
-	if(game_chance(30)) { // 30% chance do nothing
+	if(chance(30)) { // 30% chance do nothing
 		if(isturret()) { // Rotate turret
 			auto turn_direction = turnto(shoot_direction, move_direction);
-			if(turn_direction != Center && game_chance(50))
+			if(turn_direction != Center && chance(50))
 				shoot_direction = to(shoot_direction, turn_direction);
-			else if(game_chance(30))
-				shoot_direction = to(shoot_direction, (game_rand() % 2) ? Left : Right);
+			else if(chance(30))
+				shoot_direction = to(shoot_direction, (xrand() % 2) ? Left : Right);
 			return true;
 		}
 	}

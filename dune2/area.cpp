@@ -2,6 +2,7 @@
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
+#include "rand.h"
 #include "shape.h"
 #include "slice.h"
 
@@ -230,7 +231,7 @@ void areai::set(point v, featuren f, int param) {
 	auto cf = getfeature(v);
 	if(cf != f) {
 		if(e.random)
-			frames_overlay[v.y][v.x] = e.frame + game_rand() % e.random;
+			frames_overlay[v.y][v.x] = e.frame + xrand() % e.random;
 		else
 			frames_overlay[v.y][v.x] = e.frame;
 		if(f == Explosion && ct < Rock)
@@ -278,7 +279,7 @@ void areai::decoy(point v) {
 	if(!cf)
 		return;
 	auto& e = features[cf];
-	if(e.decoy && game_chance(e.decoy)) {
+	if(e.decoy && chance(e.decoy)) {
 		auto n = get_next_decoy(get(v), frames_overlay[v.y][v.x]);
 		if(n <= 0)
 			frames_overlay[v.y][v.x] = NoFeature;
@@ -306,15 +307,15 @@ void areai::set(rect r, fnset proc, int value) {
 }
 
 void areai::random(rect r, fnset proc, int value) {
-	auto x = game_rand(r.x1, r.x2);
-	auto y = game_rand(r.y1, r.y2);
+	auto x = xrand(r.x1, r.x2);
+	auto y = xrand(r.y1, r.y2);
 	if(isvalid(x, y))
 		proc(point(x, y), value);
 }
 
 point areai::random(rect r) const {
-	auto x = game_rand(r.x1, r.x2);
-	auto y = game_rand(r.y1, r.y2);
+	auto x = xrand(r.x1, r.x2);
+	auto y = xrand(r.y1, r.y2);
 	if(isvalid(x, y))
 		return point(x, y);
 	return {-10000, -10000};
@@ -334,10 +335,10 @@ void areai::random(rect r, fnset proc, int value, int count) {
 
 void areai::random(point v, int s, int r, fnset proc, int value) {
 	point m;
-	m.x = game_chance(50) ? v.x - s : v.x + s;
-	m.y = game_chance(50) ? v.y - s : v.y + s;
-	m.x += game_rand(-r, r);
-	m.y += game_rand(-r, r);
+	m.x = chance(50) ? v.x - s : v.x + s;
+	m.y = chance(50) ? v.y - s : v.y + s;
+	m.x += xrand(-r, r);
+	m.y += xrand(-r, r);
 	proc(m, value);
 }
 
@@ -381,7 +382,7 @@ void areai::setnu(point v, terrainn t) {
 	else if(e.count) {
 		auto t1 = get(v);
 		if(t1 != t)
-			frames[v.y][v.x] = e.frame + game_rand() % e.count;
+			frames[v.y][v.x] = e.frame + xrand() % e.count;
 	} else
 		frames[v.y][v.x] = e.frame;
 }

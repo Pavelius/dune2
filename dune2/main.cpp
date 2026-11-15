@@ -16,7 +16,7 @@ void main_menu();
 int main() {
 	start_random_seed = getcputime();
 	//start_random_seed = 598697093;
-	srand(start_random_seed);
+	xrand_seed = start_random_seed;
 	area_initialization();
 #ifdef _DEBUG
 	make_pallette();

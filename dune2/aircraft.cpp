@@ -3,6 +3,7 @@
 #include "bsdata.h"
 #include "building.h"
 #include "game.h"
+#include "rand.h"
 #include "unit.h"
 
 BSDATAC(aircraft, 64)
@@ -23,8 +24,8 @@ static point random_base(unsigned char player) {
 		v = p->position;
 	else
 		v = area.center();
-	v.x += game_rand() % 4 - 2;
-	v.y += game_rand() % 4 - 2;
+	v.x += xrand() % 4 - 2;
+	v.y += xrand() % 4 - 2;
 	return v;
 }
 

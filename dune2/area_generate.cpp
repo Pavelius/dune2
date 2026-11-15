@@ -176,7 +176,7 @@ static void add_players(fngenerate* regions, size_t count) {
 		auto ri = indecies[i];
 		add_region(regions, ri, player_base);
 		add_region(regions, region_central[ri], spice_region);
-		if(game_chance(50)) {
+		if(chance(50)) {
 			add_region(regions, region_near_h[ri], spice_region);
 			add_region(regions, region_near_v[ri], rock_region);
 		} else {

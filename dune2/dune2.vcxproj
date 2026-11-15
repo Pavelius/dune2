@@ -252,6 +252,7 @@
     <ClCompile Include="moveable.cpp" />
     <ClCompile Include="pal_ibm.cpp" />
     <ClCompile Include="pointa.cpp" />
+    <ClCompile Include="rand.cpp" />
     <ClCompile Include="resources.cpp" />
     <ClCompile Include="serial.cpp" />
     <ClCompile Include="textscript.cpp" />
