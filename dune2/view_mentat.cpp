@@ -469,6 +469,6 @@ static void paint_houses() {
 
 objectn choose_house() {
 	make_pallette();
-	scene(paint_houses);
+	show_scene_raw(paint_houses, 0);
 	return (objectn)getresult();
 }

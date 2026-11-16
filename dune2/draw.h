@@ -91,8 +91,6 @@ struct sprite : pma {
 	};
 	short int			width, height; // common size of all frames (if applicable)
 	frame				frames[1];
-	int					esize() const { return frames[0].offset - (sizeof(sprite) + sizeof(frame) * (count - 1)); }
-	const unsigned char* edata() const { return (const unsigned char*)this + sizeof(sprite) + sizeof(frame) * (count - 1); }
 	const frame&		get(int id) const { return frames[(id >= count) ? 0 : id]; }
 	const unsigned char* ptr(unsigned o) const { return (unsigned char*)this + o; }
 };
