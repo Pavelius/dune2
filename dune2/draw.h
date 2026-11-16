@@ -76,7 +76,7 @@ struct pma {
 	constexpr bool is(const char* v) const { return v && v[0] == name[0] && v[1] == name[1] && v[2] == name[2] && v[3] == name[3]; }
 };
 struct sprite : pma {
-	enum encodes { Auto, RAW, RLE, ALC, RAW8, RLE8, RAA4, RAW1 };
+	enum encodes { RAW8, RLE8, RAA4, RAW1 };
 	struct frame {
 		short 			sx, sy;
 		short			ox, oy;
