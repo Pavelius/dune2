@@ -2034,33 +2034,6 @@ bool draw::dragbegin(const void* object) {
 	return false;
 }
 
-const pma* pma::getheader(const char* id) const {
-	auto p = this;
-	while(p->name[0]) {
-		if(p->name[0] == id[0]
-			&& p->name[1] == id[1]
-			&& p->name[2] == id[2])
-			return p;
-		p = (pma*)((char*)p + p->size);
-	}
-	return 0;
-}
-
-const char* pma::getstring(int id) const {
-	auto p = getheader("STR");
-	if(!p || id > p->count)
-		return "";
-	return (char*)p + ((unsigned*)((char*)p + sizeof(*p)))[id];
-}
-
-int pma::find(const char* name) const {
-	for(int i = 1; i <= count; i++) {
-		if(szcmp(getstring(i), name) == 0)
-			return i;
-	}
-	return 0;
-}
-
 rect sprite::frame::getrect(int x, int y, unsigned flags) const {
 	int x2, y2;
 	if(!offset)

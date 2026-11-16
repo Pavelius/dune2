@@ -72,9 +72,8 @@ struct pma {
 	char				name[4]; // Identifier of current block
 	unsigned			size; // Size of all block
 	int					count; // Count of records in this block
-	int					find(const char* name) const;
-	const pma*			getheader(const char* name) const;
-	const char*			getstring(int id) const;
+	constexpr explicit operator bool() const { return name[0] != 0; }
+	constexpr bool is(const char* v) const { return v && v[0] == name[0] && v[1] == name[1] && v[2] == name[2] && v[3] == name[3]; }
 };
 struct sprite : pma {
 	enum encodes { Auto, RAW, RLE, ALC, RAW8, RLE8, RAA4, RAW1 };
@@ -91,10 +90,6 @@ struct sprite : pma {
 		short unsigned	count;
 	};
 	short int			width, height; // common size of all frames (if applicable)
-	short int			ascend, descend; // top or down ascend
-	short unsigned		flags; // must be zero
-	unsigned			cicles; // count of anim structure
-	unsigned			cicles_offset;
 	frame				frames[1];
 	int					esize() const { return frames[0].offset - (sizeof(sprite) + sizeof(frame) * (count - 1)); }
 	const unsigned char* edata() const { return (const unsigned char*)this + sizeof(sprite) + sizeof(frame) * (count - 1); }

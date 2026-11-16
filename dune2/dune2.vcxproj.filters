@@ -258,9 +258,6 @@
     <ClCompile Include="bin_fremen.cpp">
       <Filter>resources</Filter>
     </ClCompile>
-    <ClCompile Include="bin_gold-bb.cpp">
-      <Filter>resources</Filter>
-    </ClCompile>
     <ClCompile Include="bin_harktank.cpp">
       <Filter>resources</Filter>
     </ClCompile>
@@ -500,6 +497,9 @@
     </ClCompile>
     <ClCompile Include="rand.cpp">
       <Filter>support</Filter>
+    </ClCompile>
+    <ClCompile Include="bin_gold_bb.cpp">
+      <Filter>resources</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

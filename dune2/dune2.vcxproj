@@ -148,7 +148,7 @@
     <ClCompile Include="bin_fhark.cpp" />
     <ClCompile Include="bin_fordos.cpp" />
     <ClCompile Include="bin_fremen.cpp" />
-    <ClCompile Include="bin_gold-bb.cpp" />
+    <ClCompile Include="bin_gold_bb.cpp" />
     <ClCompile Include="bin_harktank.cpp" />
     <ClCompile Include="bin_harvest.cpp" />
     <ClCompile Include="bin_headqrts.cpp" />
