@@ -344,6 +344,8 @@ void camera_to_base() {
 
 static void play_game() {
 	choose_game_house();
+	if(!game.house)
+		return;
 	game.scenario = 1;
 	game.starting_credits = 1000;
 	area_generate(SmallMap, 2);
@@ -410,6 +412,7 @@ static void unit_thrall_loading(stringbuilder& sb) {
 
 void choose_game_house() {
 	current_music = MusicTitle;
+	game.house = NoObject;
 	while(!is_next_scene()) {
 		auto house = choose_house();
 		if(!house)

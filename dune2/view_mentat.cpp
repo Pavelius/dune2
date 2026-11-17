@@ -302,8 +302,8 @@ static void update_topics() {
 }
 
 static void* choose_mentat_topic() {
-	pushvalue push_proc(paint_mentat_proc, paint_mentat_list);
 	update_topics();
+	pushvalue push_proc(paint_mentat_proc, paint_mentat_list);
 	return (void*)show_scene(paint_mentat_silent, paint_exit, 0);
 }
 
@@ -458,6 +458,16 @@ static void paint_house(int x, int y, objectn n, unsigned key) {
 		execute(buttonparam, n);
 }
 
+static void paint_exit_center() {
+	pushrect push;
+	pushtheme theme(ButtonDark);
+	pushfontb theme_font(TextYellow);
+	pushfont push_font(gres(FONT16));
+	caret.x += (320 - 52) / 2; caret.y += 169; width = 52;
+	if(button(getnm(Exit), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+		execute(update_buttonparam, 0);
+}
+
 static void paint_houses() {
 	paint_background(colors::black);
 	music_update();
@@ -465,6 +475,7 @@ static void paint_houses() {
 	paint_house(16, 64, Atreides, 'A');
 	paint_house(120, 64, Ordos, 'O');
 	paint_house(224, 64, Harkonens, 'H');
+	paint_exit_center();
 }
 
 objectn choose_house() {
