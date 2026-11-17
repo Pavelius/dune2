@@ -458,13 +458,13 @@ static void paint_house(int x, int y, objectn n, unsigned key) {
 		execute(buttonparam, n);
 }
 
-static void paint_exit_center() {
+static void paint_exit_button(const char* format) {
 	pushrect push;
 	pushtheme theme(ButtonDark);
 	pushfontb theme_font(TextYellow);
 	pushfont push_font(gres(FONT16));
-	caret.x += (320 - 52) / 2; caret.y += 169; width = 52;
-	if(button(getnm(Exit), KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
+	width = 64; caret.x += (320 - width) / 2; caret.y += 169;
+	if(button(format, KeyEscape, AlignCenterCenter | ImagePallette, true, texth() + 5, form_press_effect))
 		execute(update_buttonparam, 0);
 }
 
@@ -475,7 +475,7 @@ static void paint_houses() {
 	paint_house(16, 64, Atreides, 'A');
 	paint_house(120, 64, Ordos, 'O');
 	paint_house(224, 64, Harkonens, 'H');
-	paint_exit_center();
+	paint_exit_button(getnm(Cancel));
 }
 
 objectn choose_house() {
