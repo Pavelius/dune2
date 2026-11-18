@@ -3,5 +3,5 @@
 #pragma once
 
 struct scenarioi {
-	objectf		topics;
+	objectf	topics;
 };

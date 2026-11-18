@@ -24,10 +24,10 @@
 template<class T, size_t count_max = 128>
 struct adat {
 	typedef T data_type;
-	size_t count;
 	constexpr static size_t count_maximum = count_max;
+	size_t count = 0;
 	T data[count_max];
-	adat() : count(0) {}
+	constexpr adat() = default;
 	constexpr const T& operator[](unsigned index) const { return data[index]; }
 	constexpr T& operator[](unsigned index) { return data[index]; }
 	explicit operator bool() const { return count != 0; }

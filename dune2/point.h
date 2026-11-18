@@ -5,9 +5,9 @@
 struct point {
 	union {
 		struct {
-			short int	x, y;
+			short int x, y;
 		};
-		unsigned int	u;
+		unsigned int u;
 	};
 	constexpr point() : x(0), y(0) {}
 	constexpr point(int x, int y) : x(x), y(y) {}
