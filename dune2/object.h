@@ -3,7 +3,7 @@
 enum fixn : unsigned char;
 enum movementn : unsigned char;
 enum resid : unsigned char;
-enum shapen	: unsigned char;
+enum shapen : unsigned char;
 
 enum objectn : unsigned char {
 	NoObject,
@@ -23,6 +23,14 @@ extern const char* object_a_info[LastObject + 1];
 extern const char* object_h_info[LastObject + 1];
 extern const char* object_o_info[LastObject + 1];
 extern const char* object_capacity[LastObject + 1];
+
+struct objectf {
+	unsigned data[2] = {};
+	objectf() = default;
+	template<typename... Ts> constexpr objectf(objectn v, Ts... args) : objectf(args...) { set(v); }
+	constexpr void clear() { for(auto& e : data) e = 0; }
+	constexpr void set(objectn v) { data[v / 32] |= (1 << (v % 32)); }
+};
 
 typedef int(*fngeto)(objectn type);
 

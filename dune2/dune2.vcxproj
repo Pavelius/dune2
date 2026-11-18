@@ -256,6 +256,7 @@
     <ClCompile Include="pointa.cpp" />
     <ClCompile Include="rand.cpp" />
     <ClCompile Include="resources.cpp" />
+    <ClCompile Include="scenario.cpp" />
     <ClCompile Include="serial.cpp" />
     <ClCompile Include="textscript.cpp" />
     <ClCompile Include="object.cpp" />
@@ -323,6 +324,7 @@
     <ClInclude Include="game.h" />
     <ClInclude Include="moveable.h" />
     <ClInclude Include="pointa.h" />
+    <ClInclude Include="scenario.h" />
     <ClInclude Include="textscript.h" />
     <ClInclude Include="view_menu.h" />
     <ClInclude Include="view_theme.h" />

@@ -501,6 +501,9 @@
     <ClCompile Include="bin_gold_bb.cpp">
       <Filter>resources</Filter>
     </ClCompile>
+    <ClCompile Include="scenario.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">
@@ -658,6 +661,9 @@
     </ClInclude>
     <ClInclude Include="iff.h">
       <Filter>utils</Filter>
+    </ClInclude>
+    <ClInclude Include="scenario.h">
+      <Filter>logic</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>
