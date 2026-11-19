@@ -358,6 +358,7 @@ static void change_debug() {
 }
 
 static void debug_test() {
+	choose_regions();
 }
 
 void view_debug_input() {

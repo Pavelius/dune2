@@ -504,6 +504,12 @@
     <ClCompile Include="scenario.cpp">
       <Filter>logic</Filter>
     </ClCompile>
+    <ClCompile Include="bin_dunemap.cpp">
+      <Filter>resources</Filter>
+    </ClCompile>
+    <ClCompile Include="view_region.cpp">
+      <Filter>logic</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="draw.h">

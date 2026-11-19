@@ -27,6 +27,7 @@ extern unsigned char bin_afinalb[];
 extern unsigned char bin_barrac[];
 extern unsigned char bin_carryall[];
 extern unsigned char bin_construc[];
+extern unsigned char bin_dunemap[];
 extern unsigned char bin_efinala[];
 extern unsigned char bin_efinalb[];
 extern unsigned char bin_fartr[];
@@ -100,7 +101,7 @@ sprite* res_data[LastRes + 1] = {
 	0, RS(new6p), RS(new8p), RS(new10p), RS(std3p),
 	RS(intro16), RS(mentats), RS(menshpa), RS(menshph), RS(menshpo),
 	RS(menshpm), RS(shapes), RS(icons), RS(arrows), RS(mouse),
-	RS(screen), RS(choam), RS(units), RS(units1), RS(units2),
+	RS(screen), RS(choam), RS(dunemap), RS(units), RS(units1), RS(units2),
 	RS(4slab), RS(afinala), RS(afinalb), RS(barrac), RS(carryall),
 	RS(construc), RS(efinala), RS(efinalb), RS(fartr), RS(fhark),
 	RS(fordos), RS(fremen), RS(gold_bb), RS(harktank), RS(harvest),

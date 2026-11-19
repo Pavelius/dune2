@@ -20,6 +20,7 @@ color get_flash(color main, color back, int base, int range, int resolution = 10
 extern color pallette[256];
 
 objectn choose_house();
+void choose_regions();
 
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
 void disappear_scene(unsigned long milliseconds = 0);

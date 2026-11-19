@@ -142,6 +142,7 @@
     <ClCompile Include="bin_carryall.cpp" />
     <ClCompile Include="bin_choam.cpp" />
     <ClCompile Include="bin_construc.cpp" />
+    <ClCompile Include="bin_dunemap.cpp" />
     <ClCompile Include="bin_efinala.cpp" />
     <ClCompile Include="bin_efinalb.cpp" />
     <ClCompile Include="bin_fartr.cpp" />
@@ -263,6 +264,7 @@
     <ClCompile Include="view_build.cpp" />
     <ClCompile Include="view_console.cpp" />
     <ClCompile Include="view_menu.cpp" />
+    <ClCompile Include="view_region.cpp" />
     <ClCompile Include="view_theme.cpp" />
     <ClCompile Include="view_indicator.cpp" />
     <ClCompile Include="io_stream.cpp" />
