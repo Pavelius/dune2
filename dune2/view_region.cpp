@@ -6,6 +6,7 @@
 #include "pushvalue.h"
 #include "screenshoot.h"
 #include "slice.h"
+#include "timer.h"
 #include "view_map.h"
 #include "view_theme.h"
 
@@ -73,7 +74,12 @@ static void paint_header() {
 }
 
 static void paint_arrows() {
+	update_game_time();
+	auto tm = (getcputime() / 400) % 4;
 	auto ps = gres(ARROWS);
+	auto j = 128 + mainplayer().color_index * 16;
+	for(unsigned i = 0; i < 4; i++)
+		pallette[251 + (i + 4 - tm) % 4] = pallette[j + i];
 	for(auto& e : attack_regions) {
 		if(e)
 			image(caret.x + e.position.x, caret.y + e.position.y, ps, e.frame, 0);
