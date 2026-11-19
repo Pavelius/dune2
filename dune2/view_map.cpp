@@ -482,13 +482,13 @@ static void paint_main_map_debug() {
 	debug_map_message();
 }
 
-static void update_pallette_by_player(int index) {
+void update_pallette_by_player(int index) {
 	auto j = 128 + index * 16;
 	for(auto i = 0; i < 6; i++)
 		pallette[144 + i] = pal_ibm[j + i];
 }
 
-static void update_pallette_by_player() {
+void update_pallette_by_player() {
 	update_pallette_by_player(mainplayer().color_index);
 }
 

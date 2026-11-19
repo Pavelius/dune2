@@ -8,7 +8,7 @@ enum resid : unsigned char {
 	NONE,
 	FONT6, FONT8, FONT10, FONT3, FONT16,
 	MENTATS, MENSHPA, MENSHPH, MENSHPO, MENSHPM,
-	SHAPES, ICONS, ARROWS, MOUSE, SCREEN, CHOAM, DUNEMAP,
+	SHAPES, ICONS, ARROWS, MOUSE, SCREEN, CHOAM, DUNEMAP, PIECES,
 	UNITS, UNITS1, UNITS2,
 	SLAB4, AFINALA, AFINALB, BARRAC, CARRYALL,
 	CONSTRUC, EFINALA, EFINALB, FARTR, FHARK,
@@ -65,6 +65,7 @@ extern const char* intro_subtitle[];
 extern const char* scenario_a_text[40];
 extern const char* scenario_h_text[40];
 extern const char* scenario_o_text[40];
+extern const char* regions_conquere[];
 
 struct gamei {
 	unsigned long	time;
@@ -73,6 +74,7 @@ struct gamei {
 	unsigned		starting_credits;
 	unsigned char	scenario; // 1...9
 	objectn			house;
+	objectn			controls[27];
 };
 extern gamei game;
 

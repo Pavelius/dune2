@@ -369,3 +369,48 @@ const char* scenario_o_text[40] = {
 	"Your defects must have been inherited.\nNobody could possibly learn the colossal stupidity that you have displayed.",
 	"Watch for sneak attacks, defend your installations well.\n",
 };
+const char* regions_conquere[] = {
+	"The Atreides claimed strategic regions.", // 0 - Atreides
+	"House Ordos moved in on the east.", // 1
+	"The Harkonnen invaded from the north.", // 2
+	"Atreides captured more territory...", // 3
+	"...and drove the Ordos out.", // 4
+	"Ordos headed for the Harkonnen.", // 5
+	"The Harkonnen expanded their borders.", // 6
+	"The Harkonnen borders were weak...", // 7
+	"...except for one outpost.", // 8
+	"The Harkonnen continued to retreat...", // 9
+	"...into the territory of the Ordos.", // 10
+	"All forces were aimed at the Ordos.", // 11
+	"Atreides pushed the Ordos back further.", // 12
+	"The Ordos were nearly wiped out.", // 13
+	"Only the Emperor's forces remain.", // 14
+	"Harkonnen arrived first.", // 15 - Harokonens
+	"The weak Atreides will be easy.", // 16
+	"The Ordos are getting closer.", // 17
+	"Harkonnen spread out strong forces.", // 18
+	"Atreides went after the Ordos.", // 19
+	"The Ordos stole even more land.", // 20
+	"House Atreides did not stand a chance.", // 21
+	"The Atreides and Ordos traded land.", // 22
+	"An Ordos outpost was surrounded.", // 23
+	"The Ordos broke through the Atreides.", // 24
+	"Soon House Atreides will be extinct.", // 25
+	"The Harkonnen crushed most of the Ordos.", // 26
+	"Atreides reclaimed its land.", // 27
+	"The Harkonnen devastated the Atreides.", // 28
+	"Only House Harkonnen will prevail.", // 29
+	"Ordos took the best land.", // 30 - Ordos
+	"House Atreides is nearby.", // 31
+	"Harkonnen are a threat.", // 32
+	"Ordos advanced without a challenge.", // 33
+	"The Harkonnen drew closer.", // 34
+	"The Atreides spread too thin.", // 35
+	"All attacks were directed at the Atreides.", // 36
+	"Ordos took advantage of the Atreides...", // 37
+	"...while they were fighting the Harkonnen.", // 38
+	"The Harkonnen had to be turned back.", // 39
+	"Ordos killed off most of the Atreides.", // 40
+	"Ordos conquered more Harkonnen land.", // 41
+	"Soon Ordos will control all of Dune.", // 42
+};

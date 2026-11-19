@@ -358,7 +358,36 @@ static void change_debug() {
 }
 
 static void debug_test() {
+	press_planet("The armies arrived on planet.");
+	press_planet(0);
+	// Atreides
+	claim_regions(Atreides, 13, regions_conquere[0]);
+	claim_regions(Atreides, 7);
+	claim_regions(Atreides, 20);
+	claim_regions(Atreides, 14);
+	claim_regions(Atreides, 21);
+	claim_regions(Atreides, 22);
+	// Harkonens
+	claim_regions(Harkonens, 6, regions_conquere[2]);
+	claim_regions(Harkonens, 5);
+	claim_regions(Harkonens, 4);
+	claim_regions(Harkonens, 10);
+	claim_regions(Harkonens, 3);
+	claim_regions(Harkonens, 9);
+	// Ordos
+	claim_regions(Ordos, 19, regions_conquere[1]);
+	claim_regions(Ordos, 27);
+	claim_regions(Ordos, 26);
+	claim_regions(Ordos, 25);
+	claim_regions(Ordos, 24);
+	claim_regions(Ordos, 23);
+	// Main map
+	clear_attack_regions();
+	add_attack_region(8, 3, 80, 80);
+	add_attack_region(15, 2, 101, 118);
+	add_attack_region(23, 3, 152, 136);
 	choose_regions();
+	clear_attack_regions();
 }
 
 void view_debug_input() {
