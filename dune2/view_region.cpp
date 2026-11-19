@@ -14,15 +14,22 @@ static void paint_background() {
 	paint_background(colors::black);
 	image(gres(DUNEMAP), 0, 0);
 	switch(last_fraction) {
-	case Atreides:
+	case Ordos:
 		copybits(caret.x + 8, caret.y + 24, 56, 40, caret.x + 0, caret.y + 152);
 		copybits(caret.x + 8, caret.y + 24, 56, 40, caret.x + 264, caret.y + 152);
+		break;
+	case Harkonens:
+		copybits(caret.x + 0, caret.y + 152, 56, 40, caret.x + 264, caret.y + 152);
+		break;
+	case Atreides:
+		copybits(caret.x + 264, caret.y + 152, 56, 40, caret.x + 0, caret.y + 152);
 		break;
 	}
 }
 
 static void paint_regions() {
 	paint_background();
+	image(caret.x + 8, caret.y + 24, gres(DUNEMAP), 1, 0);
 }
 
 void choose_regions() {
