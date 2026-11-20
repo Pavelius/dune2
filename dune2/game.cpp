@@ -315,6 +315,7 @@ static void restart_scenario() {
 static void pick_house() {
 	if(!confirm(getnm(ConfirmPickAnotherHouse), getnm(Yes), getnm(No)))
 		return;
+	set_next_scene(choose_game_house);
 }
 
 static void quit_game() {
@@ -344,11 +345,8 @@ void camera_to_base() {
 }
 
 static void play_game() {
-	choose_game_house();
-	if(!game.house)
-		return;
 	game.scenario = 1;
-	game.starting_credits = 1000;
+	game.starting_credits = 800;
 	area_generate(SmallMap, 2);
 	show_scenario_prompt(mainplayer().fraction, game.scenario, ScenarioBrief);
 	camera_to_base();
@@ -374,7 +372,7 @@ static void load_game_no_confirm() {
 
 static void play_main_menu() {
 	current_music = MusicTitle;
-	an.add(play_game, getnm(StartGame));
+	an.add(choose_game_house, getnm(StartGame));
 	an.add(show_introdution, "Replay Introdution");
 	an.add(load_game_no_confirm, getnm(LoadGame));
 #ifdef _DEBUG
@@ -420,9 +418,12 @@ void choose_game_house() {
 			break;
 		if(confirm_join_house(house)) {
 			game.house = house;
+			set_next_scene(play_game);
 			break;
 		}
 	}
+	if(!is_next_scene())
+		set_next_scene(play_main_menu);
 }
 
 BSDATA(textscript) = {

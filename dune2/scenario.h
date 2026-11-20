@@ -14,6 +14,7 @@ struct scenarioi {
 		unsigned char x, y;
 	};
 	objectf		topics;
+	int			harvest;
 	armymove	moves[3];
 	armyorder	order[3];
 };

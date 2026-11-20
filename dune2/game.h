@@ -44,13 +44,14 @@ extern musicn current_music;
 
 enum messagen : unsigned char {
 	ProgramTitle, Cancel, Yes, No,
-	ChooseTarget, ChoosePlacement, ChooseSubject, SelectHouse,
+	ChooseTarget, ChoosePlacement, ChooseSubject, SelectHouse, SelectNextTarget,
 	StartGame, LoadGame, SaveGame, HallOfFame, QuitGame, ResumeGame, Exit, Proceed, Repeat, BuildIt,
 	GameControls, RestartScenario, PickAnotherHouse, Cost,
 	CompleteProgress, UnitDestroyed, UnitDevoured, ReachSpiceMaximum,
 	HarvesterWork, UnitCantDoThis, HarvesterUnload, HarvesterReturn,
 	ChooseTargetInfo, ChoosePlacementInfo,
 	ConfirmJoinHouse, ConfirmLoadGame, ConfirmPickAnotherHouse, ConfirmQuitGame,
+	ThreeHouseArrive, ToTakeControlOfLand, ThatHasBecameDivided,
 	CantSupportEnergy,
 	LastMessage = CantSupportEnergy,
 };
@@ -88,8 +89,6 @@ bool is_map_music(musicn v);
 void load_game(const char* id);
 void open_options();
 void save_game(const char* id);
-void set_region_control(objectn fraction, unsigned index);
-void set_region_header(const char* format);
 void show_scenario_moves(objectn fraction, unsigned char scenario);
 void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn type);
 void update_ai_commands(unsigned char player);

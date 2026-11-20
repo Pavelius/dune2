@@ -85,12 +85,41 @@ static void paint_arrows() {
 	}
 }
 
+static bool is_attack_region(unsigned char n) {
+	for(auto v : attack_regions) {
+		if(v.index == n)
+			return true;
+	}
+	return false;
+}
+
+static void paint_region_choose() {
+	pushrect push;
+	auto ps = gres(DUNEMAP);
+	caret.x += 8; caret.y += 24;
+	auto& e = ps->frames[4];
+	width = e.sx; height = e.sy;
+	if(!hot.pressed && hot.key == MouseLeft && hot.mouse.in(getrect())) {
+		auto n = *((unsigned char*)ps->ptr(e.offset) + (hot.mouse.y - caret.y) * e.sx + (hot.mouse.x - caret.x));
+		if(is_attack_region(n))
+			breakmodal(n);
+	}
+}
+
 static void paint_regions() {
 	paint_background();
 	image(caret.x + 8, caret.y + 24, gres(DUNEMAP), 2, 0);
 	paint_filled_regions();
 	paint_header();
+}
+
+static void paint_regions_choose() {
+	paint_background();
+	image(caret.x + 8, caret.y + 24, gres(DUNEMAP), 2, 0);
+	paint_filled_regions();
+	paint_header();
 	paint_arrows();
+	paint_region_choose();
 }
 
 static void paint_planet_standart() {
@@ -131,49 +160,63 @@ static void add_attack_region(unsigned char index, unsigned char frame, short x,
 	p->position.y = y;
 }
 
-void choose_regions() {
+static unsigned char choose_regions() {
 	pushvalue push_music(current_music, MusicConquest);
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	show_scene_raw(paint_regions, 0);
+	return (unsigned char)show_scene_raw(paint_regions_choose, 0);
 }
 
-static void appear_region(fnevent proc) {
+static void appear_region(fnevent proc, unsigned delay = 500) {
 	pushvalue push_music(current_music, MusicConquest);
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	appear_scene(proc, 500);
+	appear_scene(proc, delay);
 }
 
-void set_region_control(objectn fraction, unsigned index) {
-	if(index) {
-		game.controls[index - 1] = fraction;
-		appear_region(paint_regions);
-	}
-}
-
-void set_region_header(const char* format) {
-	form_header = format;
+static void flash_region(objectn fraction, unsigned char index) {
+	auto previous = game.controls[index - 1];
+	game.controls[index - 1] = fraction;
+	appear_region(paint_regions, 250);
+	game.controls[index - 1] = previous;
+	appear_region(paint_regions, 250);
+	game.controls[index - 1] = fraction;
+	appear_region(paint_regions, 250);
+	game.controls[index - 1] = previous;
+	appear_region(paint_regions, 250);
+	game.controls[index - 1] = fraction;
+	appear_region(paint_regions, 250);
 }
 
 void show_scenario_moves(objectn fraction, unsigned char scenario) {
 	paint_background(colors::black);
 	if(scenario == 1) {
-		set_region_header("The armies arrived on planet.");
-		appear_region(paint_planet_standart);
-		appear_region(paint_planet_standart);
+		form_header = getnm(ThreeHouseArrive);
+		appear_region(paint_planet_standart, 500);
+		appear_region(paint_planet_standart, 1500);
+		form_header = getnm(ToTakeControlOfLand);
 		appear_region(paint_dune_map);
+		appear_region(paint_dune_map, 1000);
+		form_header = getnm(ThatHasBecameDivided);
 		appear_region(paint_dune_map_area);
+		appear_region(paint_dune_map_area, 1500);
 	}
 	// Scenario movements
 	auto& ei = scenarios[(fraction - Atreides) * 9 + (scenario-1)];
 	for(auto& e : ei.moves) {
-		set_region_header(regions_conquere[e.message]);
-		for(auto i : e.regions)
-			set_region_control(e.fraction, i);
+		form_header = regions_conquere[e.message];
+		for(auto i : e.regions) {
+			if(!i)
+				continue;
+			game.controls[i - 1] = e.fraction;
+			appear_region(paint_regions);
+		}
 	}
 	// Main map
+	form_header = getnm(SelectNextTarget);
 	clear_attack_regions();
 	for(auto& e : ei.order)
 		add_attack_region(e.region, e.frame, e.x, e.y);
-	choose_regions();
+	auto n = choose_regions();
+	if(n)
+		flash_region(fraction, n);
 	clear_attack_regions();
 }

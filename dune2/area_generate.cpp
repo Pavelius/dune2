@@ -212,10 +212,18 @@ static void initialize_random_fractions() {
 	}
 }
 
+static void clear_area() {
+	bsdata<playeri>::source.clear();
+	bsdata<aircraft>::source.clear();
+	bsdata<draweffect>::source.clear();
+	bsdata<unit>::source.clear();
+	bsdata<building>::source.clear();
+}
+
 void area_generate(areasizen n, int number_of_players) {
 	fngenerate regions[area.region_maximum] = {};
+	clear_area();
 	initialize_random_fractions();
-	bsdata<playeri>::source.clear();
 	area.clear(SmallMap);
 	add_neutral_player();
 	add_players(regions, number_of_players);

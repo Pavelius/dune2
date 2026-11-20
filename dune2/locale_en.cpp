@@ -5,7 +5,7 @@
 
 const char* message_names[LastMessage + 1] = {
 	"The Building of A Dynasty", "Cancel", "Yes", "No",
-	"Target", "Placement", "Select Subject", "Select your house",
+	"Target", "Placement", "Select Subject", "Select your house", "Select your next region.",
 	"Start new game", "Load game", "Save this game", "Hall of Fame", "Quit game", "Resume game", "Exit", "Proceed", "Repeat", "Build It",
 	"Game controls", "Restart scenario", "Pick another house", "Cost",
 	"Done %1i%%", "%Unit is destroyed.", "%Unit is devoured by worm.",
@@ -20,6 +20,7 @@ const char* message_names[LastMessage + 1] = {
 	"Do you really want to load game?",
 	"Do you really want to end this game and pick another house?",
 	"Do you really want to quit this game? All unsaved changes will be lost.",
+	"Three Houses have come to Dune.", "To take control of the land.", "That has become divided.",
 	"Not enought energy. Build more wind traps.",
 };
 const char* object_names[LastObject + 1] = {
