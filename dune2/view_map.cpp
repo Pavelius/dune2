@@ -122,9 +122,8 @@ static void mouse_cancel(rect rc) {
 	}
 }
 
-static void update_tick() {
-	animate_time = getcputime();
-	music_update();
+static void update_animation_tick() {
+	animate_time = current_tick;
 }
 
 static int calculate(int v1, int v2, int n, int m) {
@@ -323,7 +322,7 @@ static void make_screenshoot() {
 }
 
 static void common_input() {
-	update_tick();
+	update_animation_tick();
 	switch(hot.key) {
 	case Ctrl + F5: make_screenshoot(); break;
 	}
@@ -1546,7 +1545,7 @@ void appear_scene(fnevent before_paint, unsigned long milliseconds) {
 	before_paint();
 	screenshoot after;
 	before.blend(after, milliseconds);
-	update_tick();
+	update_animation_tick();
 }
 
 void disappear_scene(unsigned long milliseconds) {
@@ -1558,16 +1557,18 @@ void disappear_scene(unsigned long milliseconds) {
 	rectf();
 	screenshoot after;
 	before.blend(after, milliseconds);
-	update_tick();
+	update_animation_tick();
 }
 
 void reset_form_animation() {
-	update_tick();
+	update_animation_tick();
 	form_opening_tick = animate_time;
 }
 
 static void main_beforemodal() {
+	current_tick = getcputime();
 	clear_focus_data();
+	music_update();
 }
 
 void make_pallette() {

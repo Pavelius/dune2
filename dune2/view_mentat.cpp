@@ -470,7 +470,6 @@ static void paint_exit_button(const char* format) {
 
 static void paint_houses() {
 	paint_background(colors::black);
-	music_update();
 	textheader(getnm(SelectHouse));
 	paint_house(16, 64, Atreides, 'A');
 	paint_house(120, 64, Ordos, 'O');

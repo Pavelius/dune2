@@ -61,6 +61,8 @@ enum scenariotextn : unsigned char {
 	LastScenatioText = ScenarioAdvice
 };
 
+extern unsigned long current_tick;
+
 extern const char* intro_subtitle[];
 extern const char* scenario_a_text[40];
 extern const char* scenario_h_text[40];
@@ -86,6 +88,9 @@ bool is_map_music(musicn v);
 void load_game(const char* id);
 void open_options();
 void save_game(const char* id);
+void set_region_control(objectn fraction, unsigned index);
+void set_region_header(const char* format);
+void show_scenario_moves(objectn fraction, unsigned char scenario);
 void show_scenario_prompt(objectn fraction, unsigned char level, scenariotextn type);
 void update_ai_commands(unsigned char player);
 void update_game_time();

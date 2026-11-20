@@ -18,6 +18,7 @@
 #include "view_menu.h"
 #include "video.h"
 
+unsigned long current_tick;
 gamei game;
 
 bool is_combat(musicn v) {

@@ -4,6 +4,7 @@
 #include "object.h"
 #include "player.h"
 #include "pushvalue.h"
+#include "scenario.h"
 #include "screenshoot.h"
 #include "slice.h"
 #include "timer.h"
@@ -35,7 +36,6 @@ static short unsigned piece_world[][2] = {
 };
 
 static void paint_background() {
-	music_update();
 	paint_background(colors::black);
 	image(gres(DUNEMAP), 0, 0);
 	switch(last_fraction) {
@@ -74,8 +74,7 @@ static void paint_header() {
 }
 
 static void paint_arrows() {
-	update_game_time();
-	auto tm = (getcputime() / 400) % 4;
+	auto tm = (current_tick / 400) % 4;
 	auto ps = gres(ARROWS);
 	auto j = 128 + mainplayer().color_index * 16;
 	for(unsigned i = 0; i < 4; i++)
@@ -97,6 +96,18 @@ static void paint_regions() {
 static void paint_planet_standart() {
 	paint_background();
 	image(caret.x + 8, caret.y + 24, gres(DUNEMAP), 3, 0);
+	paint_header();
+}
+
+static void paint_dune_map() {
+	paint_background();
+	image(caret.x + 8, caret.y + 24, gres(DUNEMAP), 1, 0);
+	paint_header();
+}
+
+static void paint_dune_map_area() {
+	paint_background();
+	image(caret.x + 8, caret.y + 24, gres(DUNEMAP), 2, 0);
 	paint_header();
 }
 
@@ -126,21 +137,49 @@ void choose_regions() {
 	show_scene_raw(paint_regions, 0);
 }
 
-void claim_regions(objectn fraction, unsigned index, const char* format) {
+void press_planet() {
 	pushvalue push_music(current_music, MusicConquest);
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	paint_regions();
-	if(format)
-		form_header = format;
-	if(index)
-		game.controls[index - 1] = fraction;
-	appear_scene(paint_regions, 1000);
+	appear_scene(paint_planet_standart, 1000);
 }
 
-void press_planet(const char* format) {
+static void appear_region(fnevent proc) {
 	pushvalue push_music(current_music, MusicConquest);
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	if(format)
-		form_header = format;
-	appear_scene(paint_planet_standart, 1000);
+	appear_scene(proc, 500);
+}
+
+void set_region_control(objectn fraction, unsigned index) {
+	if(index) {
+		game.controls[index - 1] = fraction;
+		appear_region(paint_regions);
+	}
+}
+
+void set_region_header(const char* format) {
+	form_header = format;
+}
+
+void show_scenario_moves(objectn fraction, unsigned char scenario) {
+	paint_background(colors::black);
+	if(scenario == 1) {
+		set_region_header("The armies arrived on planet.");
+		appear_region(paint_planet_standart);
+		appear_region(paint_planet_standart);
+		appear_region(paint_dune_map);
+		appear_region(paint_dune_map_area);
+	}
+	// Scenario movements
+	auto& ei = scenarios[(fraction - Atreides) * 9 + (scenario-1)];
+	for(auto& e : ei.moves) {
+		set_region_header(regions_conquere[e.message]);
+		for(auto i : e.regions)
+			set_region_control(e.fraction, i);
+	}
+	// Main map
+	clear_attack_regions();
+	for(auto& e : ei.order)
+		add_attack_region(e.region, e.frame, e.x, e.y);
+	choose_regions();
+	clear_attack_regions();
 }

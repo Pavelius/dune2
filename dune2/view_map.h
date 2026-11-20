@@ -24,7 +24,6 @@ void choose_regions();
 
 void add_attack_region(unsigned char index, unsigned char frame, short x, short y);
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
-void claim_regions(objectn fraction, unsigned index, const char* format = 0);
 void clear_attack_regions();
 void disappear_scene(unsigned long milliseconds = 0);
 void hilite_unit_orders();
@@ -39,9 +38,9 @@ void paint_main_map_choose_terrain();
 void paint_main_map_choose_placement();
 void paint_spice();
 void paint_video();
-void press_planet(const char* format);
 void reset_form_animation();
 void setcamera(point v, bool center_view);
+void show_region_planets();
 long show_scene(fnevent before_paint, fnevent input, void* focus);
 long show_scene_raw(fnevent before_paint, fnevent input);
 bool time_animate(unsigned long& value, unsigned long duration, unsigned long pause = 20);

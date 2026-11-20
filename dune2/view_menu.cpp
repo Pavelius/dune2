@@ -103,7 +103,6 @@ void execute_menu(const char* header, int menu_width, const char* cancel, const 
 }
 
 static void paint_main_menu() {
-	music_update();
 	paint_background(colors::black);
 	pushfore push_fore;
 	pushrect push;
