@@ -14,8 +14,10 @@ struct scenarioi {
 		unsigned char x, y;
 	};
 	objectf		topics;
-	int			harvest;
+	unsigned	harvest;
 	armymove	moves[3];
 	armyorder	order[3];
 };
 extern scenarioi scenarios[3 * 9];
+
+scenarioi* current_scenario();

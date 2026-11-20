@@ -14,6 +14,7 @@
 #include "pushvalue.h"
 #include "print.h"
 #include "rand.h"
+#include "scenario.h"
 #include "screenshoot.h"
 #include "squad.h"
 #include "timer.h"
@@ -180,6 +181,15 @@ static void update_draw_effects() {
 	last_object = push;
 }
 
+static void check_game_goals() {
+	auto ps = current_scenario();
+	auto goal_reach = false;
+	if(ps->harvest) {
+		if(mainplayer().get(Credits) >= ps->harvest)
+			goal_reach = true;
+	}
+}
+
 static void update_next_turn() {
 	if(debug_toggle)
 		return;
@@ -193,6 +203,7 @@ static void update_next_turn() {
 		game.time += delta;
 		update_game_time();
 		update_draw_effects();
+		check_game_goals();
 	}
 }
 
@@ -1464,7 +1475,7 @@ void paint_main_map_choose_placement() {
 	update_next_turn();
 }
 
-void check_animation_time() {
+static void check_animation_time() {
 	if(animate_stop && animate_time >= animate_stop)
 		execute(buttonok);
 }

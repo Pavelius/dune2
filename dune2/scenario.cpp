@@ -1,3 +1,4 @@
+#include "game.h"
 #include "scenario.h"
 
 scenarioi scenarios[3 * 9] = {
@@ -7,3 +8,7 @@ scenarioi scenarios[3 * 9] = {
 	{{8, 3, 80, 80}, {15, 2, 101, 118}, {23, 3, 152, 136}},
 	},
 };
+
+scenarioi* current_scenario() {
+	return scenarios + (game.house - Atreides) * 3 + (game.scenario - 1);
+}
