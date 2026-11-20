@@ -20,11 +20,8 @@ color get_flash(color main, color back, int base, int range, int resolution = 10
 extern color pallette[256];
 
 objectn choose_house();
-void choose_regions();
 
-void add_attack_region(unsigned char index, unsigned char frame, short x, short y);
 void appear_scene(fnevent paint, unsigned long milliseconds = 0);
-void clear_attack_regions();
 void disappear_scene(unsigned long milliseconds = 0);
 void hilite_unit_orders();
 void initialize_view(const char* title, fnevent main_scene);

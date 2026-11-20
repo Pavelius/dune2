@@ -111,7 +111,7 @@ static void paint_dune_map_area() {
 	paint_header();
 }
 
-void clear_attack_regions() {
+static void clear_attack_regions() {
 	memset(attack_regions, 0, sizeof(attack_regions));
 }
 
@@ -123,7 +123,7 @@ static attackregioni* new_attack_region() {
 	return attack_regions;
 }
 
-void add_attack_region(unsigned char index, unsigned char frame, short x, short y) {
+static void add_attack_region(unsigned char index, unsigned char frame, short x, short y) {
 	auto p = new_attack_region();
 	p->index = index;
 	p->frame = frame;
@@ -135,12 +135,6 @@ void choose_regions() {
 	pushvalue push_music(current_music, MusicConquest);
 	pushvalue push_fraction(last_fraction, mainplayer().fraction);
 	show_scene_raw(paint_regions, 0);
-}
-
-void press_planet() {
-	pushvalue push_music(current_music, MusicConquest);
-	pushvalue push_fraction(last_fraction, mainplayer().fraction);
-	appear_scene(paint_planet_standart, 1000);
 }
 
 static void appear_region(fnevent proc) {
