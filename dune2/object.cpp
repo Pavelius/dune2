@@ -199,10 +199,12 @@ int gethits(objectn type) {
 int getarmor(objectn type) {
 	switch(type) {
 	case LightInfantry: return 0;
-	case HeavyTroopers: case Quad: case Trike: case MCVehicle: return 1;
-	case CombatTank: case RocketTank: case Harvester: return 2;
-	case SiegeTank: return 3;
-	case SandWorm: return 4;
+	case HeavyTroopers: case Trike: case MCVehicle: return 1;
+	case Quad: case RocketTank: return 2;
+	case Harvester: return 3;
+	case CombatTank: return 4;
+	case SiegeTank: return 6;
+	case SandWorm: return 10;
 	default: return 1;
 	}
 }

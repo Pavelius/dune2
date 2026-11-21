@@ -61,7 +61,7 @@ void unit::destroy() {
 void unit::damage(int value) {
 	value -= getarmor(type);
 	if(value <= 0) {
-		if(chance(50))
+		if(chance(60))
 			value = 1;
 	}
 	if(value <= 0)
