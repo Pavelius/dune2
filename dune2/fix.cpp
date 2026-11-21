@@ -21,12 +21,13 @@ static fixn lasting_effect() {
 
 static int get_damage(fixn v) {
 	switch(v) {
-	case ShootAssaultRifle: return 2;
-	case ShootRotaryCannon: return 3;
-	case Shoot20mm: case Shoot30mm: return 4;
-	case Shoot155mm: return 6;
-	case FireRocket: return 8;
-	case HandRocket: return 5;
+	case ShootAssaultRifle: return 10;
+	case ShootRotaryCannon: return 15;
+	case Shoot20mm: return 20;
+	case Shoot30mm: return 25;
+	case Shoot155mm: return 30;
+	case FireRocket: return 75;
+	case HandRocket: return 40;
 	default: return 0;
 	}
 }

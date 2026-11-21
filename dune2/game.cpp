@@ -359,7 +359,7 @@ static void hall_of_fame() {
 static void debug_game() {
 	game.scenario = 1;
 	game.house = Atreides;
-	game.starting_credits = 1000;
+	game.starting_credits = 800;
 	area_generate(SmallMap, 2);
 	camera_to_base();
 	set_next_scene(play_current_game);

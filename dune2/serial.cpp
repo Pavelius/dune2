@@ -39,6 +39,8 @@ static bool serial_game_url(const char* url, bool writemode) {
 	if(!e.signature("SAV"))
 		return false;
 	e.set(game);
+	e.set(player_index);
+	e.set(player_human);
 	e.set(area);
 	e.set(area_origin);
 	e.set(bsdata<playeri>::source);

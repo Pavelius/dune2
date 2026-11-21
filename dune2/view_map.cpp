@@ -368,6 +368,15 @@ static rect get_corner_area(direction d) {
 	}
 }
 
+static int get_mouse_frame(direction d) {
+	switch(d) {
+	case Up: case RightUp: case LeftUp: return 1;
+	case Right: return 2;
+	case Left: return 4;
+	default: return 3;
+	}
+}
+
 static int get_arrows_frame(direction d) {
 	switch(d) {
 	case LeftUp: return 1;
@@ -383,7 +392,7 @@ static int get_arrows_frame(direction d) {
 }
 
 static void show_mouse_camera_slider(direction d, int x, int y, int frame) {
-	auto ps = gres(ARROWS);
+	auto ps = gres(MOUSE);
 	auto& fr = ps->get(frame);
 	switch(d) {
 	case Down: case Up: x = hot.mouse.x; break;
@@ -410,7 +419,7 @@ static void check_mouse_corner_slice() {
 	for(auto d : all) {
 		auto rc = get_corner_area(d);
 		if(hot.mouse.in(rc)) {
-			show_mouse_camera_slider(d, rc.centerx(), rc.centery(), get_arrows_frame(d));
+			show_mouse_camera_slider(d, rc.centerx(), rc.centery(), get_mouse_frame(d));
 			if(mouse_hower(100, false))
 				execute(set_area_view, (long)(area_origin + getpoint(d)));
 		}

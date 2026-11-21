@@ -17,7 +17,7 @@ struct unit : moveable, fixable, objectable {
 	void		destroy();
 	bool		devour();
 	void		fixstate(messagen v) const;
-	short unsigned gethitsmax() const { return gethits(type) * 10; }
+	short unsigned gethitsmax() const { return gethits(type); }
 	short unsigned getindex() const;
 	int			getlos() const { return ::getlos(type); }
 	ordern		getpurpose() const;
