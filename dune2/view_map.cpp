@@ -182,10 +182,10 @@ static void update_draw_effects() {
 }
 
 static void check_game_goals() {
-	auto ps = current_scenario();
+	auto& ei = scenario();
 	auto goal_reach = false;
-	if(ps->harvest) {
-		if(mainplayer().get(Credits) >= ps->harvest)
+	if(ei.harvest) {
+		if(mainplayer().get(Credits) >= ei.harvest)
 			goal_reach = true;
 	}
 }

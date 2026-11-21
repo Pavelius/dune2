@@ -20,4 +20,4 @@ struct scenarioi {
 };
 extern scenarioi scenarios[3 * 9];
 
-scenarioi* current_scenario();
+const scenarioi& scenario();

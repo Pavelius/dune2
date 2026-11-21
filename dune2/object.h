@@ -24,14 +24,6 @@ extern const char* object_h_info[LastObject + 1];
 extern const char* object_o_info[LastObject + 1];
 extern const char* object_capacity[LastObject + 1];
 
-struct objectf {
-	unsigned data[2] = {};
-	objectf() = default;
-	template<typename... Ts> constexpr objectf(objectn v, Ts... args) : objectf(args...) { set(v); }
-	constexpr void clear() { for(auto& e : data) e = 0; }
-	constexpr void set(objectn v) { data[v / 32] |= (1 << (v % 32)); }
-};
-
 typedef int(*fngeto)(objectn type);
 
 bool ismentat(objectn type);
@@ -46,6 +38,7 @@ int gethits(objectn type);
 int geticonavatar(objectn type);
 int getlos(objectn type);
 int getrange(objectn type);
+int getscenario(objectn type);
 int getspeed(objectn type);
 int getspicecap(objectn type);
 int getspeedfp(int v);

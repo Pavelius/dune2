@@ -1,38 +1,0 @@
-﻿Str0001: present
-Str0002: The Building of A Dynasty
-Str0003: The planet Arrakis, known as Dune.
-Str0004: Land of sand.
-Str0005: Home of the Spice Melange.
-Str0006: The Spice controls the Empire.
-Str0007: Whoever controls Dunecontrols the Spice.
-Str0008: The Emperor has proposed achallenge to each of the Houses.
-Str0009: The House that produces themost Spice will control Dune.
-Str0010: There are no set territories.
-Str0011: And no rules of engagement.
-Str0012: Vast armies have arrived.
-Str0013: Now three Houses fightfor control of Dune.
-Str0014: The noble Atreides.
-Str0015: The insidious Ordos.
-Str0016: And the evil Harkonnen.
-Str0017: Only one House will prevail.
-Str0018: Your battle for Dune begins
-Str0019:  NOW
-Str0020: Greetings, Emperor.
-Str0021: What is the meaningof this intrusion?
-Str0022: You are formally charged with crimesof treason against House Atreides
-Str0023: The House shall determineyour guilt or innocence.
-Str0024: Until then, you shall nolonger reign as Emperor.
-Str0025: You are, indeed, not entirelytrue to your word, Emperor.
-Str0026: You have lied to us.
-Str0027: What lies?  What areyou talking about?
-Str0028: Your lies of loyalty!Your deceit!
-Str0029: A crime for which you willindeed pay dearly...
-Str0030: ...with your life!
-Str0031: NO!  NO!  NOOO!
-Str0032: You are aware, Emperor, that wehave grown weary of your games.
-Str0033: What games?  What areyou talking about?
-Str0034: I am referring toyour game of chess.
-Str0035: We were your pawns andDune was your board.
-Str0036: We have decided to take mattersinto our own hands.
-Str0037: You are to be our pawn,in our game.
-Str0038: 

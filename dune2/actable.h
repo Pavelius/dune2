@@ -19,7 +19,7 @@ struct actable : playerable {
 	unsigned char	action; // Sequence action in a row
 	direction		shoot_direction;
 	unsigned long	shoot_time; // Start shoot game time
-	explicit operator bool() const { return hits > 0; }
+	explicit operator bool() const { return hits != 0; }
 	bool			canshoot(int maximum_range) const;
 	void			fixstate(messagen v) const;
 	static void		fixshoot(point from, point to, fixn weapon, int chance_miss);

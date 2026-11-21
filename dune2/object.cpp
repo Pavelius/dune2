@@ -257,6 +257,15 @@ int getspeed(objectn type) {
 	}
 }
 
+int getscenario(objectn type) {
+	switch(type) {
+	case RadarOutpost: return 2;
+	case HeavyVehicleFactory: return 5;
+	case Palace: return 8;
+	default: return 1;
+	}
+}
+
 int getdefaultcolor(objectn type) {
 	switch(type) {
 	case Atreides: return 2;

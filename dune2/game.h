@@ -70,12 +70,23 @@ extern const char* scenario_h_text[40];
 extern const char* scenario_o_text[40];
 extern const char* regions_conquere[];
 
+struct objectf {
+	unsigned data[2] = {};
+	objectf() = default;
+	template<typename... Ts> constexpr objectf(objectn v, Ts... args) : objectf(args...) { set(v); }
+	constexpr void clear() { for(auto& e : data) e = 0; }
+	constexpr void add(const objectf& source) { data[0] |= source.data[0]; data[1] |= source.data[1]; }
+	constexpr bool is(objectn v) const { return (data[v / 32] & (1 << (v % 32))) != 0; }
+	constexpr void set(objectn v) { data[v / 32] |= (1 << (v % 32)); }
+};
+
 struct gamei {
 	unsigned long	time;
 	unsigned long	start_turn;
 	unsigned		turn;
 	unsigned		starting_credits;
 	unsigned char	scenario; // 1...9
+	objectf			allow;
 	objectn			house;
 	objectn			controls[27];
 };
