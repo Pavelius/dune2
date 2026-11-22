@@ -31,6 +31,7 @@ bool ismentat(objectn type);
 int getarmor(objectn type);
 int getattacks(objectn type);
 int getcreditscost(objectn type);
+int getdamage(fixn v);
 int getdefaultcolor(objectn type);
 int getenergycost(objectn type);
 int getenergyprofit(objectn type);

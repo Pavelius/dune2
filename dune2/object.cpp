@@ -185,13 +185,26 @@ fixn getheavyweapon(objectn type) {
 	}
 }
 
+int getdamage(fixn v) {
+	switch(v) {
+	case ShootAssaultRifle: return 8;
+	case ShootRotaryCannon: return 10;
+	case Shoot20mm: return 20;
+	case Shoot30mm: return 25;
+	case Shoot155mm: return 30;
+	case FireRocket: return 75;
+	case HandRocket: return 40;
+	default: return 0;
+	}
+}
+
 int gethits(objectn type) {
 	switch(type) {
 	case LightInfantry: return 40;
 	case HeavyTroopers: return 50;
-	case Trike: return 60;
-	case Quad: return 70;
-	case RocketTank: return 120;
+	case Trike: return 80;
+	case Quad: return 100;
+	case RocketTank: return 130;
 	case CombatTank: return 200;
 	case SiegeTank: return 300;
 	case Harvester: case MCVehicle: return 400;

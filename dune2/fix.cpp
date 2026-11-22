@@ -19,19 +19,6 @@ static fixn lasting_effect() {
 	return pf->next;
 }
 
-static int get_damage(fixn v) {
-	switch(v) {
-	case ShootAssaultRifle: return 10;
-	case ShootRotaryCannon: return 15;
-	case Shoot20mm: return 20;
-	case Shoot30mm: return 25;
-	case Shoot155mm: return 30;
-	case FireRocket: return 75;
-	case HandRocket: return 40;
-	default: return 0;
-	}
-}
-
 static bool is_resist(fixn v, movementn m) {
 	switch(m) {
 	case Footed:
@@ -56,7 +43,7 @@ static void apply_damage() {
 	auto p = (draweffect*)last_object;
 	auto v = s2m(last_object->screen);
 	auto f = (fixn)p->param;
-	auto n = get_damage(f);
+	auto n = getdamage(f);
 	auto pu = find_unit(v);
 	if(pu) {
 		if(is_resist(f, getmove(pu->type)))
